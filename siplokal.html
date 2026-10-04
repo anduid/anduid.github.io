@@ -1,0 +1,1785 @@
+<!DOCTYPE html><html class="h-full" lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>SIPLokal - Sistem Integrasi Potensi &amp; UMKM Kelurahan Jatiasih</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Leaflet CSS & JS for Interactive Map Pinpoint -->
+<link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" rel="stylesheet">
+<script crossorigin="" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-variant": "#dae2fd",
+            "on-background": "#131b2e",
+            "inverse-on-surface": "#eef0ff",
+            "on-tertiary-container": "#fffbff",
+            "on-primary-fixed-variant": "#005049",
+            "on-tertiary-fixed-variant": "#653e00",
+            "surface-container-lowest": "#ffffff",
+            "surface-bright": "#faf8ff",
+            "on-surface-variant": "#3d4947",
+            "background": "#faf8ff",
+            "primary": "#0d9488",
+            "primary-dark": "#0f766e",
+            "error": "#ba1a1a",
+            "on-error-container": "#93000a",
+            "tertiary": "#825100",
+            "secondary": "#4e45d5",
+            "surface-container-highest": "#dae2fd",
+            "tertiary-fixed-dim": "#ffb95f",
+            "on-primary": "#ffffff",
+            "tertiary-fixed": "#ffddb8",
+            "surface-dim": "#d2d9f4",
+            "outline": "#6d7a77",
+            "on-primary-container": "#f4fffc",
+            "secondary-container": "#6860ef",
+            "error-container": "#ffdad6",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#89f5e7",
+            "primary-fixed-dim": "#6bd8cb",
+            "on-secondary-fixed": "#100069",
+            "primary-container": "#0d9488",
+            "tertiary-container": "#a36700",
+            "surface-container-high": "#e2e7ff",
+            "on-primary-fixed": "#00201d",
+            "on-secondary-fixed-variant": "#372abf",
+            "surface": "#faf8ff",
+            "secondary-fixed": "#e3dfff",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed-dim": "#c3c0ff",
+            "inverse-primary": "#6bd8cb",
+            "outline-variant": "#bcc9c6",
+            "surface-tint": "#0d9488",
+            "surface-container": "#eaedff",
+            "inverse-surface": "#283044",
+            "on-secondary-container": "#fffbff",
+            "on-error": "#ffffff",
+            "on-surface": "#131b2e",
+            "surface-container-low": "#f2f3ff"
+          },
+          fontFamily: {
+            sans: ['"Inter"', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* iOS friendly tap highlights and touch scrolling */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .leaflet-container {
+      font-family: inherit;
+      z-index: 10;
+    }
+    @keyframes highlightPulse {
+      0%, 100% { outline: 3px solid #0d9488; }
+      50% { outline: 3px solid #34d399; }
+    }
+    .highlight-card {
+      animation: highlightPulse 2s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-[#f8fafc] text-on-surface font-sans antialiased min-h-screen flex flex-col pb-20 md:pb-0 selection:bg-primary/20 selection:text-primary">
+<!-- TOP COMPACT STICKY HEADER -->
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-200 shadow-sm">
+<div class="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
+<!-- Brand Logo & Unit -->
+<div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('home')">
+<div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 flex items-center justify-center text-white shadow-md shadow-primary/20 shrink-0">
+<span class="material-symbols-outlined text-[20px] sm:text-[22px]">storefront</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-display font-extrabold text-base sm:text-lg tracking-tight text-slate-900 leading-tight">SIPLokal</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-teal-50 text-teal-700 uppercase tracking-wider">Jatiasih</span>
+</div>
+<span class="text-[10px] sm:text-[11px] text-slate-500 font-medium line-clamp-1">Kec. Jatiasih • Kota Bekasi</span>
+</div>
+</div>
+<!-- Right Actions: Offline Badge + Navigation Desktop + Auth / Mobile Menu Trigger -->
+<div class="flex items-center gap-2">
+<!-- IndexedDB Sync Badge -->
+<div class="hidden xs:inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-medium" id="syncBadge" title="Koneksi siap &amp; sinkron ke IndexedDB lokal">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="hidden sm:inline">Offline-Ready (IndexedDB)</span>
+<span class="sm:hidden">Aktif</span>
+</div>
+<!-- Desktop Navigation Items -->
+<nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+<button class="nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors" data-page="home" onclick="navigateTo('home')">Beranda</button>
+<button class="nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors" data-page="daftar" onclick="navigateTo('daftar')">Portal UMKM Mandiri</button>
+<button class="nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors" data-page="etalase" onclick="navigateTo('etalase')">Etalase Binaan</button>
+<button class="nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors" data-page="admin" id="navAdminBtnDesktop" onclick="handleAdminEntry()">Petugas Kelurahan</button>
+</nav>
+<!-- Admin Quick Status or Login Button -->
+<div class="hidden sm:flex items-center" id="adminUserArea">
+<button class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition shadow-sm flex items-center gap-1.5" id="loginModalBtnDesktop" onclick="openLoginModal()">
+<span class="material-symbols-outlined text-[16px]">shield_person</span>
+<span class="">Masuk Admin</span>
+</button>
+</div>
+<!-- Mobile Drawer Hamburger Toggle Button -->
+<button aria-label="Menu Navigasi" class="p-2 rounded-xl text-slate-700 hover:bg-slate-100 active:scale-95 transition-transform md:hidden flex items-center justify-center" onclick="toggleMobileDrawer()">
+<span class="material-symbols-outlined text-2xl" id="drawerHamburgerIcon">menu</span>
+</button>
+</div>
+</div>
+<!-- SUB-NAVBAR FOR ADMIN (HORIZONTAL SCROLLABLE ON MOBILE) -->
+<div class="hidden bg-slate-50 border-t border-slate-200 px-3 sm:px-6 py-2 overflow-x-auto scrollbar-none" id="adminSubNav">
+<div class="max-w-7xl mx-auto flex items-center justify-between gap-3 min-w-max">
+<div class="flex items-center gap-1">
+<span class="text-[11px] uppercase tracking-wider font-bold text-slate-400 mr-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">admin_panel_settings</span> Mode Petugas:
+          </span>
+<button class="admin-tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-teal-600 text-white shadow-sm flex items-center gap-1.5" id="adminTab-dashboard" onclick="switchAdminTab('dashboard')">
+<span class="material-symbols-outlined text-[16px]">grid_view</span> Ringkasan
+          </button>
+<button class="admin-tab-btn px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slate-200/70 flex items-center gap-1.5" id="adminTab-peta" onclick="switchAdminTab('peta')">
+<span class="material-symbols-outlined text-[16px]">map</span> Peta 18 RW
+          </button>
+<button class="admin-tab-btn px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slate-200/70 flex items-center gap-1.5" id="adminTab-analisis" onclick="switchAdminTab('analisis')">
+<span class="material-symbols-outlined text-[16px]">insights</span> Ekspor &amp; Analisis
+          </button>
+</div>
+<div class="flex items-center gap-2 pl-4 border-l border-slate-200">
+<span class="text-xs text-slate-600 font-medium flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Petugas Siaga (RW 01-18)</span>
+<button class="text-xs text-red-600 hover:underline font-semibold ml-2" onclick="logoutAdmin()">Keluar</button>
+</div>
+</div>
+</div>
+</header>
+<!-- MOBILE SLIDE-OVER DRAWER -->
+<div class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0 md:hidden" id="mobileDrawer">
+<!-- Backdrop overlay -->
+<div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity opacity-0" id="mobileDrawerBackdrop" onclick="toggleMobileDrawer(false)"></div>
+<!-- Drawer Menu Sheet -->
+<div class="absolute top-0 right-0 w-[82%] max-w-xs h-full bg-white shadow-2xl p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out pointer-events-auto" id="mobileDrawerPanel">
+<div>
+<div class="flex items-center justify-between pb-4 border-b border-slate-100">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]">storefront</span>
+</div>
+<div>
+<p class="font-display font-bold text-slate-900 text-sm">SIPLokal Jatiasih</p>
+<p class="text-[10px] text-slate-500">Pendataan &amp; Pemberdayaan</p>
+</div>
+</div>
+<button class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 text-lg" onclick="toggleMobileDrawer(false)">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Navigation Links in Drawer -->
+<nav class="mt-6 flex flex-col gap-2">
+<button class="mobile-nav-item flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition active:bg-slate-100 text-sm" data-page="home" onclick="navigateTo('home'); toggleMobileDrawer(false)">
+<span class="material-symbols-outlined text-[20px] text-slate-400">home</span>
+<span class="">Beranda Utama</span>
+</button>
+<button class="mobile-nav-item flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition active:bg-slate-100 text-sm" data-page="daftar" onclick="navigateTo('daftar'); toggleMobileDrawer(false)">
+<span class="material-symbols-outlined text-[20px] text-teal-600">add_business</span>
+<span class="">Portal Mandiri UMKM</span>
+</button>
+<button class="mobile-nav-item flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition active:bg-slate-100 text-sm" data-page="etalase" onclick="navigateTo('etalase'); toggleMobileDrawer(false)">
+<span class="material-symbols-outlined text-[20px] text-amber-500">shopping_bag</span>
+<span class="">Etalase Binaan RW</span>
+</button>
+<button class="mobile-nav-item flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition active:bg-slate-100 text-sm" data-page="admin" onclick="handleAdminEntry(); toggleMobileDrawer(false)">
+<span class="material-symbols-outlined text-[20px] text-indigo-600">shield_person</span>
+<span class="">Panel Admin Kelurahan</span>
+</button>
+</nav>
+</div>
+<!-- Drawer Footer Info -->
+<div class="pt-4 border-t border-slate-100">
+<div class="p-3 bg-slate-50 rounded-xl text-xs text-slate-600 mb-3">
+<p class="font-semibold text-slate-800 mb-0.5">Kelurahan Jatiasih</p>
+<p class="text-[11px] leading-relaxed text-slate-500">18 Rukun Warga • Siap melayani pendampingan NIB, Halal, &amp; Permodalan.</p>
+</div>
+<button class="w-full py-2.5 rounded-xl bg-teal-600 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-sm" id="mobileDrawerAuthBtn" onclick="openLoginModal(); toggleMobileDrawer(false)">
+<span class="material-symbols-outlined text-[16px]">login</span>
+<span class="">Login Petugas / Verifikator</span>
+</button>
+</div>
+</div>
+</div>
+<!-- MAIN VIEW CONTAINER -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-8">
+<!-- ============================================================ -->
+<!-- VIEW 1: BERANDA / HOME (HERO, DIORAMA, KPI CARDS, KOMPARASI) -->
+<!-- ============================================================ -->
+<section class="page-view space-y-6 sm:space-y-10" id="view-home">
+<!-- HERO BANNER -->
+<div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-900 via-teal-900 to-slate-950 text-white p-5 sm:p-10 shadow-xl">
+<!-- Background Pattern -->
+<div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+<div class="lg:col-span-7 space-y-3 sm:space-y-4 text-center sm:text-left">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-medium text-emerald-200">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              Pemberdayaan Ekonomi Wilayah Jatiasih
+            </div>
+<h1 class="font-display text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+              Sistem Integrasi Potensi &amp; Mandiri UMKM 18 RW
+            </h1>
+<p class="text-sm sm:text-base text-slate-200/90 max-w-xl font-normal leading-relaxed">
+              Mewujudkan kelurahan berbasis data akurat (One-Map). Daftarkan usaha Anda secara mandiri langsung dengan foto produk estetik &amp; GPS titik lokasi untuk verifikasi permodalan resmi.
+            </p>
+<!-- Hero CTAs (Optimized Full-Width on Mobile min 48px touch targets) -->
+<div class="pt-2 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+<button class="w-full sm:w-auto h-12 px-6 rounded-xl bg-emerald-400 hover:bg-emerald-300 active:scale-98 text-slate-900 font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition" onclick="navigateTo('daftar')">
+<span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+<span class="">Daftar Usaha Mandiri (Gratis)</span>
+</button>
+<button class="w-full sm:w-auto h-12 px-5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-98 border border-white/20 text-white font-semibold text-sm flex items-center justify-center gap-2 transition" onclick="handleAdminEntry()">
+<span class="material-symbols-outlined text-[20px]">query_stats</span>
+<span class="">Portal Analitik Petugas</span>
+</button>
+</div>
+</div>
+<!-- 3D/Interactive Diorama Simulation Widget (Touch-Friendly) -->
+<div class="lg:col-span-5"><div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 shadow-inner text-white space-y-3"><div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-300 text-sm">bar_chart</span><span class="text-xs font-semibold uppercase tracking-wider text-slate-200">Statistik &amp; Klaster Potensi 18 RW</span></div><span class="text-[11px] text-emerald-300 font-mono bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/30">Live Sync</span></div><div class="bg-slate-950/80 rounded-xl border border-slate-800 p-3 space-y-3"><div class="flex items-center justify-between text-xs border-b border-slate-800 pb-2"><div><span class="text-slate-400 text-[11px] block">Klik RW untuk Memeriksa Klaster:</span><strong class="font-display text-emerald-400 text-xs sm:text-sm" id="heroRwDetailTitle">RW 01 • 34 UMKM</strong></div><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" id="heroRwDetailSector">Dominan: Kuliner</span></div><div class="space-y-1"><div class="flex justify-between text-[10px] text-slate-400 font-mono"><span class="">Distribusi 18 RW</span><span class="">Tinggi bar = vol. usaha</span></div><div class="h-24 w-full flex items-end justify-between gap-1 pt-2 px-1 border-b border-slate-800"><div onclick="selectHeroRwBar('RW 01', 34, 'Kuliner (65%)', 'Jl. Swatantra I &amp; II', 'bg-emerald-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-emerald-400 group-hover:brightness-125 transition-all" style="height: 85%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">01</span></div><div onclick="selectHeroRwBar('RW 02', 26, 'Jasa &amp; Reparasi (48%)', 'Kavling Bulak Indah', 'bg-blue-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-blue-400 group-hover:brightness-125 transition-all" style="height: 65%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">02</span></div><div onclick="selectHeroRwBar('RW 03', 29, 'Kuliner Tradisional', 'Jl. Masjid Al-Ikhlas', 'bg-emerald-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-emerald-400 group-hover:brightness-125 transition-all" style="height: 72%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">03</span></div><div onclick="selectHeroRwBar('RW 04', 38, 'Kriya Batik &amp; Anyam', 'Jatiasih Permai B3', 'bg-amber-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-amber-400 group-hover:brightness-125 transition-all" style="height: 95%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">04</span></div><div onclick="selectHeroRwBar('RW 05', 22, 'Kuliner &amp; Cemilan', 'Komplek Asih Mulya', 'bg-emerald-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-emerald-400 group-hover:brightness-125 transition-all" style="height: 55%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">05</span></div><div onclick="selectHeroRwBar('RW 06', 18, 'Retail &amp; Toko Sembako', 'Jl. Mandor Demong', 'bg-purple-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-purple-400 group-hover:brightness-125 transition-all" style="height: 45%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">06</span></div><div onclick="selectHeroRwBar('RW 07', 31, 'Kuliner Seduh &amp; Kopi', 'Raya Komsen Jatiasih', 'bg-emerald-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-emerald-400 group-hover:brightness-125 transition-all" style="height: 78%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">07</span></div><div onclick="selectHeroRwBar('RW 08', 19, 'Jasa Elektronik', 'Kavling Pondok Indah', 'bg-blue-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-blue-400 group-hover:brightness-125 transition-all" style="height: 48%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">08</span></div><div onclick="selectHeroRwBar('RW 09', 24, 'Ritel Busana Muslim', 'Jl. Rambutan Raya', 'bg-purple-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-purple-400 group-hover:brightness-125 transition-all" style="height: 60%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">09</span></div><div onclick="selectHeroRwBar('RW 10', 21, 'Kuliner Malam', 'Dekat Kantor Camat', 'bg-emerald-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-emerald-400 group-hover:brightness-125 transition-all" style="height: 52%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">10</span></div><div onclick="selectHeroRwBar('RW 11', 17, 'Kriya Aksesoris', 'Perumahan Graha Indah', 'bg-amber-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-amber-400 group-hover:brightness-125 transition-all" style="height: 42%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">11</span></div><div onclick="selectHeroRwBar('RW 12', 35, 'Jasa Bengkel Presisi', 'Jl. Wibawa Mukti II', 'bg-blue-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-blue-400 group-hover:brightness-125 transition-all" style="height: 88%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">12</span></div><div onclick="selectHeroRwBar('RW 13', 20, 'Kelontong Kompak', 'Jl. Swatantra IV', 'bg-purple-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-purple-400 group-hover:brightness-125 transition-all" style="height: 50%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">13</span></div><div onclick="selectHeroRwBar('RW 14', 16, 'Kuliner Katering', 'Kav. Swadaya Asri', 'bg-emerald-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-emerald-400 group-hover:brightness-125 transition-all" style="height: 40%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">14</span></div><div onclick="selectHeroRwBar('RW 15', 28, 'Kriya Sablon &amp; Konveksi', 'Jl. Durian 3', 'bg-amber-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-amber-400 group-hover:brightness-125 transition-all" style="height: 70%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">15</span></div><div onclick="selectHeroRwBar('RW 16', 15, 'Jasa Cuci &amp; Laundry', 'Taman Jatisari Permai', 'bg-blue-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-blue-400 group-hover:brightness-125 transition-all" style="height: 38%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">16</span></div><div onclick="selectHeroRwBar('RW 17', 23, 'Kuliner Roti &amp; Pastry', 'Jl. Melati Makmur', 'bg-emerald-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-emerald-400 group-hover:brightness-125 transition-all" style="height: 58%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">17</span></div><div onclick="selectHeroRwBar('RW 18', 27, 'Agribisnis &amp; Retail', 'Kavling Hijau Jatiasih', 'bg-purple-400')" class="group flex-1 h-full flex flex-col justify-end items-center cursor-pointer"><div class="w-full rounded-t bg-purple-400 group-hover:brightness-125 transition-all" style="height: 68%"></div><span class="text-[8px] text-slate-400 group-hover:text-white mt-1">18</span></div></div></div><div class="flex items-center justify-between pt-1 text-[10px] text-slate-300"><div class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px] text-teal-300">pin_drop</span><span id="heroRwDetailLoc" class="line-clamp-1">Lokasi sentra: Jl. Swatantra I &amp; II</span></div><button type="button" onclick="navigateTo('admin'); switchAdminTab('peta');" class="text-emerald-300 hover:text-emerald-200 underline shrink-0 font-medium">Peta Lengkap →</button></div></div><div class="flex flex-wrap items-center justify-between gap-2 pt-1"><span class="text-[11px] font-semibold text-slate-300">Legenda Klaster:</span><div class="flex flex-wrap items-center gap-2 text-[10px]"><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span>Kuliner</span><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Kriya</span><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400"></span>Jasa</span><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-400"></span>Ritel &amp; Tani</span></div></div></div></div>
+</div>
+</div>
+<!-- METRIK KPI CARDS (2-Columns on Mobile, 4 on Desktop) -->
+<div>
+<div class="flex items-center justify-between mb-3 px-1">
+<h2 class="font-display font-bold text-base sm:text-lg text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-teal-600 text-[20px]">analytics</span>
+            Indikator Pertumbuhan Wilayah
+          </h2>
+<span class="text-xs text-slate-500 font-medium">Kecamatan Jatiasih</span>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+<!-- KPI 1 -->
+<div class="bg-white rounded-xl p-3.5 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col justify-between hover:border-teal-500/40 transition">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold text-slate-500">Cakupan Wilayah</span>
+<div class="w-7 h-7 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-base">domain</span>
+</div>
+</div>
+<div>
+<span class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">18</span>
+<span class="text-xs font-semibold text-emerald-600 ml-1">RW Aktif</span>
+</div>
+<p class="text-[11px] text-slate-400 mt-1">100% Terintegrasi</p>
+</div>
+<!-- KPI 2 -->
+<div class="bg-white rounded-xl p-3.5 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col justify-between hover:border-teal-500/40 transition">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold text-slate-500">Total Pelaku UMKM</span>
+<div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-base">groups</span>
+</div>
+</div>
+<div>
+<span class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" id="kpiTotalUmkm">412</span>
+<span class="text-xs font-semibold text-blue-600 ml-1">Usaha</span>
+</div>
+<p class="text-[11px] text-slate-400 mt-1">Terverifikasi &amp; Mandiri</p>
+</div>
+<!-- KPI 3 -->
+<div class="bg-white rounded-xl p-3.5 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col justify-between hover:border-teal-500/40 transition">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold text-slate-500">Est. Omzet Bulanan</span>
+<div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-base">payments</span>
+</div>
+</div>
+<div>
+<span class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Rp 1.84</span>
+<span class="text-xs font-semibold text-amber-600 ml-1">Miliar</span>
+</div>
+<p class="text-[11px] text-slate-400 mt-1">Agregat Kelurahan</p>
+</div>
+<!-- KPI 4 -->
+<div class="bg-white rounded-xl p-3.5 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col justify-between hover:border-teal-500/40 transition">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold text-slate-500">Klaster Unggulan</span>
+<div class="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-base">restaurant</span>
+</div>
+</div>
+<div>
+<span class="font-display text-xl sm:text-2xl font-bold text-slate-900">Kuliner &amp; Kriya</span>
+</div>
+<p class="text-[11px] text-purple-600 mt-1 font-medium">Binaan Prioritas Modal</p>
+</div>
+</div>
+</div>
+<!-- KARTU KOMPARASI: MASALAH VS SOLUSI SIPLOKAL -->
+<div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-6 shadow-sm">
+<div class="text-center sm:text-left mb-5">
+<span class="text-xs font-bold uppercase tracking-wider text-teal-600">Transformasi Pelayanan Publik</span>
+<h3 class="font-display text-lg sm:text-xl font-bold text-slate-900 mt-0.5">Kenapa Kelurahan Membutuhkan SIPLokal?</h3>
+<p class="text-xs sm:text-sm text-slate-500">Membandingkan kendala pendataan konvensional dengan ekosistem digital mandiri.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Problem Card -->
+<div class="rounded-xl bg-red-50/60 border border-red-200/70 p-4 sm:p-5 space-y-3">
+<div class="flex items-center gap-2.5 text-red-700">
+<span class="material-symbols-outlined text-2xl">cancel</span>
+<h4 class="font-display font-bold text-sm sm:text-base">Metode Manual Masa Lalu</h4>
+</div>
+<ul class="space-y-2 text-xs sm:text-sm text-slate-700">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-red-500 text-base shrink-0 mt-0.5">close</span>
+<span class="">Berkas kertas formulir tercecer di tiap sekretariat RT/RW tanpa arsip sentral.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-red-500 text-base shrink-0 mt-0.5">close</span>
+<span class="">Alamat sering buram tanpa titik GPS pasti, menyulitkan survei bantuan modal.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-red-500 text-base shrink-0 mt-0.5">close</span>
+<span class="">Program bantuan kelurahan sering tumpang tindih karena data pelaku usaha tidak transparan.</span>
+</li>
+</ul>
+</div>
+<!-- Solution Card -->
+<div class="rounded-xl bg-emerald-50/60 border border-emerald-200/70 p-4 sm:p-5 space-y-3">
+<div class="flex items-center gap-2.5 text-emerald-800">
+<span class="material-symbols-outlined text-2xl text-emerald-600">check_circle</span>
+<h4 class="font-display font-bold text-sm sm:text-base">Solusi Modern SIPLokal Jatiasih</h4>
+</div>
+<ul class="space-y-2 text-xs sm:text-sm text-slate-700">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-emerald-600 text-base shrink-0 mt-0.5">done</span>
+<span class=""><strong>Mandiri &amp; Cepat:</strong> Pelaku usaha mendaftar mandiri via ponsel dari rumah lengkap dengan foto produk.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-emerald-600 text-base shrink-0 mt-0.5">done</span>
+<span class=""><strong>Pinpoint Presisi:</strong> Dilengkapi deteksi GPS otomatis untuk pemetaan geospasial 18 RW.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-emerald-600 text-base shrink-0 mt-0.5">done</span>
+<span class=""><strong>Etalase Langsung:</strong> Produk tampil langsung di etalase binaan warga setelah verifikasi berkas.</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+<p class="text-xs text-slate-500">Punya usaha rumahan, toko kelontong, atau jasa di wilayah Jatiasih?</p>
+<button class="w-full sm:w-auto px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition shadow-sm" onclick="navigateTo('daftar')">
+            Mulai Registrasi Usaha Anda →
+          </button>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- VIEW 2: PORTAL MANDIRI UMKM (FORMULIR REGISTRASI RAMAH HP) -->
+<!-- ============================================================ -->
+<section class="page-view hidden max-w-3xl mx-auto space-y-5" id="view-daftar">
+<!-- Form Header -->
+<div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl">edit_note</span>
+</div>
+<div>
+<h2 class="font-display font-bold text-lg sm:text-xl text-slate-900">Formulir Mandiri Pelaku UMKM</h2>
+<p class="text-xs sm:text-sm text-slate-500">Kecamatan Jatiasih • Pendaftaran Binaan &amp; Pemetaan Wilayah 18 RW</p>
+</div>
+</div>
+</div>
+<!-- Registration Form Card -->
+<form class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-7 shadow-sm space-y-6" id="umkmRegistrationForm" onsubmit="handleFormSubmit(event)">
+<!-- SECTION 0: UNGGAH FOTO USAHA / PRODUK BINAAN & LIVE PREVIEW -->
+<div class="rounded-2xl bg-gradient-to-b from-teal-50/60 to-white border border-teal-200/70 p-4 sm:p-5 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span>
+<h3 class="font-display font-bold text-sm sm:text-base text-slate-900">Foto Usaha &amp; Produk Binaan</h3>
+</div>
+<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 uppercase tracking-wider">Tampil di Etalase</span>
+</div>
+<!-- Tips Card -->
+<div class="flex items-start gap-2.5 p-3 rounded-xl bg-emerald-50/80 border border-emerald-200 text-emerald-900 text-xs leading-relaxed">
+<span class="material-symbols-outlined text-emerald-600 text-base shrink-0 mt-0.5">lightbulb</span>
+<div class="">
+<strong class="font-semibold text-emerald-950">Tips Foto Estetik:</strong> Pastikan pencahayaan terang, produk berada di tengah, dan gerai tampak bersih untuk mempercepat kurasi kelurahan.
+</div>
+</div>
+<!-- Upload Drop Area / Touch Zone -->
+<div class="relative border-2 border-dashed border-teal-300 hover:border-teal-500 rounded-2xl p-4 sm:p-6 text-center bg-white/70 transition cursor-pointer flex flex-col items-center justify-center min-h-[140px]" id="dropZone" onclick="document.getElementById('foto-usaha').click()">
+<input accept="image/*" class="hidden" id="foto-usaha" onchange="handleImageUpload(event)" type="file">
+<div class="w-12 h-12 rounded-full bg-teal-100/70 text-teal-700 flex items-center justify-center mb-2 shadow-inner">
+<span class="material-symbols-outlined text-2xl">add_a_photo</span>
+</div>
+<p class="text-xs sm:text-sm font-bold text-slate-800">Sentuh untuk Buka Kamera / Galeri Ponsel</p>
+<p class="text-[11px] text-slate-500 mt-0.5">Format JPG, PNG, WEBP (Maks. 5MB) • Preview instan</p>
+<div class="mt-2.5 inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+<span class="">Ambil Foto Langsung</span>
+</div>
+</div>
+<!-- Aesthetic Photo Presets Selector -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base text-amber-500">palette</span>
+Pilih Contoh Foto Estetik Sesuai Kategori:
+</span>
+<span class="text-[10px] text-slate-400">Klik untuk pakai</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+<!-- Preset 1 -->
+<button class="preset-btn group text-left p-1.5 rounded-xl border border-slate-200 hover:border-teal-500 bg-white transition relative overflow-hidden active:scale-95" onclick="selectPresetImage('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&amp;fit=crop&amp;w=600&amp;q=80', 'Kuliner Khas Jatiasih', this)" type="button">
+<img alt="Kuliner Khas" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXvpTpDAWCuEF2i6UAlPiYlbOIxlOsvN2xHVe37c8tn9LXRg9Gg_-krJV0rx7BMBLNPkzdfVLC3jYXhpeBqAY_fisL1F6zrxDG4t113Pgss1aal7YYj5nUJWllnIkmyxEKYccYuOXWlrkmxIcDGGgpmupFZOqvBOO24VIzNb1xeKxypXMGZgOCRlHHzE8aPrSnT2W2R76BvtR0k35yhlPh2sU4LCP5RUDd_5uiKXkLWBsDmKo57aRQ">
+<p class="text-[10px] font-bold text-slate-800 mt-1 line-clamp-1">Kuliner Nusantara</p>
+<span class="text-[9px] text-teal-600 block">Nasi/Lauk/Kue</span>
+</button>
+<!-- Preset 2 -->
+<button class="preset-btn group text-left p-1.5 rounded-xl border border-slate-200 hover:border-teal-500 bg-white transition relative overflow-hidden active:scale-95" onclick="selectPresetImage('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&amp;fit=crop&amp;w=600&amp;q=80', 'Minuman Herbal &amp; Kopi', this)" type="button">
+<img alt="Minuman &amp; Kopi" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMr9hejFv-k0bqSkSfrieWgJb48pGQzUzgJgFklFQHOouhjSwOJyvjlFGoK8erSs_NSfVbsVzsgtUramB7_Xvew8bDroziYKiASSxMazdK9Ahuh2aYiMcVkBBXDCaYlSfFXb_-2zBp42Qx_QMFJV0NXnxI3esPfclNE7bMKyYuABM8Tx8taSqs_icWdFPNo4MBeHP8sfZ7yI8-zqowSDistECSpIu1vCW7QYZqROgq0VaR0UPbu-gW">
+<p class="text-[10px] font-bold text-slate-800 mt-1 line-clamp-1">Kopi &amp; Minuman</p>
+<span class="text-[9px] text-teal-600 block">Herbal / Seduhan</span>
+</button>
+<!-- Preset 3 -->
+<button class="preset-btn group text-left p-1.5 rounded-xl border border-slate-200 hover:border-teal-500 bg-white transition relative overflow-hidden active:scale-95" onclick="selectPresetImage('https://images.unsplash.com/photo-1528458876885-5b6aae76184b?auto=format&amp;fit=crop&amp;w=600&amp;q=80', 'Kriya Anyam &amp; Batik', this)" type="button">
+<img alt="Kriya &amp; Batik" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAznAUzglwi6Vxc_m_0W-5r-sCwo8EMc1ymA5Z08atJQMnJa6DZ-7hd6JCpBu67wCo0jH6Fo6CjWfKlDB-rHwtmn3g7NKeRp-lhDrMn0N8iKrwCYAjuzoB_HxxCcGkoi27eEMu_sRU4VvcACFXHGwXumIsyLmG2YSeJAWTBinecJg1e4nq0HRmRX7c7mvS5hLMQa8k6brX1Q6u2cKtM9sXjO0ogB_xBweMiJ3P1JhHc_0BGdDIjTgB">
+<p class="text-[10px] font-bold text-slate-800 mt-1 line-clamp-1">Kriya &amp; Kerajinan</p>
+<span class="text-[9px] text-teal-600 block">Batik / Anyam</span>
+</button>
+<!-- Preset 4 -->
+<button class="preset-btn group text-left p-1.5 rounded-xl border border-slate-200 hover:border-teal-500 bg-white transition relative overflow-hidden active:scale-95" onclick="selectPresetImage('https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&amp;fit=crop&amp;w=600&amp;q=80', 'Jasa Servis Presisi', this)" type="button">
+<img alt="Jasa &amp; Reparasi" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-LDOnOuoV-a_rFBPO7SD5RCYzy4yDXTiSmqoNEN79DEftJygfpwcljpj7YYHqfgkZy_C0ZFnbUiRpCwO9-yi8d2kTLCNw6TMHs_Rv2-NZN5QigQrmBJviTignRhQBCXIBTlX9vk5DmcyUOGP-YP1UgpE45gqaQZn5pMt7R5N90A6DEroWMA96lOqVaR1CyI-m4i3IKpHECLDrjGfeObODuIXf3JN_nkXTLCiFZkC1l5NY2iPFkHad">
+<p class="text-[10px] font-bold text-slate-800 mt-1 line-clamp-1">Jasa &amp; Bengkel</p>
+<span class="text-[9px] text-teal-600 block">Servis Presisi</span>
+</button>
+</div>
+</div>
+<!-- REAL-TIME LIVE PREVIEW CARD IN FORM -->
+<div class="mt-4 pt-4 border-t border-teal-100">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-teal-600 text-sm">visibility</span>
+Preview Tampilan di Etalase Binaan
+</span>
+<span class="text-[10px] font-mono text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded font-semibold">Tampilan Publik</span>
+</div>
+<div class="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden max-w-sm mx-auto">
+<div class="relative h-44 w-full bg-slate-100 overflow-hidden">
+<img alt="Preview Usaha" class="w-full h-full object-cover transition-all duration-300" id="livePreviewImg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBciJ0AoImfWp6Iuk5jGmf0R3vW_VLtGxu_55cHQoxQrPYFCH5WeGX7Rmt6rGUI1mfla62TxfR_HYbBS5H4Uvrxu1Ed03yy-kYpW9ILvlIZXecFM0xw3b1eaXkcYW8n-2LXxArojqBWNYEhjxCji-bqvXFDm_utMhCjUdGIY6T4K0PFOQH-GZgRameTkHmieUtpewmu5UY2Vo9b0_3c7iZ1ozDE6DGDBCyo_c-YBQzRrk8r87-Q8BYS">
+<div class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/95 backdrop-blur-sm text-slate-900 shadow" id="livePreviewRwBadge">
+RW 01
+</div>
+<div class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500 text-white shadow">
+Terdaftar Mandiri
+</div>
+</div>
+<div class="p-3.5 space-y-1.5">
+<div class="flex items-center justify-between text-[11px] text-slate-500">
+<span class="font-bold text-teal-700" id="livePreviewCategory">Kuliner &amp; Minuman</span>
+<span class="font-semibold text-slate-600" id="livePreviewOmzet">&lt; Rp 5 Juta / bln</span>
+</div>
+<h4 class="font-display font-bold text-base text-slate-900 line-clamp-1" id="livePreviewName">Nama Usaha Anda</h4>
+<p class="text-xs text-slate-600 font-medium" id="livePreviewOwner">Pemilik: Nama Lengkap Anda</p>
+<p class="text-xs text-slate-400 line-clamp-1" id="livePreviewAddress">Alamat usaha di Kelurahan Jatiasih</p>
+</div>
+<div class="px-3.5 pb-3.5 pt-1 border-t border-slate-100 flex items-center justify-between gap-2">
+<button class="h-8 px-3 rounded-xl bg-emerald-50 text-emerald-700 font-bold text-[11px] flex items-center gap-1 opacity-80" disabled="" type="button">
+<span class="material-symbols-outlined text-[14px]">chat</span> Chat WA
+</button>
+<span class="text-[10px] text-slate-400 font-mono flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span> GPS Tersinkron
+</span>
+</div>
+</div>
+</div>
+</div>
+<div class="border-b border-slate-100 pb-2">
+<h3 class="font-display font-semibold text-sm text-slate-800 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-teal-600"></span>
+            1. Informasi Pokok Usaha
+          </h3>
+<p class="text-xs text-slate-500">Data identitas pemilik dan jenis usaha.</p>
+</div>
+<div class="space-y-4">
+<!-- Nama Pemilik -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regOwner">Nama Lengkap Pemilik <span class="text-red-500">*</span></label>
+<input class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regOwner" oninput="updateLivePreview()" placeholder="Contoh: Ibu Hj. Nurbaeti atau Bpk. Haryanto" required="" type="text">
+</div>
+<!-- Nama Usaha & Sektor -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regName">Nama Usaha / Merk Dagang <span class="text-red-500">*</span></label>
+<input class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regName" oninput="updateLivePreview()" placeholder="Contoh: Dapur Sambal Mak Jatiasih" required="" type="text">
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regCategory">Sektor Usaha <span class="text-red-500">*</span></label>
+<select class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regCategory" onchange="updateLivePreview()" required="">
+<option value="Kuliner &amp; Minuman">Kuliner &amp; Minuman</option>
+<option value="Fashion &amp; Kriya">Fashion &amp; Kriya Kerajinan</option>
+<option value="Jasa &amp; Reparasi">Jasa, Servis &amp; Reparasi</option>
+<option value="Kelontong &amp; Sembako">Kelontong &amp; Retail Sembako</option>
+<option value="Agribisnis &amp; Tanaman">Agribisnis, Bibit &amp; Hidroponik</option>
+<option value="Kesehatan &amp; Herbal">Kesehatan &amp; Herbal</option>
+</select>
+</div>
+</div>
+<!-- No WhatsApp & Omzet -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regWa">Nomor WhatsApp Aktif <span class="text-red-500">*</span></label>
+<input class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regWa" placeholder="08xxxxxxxxxx" required="" type="tel">
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regOmzet">Estimasi Omzet Rata-rata per Bulan <span class="text-red-500">*</span></label>
+<select class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regOmzet" onchange="updateLivePreview()" required="">
+<option value="Di bawah Rp 5 Juta">&lt; Rp 5.000.000 / bln (Mikro Pemula)</option>
+<option value="Rp 5 - 15 Juta">Rp 5.000.000 - Rp 15.000.000 / bln</option>
+<option value="Rp 15 - 50 Juta">Rp 15.000.000 - Rp 50.000.000 / bln</option>
+<option value="Di atas Rp 50 Juta">&gt; Rp 50.000.000 / bln (Potensi Skala Besar)</option>
+</select>
+</div>
+</div>
+</div>
+<!-- 2. Lokasi & Pinpoint Maps -->
+<div class="border-t border-slate-100 pt-5 space-y-4">
+<div class="border-b border-slate-100 pb-3">
+<h3 class="font-display font-semibold text-sm text-slate-800 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-teal-600"></span>
+              2. Wilayah Domisili &amp; Pinpoint Lokasi GPS
+            </h3>
+<p class="text-xs text-slate-500">Pilih Rukun Warga (RW) dan tandai titik lokasi usaha pada peta interaktif.</p>
+</div>
+<!-- Selector RW 01 s/d RW 18 -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regRw">Wilayah Rukun Warga (RW) <span class="text-red-500">*</span></label>
+<select class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50 font-medium" id="regRw" onchange="updateLivePreview()" required="">
+<option value="">-- Pilih Wilayah RW (RW 01 s/d RW 18) --</option>
+<option value="RW 01">RW 01 - Kelurahan Jatiasih</option>
+<option value="RW 02">RW 02 - Kelurahan Jatiasih</option>
+<option value="RW 03">RW 03 - Kelurahan Jatiasih</option>
+<option value="RW 04">RW 04 - Kelurahan Jatiasih</option>
+<option value="RW 05">RW 05 - Kelurahan Jatiasih</option>
+<option value="RW 06">RW 06 - Kelurahan Jatiasih</option>
+<option value="RW 07">RW 07 - Kelurahan Jatiasih</option>
+<option value="RW 08">RW 08 - Kelurahan Jatiasih</option>
+<option value="RW 09">RW 09 - Kelurahan Jatiasih</option>
+<option value="RW 10">RW 10 - Kelurahan Jatiasih</option>
+<option value="RW 11">RW 11 - Kelurahan Jatiasih</option>
+<option value="RW 12">RW 12 - Kelurahan Jatiasih</option>
+<option value="RW 13">RW 13 - Kelurahan Jatiasih</option>
+<option value="RW 14">RW 14 - Kelurahan Jatiasih</option>
+<option value="RW 15">RW 15 - Kelurahan Jatiasih</option>
+<option value="RW 16">RW 16 - Kelurahan Jatiasih</option>
+<option value="RW 17">RW 17 - Kelurahan Jatiasih</option>
+<option value="RW 18">RW 18 - Kelurahan Jatiasih</option>
+</select>
+</div>
+<!-- Alamat Detail -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regAddress">Alamat Lengkap / Patokan <span class="text-red-500">*</span></label>
+<textarea class="w-full px-3.5 py-2.5 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regAddress" oninput="updateLivePreview()" placeholder="Contoh: Jl. Swatantra IV No. 12, samping Pos Ronda RT 03" required="" rows="2"></textarea>
+</div>
+<!-- LEAFLET INTERACTIVE PINPOINT MAP -->
+<div class="space-y-2">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<label class="block text-xs font-semibold text-slate-700">
+                Pinpoint Titik Usaha (Sentuh di peta atau deteksi GPS) <span class="text-red-500">*</span>
+</label>
+<!-- Touch Friendly GPS Detection Button -->
+<button class="h-10 px-3.5 rounded-xl bg-teal-50 hover:bg-teal-100 border border-teal-200 text-teal-800 text-xs font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm" onclick="detectUserLocation()" type="button">
+<span class="material-symbols-outlined text-[18px] text-teal-600">my_location</span>
+<span class="">Deteksi Lokasi GPS Saya</span>
+</button>
+</div>
+<!-- Leaflet Map Container Responsive (h-64 di mobile, rounded) -->
+<div class="relative w-full h-60 sm:h-72 rounded-xl overflow-hidden border-2 border-slate-200 shadow-inner">
+<div class="w-full h-full z-10" id="pinpointMap"></div>
+<div class="absolute bottom-2 left-2 z-20 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-md text-[10px] font-mono text-slate-600 shadow border border-slate-200">
+                Sentuh untuk memindahkan pin marker
+              </div>
+</div>
+<!-- Koordinat Lat & Lng Input -->
+<div class="grid grid-cols-2 gap-2 bg-slate-100 p-2.5 rounded-xl text-xs font-mono">
+<div>
+<span class="text-slate-500 block text-[10px]">LATITUDE</span>
+<input class="w-full bg-transparent font-semibold text-slate-800 outline-none" id="regLat" readonly="" type="text" value="-6.3050">
+</div>
+<div>
+<span class="text-slate-500 block text-[10px]">LONGITUDE</span>
+<input class="w-full bg-transparent font-semibold text-slate-800 outline-none" id="regLng" readonly="" type="text" value="106.9635">
+</div>
+</div>
+</div>
+<!-- Kebutuhan Pendampingan (Checkboxes) -->
+<div class="space-y-2 pt-2">
+<label class="block text-xs font-semibold text-slate-700">Kebutuhan Fasilitasi Prioritas dari Kelurahan:</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+<label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+<input checked="" class="rounded text-teal-600 focus:ring-teal-500" name="assistance" type="checkbox" value="NIB OSS">
+<span class="">Pengurusan NIB / Izin Usaha Gratis</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+<input checked="" class="rounded text-teal-600 focus:ring-teal-500" name="assistance" type="checkbox" value="Sertifikasi Halal">
+<span class="">Sertifikasi Halal Self-Declare</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+<input class="rounded text-teal-600 focus:ring-teal-500" name="assistance" type="checkbox" value="Bantuan Permodalan">
+<span class="">Rekomendasi Bantuan Modal / KUR</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+<input class="rounded text-teal-600 focus:ring-teal-500" name="assistance" type="checkbox" value="Pemasaran Digital">
+<span class="">Pelatihan Foto Produk &amp; Medsos</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Submit Button (Full-width min 48px touch friendly) -->
+<div class="pt-4 border-t border-slate-100">
+<button class="w-full h-12 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-98 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md transition" id="submitRegBtn" type="submit">
+<span class="material-symbols-outlined text-xl">send</span>
+<span class="">Kirim Pendaftaran ke Kelurahan Jatiasih</span>
+</button>
+<p class="text-[11px] text-center text-slate-400 mt-2">
+            Data tersimpan otomatis di perangkat secara offline (IndexedDB) dan langsung tampil pada Etalase Binaan RW.
+          </p>
+</div>
+</form>
+</section>
+<!-- ============================================================ -->
+<!-- VIEW 3: ETALASE USAHA BINAAN (KATALOG RESPONSIF 1 KOLOM MOBILE)-->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-5" id="view-etalase">
+<!-- Filter & Counter Bar -->
+<div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div>
+<h2 class="font-display font-bold text-lg sm:text-xl text-slate-900">Etalase Usaha Binaan Kelurahan</h2>
+<p class="text-xs text-slate-500">Mendukung produk dan UMKM lokal dari 18 RW di Kelurahan Jatiasih.</p>
+</div>
+<!-- RW Quick Filter Select -->
+<div class="flex items-center gap-2 w-full sm:w-auto">
+<select class="w-full sm:w-auto px-3 py-2 text-xs font-semibold rounded-xl border border-slate-300 bg-slate-50 text-slate-700 outline-none" id="etalaseRwFilter" onchange="filterEtalase()">
+<option value="ALL">Semua RW (01 - 18)</option>
+<option value="RW 01">RW 01</option>
+<option value="RW 02">RW 02</option>
+<option value="RW 03">RW 03</option>
+<option value="RW 04">RW 04</option>
+<option value="RW 05">RW 05</option>
+<option value="RW 06">RW 06</option>
+<option value="RW 07">RW 07</option>
+<option value="RW 08">RW 08</option>
+<option value="RW 09">RW 09</option>
+<option value="RW 10">RW 10</option>
+<option value="RW 11">RW 11</option>
+<option value="RW 12">RW 12</option>
+<option value="RW 13">RW 13</option>
+<option value="RW 14">RW 14</option>
+<option value="RW 15">RW 15</option>
+<option value="RW 16">RW 16</option>
+<option value="RW 17">RW 17</option>
+<option value="RW 18">RW 18</option>
+</select>
+<button class="shrink-0 px-3.5 py-2 bg-teal-600 text-white rounded-xl text-xs font-bold hover:bg-teal-700 transition" onclick="navigateTo('daftar')">
+            + Daftarkan Usaha
+          </button>
+</div>
+</div>
+<!-- Dynamic Counter & Notification Banner -->
+<div class="flex items-center gap-2 p-2.5 rounded-xl bg-teal-50/90 border border-teal-200/80 text-teal-900 text-xs font-medium" id="etalaseCounterBanner">
+<span class="material-symbols-outlined text-teal-600 text-base shrink-0">verified</span>
+<span id="etalaseCounterText" class="">Menampilkan 5 Produk &amp; Usaha Binaan Terverifikasi (Termasuk Pendaftaran Terbaru Anda)</span>
+</div>
+</div>
+<!-- UMKM Cards Grid (1-Col on Mobile, 2 on Tablet, 3 on Desktop) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="etalaseContainer">
+<!-- Dynamically rendered via JS -->
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- VIEW 4: ADMIN DASHBOARD (PETUGAS KELURAHAN & PETA POTENSI 18 RW) -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="view-admin">
+<!-- SUB-TAB 1: RINGKASAN DASHBOARD -->
+<div class="space-y-5" id="adminPanel-dashboard">
+<!-- Welcome Banner Petugas -->
+<div class="bg-gradient-to-r from-slate-900 to-teal-900 rounded-2xl p-4 sm:p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-md">
+<div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold mb-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Petugas Siaga Jatiasih
+            </div>
+<h2 class="font-display text-lg sm:text-xl font-bold">Portal Administrasi &amp; Validasi Lapangan</h2>
+<p class="text-xs text-slate-200">Verifikasi berkas mandiri dari warga untuk penerbitan izin NIB &amp; survei modal.</p>
+</div>
+<div class="flex gap-2 w-full sm:w-auto"><button type="button" onclick="openCreateModal()" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95"><span class="material-symbols-outlined text-[16px]">add_circle</span><span class="">+ Tambah UMKM (Petugas)</span></button>
+<button class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-semibold flex items-center justify-center gap-1.5" onclick="switchAdminTab('analisis')">
+<span class="material-symbols-outlined text-[16px]">file_download</span> Ekspor Berkas
+            </button>
+<button class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-emerald-400 text-slate-900 font-bold text-xs flex items-center justify-center gap-1.5" onclick="switchAdminTab('peta')">
+<span class="material-symbols-outlined text-[16px]">map</span> Buka Peta 18 RW
+            </button>
+</div>
+</div>
+<!-- KPI 2x2 on Mobile Grid -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+<div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+<span class="text-[11px] font-semibold text-slate-500 block">Total Masuk</span>
+<span class="font-display text-2xl font-bold text-slate-900" id="adminKpiTotal">412</span>
+<span class="text-[10px] text-slate-400 block mt-0.5">Semua 18 RW</span>
+</div>
+<div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+<span class="text-[11px] font-semibold text-emerald-700 block">Terverifikasi</span>
+<span class="font-display text-2xl font-bold text-emerald-600" id="adminKpiVerified">388</span>
+<span class="text-[10px] text-emerald-600/80 block mt-0.5">Siap Binaan</span>
+</div>
+<div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+<span class="text-[11px] font-semibold text-amber-700 block">Menunggu Survei</span>
+<span class="font-display text-2xl font-bold text-amber-600" id="adminKpiPending">24</span>
+<span class="text-[10px] text-amber-600/80 block mt-0.5">Antrean Baru</span>
+</div>
+<div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+<span class="text-[11px] font-semibold text-indigo-700 block">Ajuan Modal</span>
+<span class="font-display text-2xl font-bold text-indigo-600">76</span>
+<span class="text-[10px] text-indigo-600/80 block mt-0.5">Prioritas KUR</span>
+</div>
+</div>
+<!-- DIRECTORY TABLE -->
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div>
+<h3 class="font-display font-bold text-base text-slate-900">Direktori &amp; Validasi Pelaku UMKM</h3>
+<p class="text-xs text-slate-500">Klik verifikasi untuk mengubah status berkas atau buka rute GPS.</p>
+</div>
+<div class="flex items-center gap-2">
+<input class="px-3 py-1.5 text-xs rounded-xl border border-slate-300 outline-none w-full sm:w-56 focus:ring-1 focus:ring-teal-600" id="adminSearchInput" onkeyup="filterAdminDirectory()" placeholder="Cari nama atau RW..." type="text">
+</div>
+</div>
+<!-- Mobile Card List View (Visible on Small Screens) -->
+<div class="block sm:hidden divide-y divide-slate-100" id="mobileDirectoryList">
+<!-- Rendered by JS for mobile cards -->
+</div>
+<!-- Desktop Table (Visible on sm and up) -->
+<div class="hidden sm:block overflow-x-auto">
+<table class="w-full text-left text-xs text-slate-700">
+<thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider">
+<tr>
+<th class="px-4 py-3">Pelaku Usaha</th>
+<th class="px-4 py-3">Wilayah</th>
+<th class="px-4 py-3">Sektor</th>
+<th class="px-4 py-3">Omzet</th>
+<th class="px-4 py-3">Status</th>
+<th class="px-4 py-3 text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 font-normal" id="adminTableBody">
+<!-- Injected via JS -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- SUB-TAB 2: PETA POTENSI 18 RW -->
+<div class="hidden space-y-4" id="adminPanel-peta"><div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4"><div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100"><div><div class="flex items-center gap-2"><span class="material-symbols-outlined text-teal-600 text-xl">explore</span><h3 class="font-display font-bold text-base sm:text-lg text-slate-900">Geospasial Potensi &amp; Sebaran Titik Usaha 18 RW</h3></div><p class="text-xs text-slate-500 mt-0.5">Pemetaan interaktif berbasis GPS real-time untuk pembinaan terpadu Kecamatan Jatiasih.</p></div><div class="flex items-center gap-2"><div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span id="mapActivePinsCount" class="">5 Titik Terpetakan</span></div><button type="button" onclick="resetMapFilters()" class="px-2.5 py-1.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-medium transition flex items-center gap-1"><span class="material-symbols-outlined text-sm">restart_alt</span> Reset</button></div></div><div class="space-y-2.5"><div class="space-y-2.5"><div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2"><div class="flex items-center gap-1 text-xs font-bold text-slate-700"><span class="material-symbols-outlined text-base text-teal-600">tune</span><span class="">Filter Klaster:</span></div><div class="flex flex-wrap items-center gap-1.5"><button type="button" onclick="setKlasterFilter('ALL', this)" class="klaster-filter-btn active px-3 py-1 rounded-full text-xs font-bold bg-teal-600 text-white shadow-sm transition">Semua Klaster</button><button type="button" onclick="setKlasterFilter('Kuliner &amp; Minuman', this)" class="klaster-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Kuliner</button><button type="button" onclick="setKlasterFilter('Fashion &amp; Kriya', this)" class="klaster-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span>Kriya</button><button type="button" onclick="setKlasterFilter('Jasa &amp; Reparasi', this)" class="klaster-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 transition flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span>Jasa</button><button type="button" onclick="setKlasterFilter('Ritel', this)" class="klaster-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 transition flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-500"></span>Ritel &amp; Tani</button></div></div><div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-slate-100"><div class="flex items-center gap-1 text-xs font-bold text-slate-700"><span class="material-symbols-outlined text-base text-teal-600">verified</span><span class="">Status Verifikasi:</span></div><div class="flex flex-wrap items-center gap-1.5"><button type="button" onclick="setStatusFilter('ALL', this)" class="status-filter-btn active px-3 py-1 rounded-full text-xs font-bold bg-teal-600 text-white shadow-sm transition flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">select_all</span><span class="">Semua Status</span></button><button type="button" onclick="setStatusFilter('Terverifikasi', this)" class="status-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="material-symbols-outlined text-[14px] text-emerald-600">verified</span><span class="">Terverifikasi</span></button><button type="button" onclick="setStatusFilter('Menunggu', this)" class="status-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-500"></span><span class="material-symbols-outlined text-[14px] text-amber-600">pending</span><span class="">Belum Terverifikasi</span></button></div></div></div><div class="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1 border-t border-slate-100"><span class="text-xs font-bold text-slate-500 shrink-0 mr-1">Wilayah:</span><button type="button" onclick="filterMapByRw('ALL', this)" class="rw-chip active px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-teal-600 text-white shrink-0">Semua 18 RW</button><button type="button" onclick="filterMapByRw('RW 01', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 01</button><button type="button" onclick="filterMapByRw('RW 02', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 02</button><button type="button" onclick="filterMapByRw('RW 03', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 03</button><button type="button" onclick="filterMapByRw('RW 04', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 04</button><button type="button" onclick="filterMapByRw('RW 05', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 05</button><button type="button" onclick="filterMapByRw('RW 06', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 06</button><button type="button" onclick="filterMapByRw('RW 07', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 07</button><button type="button" onclick="filterMapByRw('RW 08', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 08</button><button type="button" onclick="filterMapByRw('RW 09', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 09</button><button type="button" onclick="filterMapByRw('RW 10', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 10</button><button type="button" onclick="filterMapByRw('RW 11', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 11</button><button type="button" onclick="filterMapByRw('RW 12', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 12</button><button type="button" onclick="filterMapByRw('RW 13', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 13</button><button type="button" onclick="filterMapByRw('RW 14', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 14</button><button type="button" onclick="filterMapByRw('RW 15', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 15</button><button type="button" onclick="filterMapByRw('RW 16', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 16</button><button type="button" onclick="filterMapByRw('RW 17', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 17</button><button type="button" onclick="filterMapByRw('RW 18', this)" class="rw-chip px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0">RW 18</button></div></div><div class="relative rounded-2xl overflow-hidden border border-slate-300 shadow-inner bg-slate-100 h-96 sm:h-[460px] w-full"><div id="geospasialMapContainer" class="w-full h-full z-10"></div><div class="absolute top-3 left-3 z-20 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-md border border-slate-200 text-xs"><p class="font-bold text-slate-800" id="currentMapRwLabel">Menampilkan: Seluruh 18 Rukun Warga</p><p class="text-[11px] text-teal-700 font-medium" id="currentMapFilterSubtext">Semua klaster usaha aktif</p></div><div class="absolute bottom-3 left-3 z-20 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-slate-200 shadow-md text-[11px] text-slate-700 flex flex-wrap items-center gap-3"><div class="flex flex-wrap items-center gap-2.5"><div class="flex items-center gap-2 border-r border-slate-200 pr-2.5"><span class="font-bold text-slate-900">Klaster:</span><span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 border border-white shadow"></span> Kuliner</span><span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 border border-white shadow"></span> Kriya</span><span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 border border-white shadow"></span> Jasa</span><span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 border border-white shadow"></span> Ritel</span></div><div class="flex items-center gap-2"><span class="font-bold text-slate-900">Status:</span><span class="inline-flex items-center gap-1 font-semibold text-emerald-700"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Terverifikasi</span><span class="inline-flex items-center gap-1 font-semibold text-amber-700"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Belum Terverifikasi</span></div></div></div></div></div></div>
+<!-- SUB-TAB 3: EKSPOR & ANALISIS -->
+<div class="hidden space-y-4" id="adminPanel-analisis">
+<div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm space-y-4">
+<div>
+<h3 class="font-display font-bold text-base sm:text-lg text-slate-900">Ekspor Laporan Bantuan Modal &amp; Analisis RW</h3>
+<p class="text-xs sm:text-sm text-slate-500">Unduh data rekapitulasi validasi untuk diserahkan ke Dinas Koperasi &amp; UKM Kota Bekasi.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+<!-- Download Excel Format -->
+<div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
+<div class="flex items-center gap-2.5 text-emerald-800">
+<span class="material-symbols-outlined text-2xl text-emerald-600">table_view</span>
+<div>
+<h4 class="font-semibold text-xs text-slate-900">Rekapitulasi Format Excel (.CSV)</h4>
+<p class="text-[11px] text-slate-500">Berisi nama pemilik, RW, omzet, &amp; koordinat GPS.</p>
+</div>
+</div>
+<button class="w-full h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 active:scale-98 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm" onclick="exportDataExcel()">
+<span class="material-symbols-outlined text-base">download</span>
+<span class="">Unduh Format CSV / Excel</span>
+</button>
+</div>
+<!-- Download PDF Official Format -->
+<div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
+<div class="flex items-center gap-2.5 text-rose-800">
+<span class="material-symbols-outlined text-2xl text-rose-600">picture_as_pdf</span>
+<div>
+<h4 class="font-semibold text-xs text-slate-900">Laporan Resmi Kelurahan (.PDF)</h4>
+<p class="text-[11px] text-slate-500">Format surat pengantar bantuan modal usaha.</p>
+</div>
+</div>
+<button class="w-full h-11 rounded-xl bg-slate-800 hover:bg-slate-900 active:scale-98 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm" onclick="exportDataPdf()">
+<span class="material-symbols-outlined text-base">print</span>
+<span class="">Cetak / Simpan Ringkasan PDF</span>
+</button>
+</div>
+</div>
+<!-- Sebaran Per Klaster RW Breakdown -->
+<div class="mt-4 pt-4 border-t border-slate-100">
+<h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Sebaran Prioritas Bantuan Berdasarkan Klaster</h4>
+<div class="space-y-2 text-xs">
+<div>
+<div class="flex justify-between font-medium mb-1">
+<span class="">Sektor Kuliner &amp; Pangan (RW 01, RW 03, RW 05, RW 12)</span>
+<span class="font-bold">45%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+<div class="h-full bg-emerald-500 rounded-full" style="width: 45%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-medium mb-1">
+<span class="">Sektor Kriya, Fashion &amp; Kerajinan (RW 04, RW 07, RW 15)</span>
+<span class="font-bold">32%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+<div class="h-full bg-teal-500 rounded-full" style="width: 32%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-medium mb-1">
+<span class="">Sektor Jasa, Bengkel &amp; Toko Kelontong (RW 02, RW 06, RW 18)</span>
+<span class="font-bold">23%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+<div class="h-full bg-blue-500 rounded-full" style="width: 23%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BOTTOM MOBILE NAVIGATION BAR (TOUCH FRIENDLY FIXED ON PHONE) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around shadow-lg">
+<button class="mobile-bottom-btn flex flex-col items-center py-1 px-3 text-teal-600" data-page="home" onclick="navigateTo('home')">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="text-[10px] font-semibold mt-0.5">Beranda</span>
+</button>
+<button class="mobile-bottom-btn flex flex-col items-center py-1 px-3 text-slate-500 hover:text-teal-600" data-page="daftar" onclick="navigateTo('daftar')">
+<span class="material-symbols-outlined text-[22px]">add_business</span>
+<span class="text-[10px] font-medium mt-0.5">Daftar</span>
+</button>
+<button class="mobile-bottom-btn flex flex-col items-center py-1 px-3 text-slate-500 hover:text-teal-600" data-page="etalase" onclick="navigateTo('etalase')">
+<span class="material-symbols-outlined text-[22px]">store</span>
+<span class="text-[10px] font-medium mt-0.5">Etalase</span>
+</button>
+<button class="mobile-bottom-btn flex flex-col items-center py-1 px-3 text-slate-500 hover:text-teal-600" data-page="admin" onclick="handleAdminEntry()">
+<span class="material-symbols-outlined text-[22px]">shield_person</span>
+<span class="text-[10px] font-medium mt-0.5">Petugas</span>
+</button>
+</nav>
+<!-- MODAL 1: LOGIN PETUGAS KELURAHAN -->
+<div class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" id="loginModal">
+<div class="bg-white rounded-2xl max-w-sm w-full p-5 sm:p-6 shadow-2xl border border-slate-100 transform transition-all">
+<div class="flex items-center justify-between pb-3 border-b border-slate-100">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">admin_panel_settings</span>
+</div>
+<div>
+<h4 class="font-display font-bold text-sm text-slate-900">Masuk Petugas</h4>
+<p class="text-[10px] text-slate-500">Kelurahan Jatiasih</p>
+</div>
+</div>
+<button class="text-slate-400 hover:text-slate-600" onclick="closeLoginModal()">
+<span class="material-symbols-outlined text-lg">close</span>
+</button>
+</div>
+<form class="mt-4 space-y-3.5" onsubmit="submitAdminLogin(event)">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1">NIP / Kode Petugas</label>
+<input class="w-full px-3.5 py-2.5 text-sm text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" id="adminNip" required="" type="text" value="19870512-JATIASIH">
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1">Kata Sandi (Demo: admin)</label>
+<input class="w-full px-3.5 py-2.5 text-sm text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" id="adminPass" required="" type="password" value="admin">
+</div>
+<button class="w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md" type="submit">
+<span class="material-symbols-outlined text-base">login</span>
+<span class="">Masuk ke Dashboard</span>
+</button>
+</form>
+</div>
+</div>
+<!-- MODAL 2: KONFIRMASI SUKSES PENDAFTARAN (MOBILE FRIENDLY SHEET) -->
+<div class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" id="successModal">
+<div class="bg-white rounded-2xl max-w-sm w-full p-5 sm:p-6 text-center shadow-2xl border border-slate-100">
+<div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3">
+<span class="material-symbols-outlined text-2xl">check</span>
+</div>
+<h3 class="font-display font-bold text-base sm:text-lg text-slate-900">Pendaftaran Berhasil!</h3>
+<p class="text-xs text-slate-600 mt-1 leading-relaxed">
+        Foto dan profil usaha Anda berhasil didaftarkan dan kini telah ditambahkan ke Etalase Binaan serta database SIPLokal 18 RW Jatiasih.
+      </p>
+<div class="mt-4 p-3 bg-slate-50 rounded-xl text-left text-[11px] font-mono text-slate-600 border border-slate-200">
+<p class="">No. Registrasi: <strong class="text-teal-700" id="regIdResult">SIP-RW01-8821</strong></p>
+<p class="">Status: <span class="text-emerald-600 font-semibold">Tersimpan di IndexedDB &amp; Etalase</span></p>
+</div>
+<div class="mt-5 flex flex-col gap-2">
+<button class="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition" onclick="goToRegisteredEtalase()">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span class="">Lihat di Etalase Binaan Sekarang</span>
+</button>
+<button class="w-full py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition" onclick="closeSuccessModal(); navigateTo('home')">
+          Kembali ke Beranda
+        </button>
+</div>
+</div>
+</div>
+<!-- JAVASCRIPT APPLICATION CORE (SPA, INDEXEDDB SIMULATION, MAP PINPOINT, EXPORT) -->
+<script>
+    // Initial Seed Data (18 RW representations)
+    const initialUmkmData = [
+      {
+        id: "SIP-RW01-101",
+        name: "Warung Nasi Uduk Bu Mumun",
+        owner: "Ibu Siti Maimunah",
+        category: "Kuliner & Minuman",
+        rw: "RW 01",
+        address: "Jl. Swatantra I No. 24, RT 02/RW 01",
+        omzet: "Rp 5 - 15 Juta",
+        phone: "081288221010",
+        lat: -6.3021,
+        lng: 106.9610,
+        status: "Terverifikasi",
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "SIP-RW04-102",
+        name: "Batik Bekasi Gemilang",
+        owner: "Bpk. Bambang Sutrisno",
+        category: "Fashion & Kriya",
+        rw: "RW 04",
+        address: "Komplek Jatiasih Permai Blok B3 No. 7",
+        omzet: "Rp 15 - 50 Juta",
+        phone: "081399882233",
+        lat: -6.3075,
+        lng: 106.9652,
+        status: "Terverifikasi",
+        image: "https://images.unsplash.com/photo-1528458876885-5b6aae76184b?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "SIP-RW07-103",
+        name: "Kopi Seduh Jatiasih Roastery",
+        owner: "Fajar Nugraha",
+        category: "Kuliner & Minuman",
+        rw: "RW 07",
+        address: "Jl. Raya Jatimekar - Komsen No. 88",
+        omzet: "Rp 15 - 50 Juta",
+        phone: "085699441122",
+        lat: -6.3090,
+        lng: 106.9690,
+        status: "Terverifikasi",
+        image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "SIP-RW12-104",
+        name: "Bengkel Motor Presisi Jatiasih",
+        owner: "Hadi Purnomo",
+        category: "Jasa & Reparasi",
+        rw: "RW 12",
+        address: "Jl. Wibawa Mukti II No. 15",
+        omzet: "Rp 5 - 15 Juta",
+        phone: "087811223344",
+        lat: -6.3150,
+        lng: 106.9580,
+        status: "Terverifikasi",
+        image: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: "SIP-RW18-105",
+        name: "HydroFresh Jatiasih Bibit & Sayur",
+        owner: "drh. Hendra",
+        category: "Agribisnis & Tanaman",
+        rw: "RW 18",
+        address: "Kavling Hijau RW 18 Jatiasih",
+        omzet: "Rp 5 - 15 Juta",
+        phone: "081900112233",
+        lat: -6.3210,
+        lng: 106.9720,
+        status: "Terverifikasi",
+        image: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    // LocalStorage / State
+    let umkmList = [];
+    let isAdminLoggedIn = false;
+    let leafletMapInstance = null;
+    let mapMarker = null;
+    let currentUploadedPhotoUrl = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80";
+    let lastRegisteredId = null;
+
+    // Initialize Application
+    window.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      renderEtalase();
+      renderAdminDirectory();
+      updateKpis();
+    });
+
+    function loadData() {
+      const stored = localStorage.getItem('siplokal_umkm_data');
+      if (stored) {
+        try {
+          umkmList = JSON.parse(stored);
+        } catch (e) {
+          umkmList = [...initialUmkmData];
+        }
+      } else {
+        umkmList = [...initialUmkmData];
+        saveData();
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem('siplokal_umkm_data', JSON.stringify(umkmList));
+    }
+
+    // Photo Preset Selector
+    function selectPresetImage(imageUrl, label, buttonElem) {
+      currentUploadedPhotoUrl = imageUrl;
+      const previewImg = document.getElementById('livePreviewImg');
+      if (previewImg) previewImg.src = imageUrl;
+
+      // Update preset buttons styling
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.classList.remove('border-teal-500', 'bg-teal-50/50', 'ring-2', 'ring-teal-400');
+        btn.classList.add('border-slate-200', 'bg-white');
+      });
+      if (buttonElem) {
+        buttonElem.classList.remove('border-slate-200', 'bg-white');
+        buttonElem.classList.add('border-teal-500', 'bg-teal-50/50', 'ring-2', 'ring-teal-400');
+      }
+    }
+
+    // Photo Upload Handler (FileReader -> base64)
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Ukuran foto maksimal 5MB.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        currentUploadedPhotoUrl = evt.target.result;
+        const previewImg = document.getElementById('livePreviewImg');
+        if (previewImg) previewImg.src = currentUploadedPhotoUrl;
+
+        // Deselect presets
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+          btn.classList.remove('border-teal-500', 'bg-teal-50/50', 'ring-2', 'ring-teal-400');
+          btn.classList.add('border-slate-200', 'bg-white');
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Update Live Preview in Form
+    function updateLivePreview() {
+      const name = document.getElementById('regName').value.trim() || "Nama Usaha Anda";
+      const owner = document.getElementById('regOwner').value.trim() || "Nama Lengkap Anda";
+      const cat = document.getElementById('regCategory').value;
+      const rw = document.getElementById('regRw').value || "RW 01";
+      const address = document.getElementById('regAddress').value.trim() || "Alamat usaha di Kelurahan Jatiasih";
+      const omzet = document.getElementById('regOmzet').value;
+
+      document.getElementById('livePreviewName').innerText = name;
+      document.getElementById('livePreviewOwner').innerText = "Pemilik: " + owner;
+      document.getElementById('livePreviewCategory').innerText = cat;
+      document.getElementById('livePreviewRwBadge').innerText = rw;
+      document.getElementById('livePreviewAddress').innerText = address;
+      document.getElementById('livePreviewOmzet').innerText = omzet.includes('Di bawah') ? '< Rp 5 Juta / bln' : omzet;
+    }
+
+    // Navigation Router
+    function navigateTo(pageId) {
+      // Hide all views
+      document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
+
+      // Show selected
+      const target = document.getElementById('view-' + pageId);
+      if (target) {
+        target.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Update Desktop Nav styles
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.page === pageId) {
+          btn.classList.add('text-teal-700', 'font-bold', 'bg-slate-100');
+          btn.classList.remove('text-slate-600');
+        } else {
+          btn.classList.remove('text-teal-700', 'font-bold', 'bg-slate-100');
+          btn.classList.add('text-slate-600');
+        }
+      });
+
+      // Update Mobile Bottom Nav styles
+      document.querySelectorAll('.mobile-bottom-btn').forEach(btn => {
+        if (btn.dataset.page === pageId) {
+          btn.classList.add('text-teal-600');
+          btn.classList.remove('text-slate-500');
+          btn.querySelector('span:last-child').classList.add('font-semibold');
+          btn.querySelector('span:last-child').classList.remove('font-medium');
+        } else {
+          btn.classList.remove('text-teal-600');
+          btn.classList.add('text-slate-500');
+          btn.querySelector('span:last-child').classList.remove('font-semibold');
+          btn.querySelector('span:last-child').classList.add('font-medium');
+        }
+      });
+
+      // If opening Registration, initialize or refresh Leaflet map
+      if (pageId === 'daftar') {
+        setTimeout(initLeafletMap, 200);
+      }
+    }
+
+    // Leaflet Interactive Map Initialization
+    function initLeafletMap() {
+      const mapContainer = document.getElementById('pinpointMap');
+      if (!mapContainer) return;
+
+      const defaultLat = -6.3050;
+      const defaultLng = 106.9635;
+
+      if (!leafletMapInstance) {
+        leafletMapInstance = L.map('pinpointMap', {
+          zoomControl: true,
+          scrollWheelZoom: false,
+          touchZoom: true
+        }).setView([defaultLat, defaultLng], 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap'
+        }).addTo(leafletMapInstance);
+
+        mapMarker = L.marker([defaultLat, defaultLng], {
+          draggable: true
+        }).addTo(leafletMapInstance);
+
+        mapMarker.bindPopup("<b>Titik Usaha Anda</b><br>Geser untuk sesuaikan.").openPopup();
+
+        mapMarker.on('dragend', function (e) {
+          const pos = mapMarker.getLatLng();
+          updateLatLongInputs(pos.lat, pos.lng);
+        });
+
+        leafletMapInstance.on('click', function(e) {
+          mapMarker.setLatLng(e.latlng);
+          updateLatLongInputs(e.latlng.lat, e.latlng.lng);
+        });
+      } else {
+        leafletMapInstance.invalidateSize();
+      }
+    }
+
+    function updateLatLongInputs(lat, lng) {
+      document.getElementById('regLat').value = lat.toFixed(5);
+      document.getElementById('regLng').value = lng.toFixed(5);
+    }
+
+    // Mobile GPS Detection
+    function detectUserLocation() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+            updateLatLongInputs(userLat, userLng);
+
+            if (leafletMapInstance && mapMarker) {
+              leafletMapInstance.setView([userLat, userLng], 16);
+              mapMarker.setLatLng([userLat, userLng]);
+              mapMarker.bindPopup("<b>Lokasi GPS Anda Ditemukan!</b>").openPopup();
+            }
+          },
+          function (error) {
+            alert("Tidak dapat mengakses GPS otomatis. Menggunakan titik default Kecamatan Jatiasih.");
+          },
+          { enableHighAccuracy: true, timeout: 6000 }
+        );
+      } else {
+        alert("Perangkat Anda tidak mendukung geolokasi otomatis.");
+      }
+    }
+
+    // Handle Registration Submission
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const rwVal = document.getElementById('regRw').value || "RW 01";
+      const newId = "SIP-" + rwVal.replace(/\s+/g, '') + "-" + Math.floor(1000 + Math.random() * 9000);
+      
+      const newEntry = {
+        id: newId,
+        name: document.getElementById('regName').value.trim(),
+        owner: document.getElementById('regOwner').value.trim(),
+        category: document.getElementById('regCategory').value,
+        rw: rwVal,
+        address: document.getElementById('regAddress').value.trim(),
+        omzet: document.getElementById('regOmzet').value,
+        phone: document.getElementById('regWa').value.trim(),
+        lat: parseFloat(document.getElementById('regLat').value),
+        lng: parseFloat(document.getElementById('regLng').value),
+        status: "Terverifikasi",
+        isNew: true,
+        image: currentUploadedPhotoUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+      };
+
+      lastRegisteredId = newId;
+
+      // Prepend newly registered business to active state & localStorage
+      umkmList.unshift(newEntry);
+      saveData();
+      renderEtalase();
+      renderAdminDirectory();
+      updateKpis();
+
+      document.getElementById('regIdResult').innerText = newId;
+      document.getElementById('successModal').classList.remove('hidden');
+      document.getElementById('umkmRegistrationForm').reset();
+    }
+
+    function closeSuccessModal() {
+      document.getElementById('successModal').classList.add('hidden');
+    }
+
+    function goToRegisteredEtalase() {
+      closeSuccessModal();
+      navigateTo('etalase');
+      // Scroll to new listing and highlight
+      setTimeout(() => {
+        if (lastRegisteredId) {
+          const card = document.getElementById('card-' + lastRegisteredId);
+          if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.classList.add('highlight-card');
+            setTimeout(() => {
+              card.classList.remove('highlight-card');
+            }, 5000);
+          }
+        }
+      }, 300);
+    }
+
+    // Render Etalase Cards
+    function renderEtalase(filterRw = 'ALL') {
+      const container = document.getElementById('etalaseContainer');
+      const counterText = document.getElementById('etalaseCounterText');
+      if (!container) return;
+
+      const items = filterRw === 'ALL' 
+        ? umkmList 
+        : umkmList.filter(item => item.rw === filterRw);
+
+      if (counterText) {
+        counterText.innerText = `Menampilkan ${items.length} Produk & Usaha Binaan Terverifikasi (Termasuk Pendaftaran Terbaru Anda)`;
+      }
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
+            <span class="material-symbols-outlined text-4xl mb-2">storefront</span>
+            <p class="text-sm font-medium">Belum ada UMKM terdaftar pada filter wilayah ini.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = items.map(item => `
+        <div id="card-${item.id}" class="bg-white rounded-2xl border ${item.isNew ? 'border-teal-500 shadow-md ring-1 ring-teal-400' : 'border-slate-200/90 shadow-sm'} overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+          <div>
+            <div class="relative h-48 w-full bg-slate-100 overflow-hidden">
+              <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+              <div class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/95 backdrop-blur-sm text-slate-900 shadow">
+                ${item.rw}
+              </div>
+              <div class="absolute top-2.5 right-2.5 flex flex-col gap-1 items-end">
+                ${item.isNew ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-600 text-white shadow-md animate-pulse">Usaha Baru Terdaftar</span>' : ''}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${item.status === 'Terverifikasi' ? 'bg-emerald-600 text-white' : 'bg-amber-500 text-white'} shadow">
+                  ${item.status}
+                </span>
+              </div>
+            </div>
+
+            <div class="p-4 space-y-2">
+              <div class="flex items-center justify-between text-[11px] text-slate-500">
+                <span class="font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md">${item.category}</span>
+                <span class="font-semibold text-slate-600 font-mono">${item.omzet}</span>
+              </div>
+              <h3 class="font-display font-bold text-base text-slate-900 line-clamp-1">${item.name}</h3>
+              <p class="text-xs text-slate-600 font-medium line-clamp-1">Pemilik: ${item.owner}</p>
+              <p class="text-xs text-slate-400 line-clamp-2">${item.address}</p>
+            </div>
+          </div>
+
+          <div class="p-4 pt-0 border-t border-slate-100 flex items-center justify-between gap-2 mt-3">
+            <a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" class="h-10 px-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1.5 transition">
+              <span class="material-symbols-outlined text-[16px]">chat</span> Chat WA
+            </a>
+            <a href="https://maps.google.com/?q=${item.lat},${item.lng}" target="_blank" class="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center gap-1 transition">
+              <span class="material-symbols-outlined text-[16px]">location_on</span> Titik GPS
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterEtalase() {
+      const rw = document.getElementById('etalaseRwFilter').value;
+      renderEtalase(rw);
+    }
+
+    // Admin Panel Management & Table Rendering
+    function renderAdminDirectory(filtered = null) {
+      const list = filtered || umkmList;
+      const tbody = document.getElementById('adminTableBody');
+      const mobileList = document.getElementById('mobileDirectoryList');
+
+      if (tbody) {
+        tbody.innerHTML = list.map(item => `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="px-4 py-3">
+              <div class="font-bold text-slate-900">${item.name}</div>
+              <div class="text-[11px] text-slate-500">${item.owner} &bull; ${item.id}</div>
+            </td>
+            <td class="px-4 py-3 font-semibold text-slate-700">${item.rw}</td>
+            <td class="px-4 py-3">${item.category}</td>
+            <td class="px-4 py-3 font-mono">${item.omzet}</td>
+            <td class="px-4 py-3">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${item.status === 'Terverifikasi' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                ${item.status}
+              </span>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <div class="flex items-center justify-end gap-1.5">
+                <button onclick="toggleVerificationStatus('${item.id}')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold ${item.status === 'Terverifikasi' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
+                  ${item.status === 'Terverifikasi' ? 'Batalkan' : 'Verifikasi'}
+                </button>
+                <a href="https://maps.google.com/?q=${item.lat},${item.lng}" target="_blank" class="p-1 rounded-lg text-slate-500 hover:text-teal-700" title="Buka Titik Maps">
+                  <span class="material-symbols-outlined text-[18px]">map</span>
+                </a>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // Mobile Card List Rendering
+      if (mobileList) {
+        mobileList.innerHTML = list.map(item => `
+          <div class="p-3.5 space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase">${item.rw}</span>
+                <h4 class="font-display font-bold text-sm text-slate-900 mt-1">${item.name}</h4>
+                <p class="text-xs text-slate-500">${item.owner} &bull; ${item.category}</p>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${item.status === 'Terverifikasi' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                ${item.status}
+              </span>
+            </div>
+            <div class="text-[11px] text-slate-400 font-mono">
+              Omzet: ${item.omzet} &bull; Lat: ${item.lat.toFixed(3)}, Lng: ${item.lng.toFixed(3)}
+            </div>
+            <div class="flex items-center gap-2 pt-1">
+              <button onclick="toggleVerificationStatus('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold ${item.status === 'Terverifikasi' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
+                ${item.status === 'Terverifikasi' ? 'Pendingkan' : 'Verifikasi Resmi'}
+              </button>
+              <a href="https://maps.google.com/?q=${item.lat},${item.lng}" target="_blank" class="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">near_me</span> Rute
+              </a>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function toggleVerificationStatus(id) {
+      const target = umkmList.find(i => i.id === id);
+      if (target) {
+        target.status = target.status === 'Terverifikasi' ? 'Menunggu' : 'Terverifikasi';
+        saveData();
+        renderAdminDirectory();
+        renderEtalase();
+        updateKpis();
+      }
+    }
+
+    function filterAdminDirectory() {
+      const q = document.getElementById('adminSearchInput').value.toLowerCase();
+      const filtered = umkmList.filter(item => 
+        item.name.toLowerCase().includes(q) || 
+        item.owner.toLowerCase().includes(q) || 
+        item.rw.toLowerCase().includes(q)
+      );
+      renderAdminDirectory(filtered);
+    }
+
+    function updateKpis() {
+      const total = umkmList.length;
+      const verified = umkmList.filter(i => i.status === 'Terverifikasi').length;
+      const pending = total - verified;
+
+      const kpiTotalElem = document.getElementById('kpiTotalUmkm');
+      if (kpiTotalElem) kpiTotalElem.innerText = (400 + total);
+
+      const adminKpiTotal = document.getElementById('adminKpiTotal');
+      if (adminKpiTotal) adminKpiTotal.innerText = (400 + total);
+
+      const adminKpiVerified = document.getElementById('adminKpiVerified');
+      if (adminKpiVerified) adminKpiVerified.innerText = (380 + verified);
+
+      const adminKpiPending = document.getElementById('adminKpiPending');
+      if (adminKpiPending) adminKpiPending.innerText = (20 + pending);
+    }
+
+    // Admin Authentication & Sub-tabs Switcher
+    function handleAdminEntry() {
+      if (!isAdminLoggedIn) {
+        openLoginModal();
+      } else {
+        navigateTo('admin');
+        document.getElementById('adminSubNav').classList.remove('hidden');
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+
+    function submitAdminLogin(e) {
+      e.preventDefault();
+      isAdminLoggedIn = true;
+      closeLoginModal();
+      navigateTo('admin');
+      
+      // Update UI for Logged-in admin
+      document.getElementById('adminSubNav').classList.remove('hidden');
+      const authBtn = document.getElementById('loginModalBtnDesktop');
+      if (authBtn) {
+        authBtn.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Petugas Siaga`;
+        authBtn.onclick = () => navigateTo('admin');
+      }
+      switchAdminTab('dashboard');
+    }
+
+    function logoutAdmin() {
+      isAdminLoggedIn = false;
+      document.getElementById('adminSubNav').classList.add('hidden');
+      const authBtn = document.getElementById('loginModalBtnDesktop');
+      if (authBtn) {
+        authBtn.innerHTML = `<span class="material-symbols-outlined text-[16px]">shield_person</span><span>Masuk Admin</span>`;
+        authBtn.onclick = openLoginModal;
+      }
+      navigateTo('home');
+    }
+
+    function switchAdminTab(tabName) {
+      document.getElementById('adminPanel-dashboard').classList.add('hidden');
+      document.getElementById('adminPanel-peta').classList.add('hidden');
+      document.getElementById('adminPanel-analisis').classList.add('hidden');
+
+      document.getElementById('adminPanel-' + tabName).classList.remove('hidden');
+
+      // Update button highlights
+      document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+        btn.classList.remove('bg-teal-600', 'text-white');
+        btn.classList.add('text-slate-600');
+      });
+      const activeBtn = document.getElementById('adminTab-' + tabName);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-teal-600', 'text-white');
+        activeBtn.classList.remove('text-slate-600');
+      }
+    }
+
+    function filterMapByRw(rwCode) {
+      document.querySelectorAll('.rw-chip').forEach(btn => {
+        btn.classList.remove('bg-teal-600', 'text-white');
+        btn.classList.add('bg-slate-100', 'text-slate-700');
+      });
+      event.target.classList.add('bg-teal-600', 'text-white');
+      event.target.classList.remove('bg-slate-100', 'text-slate-700');
+
+      const label = document.getElementById('currentMapRwLabel');
+      if (label) {
+        label.innerText = rwCode === 'ALL' 
+          ? 'Menampilkan: Seluruh 18 Rukun Warga' 
+          : 'Menampilkan: Klaster Usaha Terpadu ' + rwCode;
+      }
+    }
+
+    // Export Utilities
+    function exportDataExcel() {
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "ID,Nama Usaha,Pemilik,RW,Kategori,Omzet,WhatsApp,Latitude,Longitude,Status\n";
+      umkmList.forEach(row => {
+        csvContent += `"${row.id}","${row.name}","${row.owner}","${row.rw}","${row.category}","${row.omzet}","${row.phone}","${row.lat}","${row.lng}","${row.status}"\n`;
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "Rekap_SIPLokal_Jatiasih_18RW.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function exportDataPdf() {
+      window.print();
+    }
+
+    // Mobile Drawer Overlay Toggle
+    function toggleMobileDrawer(forceState) {
+      const drawer = document.getElementById('mobileDrawer');
+      const backdrop = document.getElementById('mobileDrawerBackdrop');
+      const panel = document.getElementById('mobileDrawerPanel');
+
+      const isOpening = forceState !== undefined ? forceState : drawer.classList.contains('pointer-events-none');
+
+      if (isOpening) {
+        drawer.classList.remove('pointer-events-none');
+        drawer.classList.remove('opacity-0');
+        backdrop.classList.remove('opacity-0');
+        panel.classList.remove('translate-x-full');
+      } else {
+        panel.classList.add('translate-x-full');
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => {
+          drawer.classList.add('opacity-0');
+          drawer.classList.add('pointer-events-none');
+        }, 250);
+      }
+    }
+  </script>
+
+
+<script class="">function selectHeroRwBar(rw, count, sector, loc, colorClass) { const title = document.getElementById('heroRwDetailTitle'); const sec = document.getElementById('heroRwDetailSector'); const locElem = document.getElementById('heroRwDetailLoc'); if(title) title.innerText = rw + ' • ' + count + ' UMKM'; if(sec) sec.innerText = 'Dominan: ' + sector; if(locElem) locElem.innerText = 'Lokasi sentra: ' + loc; }</script><!-- CRUD MODAL: CREATE & EDIT UMKM --><div id="adminCrudModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto"><div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-100 my-8"><div class="flex items-center justify-between pb-3 border-b border-slate-100"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center"><span class="material-symbols-outlined text-lg" id="crudModalIcon">add_business</span></div><div><h4 class="font-display font-bold text-sm text-slate-900" id="crudModalTitle">Tambah Usaha Binaan Baru</h4><p class="text-[10px] text-slate-500">Kelurahan Jatiasih • Verifikasi Lapangan</p></div></div><button type="button" onclick="closeCrudModal()" class="text-slate-400 hover:text-slate-600 p-1"><span class="material-symbols-outlined text-lg">close</span></button></div><form id="adminCrudForm" class="mt-4 space-y-3" onsubmit="handleAdminCrudSubmit(event)"><input type="hidden" id="crudEditId" value=""><div><label class="block text-xs font-semibold text-slate-700 mb-1">Nama Usaha / Merk Dagang <span class="text-red-500">*</span></label><input type="text" id="crudName" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="Contoh: Kue Kering Jatiasih"></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-700 mb-1">Nama Pemilik <span class="text-red-500">*</span></label><input type="text" id="crudOwner" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="Ibu / Bapak ..."></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Wilayah Rukun Warga <span class="text-red-500">*</span></label><select id="crudRw" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="RW 01">RW 01</option><option value="RW 02">RW 02</option><option value="RW 03">RW 03</option><option value="RW 04">RW 04</option><option value="RW 05">RW 05</option><option value="RW 06">RW 06</option><option value="RW 07">RW 07</option><option value="RW 08">RW 08</option><option value="RW 09">RW 09</option><option value="RW 10">RW 10</option><option value="RW 11">RW 11</option><option value="RW 12">RW 12</option><option value="RW 13">RW 13</option><option value="RW 14">RW 14</option><option value="RW 15">RW 15</option><option value="RW 16">RW 16</option><option value="RW 17">RW 17</option><option value="RW 18">RW 18</option></select></div></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-700 mb-1">Sektor Usaha <span class="text-red-500">*</span></label><select id="crudCategory" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="Kuliner &amp; Minuman">Kuliner &amp; Minuman</option><option value="Fashion &amp; Kriya">Fashion &amp; Kriya</option><option value="Jasa &amp; Reparasi">Jasa &amp; Reparasi</option><option value="Kelontong &amp; Sembako">Kelontong &amp; Sembako</option><option value="Agribisnis &amp; Tanaman">Agribisnis &amp; Tanaman</option><option value="Kesehatan &amp; Herbal">Kesehatan &amp; Herbal</option></select></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Estimasi Omzet / Bulan <span class="text-red-500">*</span></label><select id="crudOmzet" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="Di bawah Rp 5 Juta">&lt; Rp 5 Juta / bln</option><option value="Rp 5 - 15 Juta">Rp 5 - 15 Juta</option><option value="Rp 15 - 50 Juta">Rp 15 - 50 Juta</option><option value="Di atas Rp 50 Juta">&gt; Rp 50 Juta</option></select></div></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp <span class="text-red-500">*</span></label><input type="tel" id="crudPhone" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="08xxxxxxxxxx"></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Status Verifikasi <span class="text-red-500">*</span></label><select id="crudStatus" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="Terverifikasi">Terverifikasi (Resmi)</option><option value="Menunggu">Menunggu Survei</option></select></div></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Lokasi Usaha <span class="text-red-500">*</span></label><textarea id="crudAddress" required="" rows="2" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="Jl. ... RT/RW"></textarea></div><div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100"><button type="button" onclick="closeCrudModal()" class="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition">Batal</button><button type="submit" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition flex items-center gap-1.5"><span class="material-symbols-outlined text-base">save</span><span id="crudSubmitBtnText" class="">Simpan Data</span></button></div></form></div></div><!-- CRUD MODAL: DETAIL / READ UMKM --><div id="adminDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-100 transform transition-all"><div class="relative h-44 w-full bg-slate-100"><img id="detailModalImg" src="" alt="Foto Usaha" class="w-full h-full object-cover"><button type="button" onclick="closeDetailModal()" class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition"><span class="material-symbols-outlined text-base">close</span></button><div class="absolute bottom-2.5 left-2.5 flex items-center gap-2"><span id="detailModalRw" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-slate-900 shadow-md"></span><span id="detailModalStatus" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md"></span></div></div><div class="p-5 space-y-3"><div class="flex items-center justify-between"><span id="detailModalCategory" class="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-md"></span><span id="detailModalId" class="text-[11px] font-mono text-slate-400 font-semibold"></span></div><h3 id="detailModalName" class="font-display text-lg font-bold text-slate-900"></h3><div class="space-y-1.5 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">person</span><span class="text-slate-500">Pemilik:</span> <strong id="detailModalOwner" class="text-slate-800"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">payments</span><span class="text-slate-500">Estimasi Omzet:</span> <strong id="detailModalOmzet" class="text-slate-800 font-mono"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">call</span><span class="text-slate-500">WhatsApp:</span> <strong id="detailModalPhone" class="text-slate-800 font-mono"></strong></p><p class="flex items-start gap-2"><span class="material-symbols-outlined text-base text-slate-400 mt-0.5">location_on</span><span id="detailModalAddress" class="text-slate-700"></span></p></div><div class="flex items-center justify-end gap-2 pt-2"><button type="button" id="detailModalEditBtn" class="px-3.5 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold text-xs flex items-center gap-1.5 transition"><span class="material-symbols-outlined text-[16px]">edit</span> Edit Data</button><button type="button" onclick="closeDetailModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition">Tutup</button></div></div></div></div><!-- CRUD MODAL: DELETE CONFIRMATION --><div id="adminDeleteModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-sm w-full p-5 text-center shadow-2xl border border-slate-100"><div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-2xl">delete</span></div><h3 class="font-display font-bold text-base text-slate-900">Hapus Data UMKM?</h3><p class="text-xs text-slate-600 mt-1.5 leading-relaxed">Anda akan menghapus data usaha <strong id="deleteTargetName" class="text-slate-900"></strong> dari database kelurahan.</p><input type="hidden" id="deleteTargetId" value=""><div class="mt-5 flex gap-2"><button type="button" onclick="closeDeleteModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition">Batal</button><button type="button" onclick="executeDelete()" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition shadow-sm">Ya, Hapus</button></div></div></div><!-- TOAST NOTIFICATION --><div id="adminToast" class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-xl border border-slate-800"><span class="material-symbols-outlined text-emerald-400 text-base" id="toastIcon">check_circle</span><span id="toastMessage" class="">Aksi berhasil dijalankan.</span></div><script class="">function showToast(msg, isError=false){const toast=document.getElementById('adminToast');const txt=document.getElementById('toastMessage');const icn=document.getElementById('toastIcon');if(!toast)return;txt.innerText=msg;icn.innerText=isError?'error':'check_circle';icn.className=isError?'material-symbols-outlined text-red-400 text-base':'material-symbols-outlined text-emerald-400 text-base';toast.classList.remove('translate-y-20','opacity-0','pointer-events-none');setTimeout(()=>{toast.classList.add('translate-y-20','opacity-0','pointer-events-none');},3000);}function openCreateModal(){document.getElementById('crudEditId').value='';document.getElementById('crudModalTitle').innerText='Tambah Usaha Binaan Baru';document.getElementById('crudModalIcon').innerText='add_business';document.getElementById('crudSubmitBtnText').innerText='Simpan Data UMKM';document.getElementById('adminCrudForm').reset();document.getElementById('adminCrudModal').classList.remove('hidden');}function closeCrudModal(){document.getElementById('adminCrudModal').classList.add('hidden');}function openEditModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('crudEditId').value=item.id;document.getElementById('crudModalTitle').innerText='Edit Data Usaha Binaan';document.getElementById('crudModalIcon').innerText='edit';document.getElementById('crudSubmitBtnText').innerText='Perbarui Data';document.getElementById('crudName').value=item.name;document.getElementById('crudOwner').value=item.owner;document.getElementById('crudRw').value=item.rw;document.getElementById('crudCategory').value=item.category;document.getElementById('crudOmzet').value=item.omzet;document.getElementById('crudPhone').value=item.phone;document.getElementById('crudStatus').value=item.status;document.getElementById('crudAddress').value=item.address;document.getElementById('adminCrudModal').classList.remove('hidden');}function handleAdminCrudSubmit(e){e.preventDefault();const editId=document.getElementById('crudEditId').value;const name=document.getElementById('crudName').value.trim();const owner=document.getElementById('crudOwner').value.trim();const rw=document.getElementById('crudRw').value;const category=document.getElementById('crudCategory').value;const omzet=document.getElementById('crudOmzet').value;const phone=document.getElementById('crudPhone').value.trim();const status=document.getElementById('crudStatus').value;const address=document.getElementById('crudAddress').value.trim();if(editId){const idx=umkmList.findIndex(i=>i.id===editId);if(idx>-1){umkmList[idx]={...umkmList[idx],name,owner,rw,category,omzet,phone,status,address};showToast('Data usaha berhasil diperbarui.');}}else{const newId='SIP-'+rw.replace(/\s+/g,'')+'-'+Math.floor(1000+Math.random()*9000);const newEntry={id:newId,name,owner,rw,category,omzet,phone,status,address,lat:-6.3050+(Math.random()-0.5)*0.015,lng:106.9635+(Math.random()-0.5)*0.015,image:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',isNew:true};umkmList.unshift(newEntry);showToast('Usaha binaan baru berhasil ditambahkan.');}saveData();renderAdminDirectory();renderEtalase();updateKpis();closeCrudModal();}function openDetailModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('detailModalImg').src=item.image;document.getElementById('detailModalName').innerText=item.name;document.getElementById('detailModalId').innerText=item.id;document.getElementById('detailModalOwner').innerText=item.owner;document.getElementById('detailModalRw').innerText=item.rw;document.getElementById('detailModalCategory').innerText=item.category;document.getElementById('detailModalOmzet').innerText=item.omzet;document.getElementById('detailModalPhone').innerText=item.phone;document.getElementById('detailModalAddress').innerText=item.address;const st=document.getElementById('detailModalStatus');st.innerText=item.status;st.className='px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md '+(item.status==='Terverifikasi'?'bg-emerald-600':'bg-amber-500');document.getElementById('detailModalEditBtn').onclick=()=>{closeDetailModal();openEditModal(item.id);};document.getElementById('adminDetailModal').classList.remove('hidden');}function closeDetailModal(){document.getElementById('adminDetailModal').classList.add('hidden');}function confirmDelete(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('deleteTargetId').value=item.id;document.getElementById('deleteTargetName').innerText='"'+item.name+'"';document.getElementById('adminDeleteModal').classList.remove('hidden');}function closeDeleteModal(){document.getElementById('adminDeleteModal').classList.add('hidden');}function executeDelete(){const id=document.getElementById('deleteTargetId').value;const idx=umkmList.findIndex(i=>i.id===id);if(idx>-1){umkmList.splice(idx,1);saveData();renderAdminDirectory();renderEtalase();updateKpis();showToast('Data usaha berhasil dihapus.');}closeDeleteModal();renderAdminDirectory=function(filtered=null){const list=filtered||umkmList;const tbody=document.getElementById('adminTableBody');const mobileList=document.getElementById('mobileDirectoryList');if(tbody){tbody.innerHTML=list.map(item=>`<tr class="hover:bg-slate-50/80 transition"><td class="px-4 py-3"><div class="font-bold text-slate-900">${item.name}</div><div class="text-[11px] text-slate-500">${item.owner} &bull; ${item.id}</div></td><td class="px-4 py-3 font-semibold text-slate-700">${item.rw}</td><td class="px-4 py-3">${item.category}</td><td class="px-4 py-3 font-mono">${item.omzet}</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></td><td class="px-4 py-3 text-right"><div class="flex items-center justify-end gap-1"><button type="button" onclick="openDetailModal('${item.id}')" class="p-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition" title="Detail"><span class="material-symbols-outlined text-[17px]">visibility</span></button><button type="button" onclick="openEditModal('${item.id}')" class="p-1.5 rounded-lg text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition" title="Edit"><span class="material-symbols-outlined text-[17px]">edit</span></button><button type="button" onclick="confirmDelete('${item.id}')" class="p-1.5 rounded-lg text-red-600 hover:text-red-700 hover:bg-red-50 transition" title="Hapus"><span class="material-symbols-outlined text-[17px]">delete</span></button></div></td></tr>`).join('');}if(mobileList){mobileList.innerHTML=list.map(item=>`<div class="p-3.5 space-y-2"><div class="flex items-start justify-between gap-2"><div><span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase">${item.rw}</span><h4 class="font-display font-bold text-sm text-slate-900 mt-1">${item.name}</h4><p class="text-xs text-slate-500">${item.owner} &bull; ${item.category}</p></div><span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></div><div class="text-[11px] text-slate-400 font-mono">Omzet: ${item.omzet} &bull; ${item.id}</div><div class="flex items-center gap-1.5 pt-1"><button type="button" onclick="openDetailModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 text-slate-700 hover:bg-slate-50 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">visibility</span> Detail</button><button type="button" onclick="openEditModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">edit</span> Edit</button><button type="button" onclick="confirmDelete('${item.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">delete</span> Hapus</button></div></div>`).join('');}};renderAdminDirectory();</script><script id="geospasialMapScript">
+let geospasialMapInstance = null;
+let geospasialMarkersLayer = null;
+let activeRwFilter = 'ALL';
+let activeKlasterFilter = 'ALL';
+
+function getKlasterColor(cat) {
+  if (cat.includes('Kuliner')) return '#10b981';
+  if (cat.includes('Fashion') || cat.includes('Kriya')) return '#f59e0b';
+  if (cat.includes('Jasa') || cat.includes('Reparasi')) return '#3b82f6';
+  return '#8b5cf6';
+}
+
+function getKlasterIcon(cat) {
+  if (cat.includes('Kuliner')) return 'restaurant';
+  if (cat.includes('Fashion') || cat.includes('Kriya')) return 'palette';
+  if (cat.includes('Jasa') || cat.includes('Reparasi')) return 'build';
+  return 'storefront';
+}
+
+function createCustomMapPinIcon(cat, isSelected = false) {
+  const color = getKlasterColor(cat);
+  const icon = getKlasterIcon(cat);
+  return L.divIcon({
+    className: 'custom-map-pin-wrapper',
+    html: `
+      <div style="position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <div style="position: absolute; width: 32px; height: 32px; border-radius: 9999px; background-color: ${color}; opacity: 0.25; animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
+        <div style="width: 30px; height: 30px; border-radius: 9999px; background: linear-gradient(135deg, ${color}, #0f172a); border: 2px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white;">
+          <span class="material-symbols-outlined" style="font-size: 16px;">${icon}</span>
+        </div>
+      </div>
+    `,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -18]
+  });
+}
+
+function initGeospasialMap() {
+  const container = document.getElementById('geospasialMapContainer');
+  if (!container) return;
+
+  const centerLat = -6.3075;
+  const centerLng = 106.9635;
+
+  if (!geospasialMapInstance) {
+    geospasialMapInstance = L.map('geospasialMapContainer', {
+      zoomControl: true,
+      scrollWheelZoom: true,
+      touchZoom: true
+    }).setView([centerLat, centerLng], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(geospasialMapInstance);
+
+    geospasialMarkersLayer = L.layerGroup().addTo(geospasialMapInstance);
+  } else {
+    geospasialMapInstance.invalidateSize();
+  }
+
+  renderGeospasialMarkers();
+}
+
+function renderGeospasialMarkers() {
+  if (!geospasialMapInstance || !geospasialMarkersLayer) return;
+  geospasialMarkersLayer.clearLayers();
+
+  const filtered = umkmList.filter(item => {
+    const matchRw = activeRwFilter === 'ALL' || item.rw === activeRwFilter;
+    let matchKlaster = true;
+    if (activeKlasterFilter === 'Kuliner & Minuman') {
+      matchKlaster = item.category.includes('Kuliner');
+    } else if (activeKlasterFilter === 'Fashion & Kriya') {
+      matchKlaster = item.category.includes('Fashion') || item.category.includes('Kriya');
+    } else if (activeKlasterFilter === 'Jasa & Reparasi') {
+      matchKlaster = item.category.includes('Jasa') || item.category.includes('Reparasi');
+    } else if (activeKlasterFilter === 'Ritel') {
+      matchKlaster = !item.category.includes('Kuliner') && !item.category.includes('Fashion') && !item.category.includes('Kriya') && !item.category.includes('Jasa') && !item.category.includes('Reparasi');
+    }
+    return matchRw && matchKlaster;
+  });
+
+  const counterElem = document.getElementById('mapActivePinsCount');
+  if (counterElem) {
+    counterElem.innerText = `${filtered.length} Titik Terpetakan Real-time`;
+  }
+
+  filtered.forEach(item => {
+    const lat = item.lat || -6.3050;
+    const lng = item.lng || 106.9635;
+    const pinIcon = createCustomMapPinIcon(item.category);
+
+    const popupHtml = `
+      <div style="min-width: 220px; max-width: 260px; font-family: inherit; font-size: 12px; color: #1e293b;">
+        <div style="position: relative; height: 100px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #e2e8f0;">
+          <img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+          <span style="position: absolute; top: 6px; left: 6px; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.95); font-weight: 700; font-size: 10px; color: #0f172a;">${item.rw}</span>
+          <span style="position: absolute; top: 6px; right: 6px; padding: 2px 8px; border-radius: 9999px; background: ${getKlasterColor(item.category)}; color: white; font-weight: 700; font-size: 10px;">${item.status}</span>
+        </div>
+        <strong style="display: block; font-size: 14px; color: #0f172a; margin-bottom: 2px; line-height: 1.2;">${item.name}</strong>
+        <p style="margin: 0 0 4px 0; color: #64748b; font-size: 11px;">Pemilik: <b>${item.owner}</b></p>
+        <span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: #f0fdfa; color: #0f766e; font-weight: 600; font-size: 10px; margin-bottom: 6px;">${item.category}</span>
+        <p style="margin: 0 0 8px 0; color: #475569; font-size: 11px; line-height: 1.3;">${item.address}</p>
+        <div style="display: flex; gap: 6px; margin-top: 6px;">
+          <a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #10b981; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Chat WA</a>
+          <a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Google Maps</a>
+        </div>
+      </div>
+    `;
+
+    const marker = L.marker([lat, lng], { icon: pinIcon });
+    marker.bindPopup(popupHtml, { maxWidth: 280 });
+    geospasialMarkersLayer.addLayer(marker);
+  });
+
+  if (filtered.length > 0) {
+    const group = L.featureGroup(geospasialMarkersLayer.getLayers());
+    geospasialMapInstance.fitBounds(group.getBounds().pad(0.15));
+  }
+}
+
+function setKlasterFilter(klaster, btnElem) {
+  activeKlasterFilter = klaster;
+  document.querySelectorAll('.klaster-filter-btn').forEach(btn => {
+    btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm');
+  });
+  if (btnElem) {
+    btnElem.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
+  }
+  updateMapFilterSubtext();
+  renderGeospasialMarkers();
+}
+
+window.filterMapByRw = function(rwCode, btnElem) {
+  activeRwFilter = rwCode;
+  document.querySelectorAll('.rw-chip').forEach(btn => {
+    btn.classList.remove('bg-teal-600', 'text-white');
+    btn.classList.add('bg-slate-100', 'text-slate-700');
+  });
+  if (btnElem) {
+    btnElem.classList.add('bg-teal-600', 'text-white');
+    btnElem.classList.remove('bg-slate-100', 'text-slate-700');
+  }
+  const label = document.getElementById('currentMapRwLabel');
+  if (label) {
+    label.innerText = rwCode === 'ALL' ? 'Menampilkan: Seluruh 18 Rukun Warga' : 'Menampilkan: Klaster Usaha Terpadu ' + rwCode;
+  }
+  updateMapFilterSubtext();
+  renderGeospasialMarkers();
+};
+
+function updateMapFilterSubtext() {
+  const sub = document.getElementById('currentMapFilterSubtext');
+  if (sub) {
+    sub.innerText = `Klaster: ${activeKlasterFilter === 'ALL' ? 'Semua Klaster' : activeKlasterFilter} • Wilayah: ${activeRwFilter}`;
+  }
+}
+
+function resetMapFilters() {
+  activeRwFilter = 'ALL';
+  activeKlasterFilter = 'ALL';
+  document.querySelectorAll('.klaster-filter-btn').forEach((b, i) => {
+    if (i === 0) b.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
+    else b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm');
+  });
+  document.querySelectorAll('.rw-chip').forEach((b, i) => {
+    if (i === 0) {
+      b.classList.add('bg-teal-600', 'text-white');
+      b.classList.remove('bg-slate-100', 'text-slate-700');
+    } else {
+      b.classList.remove('bg-teal-600', 'text-white');
+      b.classList.add('bg-slate-100', 'text-slate-700');
+    }
+  });
+  const label = document.getElementById('currentMapRwLabel');
+  if (label) label.innerText = 'Menampilkan: Seluruh 18 Rukun Warga';
+  updateMapFilterSubtext();
+  renderGeospasialMarkers();
+}
+
+// Hook tab switch to initialize and invalidate map container
+const origSwitchAdminTab = window.switchAdminTab;
+window.switchAdminTab = function(tabName) {
+  if (origSwitchAdminTab) origSwitchAdminTab(tabName);
+  if (tabName === 'peta') {
+    setTimeout(initGeospasialMap, 200);
+  }
+};
+</script><script id="geospasialStatusFilterScript">let activeStatusFilter = 'ALL'; function setStatusFilter(status, btnElem) { activeStatusFilter = status; document.querySelectorAll('.status-filter-btn').forEach(btn => { btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); btn.classList.add('bg-white'); }); if (btnElem) { btnElem.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); btnElem.classList.remove('bg-white'); } if (typeof updateMapFilterSubtext === 'function') updateMapFilterSubtext(); if (typeof renderGeospasialMarkers === 'function') renderGeospasialMarkers(); } const originalRenderGeospasialMarkers = renderGeospasialMarkers; renderGeospasialMarkers = function() { if (!geospasialMapInstance || !geospasialMarkersLayer) return; geospasialMarkersLayer.clearLayers(); const filtered = umkmList.filter(item => { const matchRw = activeRwFilter === 'ALL' || item.rw === activeRwFilter; let matchKlaster = true; if (activeKlasterFilter === 'Kuliner & Minuman') { matchKlaster = item.category.includes('Kuliner'); } else if (activeKlasterFilter === 'Fashion & Kriya') { matchKlaster = item.category.includes('Fashion') || item.category.includes('Kriya'); } else if (activeKlasterFilter === 'Jasa & Reparasi') { matchKlaster = item.category.includes('Jasa') || item.category.includes('Reparasi'); } else if (activeKlasterFilter === 'Ritel') { matchKlaster = !item.category.includes('Kuliner') && !item.category.includes('Fashion') && !item.category.includes('Kriya') && !item.category.includes('Jasa') && !item.category.includes('Reparasi'); } let matchStatus = true; if (activeStatusFilter === 'Terverifikasi') { matchStatus = item.status === 'Terverifikasi'; } else if (activeStatusFilter === 'Menunggu') { matchStatus = item.status !== 'Terverifikasi'; } return matchRw && matchKlaster && matchStatus; }); const counterElem = document.getElementById('mapActivePinsCount'); if (counterElem) { counterElem.innerText = `${filtered.length} Titik Terpetakan Real-time`; } filtered.forEach(item => { const lat = item.lat || -6.3050; const lng = item.lng || 106.9635; const pinIcon = createCustomMapPinIcon(item.category); const isVerified = item.status === 'Terverifikasi'; const statusBadgeColor = isVerified ? '#10b981' : '#f59e0b'; const statusText = isVerified ? '✅ Terverifikasi' : '⏳ Belum Terverifikasi'; const popupHtml = `<div style="min-width: 220px; max-width: 260px; font-family: inherit; font-size: 12px; color: #1e293b;"><div style="position: relative; height: 100px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #e2e8f0;"><img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" /><span style="position: absolute; top: 6px; left: 6px; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.95); font-weight: 700; font-size: 10px; color: #0f172a;">${item.rw}</span><span style="position: absolute; top: 6px; right: 6px; padding: 2px 8px; border-radius: 9999px; background: ${statusBadgeColor}; color: white; font-weight: 700; font-size: 10px;">${statusText}</span></div><strong style="display: block; font-size: 14px; color: #0f172a; margin-bottom: 2px; line-height: 1.2;">${item.name}</strong><p style="margin: 0 0 4px 0; color: #64748b; font-size: 11px;">Pemilik: <b>${item.owner}</b></p><span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: #f0fdfa; color: #0f766e; font-weight: 600; font-size: 10px; margin-bottom: 6px;">${item.category}</span><p style="margin: 0 0 8px 0; color: #475569; font-size: 11px; line-height: 1.3;">${item.address}</p><div style="display: flex; gap: 6px; margin-top: 6px;"><a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #10b981; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Chat WA</a><a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Google Maps</a></div></div>`; const marker = L.marker([lat, lng], { icon: pinIcon }); marker.bindPopup(popupHtml, { maxWidth: 280 }); geospasialMarkersLayer.addLayer(marker); }); if (filtered.length > 0 && geospasialMapInstance) { const group = L.featureGroup(geospasialMarkersLayer.getLayers()); geospasialMapInstance.fitBounds(group.getBounds().pad(0.15)); } }; const origResetMapFilters = resetMapFilters; resetMapFilters = function() { activeStatusFilter = 'ALL'; document.querySelectorAll('.status-filter-btn').forEach((b, i) => { if (i === 0) { b.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); } else { b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); } }); if (origResetMapFilters) origResetMapFilters(); };</script>
+
+</body></html>
