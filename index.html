@@ -1,1005 +1,762 @@
 <!DOCTYPE html>
 
-<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"error-container":"#ffdad6","surface":"#fbf8ff","on-tertiary":"#ffffff","on-error-container":"#93000a","outline":"#787588","secondary-fixed":"#ffdad2","primary-container":"#5b36f5","outline-variant":"#c9c4d9","on-primary-container":"#dcd5ff","on-surface":"#1a1b23","secondary":"#ae3115","surface-container-low":"#f4f2fe","on-primary":"#ffffff","tertiary-fixed":"#6ffbbe","primary-fixed":"#e5deff","surface-variant":"#e3e1ec","on-tertiary-fixed":"#002113","on-secondary-container":"#640f00","on-background":"#1a1b23","on-tertiary-container":"#65f2b5","on-surface-variant":"#474556","on-error":"#ffffff","on-secondary":"#ffffff","tertiary-fixed-dim":"#4edea3","secondary-container":"#fd6a49","on-secondary-fixed":"#3d0600","primary-fixed-dim":"#c8bfff","surface-container-high":"#e8e7f2","surface-bright":"#fbf8ff","error":"#ba1a1a","on-primary-fixed":"#190064","tertiary":"#005237","inverse-on-surface":"#f1effb","on-primary-fixed-variant":"#4100db","surface-tint":"#5a35f4","on-secondary-fixed-variant":"#8c1900","inverse-primary":"#c8bfff","surface-dim":"#dad9e4","inverse-surface":"#2f3038","on-tertiary-fixed-variant":"#005236","tertiary-container":"#006d4a","primary":"#4200dd","background":"#fbf8ff","surface-container-highest":"#e3e1ec","surface-container-lowest":"#ffffff","surface-container":"#eeedf8","secondary-fixed-dim":"#ffb4a3"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"margin-md":"2.5rem","space-sm":"0.5rem","space-xl":"2.5rem","gutter-lg":"2rem",margin:"1.5rem",gutter:"1.5rem","space-xs":"0.25rem","space-lg":"1.5rem","margin-lg":"5rem","space-md":"1rem","gutter-sm":"1rem"},fontFamily:{"label-caps":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"label-code":["JetBrains Mono"],"headline-sm":["Plus Jakarta Sans"],"display-xl":["Plus Jakarta Sans"],"display-xl-mobile":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"]},fontSize:{"label-caps":["12px",{lineHeight:"16px",letterSpacing:"0.06em",fontWeight:"700"}],"headline-lg-mobile":["28px",{lineHeight:"36px",letterSpacing:"-0.01em",fontWeight:"700"}],"body-sm":["14px",{lineHeight:"20px",fontWeight:"400"}],"body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],"label-code":["13px",{lineHeight:"18px",letterSpacing:"0.02em",fontWeight:"500"}],"headline-sm":["20px",{lineHeight:"28px",letterSpacing:"-0.01em",fontWeight:"600"}],"display-xl":["64px",{lineHeight:"72px",letterSpacing:"-0.03em",fontWeight:"800"}],"display-xl-mobile":["38px",{lineHeight:"46px",letterSpacing:"-0.02em",fontWeight:"800"}],"headline-md":["28px",{lineHeight:"36px",letterSpacing:"-0.015em",fontWeight:"700"}],"body-lg":["18px",{lineHeight:"28px",fontWeight:"400"}],"headline-lg":["40px",{lineHeight:"48px",letterSpacing:"-0.02em",fontWeight:"700"}]}}}}</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"><header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><img alt="Logo andu.my.id" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VjAShkJw9h3tkpfnncrHa7tpR4fW8vpM1CrnQYVoNAleOKtwIYhYbIWCPB8F-K0z7F_sn8ECzCp7vmoQBdeQIvXhEbHvn4d1UcoVRlI1ZUNQK1ICzwlDhRJqVr42gQ-Lk_5OCNDkXcIEEDdiSu5dmdpl54PzJpp8doxjHX2WQJ6AWeqHVli6L9dbsVAkXfPAM-KiexO1xACcoaO4aYS_kJpWd55H9uFm4enKnmEB5O0SHdDEpyto4DhUsn"/><a class="flex flex-col text-left group" data-path="beranda" href="#"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm font-extrabold text-on-surface tracking-tight group-hover:text-primary transition-colors">andu<span class="text-primary">.my.id</span></span><span class="inline-flex items-center px-space-xs py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-code text-label-code font-semibold">Studio</span></div><span class="font-label-caps text-label-caps text-on-surface-variant font-medium hidden sm:inline-block">With I and U, We Realize Ideas!</span></a></div><nav class="hidden xl:flex items-center gap-space-xs px-space-sm py-1.5 rounded-full bg-surface-container-low shadow-[0_2px_12px_rgba(91,54,245,0.03)]" data-active-classes="bg-primary-container text-on-primary rounded-full font-semibold"><a class="px-space-md py-space-sm rounded-full font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="layanan" href="#">Layanan</a><a class="px-space-md py-space-sm rounded-full font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="portofolio" href="#">Portofolio</a><a class="px-space-md py-space-sm rounded-full font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="skema-kerjasama" href="#">Skema Kerjasama</a><a class="px-space-md py-space-sm rounded-full font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="simulasi-biaya" href="#">Simulasi Biaya</a><a class="px-space-md py-space-sm rounded-full font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="faq" href="#">FAQ</a><a class="px-space-md py-space-sm rounded-full font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" data-path="kontak" href="#">Kontak</a></nav><div class="flex items-center gap-space-md shrink-0"><div class="flex items-center p-1 rounded-full bg-surface-container-low shadow-[0_1px_4px_rgba(0,0,0,0.02)]"><button class="px-space-sm py-0.5 rounded-full bg-surface-container-lowest text-on-surface font-label-code text-label-code font-bold shadow-[0_1px_3px_rgba(0,0,0,0.06)]" type="button">ID</button><button class="px-space-sm py-0.5 rounded-full text-on-surface-variant font-label-code text-label-code font-medium hover:text-on-surface transition-colors" type="button">EN</button></div><a class="relative inline-flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-secondary-container text-on-secondary font-body-sm text-body-sm font-bold shadow-[0_8px_20px_-4px_rgba(253,106,73,0.4)] hover:shadow-[0_12px_28px_-4px_rgba(253,106,73,0.55)] hover:-translate-y-0.5 active:translate-y-0 transition-all" data-path="konsultasi-gratis" href="#"><span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-surface-container-lowest opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-surface-container-lowest"></span></span><span>Konsultasi Gratis</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-surface min-h-[calc(100vh-80px)]"><div class="flex flex-col w-full">
-<!-- Top Ambient Glows -->
-<div class="relative w-full overflow-hidden">
-<div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[720px] h-[360px] bg-primary-fixed blur-[120px] opacity-60 pointer-events-none rounded-full"></div>
-<div class="absolute top-48 right-[-10%] w-[380px] h-[380px] bg-secondary-fixed blur-[100px] opacity-40 pointer-events-none rounded-full"></div>
-<div class="absolute top-96 left-[-10%] w-[420px] h-[420px] bg-tertiary-fixed blur-[110px] opacity-35 pointer-events-none rounded-full"></div>
-<!-- HERO SECTION -->
-<section class="relative max-w-7xl mx-auto px-6 lg:px-12 pt-12 pb-20 lg:pt-16 lg:pb-28">
-<!-- High-Energy Micro Badges Pill Row -->
-<div class="flex flex-wrap items-center justify-center gap-space-xs mb-space-md">
-<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest shadow-sm text-primary font-label-code text-label-code font-bold">
-<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
-<span>99.8% On-Time Delivery</span>
+<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-tertiary-container": "#65f2b5", "tertiary-fixed": "#6ffbbe", "on-tertiary-fixed": "#002113", "on-tertiary": "#ffffff", "on-primary-fixed-variant": "#4100db", "primary-fixed-dim": "#c8bfff", "primary-fixed": "#e5deff", "secondary-fixed-dim": "#ffb4a3", "tertiary-container": "#006d4a", "surface-container-high": "#e8e7f2", "on-tertiary-fixed-variant": "#005236", "tertiary-fixed-dim": "#4edea3", "surface-dim": "#dad9e4", "surface-bright": "#fbf8ff", "on-secondary": "#ffffff", "on-secondary-fixed-variant": "#8c1900", "surface": "#fbf8ff", "on-surface-variant": "#474556", "secondary": "#ae3115", "secondary-fixed": "#ffdad2", "inverse-primary": "#c8bfff", "on-surface": "#1a1b23", "surface-tint": "#5a35f4", "outline": "#787588", "on-primary-fixed": "#190064", "on-error": "#ffffff", "primary": "#4200dd", "primary-container": "#5b36f5", "on-error-container": "#93000a", "on-secondary-container": "#640f00", "inverse-surface": "#2f3038", "surface-container-highest": "#e3e1ec", "tertiary": "#005237", "on-secondary-fixed": "#3d0600", "surface-container-lowest": "#ffffff", "surface-container": "#eeedf8", "background": "#fbf8ff", "outline-variant": "#c9c4d9", "surface-variant": "#e3e1ec", "error-container": "#ffdad6", "secondary-container": "#fd6a49", "error": "#ba1a1a", "surface-container-low": "#f4f2fe", "inverse-on-surface": "#f1effb", "on-background": "#1a1b23", "on-primary": "#ffffff", "on-primary-container": "#dcd5ff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter": "1.5rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "margin-lg": "5rem", "space-md": "1rem", "gutter-sm": "1rem", "margin": "1.5rem", "space-xl": "2.5rem", "gutter-lg": "2rem", "space-lg": "1.5rem", "margin-md": "2.5rem" }, fontFamily: { "headline-lg": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-code": ["JetBrains Mono"], "body-sm": ["Plus Jakarta Sans"], "label-caps": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "display-xl": ["Plus Jakarta Sans"], "display-xl-mobile": ["Plus Jakarta Sans"] }, fontSize: { "headline-lg": ["40px", { lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }], "headline-md": ["28px", { lineHeight: "36px", letterSpacing: "-0.015em", fontWeight: "700" }], "label-code": ["13px", { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "500" }], "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.06em", fontWeight: "700" }], "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }], "headline-lg-mobile": ["28px", { lineHeight: "36px", letterSpacing: "-0.01em", fontWeight: "700" }], "headline-sm": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "display-xl": ["64px", { lineHeight: "72px", letterSpacing: "-0.03em", fontWeight: "800" }], "display-xl-mobile": ["38px", { lineHeight: "46px", letterSpacing: "-0.02em", fontWeight: "800" }] } } } }</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen">
+<!-- Top App Header -->
+<header class="fixed top-0 w-full z-40 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter-sm flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><button aria-label="Buka Menu Drawer" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container active:scale-95 transition-all" onclick="switchTab('kontak')"><span class="material-symbols-outlined text-[24px]">menu</span></button><div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('beranda')"><img alt="Brand logo. - Primary color: #5b36f5 - Font: plusJakartaSans - Mode: light - Roundness: rounded-md" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XZbeYy6xAQ38IfXmS_GOkxGKWdOIawVkC4ZZv7PboRWm4A9t9uWP2-UShiYIc35WmXDvFWw9FE_IOMUhmXRqCQhI07AZsMFdCFDKbNJN2cn1I4703Q0FmCSSyXvge5gmuP3q08zSiVh-4UGegtb-hRSR4MkPmt821c1BRYpExhX95sSGASwww5nxDjg28OaM6UDHGS5vMZix_c8zgME_6Srks5jOcyi7u0flVcDcNgcJd41bvVTWgqYIhy"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-tight font-extrabold tracking-tight">andu<span class="text-secondary">.my.id</span></span><span class="font-label-caps text-label-caps uppercase text-on-surface-variant font-bold" id="currentHeaderSubtitle">Beranda</span></div></div></div><div class="flex items-center gap-space-xs"><a aria-label="Hubungi Kami di WhatsApp" class="h-11 px-3.5 bg-tertiary-container hover:bg-tertiary text-on-tertiary flex items-center gap-1.5 rounded-full shadow-[0_4px_14px_rgba(0,109,74,0.25)] active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20tertarik%20untuk%20diskusi%20pembuatan%20aplikasi" rel="noopener" target="_blank"><span class="material-symbols-outlined text-[20px]">chat</span><span class="font-label-caps text-label-caps uppercase hidden xs:inline tracking-wider font-bold">WA Chat</span></a><button aria-label="Kontak Kami" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center active:scale-95 transition-all" onclick="switchTab('kontak')"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></button></div></div></header>
+<main class="flex flex-col relative w-full pt-16 pb-28 bg-surface min-h-screen">
+<div class="flex flex-col w-full relative">
+<!-- ========================================== -->
+<!-- 1. POPUP / MODAL ANNOUNCEMENT COMPONENT    -->
+<!-- ========================================== -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-gutter-sm transition-all duration-300" id="siplokalModal">
+<!-- Frosted Backdrop Scrim -->
+<div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-md cursor-pointer" id="modalBackdrop"></div>
+<!-- Modal Content Card Container -->
+<div class="relative w-full max-h-[85vh] overflow-y-auto bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl p-space-md sm:p-space-lg flex flex-col gap-space-md transition-all duration-300 scale-100 z-10 border border-outline-variant/30">
+<!-- Top Row: Badges & Close Button -->
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary-fixed text-on-secondary-fixed rounded-full font-label-caps text-label-caps font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            Rilis Kolaborasi Terbaru
+          </span>
+<span class="inline-flex items-center gap-1 px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full font-label-caps text-label-caps font-bold">
+<span class="material-symbols-outlined text-[14px]">account_balance</span>
+            Kelurahan Jatiasih, Kota Bekasi
+          </span>
 </div>
-<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest shadow-sm text-tertiary font-label-code text-label-code font-bold">
-<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">verified</span>
-<span>Fixed or Agile Scope</span>
+<button aria-label="Tutup Pengumuman" class="w-9 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-center transition-transform active:scale-90 flex-shrink-0 cursor-pointer shadow-sm" id="closeModalBtn">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
 </div>
-<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest shadow-sm text-secondary font-label-code text-label-code font-bold">
-<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
-<span>Co-Founder Mindset</span>
-</div>
-</div>
-<!-- Main Headline & Subtitle -->
-<div class="max-w-4xl mx-auto text-center space-y-space-md mb-space-lg">
-<h1 class="font-display-xl text-display-xl font-extrabold tracking-tight text-on-surface">
-          With <span class="text-primary underline decoration-primary-fixed decoration-wavy decoration-4 underline-offset-8">I and U</span>, We'll Realize Your Ideas!
-          <span class="inline-block transform hover:rotate-12 transition-transform duration-300">🚀</span>
-</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto font-normal">
-          Mitra kolaborasi end-to-end jasa pembuatan aplikasi mobile (iOS &amp; Android), web platform modern berkinerja tinggi, dan arsitektur AI yang scalable, playful, dan transparan dari nol hingga scale-up.
+<!-- Headline & Subtitle -->
+<div class="flex flex-col gap-space-xs">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight font-extrabold leading-snug">
+          SIPLokal: Digitalisasi &amp; Pendataan Akurat UMKM
+        </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Kolaborasi resmi <strong class="text-primary-container">andu.my.id</strong> bersama <strong>Kelurahan Jatiasih, Kota Bekasi</strong>, diinisiasi oleh <strong>Ibu Mutmainah</strong> (Kasi Permasbang Kelurahan Jatiasih) untuk percepatan legalitas, permodalan, dan peta sebaran potensi ekonomi lokal.
         </p>
 </div>
-<!-- CTAs -->
-<div class="flex flex-col sm:flex-row items-center justify-center gap-space-md mb-space-xl">
-<a class="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-8 py-3.5 rounded-full bg-primary text-on-primary font-headline-sm text-headline-sm font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 transition-all" href="#kalkulator">
-<span>Mulai Diskusi Projek (Gratis)</span>
+<!-- App Mockup / Visual Showcase -->
+<div class="relative rounded-xl overflow-hidden bg-gradient-to-br from-primary-container via-surface-tint to-secondary-container p-space-md text-on-primary flex flex-col justify-between shadow-lg min-h-[170px]">
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-1 bg-surface-container-lowest/20 backdrop-blur-md rounded-full font-label-code text-label-code text-on-primary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span>
+            v1.0 Live Production
+          </span>
+<span class="material-symbols-outlined text-tertiary-fixed text-[26px]">devices</span>
+</div>
+<div class="flex items-center gap-space-sm mt-3">
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest p-1 shadow-md flex-shrink-0 flex items-center justify-center">
+<img class="w-full h-full object-contain rounded-lg" data-alt="Official civic emblem and digital shield icon representing Sistem Informasi Pendataan UMKM Jatiasih Kota Bekasi in vivid indigo and teal with modern geometric lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaLgIqSwgYsaUz5WJ0ce-6oxXcjieinOf8i7JSGE_TMJpI3mI28xClhlMe4Sz8cOhgrBruSDs_0QZd5MB79GQG0QBo8zYv4DtUIzugQzbVc7ImSzvHJ1DPSEO7qJAejZ_N57bof3SfBCCqbFk2DbwBePhBcFlB_8skk3hTOh0KgIW-2mMB2xbK0pWTX0IazAfLEUgiaPwyMUr-BqjkEzIGawwq_HMO1TA_f88O3zJ1o37b2bR_eLMzwg"/>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-bold leading-tight">SIPLokal App Suite</span>
+<span class="font-label-caps text-label-caps text-tertiary-fixed uppercase tracking-wider">Web Portal &amp; Field Agent Mobile PWA</span>
+</div>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="font-label-code text-label-code bg-surface-container-lowest/20 px-2 py-0.5 rounded text-white">siplokal.jatiasih.go.id</span>
+<span class="font-label-caps text-label-caps text-secondary-fixed font-bold">Verified Partner</span>
+</div>
+</div>
+<!-- 3 Key Features Mosaic -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider font-bold">Fitur Unggulan Sistem</span>
+<div class="grid grid-cols-1 gap-space-xs">
+<div class="flex items-start gap-space-sm p-space-sm bg-surface-container-low rounded-lg">
+<div class="w-9 h-9 rounded-full bg-tertiary-container text-on-tertiary flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">pin_drop</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[16px] font-bold text-on-surface leading-snug">Sensus &amp; Geolokasi UMKM Real-Time</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pemetaan titik GPS ribuan pedagang mikro, kuliner, dan kriya se-Kecamatan.</span>
+</div>
+</div>
+<div class="flex items-start gap-space-sm p-space-sm bg-surface-container-low rounded-lg">
+<div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[16px] font-bold text-on-surface leading-snug">Verifikasi NIB &amp; Legalitas Usaha</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sinkronisasi status OSS, sertifikasi halal, dan pengusulan binaan UMKM.</span>
+</div>
+</div>
+<div class="flex items-start gap-space-sm p-space-sm bg-surface-container-low rounded-lg">
+<div class="w-9 h-9 rounded-full bg-secondary text-on-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">query_stats</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[16px] font-bold text-on-surface leading-snug">Dashboard Analitik Ekonomi Kelurahan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Monitoring agregat omzet bulanan, serapan tenaga kerja lokal, dan potensi klaster.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Initiator Testimonial Card -->
+<div class="p-space-sm bg-surface-container rounded-xl flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="Portrait of an approachable Indonesian government female official Ibu Mutmainah smiling wearing neat hijab in clean office setting warm daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAr5ntOKXhNN6thOj1PBzqW68_rmrcXDBsBDVuCePZhgvbATB5DA9-i0iVoG4cDpru-KKTNSuvkrB6ibu-P90h7egZCSZB5I6_RvENczDn7ulmiN3_afU4xm750aVu0NnRVwAOlSfKw_3rkkn6HzPzvPj28LNwbieeN2pxI2DBnOYw06gYDY5Sf69VqEN-0qJMqnM-q0TRA1553iMNhypZvI-m3VJ_H4fQF09wAO4T6uCQHBch7YLWBQ"/>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-body-sm text-body-sm italic text-on-surface leading-snug">
+            “Langkah nyata memetakan 1.200+ pelaku usaha mikro demi Jatiasih yang berdaya saing bersama andu.my.id.”
+          </p>
+<span class="font-label-caps text-label-caps text-primary font-bold mt-1">Ibu Mutmainah — Kasi Permasbang Kel. Jatiasih</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<button class="w-full py-3.5 px-space-md rounded-full bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-[16px] font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/25 active:scale-98 transition-all cursor-pointer" onclick="goToPortfolioDetail('siplokal')">
+<span>Lihat Detail Studi Kasus</span>
 <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<a class="w-full py-3 px-space-md rounded-full bg-tertiary-container hover:bg-tertiary text-on-tertiary font-headline-sm text-[15px] font-bold flex items-center justify-center gap-2 active:scale-98 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20tertarik%20dengan%20proyek%20SIPLokal%20Jatiasih%20dan%20ingin%20konsultasi%20solusi%20serupa" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span>Hubungi Tim via WhatsApp (088976501065)</span>
 </a>
-<a class="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-8 py-3.5 rounded-full bg-surface-container-lowest text-primary font-headline-sm text-headline-sm font-semibold shadow-sm hover:bg-surface-container-low transition-all" href="#portofolio">
-<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">play_circle</span>
-<span>Lihat Hasil Karya &amp; Demo</span>
-</a>
-</div>
-<!-- Dynamic Visual Stage: Interactive Floating App Showcase -->
-<div class="relative max-w-5xl mx-auto mt-8">
-<!-- Center Dashboard Canvas Preview -->
-<div class="rounded-2xl p-4 lg:p-6 bg-surface-container-lowest shadow-xl">
-<!-- Mock Browser / OS Header -->
-<div class="flex items-center justify-between pb-4 mb-4 bg-surface-container-low px-4 py-2.5 rounded-xl">
-<div class="flex items-center gap-1.5">
-<span class="w-3 h-3 rounded-full bg-error"></span>
-<span class="w-3 h-3 rounded-full bg-secondary-container"></span>
-<span class="w-3 h-3 rounded-full bg-tertiary-fixed-dim"></span>
-<span class="ml-3 font-label-code text-label-code text-on-surface-variant">andu-cloud-runtime.app/console</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
-<span class="font-label-code text-label-code text-tertiary font-bold">PRODUCTION LIVE</span>
-</div>
-</div>
-<!-- Inner Dashboard Grid Showcase -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-<!-- Left Mini Metric Panel -->
-<div class="md:col-span-4 bg-surface-container-low rounded-xl p-5 flex flex-col justify-between">
-<div>
-<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Active Apps Managed</span>
-<div class="font-display-xl text-display-xl text-primary font-black mt-1">48<span class="text-tertiary text-headline-lg font-bold">+</span></div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">Zero downtime deployment di Google Cloud &amp; AWS.</p>
-</div>
-<!-- Mini Sparkline SVG -->
-<div class="mt-6 pt-4 bg-surface-container-lowest p-3 rounded-lg">
-<div class="flex items-center justify-between mb-1">
-<span class="font-label-code text-label-code text-on-surface font-semibold">User Sessions (Avg)</span>
-<span class="font-label-code text-label-code text-tertiary font-bold">+34.8%</span>
-</div>
-<svg class="w-full h-10 text-primary" fill="none" stroke="currentColor" viewbox="0 0 160 40">
-<path d="M0 32 Q 25 15, 50 24 T 100 12 T 140 6 T 160 2" stroke-linecap="round" stroke-width="2.5"></path>
-</svg>
-</div>
-</div>
-<!-- Center App Hero Graphic -->
-<div class="md:col-span-5 bg-surface-container-highest rounded-xl p-4 flex flex-col items-center justify-center relative overflow-hidden min-h-[260px]">
-<img class="w-48 h-64 object-cover rounded-xl shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300" data-alt="Vibrant clean smartphone showing modern fintech app with animated balance chart, lavender and deep indigo interface, high aesthetic digital art, 8k resolution studio rendering" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeVUeFbLdLGruw5YL_fg1T8TDPdy1TRIAT-1eo6peJfJDU-gPI6vwgzPty9n8soiJqglkn1hNvJqv7x9gcm7Qvy4Yx08yH95no_Wx2QCY902SR7acYcStnF7iM3Wqa8ybRt4FdKSTn1Oqf3FB0RFLvjWgmjqBQenygqO76d0hLFl8Fwes-5FW84CeIsA9UR5Djahh8oxGXM_ocEGtKbztxW3NzP1VimnVbnoxjSOSz3gHfCm_n8njwAA"/>
-<div class="absolute bottom-3 left-3 right-3 bg-surface-container-lowest/90 backdrop-blur-md p-3 rounded-lg flex items-center justify-between">
-<div>
-<div class="font-headline-sm text-headline-sm font-bold text-on-surface text-xs leading-none">FinPay Multi-Rail</div>
-<span class="font-label-caps text-label-caps text-tertiary">120K MAU · 4.9 Rating</span>
-</div>
-<span class="material-symbols-outlined text-primary text-[20px]">verified_user</span>
-</div>
-</div>
-<!-- Right Telemetry & AI Flow -->
-<div class="md:col-span-3 bg-surface-container-low rounded-xl p-5 flex flex-col justify-between">
-<div>
-<div class="flex items-center gap-2 mb-3">
-<span class="p-1.5 rounded-lg bg-primary-fixed text-primary">
-<span class="material-symbols-outlined text-[18px]">smart_toy</span>
-</span>
-<span class="font-headline-sm text-headline-sm text-on-surface font-bold">AI Workflow</span>
-</div>
-<div class="space-y-2">
-<div class="p-2 rounded-lg bg-surface-container-lowest flex items-center justify-between">
-<span class="font-body-sm text-body-sm text-on-surface-variant font-medium">Auto-Parsing</span>
-<span class="font-label-code text-label-code text-primary font-bold">98ms</span>
-</div>
-<div class="p-2 rounded-lg bg-surface-container-lowest flex items-center justify-between">
-<span class="font-body-sm text-body-sm text-on-surface-variant font-medium">Fine-Tuned LLM</span>
-<span class="font-label-code text-label-code text-tertiary font-bold">Optimal</span>
-</div>
-<div class="p-2 rounded-lg bg-surface-container-lowest flex items-center justify-between">
-<span class="font-body-sm text-body-sm text-on-surface-variant font-medium">Sync DB</span>
-<span class="font-label-code text-label-code text-on-surface font-bold">Realtime</span>
+<button class="w-full py-2.5 px-space-md rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-headline-sm text-[14px] font-semibold text-center transition-all cursor-pointer" id="closeSecondaryBtn">
+          Tutup &amp; Eksplorasi andu.my.id
+        </button>
 </div>
 </div>
 </div>
-<div class="pt-4">
-<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-code text-label-code font-bold">
-                  ⚡ 14-Day MVP Launch
-                </span>
+<!-- ========================================== -->
+<!-- 2. TAB VIEWS WRAPPER                       -->
+<!-- ========================================== -->
+<!-- TAB 1: BERANDA -->
+<div class="tab-pane flex flex-col w-full" id="tab-beranda">
+<!-- HERO SECTION -->
+<section class="px-gutter-sm pt-space-md pb-space-lg flex flex-col gap-space-md">
+<!-- Top Announcement Floating Banner (Re-open modal trigger) -->
+<button class="w-full text-left p-space-sm bg-secondary-fixed/40 hover:bg-secondary-fixed/60 rounded-xl flex items-center justify-between gap-space-xs transition-colors shadow-sm cursor-pointer" id="reopenBanner">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary flex-shrink-0 animate-ping"></span>
+<span class="font-label-caps text-label-caps text-on-secondary-fixed truncate font-bold">
+          🎉 Kolaborasi Baru: SIPLokal Jatiasih Live!
+        </span>
 </div>
+<span class="material-symbols-outlined text-secondary text-[18px]">launch</span>
+</button>
+<!-- Main Headline -->
+<div class="flex flex-col gap-space-xs">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-fixed rounded-full w-fit">
+<span class="font-label-caps text-label-caps uppercase text-on-primary-fixed-variant tracking-wider font-extrabold">Creative Engineering Studio</span>
 </div>
-</div>
-</div>
-<!-- Overlapping Tech Stack Badges -->
-<div class="hidden lg:flex items-center justify-center gap-3 -mt-4 relative z-10">
-<div class="px-4 py-2 rounded-full bg-surface-container-lowest shadow-md flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-primary"></span>
-<span class="font-label-code text-label-code text-on-surface font-bold">Flutter &amp; Dart</span>
-</div>
-<div class="px-4 py-2 rounded-full bg-surface-container-lowest shadow-md flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
-<span class="font-label-code text-label-code text-on-surface font-bold">Next.js 15 &amp; React</span>
-</div>
-<div class="px-4 py-2 rounded-full bg-surface-container-lowest shadow-md flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-tertiary"></span>
-<span class="font-label-code text-label-code text-on-surface font-bold">FastAPI &amp; Python LLM</span>
-</div>
-<div class="px-4 py-2 rounded-full bg-surface-container-lowest shadow-md flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-primary-container"></span>
-<span class="font-label-code text-label-code text-on-surface font-bold">Supabase / PostgreSQL</span>
-</div>
-</div>
-</div>
-<!-- Social Proof Client Bar -->
-<div class="mt-16 pt-10 text-center">
-<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest font-bold mb-6">
-          Dipercaya oleh 45+ Startup, UMKM Berkembang, &amp; Inovator Digital Lintas Asia Tenggara
-        </p>
-<div class="flex flex-wrap items-center justify-center gap-8 md:gap-14 opacity-75 grayscale hover:grayscale-0 transition-all">
-<div class="flex items-center gap-2 font-headline-sm text-headline-sm font-bold text-on-surface"><span class="material-symbols-outlined text-primary">local_fire_department</span>NaluriTech</div>
-<div class="flex items-center gap-2 font-headline-sm text-headline-sm font-bold text-on-surface"><span class="material-symbols-outlined text-secondary-container">account_balance_wallet</span>KojekPay</div>
-<div class="flex items-center gap-2 font-headline-sm text-headline-sm font-bold text-on-surface"><span class="material-symbols-outlined text-tertiary">medication</span>MedikaCare</div>
-<div class="flex items-center gap-2 font-headline-sm text-headline-sm font-bold text-on-surface"><span class="material-symbols-outlined text-primary">school</span>PintarKids</div>
-<div class="flex items-center gap-2 font-headline-sm text-headline-sm font-bold text-on-surface"><span class="material-symbols-outlined text-outline">rocket_launch</span>VentureNest</div>
-</div>
-</div>
-</section>
-</div>
-<!-- SECTION: LAYANAN UNGGULAN (Bento Grid) -->
-<section class="py-24 bg-surface-container-low" id="layanan">
-<div class="max-w-7xl mx-auto px-6 lg:px-12">
-<!-- Section Header -->
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-<div class="max-w-xl">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-code text-label-code font-bold mb-3">
-<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-            Katalog Kemampuan Teknis
-          </div>
-<h2 class="font-headline-lg text-headline-lg font-extrabold text-on-surface">
-            Solusi Rekayasa Digital yang Bekerja Presisi &amp; Estetik.
-          </h2>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant max-w-sm">
-          Kami memadukan estetika UI kelas dunia dengan fondasi clean-code arsitektur mikro untuk menjamin produk siap menampung lonjakan traffic.
-        </p>
-</div>
-<!-- Bento Grid (5 Key Services) -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- Service 1: Mobile App Dev (Spans 2 cols) -->
-<div class="md:col-span-2 rounded-2xl bg-surface-container-lowest p-8 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-<div class="max-w-md relative z-10">
-<div class="w-12 h-12 rounded-xl bg-primary-fixed text-primary flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-[28px]">phone_iphone</span>
-</div>
-<span class="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">Flagship Offering</span>
-<h3 class="font-headline-md text-headline-md text-on-surface font-bold mt-1 mb-3">
-              Mobile App Engineering (iOS &amp; Android)
-            </h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6">
-              Pembuatan aplikasi mobile native &amp; multiplatform dengan Flutter &amp; Swift. Smooth 60/120 FPS, arsitektur offline-first, sinkronisasi cloud real-time, dan standar rating bintang lima di Play Store &amp; App Store.
-            </p>
-<div class="flex flex-wrap gap-2 mb-6">
-<span class="px-2.5 py-1 rounded-md bg-surface-container font-label-code text-label-code text-on-surface font-semibold">Flutter SDK</span>
-<span class="px-2.5 py-1 rounded-md bg-surface-container font-label-code text-label-code text-on-surface font-semibold">Swift / SwiftUI</span>
-<span class="px-2.5 py-1 rounded-md bg-surface-container font-label-code text-label-code text-on-surface font-semibold">React Native</span>
-<span class="px-2.5 py-1 rounded-md bg-surface-container font-label-code text-label-code text-on-surface font-semibold">In-App Purchase</span>
-</div>
-<a class="inline-flex items-center gap-1.5 font-headline-sm text-headline-sm text-primary font-bold group-hover:translate-x-1 transition-transform" href="#kalkulator">
-<span>Simulasikan Biaya Aplikasi Mobile</span>
-<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-</a>
-</div>
-<!-- Decorative Phone Illustration / Visual -->
-<div class="hidden sm:block absolute right-[-20px] bottom-[-20px] w-64 h-72 opacity-90 group-hover:scale-105 transition-transform">
-<img class="w-full h-full object-cover rounded-xl shadow-lg" data-alt="Modern smartphone floating diagonally displaying user friendly iOS interface with vibrant purple and white layout, 3D clay style render, isolated clean background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxRzLv-D-ynw1l_TDgN7lD45RSZFM9St41nCk4haLZFK1-6DABH7WQThtG3Kz6wjx6vHOlA2t3geQQhsaKG32kMcFtsFUc2FyNXR3ixeBdq8bwWDSWBuOglhP6t8B77wR82bwjIS3QskBPpZKJBDWOsHiMrHxi3IJhRW7hA4tpsbsx_bpKKdOGxWEwtVwfk41LZ83JdlOJZ1bMomrf-H-tO4QRLpbYjp3yVPsv3yI9P8RjhNy9_Z2lSg"/>
-</div>
-</div>
-<!-- Service 2: High Performance Web & SaaS -->
-<div class="rounded-2xl bg-surface-container-lowest p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-<div>
-<div class="w-12 h-12 rounded-xl bg-secondary-fixed text-secondary flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-[28px]">language</span>
-</div>
-<span class="font-label-caps text-label-caps text-secondary uppercase font-bold tracking-wider">Web &amp; Cloud</span>
-<h3 class="font-headline-md text-headline-md text-on-surface font-bold mt-1 mb-3">
-              Web Platforms &amp; SaaS
-            </h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6">
-              Situs ultra-cepat berskor Lighthouse 95+, web app B2B, portal e-commerce dengan payment gateway Indonesia (Midtrans/Xendit), dan dashboard analitik.
-            </p>
-</div>
-<div class="flex flex-wrap gap-1.5">
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">Next.js 15</span>
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">Tailwind</span>
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">Postgres</span>
-</div>
-</div>
-<!-- Service 3: UI/UX & Prototyping -->
-<div class="rounded-2xl bg-surface-container-lowest p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-<div>
-<div class="w-12 h-12 rounded-xl bg-primary-fixed text-primary flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-[28px]">palette</span>
-</div>
-<span class="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">Design Lab</span>
-<h3 class="font-headline-md text-headline-md text-on-surface font-bold mt-1 mb-3">
-              UI/UX &amp; Design System
-            </h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6">
-              Bukan sekadar menggambar layar. Kami merancang arsitektur user-journey, wireframe berbasis data konversi, clickable Figma prototype, dan tokenisasi design system.
-            </p>
-</div>
-<div class="p-3 bg-surface-container rounded-xl flex items-center gap-3">
-<span class="material-symbols-outlined text-primary">touch_app</span>
-<span class="font-label-code text-label-code text-on-surface font-semibold">100% Usability Test Validated</span>
-</div>
-</div>
-<!-- Service 4: AI Integration & Automations -->
-<div class="rounded-2xl bg-surface-container-lowest p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-<div>
-<div class="w-12 h-12 rounded-xl bg-tertiary-fixed text-tertiary flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-[28px]">psychology</span>
-</div>
-<span class="font-label-caps text-label-caps text-tertiary uppercase font-bold tracking-wider">Next-Gen Tech</span>
-<h3 class="font-headline-md text-headline-md text-on-surface font-bold mt-1 mb-3">
-              AI &amp; Smart Automation
-            </h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6">
-              Integrasi custom LLM, bot WhatsApp CS otomatis bertenaga RAG (Retrieval Augmented Generation), document OCR analyzer, dan automasi proses bisnis.
-            </p>
-</div>
-<div class="flex items-center gap-2">
-<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-code text-label-code font-bold">
-              OpenAI / Gemini API
-            </span>
-</div>
-</div>
-<!-- Service 5: Maintenance & Tech Retainer -->
-<div class="rounded-2xl bg-surface-container-lowest p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-<div>
-<div class="w-12 h-12 rounded-xl bg-surface-container text-on-surface flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-[28px]">health_and_safety</span>
-</div>
-<span class="font-label-caps text-label-caps text-on-surface-variant uppercase font-bold tracking-wider">SLA Guaranteed</span>
-<h3 class="font-headline-md text-headline-md text-on-surface font-bold mt-1 mb-3">
-              DevOps &amp; Maintenance Retainer
-            </h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6">
-              Pemantauan server 24/7, patching keamanan otomatis, backup berkala, dan alokasi sprint hours bulanan untuk update fitur berkelanjutan.
-            </p>
-</div>
-<div class="flex items-center justify-between pt-2">
-<span class="font-label-code text-label-code text-on-surface-variant font-medium">Uptime Guarantee</span>
-<span class="font-label-code text-label-code text-tertiary font-bold">99.9% SLA</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- SECTION: SKEMA KERJASAMA (Cooperation Models) -->
-<section class="py-24 max-w-7xl mx-auto px-6 lg:px-12" id="skema-kerjasama">
-<div class="text-center max-w-3xl mx-auto mb-16">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-code text-label-code font-bold mb-3">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-        Skema Kemitraan Fleksibel
-      </div>
-<h2 class="font-headline-lg text-headline-lg font-extrabold text-on-surface">
-        Bekerja Sesuai Skala &amp; Model Bisnis Anda.
-      </h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2">
-        Kami memahami bahwa setiap tahap pertumbuhan memiliki kebutuhan modal dan kecepatan yang berbeda. Pilih model yang paling selaras dengan sasaran Anda.
+<h1 class="font-display-xl-mobile text-display-xl-mobile text-on-surface font-extrabold tracking-tight leading-tight">
+        With I and U, We’ll Realize <span class="text-primary underline decoration-secondary decoration-wavy decoration-2">Your Ideas!</span> 🚀
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+        Kami merancang &amp; membangun ekosistem digital kelas dunia untuk korporasi, UMKM, dan inisiatif sektor publik dengan kecepatan lab modern.
       </p>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<!-- Model 1: Fixed Scope -->
-<div class="rounded-2xl p-8 bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all flex flex-col justify-between">
-<div>
-<div class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container font-label-code text-label-code font-bold text-on-surface mb-4">
-            MODEL 01
-          </div>
-<h3 class="font-headline-md text-headline-md text-on-surface font-bold mb-2">Project-Based (Fixed Milestone)</h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6">
-            Ideal untuk peluncuran MVP perdana atau projek dengan requirement dan dokumen PRD yang telah terdefinisi rapi.
-          </p>
-<div class="p-4 rounded-xl bg-surface-container-low mb-6">
-<div class="font-label-caps text-label-caps text-on-surface font-bold uppercase mb-2">Karakteristik Utama:</div>
-<ul class="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>Biaya &amp; deadline pasti di awal (No hidden fee)</li>
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>Pembayaran berbasis termin milestone deliverable</li>
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>Free bug-fixing guarantee 3 bulan pasca rilis</li>
-</ul>
+<!-- Trust Badges Row -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<div class="inline-flex items-center gap-1 px-3 py-1.5 bg-surface-container rounded-full text-on-surface font-label-code text-label-code">
+<span class="material-symbols-outlined text-tertiary text-[16px]">verified</span>
+<span>100% Hak Cipta Milik Klien</span>
+</div>
+<div class="inline-flex items-center gap-1 px-3 py-1.5 bg-surface-container rounded-full text-on-surface font-label-code text-label-code">
+<span class="material-symbols-outlined text-primary text-[16px]">bug_report</span>
+<span>Garansi Bebas Bug</span>
+</div>
+<div class="inline-flex items-center gap-1 px-3 py-1.5 bg-surface-container rounded-full text-on-surface font-label-code text-label-code">
+<span class="material-symbols-outlined text-secondary text-[16px]">handshake</span>
+<span>Partner Andalan ASN</span>
 </div>
 </div>
-<a class="w-full text-center py-3 rounded-full bg-surface-container text-on-surface font-headline-sm text-headline-sm font-semibold hover:bg-primary hover:text-on-primary transition-colors" href="#kalkulator">
-          Pilih Fixed Milestone
-        </a>
-</div>
-<!-- Model 2: Dedicated Tech Partner (Hero Card) -->
-<div class="rounded-2xl p-8 bg-primary text-on-primary shadow-xl flex flex-col justify-between relative transform lg:-translate-y-4">
-<div class="absolute -top-3.5 right-6 px-3 py-1 rounded-full bg-secondary-container text-on-secondary font-label-code text-label-code font-bold shadow-md">
-          Paling Populer 🔥
-        </div>
-<div>
-<div class="inline-flex items-center px-3 py-1 rounded-full bg-primary-container text-on-primary font-label-code text-label-code font-bold mb-4">
-            MODEL 02
-          </div>
-<h3 class="font-headline-md text-headline-md text-on-primary font-bold mb-2">Dedicated Tech Partner (Squad Retainer)</h3>
-<p class="font-body-md text-body-md text-on-primary-container mb-6">
-            Tim developer (Full-stack, QA, UI/UX, PM) yang didedikasikan penuh untuk perusahaan Anda layaknya in-house engineering team.
-          </p>
-<div class="p-4 rounded-xl bg-primary-container text-on-primary mb-6">
-<div class="font-label-caps text-label-caps font-bold uppercase mb-2 text-on-primary-container">Karakteristik Utama:</div>
-<ul class="space-y-2 font-body-sm text-body-sm">
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary-fixed text-[18px]">check_circle</span>Fleksibilitas backlog &amp; pivot fitur dua mingguan</li>
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary-fixed text-[18px]">check_circle</span>Stand-up meeting harian &amp; kanal Slack/Discord khusus</li>
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary-fixed text-[18px]">check_circle</span>Tanpa overhead rekrutmen &amp; tunjangan kantor</li>
-</ul>
-</div>
-</div>
-<a class="w-full text-center py-3 rounded-full bg-surface-container-lowest text-primary font-headline-sm text-headline-sm font-bold shadow-md hover:bg-surface-container-low transition-colors" href="#kalkulator">
-          Booking Dedicated Squad
-        </a>
-</div>
-<!-- Model 3: Equity / Rev-Share -->
-<div class="rounded-2xl p-8 bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all flex flex-col justify-between">
-<div>
-<div class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container font-label-code text-label-code font-bold text-on-surface mb-4">
-            MODEL 03
-          </div>
-<h3 class="font-headline-md text-headline-md text-on-surface font-bold mb-2">Venture / Equity &amp; Revenue Share</h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6">
-            Khusus startup terpilih dengan traction tervalidasi atau founder bereputasi yang membutuhkan co-founder teknologi.
-          </p>
-<div class="p-4 rounded-xl bg-surface-container-low mb-6">
-<div class="font-label-caps text-label-caps text-on-surface font-bold uppercase mb-2">Karakteristik Utama:</div>
-<ul class="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>Biaya tunai diskon signifikan (Cash + Equity model)</li>
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>Dukungan arsitektur CTO level &amp; pitch deck advisor</li>
-<li class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>Proses seleksi &amp; due diligence komprehensif</li>
-</ul>
-</div>
-</div>
-<a class="w-full text-center py-3 rounded-full bg-surface-container text-on-surface font-headline-sm text-headline-sm font-semibold hover:bg-primary hover:text-on-primary transition-colors" href="https://wa.me/6281234567890?text=Halo%20Andu,%20saya%20tertarik%20mengajukan%20Venture%20Co-founder%20Program" rel="noreferrer" target="_blank">
-          Ajukan Pitch Startup
-        </a>
-</div>
-</div>
-</section>
-<!-- SECTION: KALKULATOR / SIMULASI BIAYA INTERAKTIF -->
-<section class="py-24 bg-surface-container-low" id="kalkulator">
-<div class="max-w-7xl mx-auto px-6 lg:px-12">
-<div class="text-center max-w-3xl mx-auto mb-16">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-code text-label-code font-bold mb-3">
-<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-          Transparansi Tanpa Jebakan
-        </div>
-<h2 class="font-headline-lg text-headline-lg font-extrabold text-on-surface">
-          Simulasi Estimasi Biaya &amp; Waktu Projek
-        </h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2">
-          Pilih tipe produk dan skala kebutuhan Anda untuk mendapatkan gambaran kisaran budget, timeline rilis, serta bonus eksklusif yang otomatis Anda dapatkan.
-        </p>
-</div>
-<!-- Estimator Container -->
-<div class="rounded-3xl bg-surface-container-lowest p-6 lg:p-12 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-10">
-<!-- Interactive Controls (Left 7 Cols) -->
-<div class="lg:col-span-7 space-y-8">
-<!-- Step 1: Platform Selection -->
-<div>
-<label class="block font-headline-sm text-headline-sm font-bold text-on-surface mb-3">
-              1. Pilih Tipe Platform Utama
-            </label>
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="platform-selectors">
-<button class="platform-btn p-4 rounded-xl text-left bg-primary text-on-primary shadow-md transition-all flex flex-col justify-between h-28" data-type="mobile" type="button">
-<span class="material-symbols-outlined text-[24px]">phone_iphone</span>
-<span class="font-label-code text-label-code font-bold">Mobile App (iOS/Android)</span>
-</button>
-<button class="platform-btn p-4 rounded-xl text-left bg-surface-container text-on-surface hover:bg-surface-container-high transition-all flex flex-col justify-between h-28" data-type="web" type="button">
-<span class="material-symbols-outlined text-[24px]">desktop_windows</span>
-<span class="font-label-code text-label-code font-bold">Web SaaS / Portal</span>
-</button>
-<button class="platform-btn p-4 rounded-xl text-left bg-surface-container text-on-surface hover:bg-surface-container-high transition-all flex flex-col justify-between h-28" data-type="ai" type="button">
-<span class="material-symbols-outlined text-[24px]">smart_toy</span>
-<span class="font-label-code text-label-code font-bold">AI Workflow &amp; Bot</span>
-</button>
-<button class="platform-btn p-4 rounded-xl text-left bg-surface-container text-on-surface hover:bg-surface-container-high transition-all flex flex-col justify-between h-28" data-type="ecosystem" type="button">
-<span class="material-symbols-outlined text-[24px]">hub</span>
-<span class="font-label-code text-label-code font-bold">Full Ecosystem (App+Web)</span>
-</button>
-</div>
-</div>
-<!-- Step 2: Complexity / Scope Level -->
-<div>
-<label class="block font-headline-sm text-headline-sm font-bold text-on-surface mb-3">
-              2. Skala &amp; Kematangan Fitur
-            </label>
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="tier-selectors">
-<button class="tier-btn p-4 rounded-xl text-left bg-surface-container text-on-surface hover:bg-surface-container-high transition-all" data-tier="mvp" type="button">
-<div class="font-label-code text-label-code font-bold text-primary">TIER 1</div>
-<div class="font-headline-sm text-headline-sm font-bold text-on-surface mt-1">MVP Starter</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Validasi pasar cepat dengan 3-5 fitur inti yang esensial.</p>
-</button>
-<button class="tier-btn p-4 rounded-xl text-left bg-primary text-on-primary shadow-md transition-all" data-tier="growth" type="button">
-<div class="font-label-code text-label-code font-bold text-tertiary-fixed">TIER 2 (Recommended)</div>
-<div class="font-headline-sm text-headline-sm font-bold text-on-primary mt-1">Growth &amp; Scalable</div>
-<p class="font-body-sm text-body-sm text-on-primary-container mt-1">Sistem pembayaran, analitik lengkap, arsitektur multi-role.</p>
-</button>
-<button class="tier-btn p-4 rounded-xl text-left bg-surface-container text-on-surface hover:bg-surface-container-high transition-all" data-tier="enterprise" type="button">
-<div class="font-label-code text-label-code font-bold text-secondary-container">TIER 3</div>
-<div class="font-headline-sm text-headline-sm font-bold text-on-surface mt-1">Enterprise Ready</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Microservices, custom AI, SLA 99.9%, audit keamanan ketat.</p>
-</button>
-</div>
-</div>
-<!-- Included Standard Perks -->
-<div>
-<div class="font-label-caps text-label-caps uppercase text-on-surface-variant font-bold mb-3 tracking-wider">
-              🎁 Otomatis Didapat di Setiap Kontrak:
-            </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-body-sm font-body-sm text-on-surface">
-<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-low">
-<span class="material-symbols-outlined text-tertiary text-[18px]">verified</span>
-<span>Garansi 3 Bulan Bug-Free SLA</span>
-</div>
-<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-low">
-<span class="material-symbols-outlined text-tertiary text-[18px]">code</span>
-<span>100% Hak Milik Source Code (Full IP)</span>
-</div>
-<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-low">
-<span class="material-symbols-outlined text-tertiary text-[18px]">cloud_done</span>
-<span>Setup Cloud &amp; CI/CD Deployment</span>
-</div>
-<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-low">
-<span class="material-symbols-outlined text-tertiary text-[18px]">store</span>
-<span>Bantuan Rilis Google Play &amp; Apple Store</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Dynamic Output Calculation Box (Right 5 Cols) -->
-<div class="lg:col-span-5 rounded-2xl bg-surface-container-low p-6 lg:p-8 flex flex-col justify-between shadow-sm">
-<div>
-<div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
-<span class="font-label-caps text-label-caps font-bold text-on-surface-variant uppercase">Rangkuman Estimasi</span>
-<span class="px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-code text-label-code font-bold">
-                ESTIMASI AKURAT
-              </span>
-</div>
-<!-- Price Output -->
-<div class="my-6">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Kisaran Investasi Pengembangan:</span>
-<div class="font-display-xl text-display-xl font-extrabold text-primary tracking-tight mt-1" id="cost-display">
-                Rp 28jt - 45jt
-              </div>
-<div class="flex items-center gap-2 mt-2 text-on-surface-variant font-body-sm text-body-sm">
-<span class="material-symbols-outlined text-[18px] text-tertiary">schedule</span>
-<span>Estimasi Durasi Kerja: <strong class="text-on-surface font-semibold" id="timeline-display">4 - 7 Minggu</strong></span>
-</div>
-</div>
-<!-- Breakdown mini list -->
-<div class="space-y-2 py-4 bg-surface-container-lowest p-4 rounded-xl mb-6">
-<div class="flex justify-between font-body-sm text-body-sm">
-<span class="text-on-surface-variant">Sprint Milestone:</span>
-<span class="font-label-code text-label-code font-semibold text-on-surface" id="sprint-display">3 Sprints (2 Minggu/Sprint)</span>
-</div>
-<div class="flex justify-between font-body-sm text-body-sm">
-<span class="text-on-surface-variant">Dedicated Squad:</span>
-<span class="font-label-code text-label-code font-semibold text-on-surface" id="squad-display">1 UI/UX, 2 Devs, 1 QA</span>
-</div>
-<div class="flex justify-between font-body-sm text-body-sm">
-<span class="text-on-surface-variant">Model Pembayaran:</span>
-<span class="font-label-code text-label-code font-semibold text-tertiary">Termin (30% - 40% - 30%)</span>
-</div>
-</div>
-</div>
-<!-- Action WhatsApp CTA with auto-populated parameters -->
-<div class="space-y-3">
-<a class="w-full inline-flex items-center justify-center gap-2 py-4 rounded-full bg-secondary-container text-on-secondary font-headline-sm text-headline-sm font-bold shadow-lg shadow-secondary-container/30 hover:shadow-secondary-container/50 hover:-translate-y-0.5 transition-all text-center" href="https://wa.me/6281234567890?text=Halo%20tim%20andu.my.id!%20Saya%20ingin%20konsultasi%20pembuatan%20Mobile%20App%20kategori%20Growth%20(Estimasi%20Rp%2028jt%20-%2045jt)." id="btn-wa-quote" rel="noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[22px]">chat</span>
-<span>Kirim Estimasi ke WhatsApp</span>
+<!-- Primary CTA Group -->
+<div class="flex flex-col gap-space-xs mt-1">
+<a class="w-full h-12 bg-secondary-container hover:bg-secondary text-on-secondary rounded-full font-headline-sm text-[16px] font-bold flex items-center justify-center gap-2 shadow-lg shadow-secondary-container/30 active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20ingin%20konsultasi%20proyek%20gratis" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span>Konsultasi Proyek Gratis</span>
 </a>
-<p class="font-body-sm text-body-sm text-center text-on-surface-variant">
-              Diskusi awal 100% rahasia dengan perlindungan Non-Disclosure Agreement (NDA).
-            </p>
+<button class="w-full h-12 bg-surface-container hover:bg-surface-container-high text-primary rounded-full font-headline-sm text-[16px] font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer" onclick="switchTab('layanan')">
+<span>Jelajahi Solusi Digital</span>
+<span class="material-symbols-outlined text-[20px]">arrow_downward</span>
+</button>
+</div>
+</section>
+<!-- QUICK ACTION CARDS -->
+<section class="px-gutter-sm pb-space-lg">
+<div class="grid grid-cols-3 gap-space-xs">
+<button class="p-space-sm bg-surface-container-low hover:bg-surface-container rounded-xl flex flex-col items-center text-center gap-1.5 active:scale-95 transition-all shadow-sm cursor-pointer" onclick="switchTab('kalkulator')">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">calculate</span>
+</div>
+<span class="font-headline-sm text-[12px] font-bold text-on-surface leading-tight">Estimasi Biaya</span>
+</button>
+<button class="p-space-sm bg-surface-container-low hover:bg-surface-container rounded-xl flex flex-col items-center text-center gap-1.5 active:scale-95 transition-all shadow-sm cursor-pointer" onclick="switchTab('portofolio')">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">rocket_launch</span>
+</div>
+<span class="font-headline-sm text-[12px] font-bold text-on-surface leading-tight">Portofolio Klien</span>
+</button>
+<a class="p-space-sm bg-surface-container-low hover:bg-surface-container rounded-xl flex flex-col items-center text-center gap-1.5 active:scale-95 transition-all shadow-sm" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20ingin%20bicara%20dengan%20ahli%20teknologi" rel="noopener" target="_blank">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[22px]">forum</span>
+</div>
+<span class="font-headline-sm text-[12px] font-bold text-on-surface leading-tight">Chat Ahli Tech</span>
+</a>
+</div>
+</section>
+<!-- FEATURED COLLABORATION SECTION (SIPLOKAL SPOTLIGHT ON FEED) -->
+<section class="px-gutter-sm pb-space-lg" id="studi-kasus-siplokal">
+<div class="p-space-md bg-surface-container rounded-xl flex flex-col gap-space-sm shadow-md">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-secondary font-bold tracking-wider">Spotlight Kolaborasi Publik</span>
+<span class="font-label-code text-label-code text-on-surface-variant font-bold">Q2 2025</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-extrabold leading-snug">
+        Dampak Nyata SIPLokal untuk Warga &amp; Birokrasi Jatiasih
+      </h3>
+<div class="relative w-full h-44 rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Community market street vendors and small enterprise owners in Kota Bekasi interacting with mobile application interface on smartphone bright daylight modern Indonesian urban atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyZ9urZ8Ue8EaztVZHUCQwN5UFqdUyg9o08I1FLd-8x-AqZJYjq1EWxbdhWck7Rcr75mA-ajk73sBKgx_d4MmUiHs1QqnKrcA_9cBBYm5TwshPf6l7mxVAkoQSzyulcGcfle_3bpcLYuR_ngwtsPxmRDgwdKAY81uztyzzHodVKgeCj1a8dze7p11wY2spo3lGKxDYT5Ml_CrmmHusUA9R3Hm636dzCa5JWY31CPoFFTk-nYSEImdr0A"/>
+<div class="absolute bottom-2 left-2 right-2 p-2 bg-inverse-surface/80 backdrop-blur-md rounded-md text-inverse-on-surface flex items-center justify-between">
+<span class="font-label-caps text-label-caps font-medium">Cakupan Data Lapangan</span>
+<span class="font-label-code text-label-code text-tertiary-fixed font-bold">1.240+ UMKM Terdata</span>
 </div>
 </div>
+<div class="grid grid-cols-2 gap-space-xs mt-1">
+<div class="p-space-xs bg-surface-container-lowest rounded-lg flex flex-col">
+<span class="font-headline-sm text-primary font-extrabold text-[22px]">87%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Percepatan Pengurusan NIB</span>
+</div>
+<div class="p-space-xs bg-surface-container-lowest rounded-lg flex flex-col">
+<span class="font-headline-sm text-secondary font-extrabold text-[22px]">6 RW</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Klaster Sentra Terpetakan</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-1">
+<a class="flex-1 py-2.5 px-3 bg-primary text-on-primary rounded-full font-headline-sm text-[13px] font-bold text-center active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20tertarik%20membuat%20sistem%20pendataan%20serupa%20SIPLokal" rel="noopener" target="_blank">
+          Buat Sistem Serupa
+        </a>
+<button class="py-2.5 px-4 bg-surface-container-high text-on-surface rounded-full font-headline-sm text-[13px] font-semibold active:scale-95 transition-all cursor-pointer" onclick="goToPortfolioDetail('siplokal')">
+          Detail Tim
+        </button>
 </div>
 </div>
 </section>
-<!-- SECTION: PORTOFOLIO & STUDI KASUS -->
-<section class="py-24 max-w-7xl mx-auto px-6 lg:px-12" id="portofolio">
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-<div>
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-code text-label-code font-bold mb-3">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-          Karya Nyata yang Memberi Dampak
-        </div>
-<h2 class="font-headline-lg text-headline-lg font-extrabold text-on-surface">
-          Studi Kasus &amp; Aplikasi Pilihan
-        </h2>
+<!-- SOCIAL PROOF / STATS BANNER -->
+<section class="px-gutter-sm pb-space-lg">
+<div class="p-space-md bg-primary text-on-primary rounded-xl flex flex-col gap-space-sm shadow-xl">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary-fixed text-[24px]">workspace_premium</span>
+<span class="font-label-caps text-label-caps uppercase text-primary-fixed tracking-wider font-bold">Mengapa andu.my.id?</span>
 </div>
-<div class="flex items-center gap-2">
-<span class="font-label-code text-label-code text-on-surface-variant">Hasil nyata, bukan sekadar mockup portofolio.</span>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="flex flex-col">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-extrabold text-on-primary">40+</span>
+<span class="font-body-sm text-body-sm text-primary-fixed-dim">Solusi Diluncurkan</span>
 </div>
-</div>
-<!-- Case Studies 3-Column Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-<!-- Project 1: FinTech & Multi-Currency Wallet -->
-<div class="rounded-2xl bg-surface-container-lowest overflow-hidden shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
-<div>
-<div class="h-60 overflow-hidden relative">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Fintech banking application mobile screen mockup with high contrast purple accents and clean financial charts on contemporary smartphone in modern workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-ga_oymXMKLtGYiT7gH7V6QOjI7acAQ1TqzleFKJ8kYFd0HH3Xcq5zPtT6tyTnPUMou5Gq8IqWbyDrhB3LEGlY_81ayI9yjGVTEvgmJWc1QVfv2ErqPP9Mv69p8rtCtlv4hOXS923FopVviEA_DX1KdINM8N8e1MmKzr41ttaoaXesSy94WjgOSONMGCBqAJ5bKe88G7PBppQhdXr5GStstJF-FIoYPMScFMi8DpIiOxwQIZdhNOXLw"/>
-<div class="absolute top-4 left-4">
-<span class="px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md font-label-code text-label-code font-bold text-primary">
-                FinTech · Mobile
-              </span>
-</div>
-<div class="absolute bottom-4 right-4">
-<span class="px-3 py-1 rounded-full bg-tertiary text-on-tertiary font-label-code text-label-code font-bold shadow-md">
-                +340% Conversions
-              </span>
+<div class="flex flex-col">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-extrabold text-tertiary-fixed">99.8%</span>
+<span class="font-body-sm text-body-sm text-primary-fixed-dim">SLA Uptime Sistem</span>
 </div>
 </div>
-<div class="p-6">
-<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">
-              PundiPay: Cross-Border Digital Wallet
-            </h3>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2 mb-4">
-              Pengembangan dari nol aplikasi dompet digital multi-mata uang dengan verifikasi biometrik e-KYC dan sistem QRIS dinamis.
-            </p>
-<div class="flex flex-wrap gap-1.5 mb-2">
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">Flutter</span>
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">Go Microservices</span>
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">Redis</span>
-</div>
-</div>
-</div>
-<div class="p-6 pt-0 flex items-center justify-between border-t border-surface-container pt-4">
-<span class="font-label-code text-label-code text-on-surface-variant">Featured on Play Store</span>
-<span class="material-symbols-outlined text-primary text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</div>
-</div>
-<!-- Project 2: HealthTech Telemedicine App -->
-<div class="rounded-2xl bg-surface-container-lowest overflow-hidden shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
-<div>
-<div class="h-60 overflow-hidden relative">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Telemedicine mobile application interface with patient doctor video call and electronic health record cards displayed on clean device with gentle lavender gradients" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_3J-r44UxlBcsrxVzUqxdqHNBiAiEMdrbTGp_zVgJgc636CB2Ysge184URsUzBy-fekN7xArJDgEdJLbS1_llavAmCF-ouLS5Tm2Pt7xBlimxl9IBGe-pj4kNsg6zl-cnQN0ABx1wdk_6rlTRbjWv4HmPRyQ5v25VEkYzXnpurPp4IjZvgOxrM2nnF1PjtCQEqWl76y93fp_ALELhv8ZPS4DorWx1Gj7Os0IzoQSKXDkWgH1N1YrXcg"/>
-<div class="absolute top-4 left-4">
-<span class="px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md font-label-code text-label-code font-bold text-tertiary">
-                HealthTech · SaaS
-              </span>
-</div>
-<div class="absolute bottom-4 right-4">
-<span class="px-3 py-1 rounded-full bg-primary text-on-primary font-label-code text-label-code font-bold shadow-md">
-                150K+ Consultations
-              </span>
-</div>
-</div>
-<div class="p-6">
-<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">
-              KlinikKu: Telemed &amp; Smart Prescription
-            </h3>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2 mb-4">
-              Platform telekonsultasi dokter spesialis dengan WebRTC video enkripsi end-to-end dan integrasi sistem resep digital ke 200+ apotek partner.
-            </p>
-<div class="flex flex-wrap gap-1.5 mb-2">
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">Next.js 14</span>
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">WebRTC</span>
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">PostgreSQL</span>
-</div>
-</div>
-</div>
-<div class="p-6 pt-0 flex items-center justify-between border-t border-surface-container pt-4">
-<span class="font-label-code text-label-code text-on-surface-variant">HIPAA/Permenkes Compliant</span>
-<span class="material-symbols-outlined text-primary text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</div>
-</div>
-<!-- Project 3: AI Workflow & Commerce SaaS -->
-<div class="rounded-2xl bg-surface-container-lowest overflow-hidden shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
-<div>
-<div class="h-60 overflow-hidden relative">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern SaaS web dashboard showcasing artificial intelligence chatbot metrics, natural language customer queries and inventory predictions in clean minimalist UI" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmnUTA6Lq9GOVNzJ1RiinmUFeNVOcwSQQiHe3A6Yn2GqSGH49gbeH1ykTlYb8ySsH0GRopLIZc-d2Znzw_UilA68nzL4hAfCM_g5D0X-KCCNISq3pJ-42wQNxM6S1_hXxeiECgX0ZD3f614hVXunufhVpHKXLe4qIBa9uBCjaqC5oPz5XscA11UhnsjNhJxrzVaeYu8WBT7I_Vgz1Xj7xpepuItiIKOmPJdjlTZYxAawVXMaFkhYGzrw"/>
-<div class="absolute top-4 left-4">
-<span class="px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md font-label-code text-label-code font-bold text-secondary">
-                AI Agent · Omnichannel
-              </span>
-</div>
-<div class="absolute bottom-4 right-4">
-<span class="px-3 py-1 rounded-full bg-secondary text-on-secondary font-label-code text-label-code font-bold shadow-md">
-                -75% Response Time
-              </span>
-</div>
-</div>
-<div class="p-6">
-<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">
-              ChatOrder AI: Multi-Brand WhatsApp Commerce
-            </h3>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2 mb-4">
-              Sistem agen WhatsApp berkemampuan LLM yang mampu merekomendasikan produk, menerima transfer bukti bayar dengan OCR, hingga cetak resi otomatis.
-            </p>
-<div class="flex flex-wrap gap-1.5 mb-2">
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">Python / LangChain</span>
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">Node.js</span>
-<span class="px-2 py-0.5 rounded bg-surface-container font-label-code text-label-code text-on-surface-variant">AWS Lambda</span>
-</div>
-</div>
-</div>
-<div class="p-6 pt-0 flex items-center justify-between border-t border-surface-container pt-4">
-<span class="font-label-code text-label-code text-on-surface-variant">1.2M Pesan Terlayani</span>
-<span class="material-symbols-outlined text-primary text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</div>
-</div>
+<p class="font-body-sm text-body-sm text-primary-fixed-dim leading-snug pt-1">
+        Mulai dari perumusan ide (I and U), arsitektur database, desain antarmuka, hingga instalasi server bersertifikat.
+      </p>
 </div>
 </section>
-<!-- SECTION: ALASAN MEMILIH ANDU.MY.ID ("KENAPA 'I and U'?") -->
-<section class="py-24 bg-surface-container-low">
-<div class="max-w-7xl mx-auto px-6 lg:px-12">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-<!-- Left Column: Story -->
-<div class="lg:col-span-6 space-y-6">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-code text-label-code font-bold">
-<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-            Filosofi Kolaborasi Kami
-          </div>
-<h2 class="font-headline-lg text-headline-lg font-extrabold text-on-surface">
-            Bukan Sekadar Vendor Luar, Kami Adalah <span class="text-primary">Co-Creator Anda</span>.
-          </h2>
-<p class="font-body-md text-body-md text-on-surface-variant">
-            Nama <strong>andu</strong> berasal dari <em>"I and U"</em> — filosofi bahwa produk digital terbaik tidak lahir dari instruksi searah, melainkan dari sinergi intim antara keahlian industri Anda dan keahlian rekayasa teknologi kami.
-          </p>
-<div class="space-y-4 pt-2">
-<div class="flex items-start gap-3">
-<div class="p-2 rounded-lg bg-primary-fixed text-primary shrink-0 mt-1">
-<span class="material-symbols-outlined text-[20px]">visibility</span>
 </div>
+<!-- TAB 2: LAYANAN -->
+<div class="tab-pane hidden flex-col w-full px-gutter-sm pt-space-md pb-space-lg gap-space-md" id="tab-layanan">
+<div class="flex flex-col gap-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-fixed rounded-full w-fit">
+<span class="font-label-caps text-label-caps uppercase text-on-primary-fixed-variant tracking-wider font-extrabold">Service Catalog</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-extrabold text-on-surface">Layanan Rekayasa Digital</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Solusi end-to-end dengan jaminan SLA, kode bersih, dan kepemilikan aset 100%.</p>
+</div>
+<!-- Service Card 1 -->
+<div class="p-space-md bg-surface-container-low rounded-xl flex flex-col gap-space-xs shadow-sm border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">phone_iphone</span>
+</div>
+<span class="px-2.5 py-1 bg-surface-container rounded-full font-label-code text-[11px] text-primary font-bold">Mulai 15jt • 3-6 Pekan</span>
+</div>
+<h3 class="font-headline-sm text-[18px] font-bold text-on-surface mt-1">Aplikasi Mobile Android &amp; iOS</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+  PWA berkinerja tinggi, Flutter, dan React Native dengan kapabilitas offline-first, geolokasi presisi, dan notifikasi real-time.
+</p>
+<div class="flex flex-wrap gap-1 mt-1">
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-primary">Flutter</span>
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-primary">React Native</span>
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-primary">Offline GIS</span>
+</div>
+<a class="mt-2 w-full py-2.5 px-3 bg-primary text-on-primary rounded-full font-headline-sm text-[13px] font-bold text-center active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20ingin%20konsultasi%20pembuatan%20Aplikasi%20Mobile" rel="noopener" target="_blank">
+  Konsultasi Mobile App
+</a>
+</div>
+<!-- Service Card 2 -->
+<div class="p-space-md bg-surface-container-low rounded-xl flex flex-col gap-space-xs shadow-sm border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">cloud_sync</span>
+</div>
+<span class="px-2.5 py-1 bg-surface-container rounded-full font-label-code text-[11px] text-secondary font-bold">Mulai 12jt • 2-5 Pekan</span>
+</div>
+<h3 class="font-headline-sm text-[18px] font-bold text-on-surface mt-1">Web Platform &amp; Custom SaaS</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+  Dashboard manajemen operasional, portal data instansi/pemerintahan, dan web enterprise terintegrasi sistem billing otomatis.
+</p>
+<div class="flex flex-wrap gap-1 mt-1">
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-secondary">Next.js 14</span>
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-secondary">Supabase</span>
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-secondary">PostgreSQL</span>
+</div>
+<a class="mt-2 w-full py-2.5 px-3 bg-secondary text-on-secondary rounded-full font-headline-sm text-[13px] font-bold text-center active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20ingin%20konsultasi%20pembuatan%20Web%20Platform%20SaaS" rel="noopener" target="_blank">
+  Konsultasi Web SaaS
+</a>
+</div>
+<!-- Service Card 3 -->
+<div class="p-space-md bg-surface-container-low rounded-xl flex flex-col gap-space-xs shadow-sm border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">smart_toy</span>
+</div>
+<span class="px-2.5 py-1 bg-surface-container rounded-full font-label-code text-[11px] text-tertiary font-bold">Mulai 9jt • 1-3 Pekan</span>
+</div>
+<h3 class="font-headline-sm text-[18px] font-bold text-on-surface mt-1">AI &amp; Otomasi Dokumen</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+  Pemeriksaan berkas NIB otomatis, integrasi bot WhatsApp interaktif resmi, OCR scan KTP/NPWP cerdas, dan sinkronisasi CRM.
+</p>
+<div class="flex flex-wrap gap-1 mt-1">
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-tertiary">OCR AI</span>
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-tertiary">WA Automation</span>
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-tertiary">LangChain</span>
+</div>
+<a class="mt-2 w-full py-2.5 px-3 bg-tertiary-container text-on-tertiary rounded-full font-headline-sm text-[13px] font-bold text-center active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20ingin%20konsultasi%20AI%20dan%20Otomasi%20WhatsApp" rel="noopener" target="_blank">
+  Konsultasi Solusi AI
+</a>
+</div>
+<!-- Service Card 4 -->
+<div class="p-space-md bg-surface-container-low rounded-xl flex flex-col gap-space-xs shadow-sm border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-full bg-primary-fixed-dim text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">palette</span>
+</div>
+<span class="px-2.5 py-1 bg-surface-container rounded-full font-label-code text-[11px] text-primary font-bold">Mulai 7jt • 2 Pekan</span>
+</div>
+<h3 class="font-headline-sm text-[18px] font-bold text-on-surface mt-1">UI/UX Design &amp; Brand Systems</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+  Rancangan antarmuka human-centered berbasis Figma tokens, prototipe klik interaktif, dan pedoman identitas merek digital siap coding.
+</p>
+<div class="flex flex-wrap gap-1 mt-1">
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-primary">Figma Tokens</span>
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-primary">Design System</span>
+<span class="px-2 py-0.5 bg-surface-container rounded font-label-code text-label-code text-primary">Usability Test</span>
+</div>
+<a class="mt-2 w-full py-2.5 px-3 bg-primary-container text-on-primary rounded-full font-headline-sm text-[13px] font-bold text-center active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20ingin%20konsultasi%20desain%20UIUX%20dan%20Design%20System" rel="noopener" target="_blank">
+  Konsultasi Desain UI/UX
+</a>
+</div>
+</div>
+<!-- TAB 3: PORTOFOLIO -->
+<div class="tab-pane hidden flex-col w-full px-gutter-sm pt-space-md pb-space-lg gap-space-md" id="tab-portofolio">
+<div class="flex flex-col gap-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary-fixed rounded-full w-fit">
+<span class="font-label-caps text-label-caps uppercase text-on-secondary-fixed tracking-wider font-extrabold">Track Record</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-extrabold text-on-surface">Portofolio &amp; Karya Nyata</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Studi kasus digital yang membawa perubahan terukur bagi instansi &amp; bisnis.</p>
+</div>
+<!-- Portfolio 1: SIPLokal Jatiasih -->
+<div class="bg-surface-container rounded-2xl overflow-hidden shadow-md border border-outline-variant/30 flex flex-col" id="case-siplokal">
+<div class="relative h-48 w-full bg-slate-900">
+<img class="w-full h-full object-cover" data-alt="Community market street vendors and small enterprise owners in Kota Bekasi interacting with mobile application interface on smartphone bright daylight modern Indonesian urban atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyZ9urZ8Ue8EaztVZHUCQwN5UFqdUyg9o08I1FLd-8x-AqZJYjq1EWxbdhWck7Rcr75mA-ajk73sBKgx_d4MmUiHs1QqnKrcA_9cBBYm5TwshPf6l7mxVAkoQSzyulcGcfle_3bpcLYuR_ngwtsPxmRDgwdKAY81uztyzzHodVKgeCj1a8dze7p11wY2spo3lGKxDYT5Ml_CrmmHusUA9R3Hm636dzCa5JWY31CPoFFTk-nYSEImdr0A"/>
+<div class="absolute top-3 left-3 bg-secondary text-white font-label-caps text-label-caps px-2.5 py-1 rounded-full uppercase tracking-wider font-bold">
+  GovTech &amp; UMKM
+</div>
+<div class="absolute bottom-2 right-2 bg-inverse-surface/85 backdrop-blur-md px-2.5 py-0.5 rounded text-white font-label-code text-[11px]">
+  Live Production
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">SIPLokal Kelurahan Jatiasih v1.0</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+  Sistem geolokasi sensus pedagang mikro, percepatan verifikasi legalitas NIB terpadu, dan portal data ekonomi kewilayahan inisiasi Ibu Mutmainah (Kasi Permasbang).
+</p>
+<div class="grid grid-cols-2 gap-2 my-1">
+<div class="p-2 bg-surface-container-low rounded-lg text-center">
+<span class="font-headline-sm text-primary font-bold text-[18px]">1.240+</span>
+<span class="font-label-caps text-[11px] block text-on-surface-variant">UMKM Terdata</span>
+</div>
+<div class="p-2 bg-surface-container-low rounded-lg text-center">
+<span class="font-headline-sm text-secondary font-bold text-[18px]">87%</span>
+<span class="font-label-caps text-[11px] block text-on-surface-variant">NIB Terakselerasi</span>
+</div>
+</div>
+<a class="mt-1 w-full py-2.5 bg-primary text-on-primary rounded-full font-headline-sm text-[13px] font-bold text-center active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20ingin%20tanya%20detail%20arsitektur%20SIPLokal" rel="noopener" target="_blank">
+  Tanya Tim SIPLokal
+</a>
+</div>
+</div>
+<!-- Portfolio 2: PundiPay -->
+<div class="bg-surface-container rounded-2xl overflow-hidden shadow-md border border-outline-variant/30 flex flex-col">
+<div class="p-space-md bg-gradient-to-r from-primary to-primary-container text-white flex items-center justify-between">
 <div>
-<h4 class="font-headline-sm text-headline-sm font-bold text-on-surface">Transparansi Tanpa Hitam di Atas Putih yang Rumit</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Akses langsung ke Jira/Linear, repository GitHub, dan progress sprint harian tanpa perantara birokrasi.</p>
+<span class="font-label-caps text-label-caps text-primary-fixed uppercase tracking-wider font-bold">Fintech Solution</span>
+<h3 class="font-headline-sm text-[20px] font-bold text-white">PundiPay POS &amp; QRIS</h3>
+</div>
+<span class="material-symbols-outlined text-[36px] text-tertiary-fixed">payments</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+  Aplikasi kasir multi-cabang dengan rekonsiliasi otomatis QRIS Dynamic dan integrasi printer bluetooth thermal untuk 300+ outlet retail.
+</p>
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-surface-container-high rounded font-label-code text-label-code text-on-surface">Flutter</span>
+<span class="px-2 py-0.5 bg-surface-container-high rounded font-label-code text-label-code text-on-surface">Node.js</span>
+<span class="px-2 py-0.5 bg-surface-container-high rounded font-label-code text-label-code text-on-surface">QRIS Open API</span>
+</div>
+<a class="mt-2 w-full py-2 bg-surface-container-highest hover:bg-surface-container text-on-surface rounded-full font-headline-sm text-[13px] font-semibold text-center active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20tertarik%20dengan%20proyek%20POS%20Fintech%20PundiPay" rel="noopener" target="_blank">
+  Eksplorasi Fitur Fintech
+</a>
 </div>
 </div>
-<div class="flex items-start gap-3">
-<div class="p-2 rounded-lg bg-tertiary-fixed text-tertiary shrink-0 mt-1">
-<span class="material-symbols-outlined text-[20px]">lock_open</span>
-</div>
+<!-- Portfolio 3: KlinikKu -->
+<div class="bg-surface-container rounded-2xl overflow-hidden shadow-md border border-outline-variant/30 flex flex-col">
+<div class="p-space-md bg-gradient-to-r from-tertiary-container to-tertiary text-white flex items-center justify-between">
 <div>
-<h4 class="font-headline-sm text-headline-sm font-bold text-on-surface">100% Hak Cipta &amp; Source Code Milik Anda</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Tidak ada vendor lock-in. Seluruh repository, kredensial cloud, dan file aset Figma sepenuhnya diserahkan kepada Anda.</p>
+<span class="font-label-caps text-label-caps text-tertiary-fixed uppercase tracking-wider font-bold">HealthTech SaaS</span>
+<h3 class="font-headline-sm text-[20px] font-bold text-white">KlinikKu Telemed EMR</h3>
+</div>
+<span class="material-symbols-outlined text-[36px] text-tertiary-fixed">medical_services</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+  Sistem rekam medis elektronik (RME) terakreditasi SatuSehat Kemenkes, modul antrean poliklinik cerdas, dan resep digital obat.
+</p>
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-surface-container-high rounded font-label-code text-label-code text-on-surface">Next.js</span>
+<span class="px-2 py-0.5 bg-surface-container-high rounded font-label-code text-label-code text-on-surface">SatuSehat API</span>
+<span class="px-2 py-0.5 bg-surface-container-high rounded font-label-code text-label-code text-on-surface">HIPAA Compliant</span>
+</div>
+<a class="mt-2 w-full py-2 bg-surface-container-highest hover:bg-surface-container text-on-surface rounded-full font-headline-sm text-[13px] font-semibold text-center active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20tertarik%20sistem%20HealthTech%20KlinikKu" rel="noopener" target="_blank">
+  Eksplorasi HealthTech
+</a>
 </div>
 </div>
-<div class="flex items-start gap-3">
-<div class="p-2 rounded-lg bg-secondary-fixed text-secondary shrink-0 mt-1">
-<span class="material-symbols-outlined text-[20px]">speed</span>
 </div>
-<div>
-<h4 class="font-headline-sm text-headline-sm font-bold text-on-surface">Demo Mingguan (Weekly Live Working Software)</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Bukan sekadar slide PPT. Anda menguji langsung software yang berjalan di ponsel Anda setiap minggu.</p>
+<!-- TAB 4: KALKULATOR PROYEK -->
+<div class="tab-pane hidden flex-col w-full px-gutter-sm pt-space-md pb-space-lg gap-space-md" id="tab-kalkulator">
+<div class="flex flex-col gap-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-fixed rounded-full w-fit">
+<span class="font-label-caps text-label-caps uppercase text-on-primary-fixed-variant tracking-wider font-extrabold">Smart Estimator</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-extrabold text-on-surface">Kalkulator Biaya &amp; Waktu</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Simulasikan spesifikasi proyek Anda dan dapatkan estimasi budget serta timeline secara transparan.</p>
+</div>
+<!-- Calculator Form Card -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-md border border-outline-variant/30 flex flex-col gap-space-md">
+<!-- Platform Selector -->
+<div class="flex flex-col gap-2">
+<label class="font-label-caps uppercase text-on-surface-variant font-bold">1. Pilih Tipe Platform</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="calc-type-btn p-2.5 rounded-xl border-2 border-primary bg-primary/10 text-primary font-headline-sm text-[13px] font-bold flex flex-col items-center gap-1 transition-all" data-cost="15000000" data-type="mobile" data-weeks="4" type="button">
+<span class="material-symbols-outlined text-[20px]">phone_iphone</span>
+<span>Mobile App</span>
+</button>
+<button class="calc-type-btn p-2.5 rounded-xl border-2 border-outline-variant/40 bg-surface-container-low text-on-surface font-headline-sm text-[13px] font-bold flex flex-col items-center gap-1 transition-all" data-cost="12000000" data-type="web" data-weeks="3" type="button">
+<span class="material-symbols-outlined text-[20px]">web</span>
+<span>Web SaaS</span>
+</button>
+<button class="calc-type-btn p-2.5 rounded-xl border-2 border-outline-variant/40 bg-surface-container-low text-on-surface font-headline-sm text-[13px] font-bold flex flex-col items-center gap-1 transition-all" data-cost="9000000" data-type="ai" data-weeks="2" type="button">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+<span>AI Bot</span>
+</button>
+</div>
+</div>
+<!-- Project Scale -->
+<div class="flex flex-col gap-2">
+<label class="font-label-caps uppercase text-on-surface-variant font-bold">2. Skala &amp; Kompleksitas</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="calc-scale-btn p-2 rounded-lg border-2 border-primary bg-primary/10 text-primary font-headline-sm text-[12px] font-bold text-center" data-label="MVP / Starter" data-multiplier="1" type="button">
+    Starter
+  </button>
+<button class="calc-scale-btn p-2 rounded-lg border-2 border-outline-variant/40 bg-surface-container-low text-on-surface font-headline-sm text-[12px] font-bold text-center" data-label="Standard Business" data-multiplier="1.6" type="button">
+    Standard
+  </button>
+<button class="calc-scale-btn p-2 rounded-lg border-2 border-outline-variant/40 bg-surface-container-low text-on-surface font-headline-sm text-[12px] font-bold text-center" data-label="Enterprise Scale" data-multiplier="2.4" type="button">
+    Enterprise
+  </button>
+</div>
+</div>
+<!-- Add-on Features Checkboxes -->
+<div class="flex flex-col gap-2">
+<label class="font-label-caps uppercase text-on-surface-variant font-bold">3. Fitur Tambahan (Opsional)</label>
+<div class="flex flex-col gap-2">
+<label class="flex items-center gap-2 p-2 bg-surface-container-low rounded-lg cursor-pointer">
+<input class="calc-addon rounded text-primary focus:ring-primary w-4 h-4" data-cost="3500000" data-name="Payment Gateway &amp; QRIS" type="checkbox"/>
+<span class="font-body-sm text-[13px] flex-1">Integrasi Payment Gateway &amp; QRIS (+3.5jt)</span>
+</label>
+<label class="flex items-center gap-2 p-2 bg-surface-container-low rounded-lg cursor-pointer">
+<input class="calc-addon rounded text-primary focus:ring-primary w-4 h-4" data-cost="3000000" data-name="WhatsApp Bot &amp; Notifikasi" type="checkbox"/>
+<span class="font-body-sm text-[13px] flex-1">WhatsApp Notifikasi &amp; AI Bot (+3.0jt)</span>
+</label>
+<label class="flex items-center gap-2 p-2 bg-surface-container-low rounded-lg cursor-pointer">
+<input class="calc-addon rounded text-primary focus:ring-primary w-4 h-4" data-cost="2500000" data-name="Custom Admin Analytics" type="checkbox"/>
+<span class="font-body-sm text-[13px] flex-1">Dashboard Analitik &amp; Export Excel (+2.5jt)</span>
+</label>
+</div>
+</div>
+<!-- Result Card -->
+<div class="p-space-md bg-surface-container rounded-xl flex flex-col gap-2 border border-outline-variant/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant font-bold uppercase tracking-wider">Hasil Estimasi Otomatis</span>
+<div class="flex items-baseline justify-between">
+<span class="font-headline-lg-mobile text-[26px] font-extrabold text-primary" id="calcEstimatedCost">Rp 15.000.000</span>
+<span class="font-label-code text-label-code text-tertiary font-bold" id="calcEstimatedTime">± 4 Pekan</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant italic">
+  *Estimasi awal mencakup source code, deployment, dan garansi maintenance 3 bulan.
+</p>
+<a class="mt-2 w-full py-3 bg-secondary-container hover:bg-secondary text-on-secondary rounded-full font-headline-sm text-[14px] font-bold text-center flex items-center justify-center gap-2 shadow-md" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20telah%20menghitung%20estimasi%20di%20kalkulator:%20Rp%2015.000.000%20(4%20Pekan).%20Bisa%20diskusi%20lebih%20lanjut?" id="calcWhatsAppCta" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+<span>Klaim Penawaran via WhatsApp</span>
+</a>
 </div>
 </div>
 </div>
+<!-- TAB 5: KONTAK -->
+<div class="tab-pane hidden flex-col w-full px-gutter-sm pt-space-md pb-space-lg gap-space-md" id="tab-kontak">
+<div class="flex flex-col gap-1">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-tertiary-fixed rounded-full w-fit">
+<span class="font-label-caps text-label-caps uppercase text-tertiary tracking-wider font-extrabold">Hubungi Kami</span>
 </div>
-<!-- Right Column: Interactive Trust Infographic -->
-<div class="lg:col-span-6 rounded-3xl bg-surface-container-lowest p-8 shadow-xl relative">
-<div class="flex items-center justify-between pb-6 border-b border-surface-container">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-extrabold text-on-surface">Mari Kolaborasi Bersama!</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Diskusi langsung tanpa perantara bersama lead engineer andu.my.id.</p>
+</div>
+<!-- Quick Contact Card -->
+<div class="p-space-md bg-surface-container-lowest rounded-2xl shadow-md border border-outline-variant/30 flex flex-col gap-space-sm">
 <div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold">
-                U
-              </div>
-<span class="material-symbols-outlined text-outline">swap_horiz</span>
-<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary font-bold">
-                I
-              </div>
+<div class="w-12 h-12 rounded-full bg-tertiary-container text-on-tertiary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[26px]">support_agent</span>
 </div>
-<span class="font-label-code text-label-code text-tertiary font-bold">Sinergi Ideal</span>
-</div>
-<div class="grid grid-cols-2 gap-4 py-6">
-<div class="p-4 rounded-xl bg-surface-container-low text-center">
-<div class="font-display-xl text-display-xl font-black text-primary">0%</div>
-<span class="font-label-caps text-label-caps text-on-surface font-bold">Hidden Cost</span>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Biaya fix dan transparan sejak kick-off awal.</p>
-</div>
-<div class="p-4 rounded-xl bg-surface-container-low text-center">
-<div class="font-display-xl text-display-xl font-black text-tertiary">14d</div>
-<span class="font-label-caps text-label-caps text-on-surface font-bold">Sprint Cycles</span>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Iterasi cepat untuk validasi pasar instan.</p>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] font-bold text-on-surface">Fast-Response Tech Desk</span>
+<span class="font-label-code text-label-code text-tertiary font-bold">0889-7650-1065</span>
 </div>
 </div>
-<div class="p-4 rounded-xl bg-primary text-on-primary flex items-center justify-between">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-tertiary-fixed text-[24px]">verified_user</span>
-<div>
-<div class="font-headline-sm text-headline-sm font-bold text-on-primary">Legal NDA &amp; SPK Terjamin</div>
-<div class="font-body-sm text-body-sm text-on-primary-container">Terdaftar di Kemenkumham RI (PT Andu Kreasi Digital)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- SECTION: TESTIMONIAL & RATING -->
-<section class="py-24 max-w-7xl mx-auto px-6 lg:px-12">
-<div class="text-center max-w-2xl mx-auto mb-16">
-<div class="inline-flex items-center gap-1 text-secondary font-headline-sm text-headline-sm font-bold mb-2">
-<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-on-surface ml-2">4.9 / 5.0 Rata-Rata Kepuasan Klien</span>
-</div>
-<h2 class="font-headline-lg text-headline-lg font-extrabold text-on-surface">
-        Apa Kata Rekan Kolaborasi Kami
-      </h2>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-<!-- Testi 1 -->
-<div class="p-8 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-<p class="font-body-md text-body-md text-on-surface italic mb-6">
-          “Tim andu.my.id mengubah konsep napkin sketch kami menjadi aplikasi Flutter berperingkat 4.9 di Play Store hanya dalam 6 minggu. Kecepatan dan inisiatif desain mereka benar-benar langka untuk software house lokal.”
-        </p>
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-primary">
-            RA
-          </div>
-<div>
-<div class="font-headline-sm text-headline-sm font-bold text-on-surface">Reza Anindito</div>
-<div class="font-body-sm text-body-sm text-on-surface-variant">Founder &amp; CEO, Naluri Health App</div>
-</div>
-</div>
-</div>
-<!-- Testi 2 -->
-<div class="p-8 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-<p class="font-body-md text-body-md text-on-surface italic mb-6">
-          “Dedicated Squad model dari andu sangat membantu tim internal kami scale-up tanpa perlu pusing proses rekrutmen engineer selama berbulan-bulan. Standar clean-code mereka sangat mudah diteruskan.”
-        </p>
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center font-bold text-secondary">
-            MS
-          </div>
-<div>
-<div class="font-headline-sm text-headline-sm font-bold text-on-surface">Maya Stefanie</div>
-<div class="font-body-sm text-body-sm text-on-surface-variant">VP of Product, FinPay Solution</div>
-</div>
-</div>
-</div>
-<!-- Testi 3 -->
-<div class="p-8 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-<p class="font-body-md text-body-md text-on-surface italic mb-6">
-          “Kami sangat mengapresiasi transparansi biaya mereka. Tidak ada ongkos siluman di tengah jalan. Weekly live demo membuat stakeholder kami selalu tenang melihat kemajuan nyata setiap minggunya.”
-        </p>
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center font-bold text-tertiary">
-            BH
-          </div>
-<div>
-<div class="font-headline-sm text-headline-sm font-bold text-on-surface">Bambang Hartono</div>
-<div class="font-body-sm text-body-sm text-on-surface-variant">Managing Director, PT Surya Retail Logistik</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- SECTION: SEO FAQ ACCORDION -->
-<section class="py-24 bg-surface-container-low" id="faq" itemscope="" itemtype="https://schema.org/FAQPage">
-<div class="max-w-4xl mx-auto px-6 lg:px-12">
-<div class="text-center mb-16">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container font-label-code text-label-code font-bold text-on-surface mb-3">
-<span class="material-symbols-outlined text-[16px]">help_outline</span>
-          Tanya Jawab Seputar Jasa Pembuatan Aplikasi
-        </div>
-<h2 class="font-headline-lg text-headline-lg font-extrabold text-on-surface">
-          Pertanyaan yang Sering Diajukan (FAQ)
-        </h2>
-</div>
-<!-- Accordion Items -->
-<div class="space-y-4">
-<!-- Q1 -->
-<div class="rounded-2xl bg-surface-container-lowest p-6 shadow-sm cursor-pointer faq-item" itemprop="mainEntity" itemscope="" itemtype="https://schema.org/Question">
-<div class="flex items-center justify-between faq-header">
-<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface" itemprop="name">
-              Berapa lama rata-rata proses pembuatan aplikasi dari awal?
-            </h3>
-<span class="material-symbols-outlined text-primary faq-icon transition-transform">expand_more</span>
-</div>
-<div class="faq-content hidden pt-4 text-on-surface-variant font-body-md text-body-md" itemprop="acceptedAnswer" itemscope="" itemtype="https://schema.org/Answer">
-<div itemprop="text">
-              Untuk prototype MVP (Minimum Viable Product), durasi pengerjaan rata-rata memakan waktu 4 hingga 8 minggu kerja terbagi dalam sprint dua mingguan. Sementara itu, untuk sistem web skala enterprise atau platform multi-role kompleks, pengerjaan berkisar antara 2 hingga 4 bulan dengan deliverable bertahap.
-            </div>
-</div>
-</div>
-<!-- Q2 -->
-<div class="rounded-2xl bg-surface-container-lowest p-6 shadow-sm cursor-pointer faq-item" itemprop="mainEntity" itemscope="" itemtype="https://schema.org/Question">
-<div class="flex items-center justify-between faq-header">
-<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface" itemprop="name">
-              Apakah hak cipta dan seluruh source code menjadi milik klien 100%?
-            </h3>
-<span class="material-symbols-outlined text-primary faq-icon transition-transform">expand_more</span>
-</div>
-<div class="faq-content hidden pt-4 text-on-surface-variant font-body-md text-body-md" itemprop="acceptedAnswer" itemscope="" itemtype="https://schema.org/Answer">
-<div itemprop="text">
-              Ya, 100%! Setelah pembayaran final milestone selesai, seluruh kekayaan intelektual (IP), source code repository di GitHub/GitLab, akun cloud infra, file master Figma UI/UX, dan kredensial database diserahkan penuh tanpa biaya lisensi tahunan tambahan dari kami.
-            </div>
-</div>
-</div>
-<!-- Q3 -->
-<div class="rounded-2xl bg-surface-container-lowest p-6 shadow-sm cursor-pointer faq-item" itemprop="mainEntity" itemscope="" itemtype="https://schema.org/Question">
-<div class="flex items-center justify-between faq-header">
-<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface" itemprop="name">
-              Bagaimana jika aplikasi butuh penyesuaian atau ditemukan bug setelah peluncuran?
-            </h3>
-<span class="material-symbols-outlined text-primary faq-icon transition-transform">expand_more</span>
-</div>
-<div class="faq-content hidden pt-4 text-on-surface-variant font-body-md text-body-md" itemprop="acceptedAnswer" itemscope="" itemtype="https://schema.org/Answer">
-<div itemprop="text">
-              Setiap proyek di andu.my.id otomatis dilindungi oleh Garansi Bebas Bug (Warranty SLA) selama 3 bulan pertama setelah rilis publik. Untuk ekspansi fitur lanjutan, Anda dapat beralih ke skema Tech Partner Retainer atau sprint add-on dengan estimasi biaya transparan.
-            </div>
-</div>
-</div>
-<!-- Q4 -->
-<div class="rounded-2xl bg-surface-container-lowest p-6 shadow-sm cursor-pointer faq-item" itemprop="mainEntity" itemscope="" itemtype="https://schema.org/Question">
-<div class="flex items-center justify-between faq-header">
-<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface" itemprop="name">
-              Apakah andu.my.id membantu proses publishing ke Google Play Store dan Apple App Store?
-            </h3>
-<span class="material-symbols-outlined text-primary faq-icon transition-transform">expand_more</span>
-</div>
-<div class="faq-content hidden pt-4 text-on-surface-variant font-body-md text-body-md" itemprop="acceptedAnswer" itemscope="" itemtype="https://schema.org/Answer">
-<div itemprop="text">
-              Tentu saja! Kami menangani seluruh checklist teknis publikasi: pembuatan build signing, assets screenshot marketing, compliance privacy policy, hingga mendampingi proses App Review oleh pihak Google dan Apple sampai aplikasi berhasil live dan dapat diunduh pengguna.
-            </div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- SECTION: FINAL HIGH-CONVERSION CTA BANNER -->
-<section class="py-20 max-w-7xl mx-auto px-6 lg:px-12">
-<div class="relative rounded-3xl bg-primary text-on-primary p-8 md:p-16 overflow-hidden shadow-2xl">
-<!-- Ambient Orb Decor inside card -->
-<div class="absolute -right-20 -top-20 w-80 h-80 bg-secondary-container blur-[70px] opacity-40 rounded-full pointer-events-none"></div>
-<div class="absolute -left-20 -bottom-20 w-80 h-80 bg-tertiary-fixed blur-[70px] opacity-30 rounded-full pointer-events-none"></div>
-<div class="relative z-10 max-w-3xl space-y-6">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container text-on-primary font-label-code text-label-code font-bold">
-<span class="w-2 h-2 rounded-full bg-tertiary-fixed"></span>
-          Kapasitas Baru Terbuka untuk Q2/Q3
-        </div>
-<h2 class="font-display-xl text-display-xl font-extrabold tracking-tight text-on-primary leading-tight">
-          Punya Ide Brilian Tapi Bingung Mulai dari Mana?
-        </h2>
-<p class="font-body-lg text-body-lg text-on-primary-container max-w-2xl">
-          Konsultasi 30 menit tanpa dipungut biaya. Mari bedah arsitektur teknis, validasi skema MVP, dan estimasi waktu bersama technical lead andu.my.id hari ini!
-        </p>
-<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
-<a class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-secondary-container text-on-secondary font-headline-sm text-headline-sm font-bold shadow-lg shadow-secondary-container/40 hover:-translate-y-0.5 transition-all text-center" href="https://wa.me/6281234567890?text=Halo%20Andu!%20Saya%20ingin%20jadwalkan%20sesi%20konsultasi%20gratis%20untuk%20ide%20aplikasi%20saya" rel="noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[20px]">calendar_today</span>
-<span>Jadwalkan Konsultasi Gratis (30 Menit)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+  Konsultasi arsitektur, NDA kerahasiaan proyek, dan penawaran resmi dalam kurun waktu kurang dari 2 jam kerja.
+</p>
+<div class="flex flex-col gap-2 pt-1">
+<a class="w-full py-3 bg-tertiary-container hover:bg-tertiary text-on-tertiary rounded-full font-headline-sm text-[14px] font-bold flex items-center justify-center gap-2 shadow-md shadow-tertiary/20 active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20ingin%20berkonsultasi%20mengenai%20proyek%20aplikasi" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span>Chat WhatsApp (0889-7650-1065)</span>
 </a>
-<a class="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-surface-container-lowest text-primary font-headline-sm text-headline-sm font-semibold hover:bg-surface-container-low transition-colors" href="mailto:halo@andu.my.id">
-<span class="material-symbols-outlined text-[20px]">mail</span>
-<span>Kirim Dokumen PRD / RFP</span>
+<a class="w-full py-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface rounded-full font-headline-sm text-[13px] font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all" href="tel:+6288976501065">
+<span class="material-symbols-outlined text-[18px]">call</span>
+<span>Panggilan Telepon Langsung</span>
+</a>
+</div>
+</div>
+<!-- Location & Info Badge -->
+<div class="p-space-md bg-surface-container rounded-xl flex flex-col gap-space-xs border border-outline-variant/30">
+<div class="flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+<span class="font-headline-sm text-[15px]">Studio &amp; Office Hub</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+  Kota Bekasi, Jawa Barat 17423 • Indonesia
+</p>
+<div class="flex items-center gap-2 mt-2 pt-2 border-t border-outline-variant/40 text-on-surface-variant font-label-code text-[12px]">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span>Jam Layanan: Senin - Sabtu 08.30 - 21.00 WIB</span>
+</div>
+</div>
+</div>
+<!-- FLOATING BOTTOM CTA HELPER -->
+<div class="sticky bottom-24 px-gutter-sm pointer-events-none z-30">
+<div class="pointer-events-auto bg-surface/90 backdrop-blur-xl p-space-xs rounded-full shadow-lg flex items-center justify-between gap-space-xs border border-outline-variant/30">
+<div class="flex items-center gap-2 pl-3">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-headline-sm text-[13px] font-bold text-on-surface">Punya ide aplikasi?</span>
+</div>
+<a class="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary rounded-full font-headline-sm text-[13px] font-bold flex items-center gap-1 shadow-md active:scale-95 transition-all" href="https://wa.me/6288976501065?text=Halo%20andu.my.id,%20saya%20tertarik%20untuk%20diskusi%20pembuatan%20aplikasi" rel="noopener" target="_blank">
+<span>Diskusi WA</span>
+<span class="material-symbols-outlined text-[16px]">send</span>
 </a>
 </div>
 </div>
 </div>
-</section>
-<!-- Interactive JavaScript for Calculator & FAQ Behavior -->
+</main>
+<!-- Bottom Sticky Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-40 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-4px_20px_rgba(90,53,244,0.06)] border-t border-outline-variant/20"><div class="h-20 px-space-xs flex items-center justify-around"><button aria-current="page" class="nav-tab-btn flex flex-col items-center justify-center min-w-[58px] min-h-[44px] py-1 transition-all text-primary-container font-headline-sm font-bold scale-105 cursor-pointer" data-target="beranda"><span class="material-symbols-outlined text-[24px]">grid_view</span><span class="font-label-caps text-label-caps mt-0.5">Beranda</span></button><button class="nav-tab-btn flex flex-col items-center justify-center min-w-[58px] min-h-[44px] py-1 text-on-surface-variant hover:text-primary transition-all cursor-pointer" data-target="layanan"><span class="material-symbols-outlined text-[24px]">developer_mode</span><span class="font-label-caps text-label-caps mt-0.5">Layanan</span></button><button class="nav-tab-btn flex flex-col items-center justify-center min-w-[58px] min-h-[44px] py-1 text-on-surface-variant hover:text-primary transition-all cursor-pointer" data-target="portofolio"><span class="material-symbols-outlined text-[24px]">rocket_launch</span><span class="font-label-caps text-label-caps mt-0.5">Portofolio</span></button><button class="nav-tab-btn flex flex-col items-center justify-center min-w-[58px] min-h-[44px] py-1 text-on-surface-variant hover:text-primary transition-all cursor-pointer" data-target="kalkulator"><span class="material-symbols-outlined text-[24px]">calculate</span><span class="font-label-caps text-label-caps mt-0.5">Kalkulator</span></button><button class="nav-tab-btn flex flex-col items-center justify-center min-w-[58px] min-h-[44px] py-1 text-on-surface-variant hover:text-primary transition-all cursor-pointer" data-target="kontak"><span class="material-symbols-outlined text-[24px]">forum</span><span class="font-label-caps text-label-caps mt-0.5">Kontak</span></button></div></nav>
+<!-- Interactive Logic Controller -->
 <script>
-    (function initAnduHomepage() {
-      // Data Matrix for Price Simulator
-      const pricingMatrix = {
-        mobile: {
-          mvp: { cost: "Rp 24jt - 38jt", time: "4 - 6 Minggu", sprints: "2 - 3 Sprints", squad: "1 UI/UX, 1 Flutter Dev, 1 QA" },
-          growth: { cost: "Rp 38jt - 65jt", time: "6 - 9 Minggu", sprints: "3 - 5 Sprints", squad: "1 UI/UX, 2 Flutter Devs, 1 Backend, 1 QA" },
-          enterprise: { cost: "Rp 75jt - 150jt+", time: "10 - 16 Minggu", sprints: "6+ Sprints", squad: "1 Lead, 2 Mobile Devs, 2 Backend, 1 QA" }
-        },
-        web: {
-          mvp: { cost: "Rp 18jt - 30jt", time: "3 - 5 Minggu", sprints: "2 Sprints", squad: "1 UI/UX, 1 Fullstack Web Dev, 1 QA" },
-          growth: { cost: "Rp 32jt - 55jt", time: "5 - 8 Minggu", sprints: "3 - 4 Sprints", squad: "1 UI/UX, 2 Fullstack Devs, 1 DevOps" },
-          enterprise: { cost: "Rp 60jt - 120jt+", time: "8 - 14 Minggu", sprints: "5+ Sprints", squad: "1 Architect, 2 Frontend, 2 Backend, 1 QA" }
-        },
-        ai: {
-          mvp: { cost: "Rp 22jt - 35jt", time: "3 - 6 Minggu", sprints: "2 Sprints", squad: "1 AI Prompt Engineer, 1 Backend Dev" },
-          growth: { cost: "Rp 38jt - 60jt", time: "5 - 8 Minggu", sprints: "3 - 4 Sprints", squad: "1 AI Specialist, 1 Fullstack, 1 Data Eng" },
-          enterprise: { cost: "Rp 70jt - 140jt+", time: "8 - 14 Minggu", sprints: "5+ Sprints", squad: "1 ML Engineer, 2 Cloud Devs, 1 QA Lead" }
-        },
-        ecosystem: {
-          mvp: { cost: "Rp 38jt - 58jt", time: "6 - 8 Minggu", sprints: "3 - 4 Sprints", squad: "1 UI/UX, 2 Multi-devs, 1 QA" },
-          growth: { cost: "Rp 65jt - 98jt", time: "8 - 12 Minggu", sprints: "5 - 6 Sprints", squad: "1 UI/UX, 2 Mobile, 2 Web, 1 QA, 1 PM" },
-          enterprise: { cost: "Rp 120jt - 240jt+", time: "14 - 20 Minggu", sprints: "8+ Sprints", squad: "Dedicated Squad of 6 Engineers" }
+  // Tab Switcher Controller
+  function switchTab(tabId) {
+    const tabs = ['beranda', 'layanan', 'portofolio', 'kalkulator', 'kontak'];
+    const titleMap = {
+      beranda: 'Beranda',
+      layanan: 'Layanan',
+      portofolio: 'Portofolio',
+      kalkulator: 'Kalkulator',
+      kontak: 'Kontak'
+    };
+
+    tabs.forEach(id => {
+      const pane = document.getElementById('tab-' + id);
+      if (pane) {
+        if (id === tabId) {
+          pane.classList.remove('hidden');
+          pane.classList.add('flex');
+        } else {
+          pane.classList.add('hidden');
+          pane.classList.remove('flex');
         }
-      };
-
-      let selectedPlatform = 'mobile';
-      let selectedTier = 'growth';
-
-      const platformBtns = document.querySelectorAll('.platform-btn');
-      const tierBtns = document.querySelectorAll('.tier-btn');
-      const costDisplay = document.getElementById('cost-display');
-      const timelineDisplay = document.getElementById('timeline-display');
-      const sprintDisplay = document.getElementById('sprint-display');
-      const squadDisplay = document.getElementById('squad-display');
-      const btnWaQuote = document.getElementById('btn-wa-quote');
-
-      function updateEstimator() {
-        const data = pricingMatrix[selectedPlatform][selectedTier];
-        if (!data) return;
-
-        costDisplay.textContent = data.cost;
-        timelineDisplay.textContent = data.time;
-        sprintDisplay.textContent = data.sprints;
-        squadDisplay.textContent = data.squad;
-
-        const platNames = { mobile: "Mobile App", web: "Web SaaS", ai: "AI Automation", ecosystem: "Ecosystem (App+Web)" };
-        const tierNames = { mvp: "MVP Starter", growth: "Growth Scalable", enterprise: "Enterprise" };
-
-        const msg = encodeURIComponent(`Halo tim andu.my.id! Saya tertarik simulasi pembuatan ${platNames[selectedPlatform]} kategori ${tierNames[selectedTier]} (${data.cost}, estimasi waktu ${data.time}). Boleh diskusi lebih lanjut?`);
-        btnWaQuote.href = `https://wa.me/6281234567890?text=${msg}`;
       }
+    });
 
-      platformBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          platformBtns.forEach(b => {
-            b.className = 'platform-btn p-4 rounded-xl text-left bg-surface-container text-on-surface hover:bg-surface-container-high transition-all flex flex-col justify-between h-28';
-          });
-          btn.className = 'platform-btn p-4 rounded-xl text-left bg-primary text-on-primary shadow-md transition-all flex flex-col justify-between h-28';
-          selectedPlatform = btn.getAttribute('data-type');
-          updateEstimator();
-        });
+    // Update Bottom Nav active states
+    document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+      const target = btn.getAttribute('data-target');
+      if (target === tabId) {
+        btn.classList.add('text-primary-container', 'font-headline-sm', 'font-bold', 'scale-105');
+        btn.classList.remove('text-on-surface-variant');
+        btn.setAttribute('aria-current', 'page');
+      } else {
+        btn.classList.remove('text-primary-container', 'font-headline-sm', 'font-bold', 'scale-105');
+        btn.classList.add('text-on-surface-variant');
+        btn.removeAttribute('aria-current');
+      }
+    });
+
+    // Update header subtitle
+    const headerSub = document.getElementById('currentHeaderSubtitle');
+    if (headerSub && titleMap[tabId]) {
+      headerSub.innerText = titleMap[tabId];
+    }
+
+    // Scroll smoothly to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Attach nav listeners
+  document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target');
+      if (target) switchTab(target);
+    });
+  });
+
+  // Modal controller
+  const modal = document.getElementById('siplokalModal');
+  const backdrop = document.getElementById('modalBackdrop');
+  const closeBtn = document.getElementById('closeModalBtn');
+  const closeSecondaryBtn = document.getElementById('closeSecondaryBtn');
+  const reopenBanner = document.getElementById('reopenBanner');
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }, 250);
+  }
+
+  function openModal() {
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+  }
+
+  function goToPortfolioDetail(caseId) {
+    closeModal();
+    switchTab('portofolio');
+    setTimeout(() => {
+      const targetEl = document.getElementById('case-' + caseId);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 150);
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (closeSecondaryBtn) closeSecondaryBtn.addEventListener('click', closeModal);
+  if (backdrop) backdrop.addEventListener('click', closeModal);
+  if (reopenBanner) reopenBanner.addEventListener('click', openModal);
+
+  // Calculator Logic
+  let currentBaseCost = 15000000;
+  let currentBaseWeeks = 4;
+  let currentMultiplier = 1;
+  let currentPlatformName = "Mobile App";
+
+  function updateCalculator() {
+    let addonSum = 0;
+    const activeAddons = [];
+    document.querySelectorAll('.calc-addon:checked').forEach(chk => {
+      addonSum += parseInt(chk.getAttribute('data-cost') || 0);
+      activeAddons.push(chk.getAttribute('data-name'));
+    });
+
+    const totalCost = Math.round((currentBaseCost * currentMultiplier) + addonSum);
+    const totalWeeks = Math.round(currentBaseWeeks * (currentMultiplier > 1.2 ? 1.5 : 1));
+
+    const costEl = document.getElementById('calcEstimatedCost');
+    const timeEl = document.getElementById('calcEstimatedTime');
+    const waCta = document.getElementById('calcWhatsAppCta');
+
+    const formattedCost = 'Rp ' + totalCost.toLocaleString('id-ID');
+    const formattedTime = '± ' + totalWeeks + ' Pekan';
+
+    if (costEl) costEl.innerText = formattedCost;
+    if (timeEl) timeEl.innerText = formattedTime;
+
+    if (waCta) {
+      const addonsText = activeAddons.length > 0 ? (' (Add-ons: ' + activeAddons.join(', ') + ')') : '';
+      const message = `Halo andu.my.id, saya telah menghitung estimasi untuk ${currentPlatformName} skala ${currentMultiplier}x${addonsText} total ${formattedCost} (${formattedTime}). Bisa diskusi lebih detail?`;
+      waCta.href = `https://wa.me/6288976501065?text=${encodeURIComponent(message)}`;
+    }
+  }
+
+  // Type buttons
+  document.querySelectorAll('.calc-type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.calc-type-btn').forEach(b => {
+        b.classList.remove('border-primary', 'bg-primary/10', 'text-primary');
+        b.classList.add('border-outline-variant/40', 'bg-surface-container-low', 'text-on-surface');
       });
+      btn.classList.add('border-primary', 'bg-primary/10', 'text-primary');
+      btn.classList.remove('border-outline-variant/40', 'bg-surface-container-low', 'text-on-surface');
 
-      tierBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          tierBtns.forEach(b => {
-            b.className = 'tier-btn p-4 rounded-xl text-left bg-surface-container text-on-surface hover:bg-surface-container-high transition-all';
-            const tierBadge = b.querySelector('.font-label-code');
-            const tierTitle = b.querySelector('.font-headline-sm');
-            if (tierBadge) tierBadge.className = 'font-label-code text-label-code font-bold text-on-surface-variant';
-            if (tierTitle) tierTitle.className = 'font-headline-sm text-headline-sm font-bold text-on-surface mt-1';
-          });
-          btn.className = 'tier-btn p-4 rounded-xl text-left bg-primary text-on-primary shadow-md transition-all';
-          const activeBadge = btn.querySelector('.font-label-code');
-          const activeTitle = btn.querySelector('.font-headline-sm');
-          if (activeBadge) activeBadge.className = 'font-label-code text-label-code font-bold text-tertiary-fixed';
-          if (activeTitle) activeTitle.className = 'font-headline-sm text-headline-sm font-bold text-on-primary mt-1';
+      currentBaseCost = parseInt(btn.getAttribute('data-cost') || 15000000);
+      currentBaseWeeks = parseInt(btn.getAttribute('data-weeks') || 4);
+      currentPlatformName = btn.innerText.trim();
+      updateCalculator();
+    });
+  });
 
-          selectedTier = btn.getAttribute('data-tier');
-          updateEstimator();
-        });
+  // Scale buttons
+  document.querySelectorAll('.calc-scale-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.calc-scale-btn').forEach(b => {
+        b.classList.remove('border-primary', 'bg-primary/10', 'text-primary');
+        b.classList.add('border-outline-variant/40', 'bg-surface-container-low', 'text-on-surface');
       });
+      btn.classList.add('border-primary', 'bg-primary/10', 'text-primary');
+      btn.classList.remove('border-outline-variant/40', 'bg-surface-container-low', 'text-on-surface');
 
-      // FAQ Accordion Toggle
-      const faqItems = document.querySelectorAll('.faq-item');
-      faqItems.forEach(item => {
-        item.addEventListener('click', () => {
-          const content = item.querySelector('.faq-content');
-          const icon = item.querySelector('.faq-icon');
-          const isExpanded = !content.classList.contains('hidden');
+      currentMultiplier = parseFloat(btn.getAttribute('data-multiplier') || 1);
+      updateCalculator();
+    });
+  });
 
-          faqItems.forEach(otherItem => {
-            otherItem.querySelector('.faq-content').classList.add('hidden');
-            otherItem.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
-          });
-
-          if (!isExpanded) {
-            content.classList.remove('hidden');
-            icon.style.transform = 'rotate(180deg)';
-          }
-        });
-      });
-    })();
-  </script>
-</div></main><footer class="w-full bg-surface-container-low py-space-xl shadow-[0_-1px_12px_rgba(91,54,245,0.02)]"><div class="max-w-7xl mx-auto px-6 lg:px-12"><div class="p-space-lg lg:p-space-xl rounded-2xl bg-surface-container-lowest shadow-[0_8px_30px_-6px_rgba(91,54,245,0.05)] mb-space-xl flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-lg"><div class="max-w-xl"><div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-code text-label-code font-bold mb-space-xs"><span class="h-2 w-2 rounded-full bg-primary"></span>Ready to Collaborate</div><div class="font-headline-md text-headline-md font-bold text-on-surface mb-space-xs">Punya ide produk digital berikutnya?</div><p class="font-body-md text-body-md text-on-surface-variant">Diskusikan arsitektur, teknologi, dan skema estimasi MVP bersama tim andu.my.id tanpa komitmen awal.</p></div><div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm"><div class="px-space-md py-space-sm rounded-xl bg-surface-container-low flex items-center gap-space-sm"><span class="material-symbols-outlined text-primary">mail</span><span class="font-label-code text-label-code text-on-surface">halo@andu.my.id</span></div><a class="inline-flex items-center justify-center gap-space-xs px-space-lg py-space-sm rounded-full bg-primary text-on-primary font-body-sm text-body-sm font-bold shadow-[0_8px_24px_-4px_rgba(91,54,245,0.4)] hover:-translate-y-0.5 transition-transform" data-path="kontak" href="#">Mulai Diskusi</a></div></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-space-xl pb-space-xl"><div class="lg:col-span-2 space-y-space-md"><div class="flex items-center gap-space-sm"><img alt="Logo andu.my.id" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VjAShkJw9h3tkpfnncrHa7tpR4fW8vpM1CrnQYVoNAleOKtwIYhYbIWCPB8F-K0z7F_sn8ECzCp7vmoQBdeQIvXhEbHvn4d1UcoVRlI1ZUNQK1ICzwlDhRJqVr42gQ-Lk_5OCNDkXcIEEDdiSu5dmdpl54PzJpp8doxjHX2WQJ6AWeqHVli6L9dbsVAkXfPAM-KiexO1xACcoaO4aYS_kJpWd55H9uFm4enKnmEB5O0SHdDEpyto4DhUsn"/><span class="font-headline-sm text-headline-sm font-extrabold text-on-surface">andu<span class="text-primary">.my.id</span></span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Creative engineering studio and product venture partner. Menggabungkan arsitektur software tangguh dengan desain produk interaktif untuk merealisasikan visi digital Anda.</p><div class="flex items-center gap-space-sm"><a aria-label="GitHub Repository" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary transition-all" href="https://github.com" rel="noreferrer" target="_blank"><span class="material-symbols-outlined text-[20px]">code</span></a><a aria-label="LinkedIn Profile" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary transition-all" href="https://linkedin.com" rel="noreferrer" target="_blank"><span class="material-symbols-outlined text-[20px]">work</span></a><a aria-label="Instagram Account" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary transition-all" href="https://instagram.com" rel="noreferrer" target="_blank"><span class="material-symbols-outlined text-[20px]">photo_camera</span></a><a aria-label="Dribbble Portfolio" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary transition-all" href="https://dribbble.com" rel="noreferrer" target="_blank"><span class="material-symbols-outlined text-[20px]">palette</span></a></div></div><div><div class="font-label-caps text-label-caps text-on-surface font-bold uppercase mb-space-md">Solusi Studio</div><ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" data-path="layanan" href="#">Mobile App Engineering</a></li><li><a class="hover:text-primary transition-colors" data-path="layanan" href="#">High-Performance Web</a></li><li><a class="hover:text-primary transition-colors" data-path="layanan" href="#">UI/UX Product Design</a></li><li><a class="hover:text-primary transition-colors" data-path="layanan" href="#">MVP Venture Sprint</a></li><li><a class="hover:text-primary transition-colors" data-path="layanan" href="#">Cloud &amp; API Scalability</a></li></ul></div><div><div class="font-label-caps text-label-caps text-on-surface font-bold uppercase mb-space-md">Eksplorasi</div><ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" data-path="portofolio" href="#">Case Studies &amp; Apps</a></li><li><a class="hover:text-primary transition-colors" data-path="skema-kerjasama" href="#">Dedicated Squad Model</a></li><li><a class="hover:text-primary transition-colors" data-path="skema-kerjasama" href="#">Fixed Scope Blueprint</a></li><li><a class="hover:text-primary transition-colors" data-path="simulasi-biaya" href="#">Kalkulator Estimasi Biaya</a></li><li><a class="hover:text-primary transition-colors" data-path="faq" href="#">Tanya Jawab (FAQ)</a></li></ul></div><div><div class="font-label-caps text-label-caps text-on-surface font-bold uppercase mb-space-md">Entitas &amp; Lokasi</div><div class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><p class="text-on-surface font-semibold">PT Andu Kreasi Digital</p><p>Operational Studio:</p><p class="text-on-surface-variant">Jl. Danau Tamblingan No. 88, Sanur, Denpasar Selatan, Bali 80228, Indonesia</p><div class="pt-space-xs flex items-center gap-space-xs text-tertiary font-label-code text-label-code font-semibold"><span class="material-symbols-outlined text-[16px]">verified</span>Verified Studio Partner</div></div></div></div><div class="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-surface-variant"><div class="flex items-center gap-space-sm"><span class="font-label-code text-label-code">© 2025 andu.my.id (PT Andu Kreasi Digital). All rights reserved.</span></div><div class="flex items-center gap-space-lg font-label-code text-label-code"><span>Crafted with ♥ for Innovators</span><span>Made in Indonesia</span></div></div></div></footer></body></html>
+  // Addons
+  document.querySelectorAll('.calc-addon').forEach(chk => {
+    chk.addEventListener('change', updateCalculator);
+  });
+</script>
+</body></html>
