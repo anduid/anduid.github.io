@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+<!-- STITCH_THREEJS_START:ANIMATION_2 class="fixed inset-0 w-full h-full bg-transparent" -->
+<div class="fixed inset-0 w-full h-full bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_2" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_2');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+camera.position.set(12, 14, 18);
+camera.lookAt(0, 1.5, 0);
+
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(width, height);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+container.appendChild(renderer.domElement);
+
+// Lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+scene.add(ambientLight);
+
+const dirLight = new THREE.DirectionalLight(0xfff5e6, 1.4);
+dirLight.position.set(15, 25, 12);
+dirLight.castShadow = true;
+dirLight.shadow.mapSize.width = 1024;
+dirLight.shadow.mapSize.height = 1024;
+scene.add(dirLight);
+
+const pointLight = new THREE.PointLight(0x0d9488, 2, 20);
+pointLight.position.set(-2, 4, 3);
+scene.add(pointLight);
+
+const pointLight2 = new THREE.PointLight(0xf59e0b, 2.5, 20);
+pointLight2.position.set(4, 5, -2);
+scene.add(pointLight2);
+
+// Island Platform (Floating Hexagon/Rounded base for Kelurahan diorama)
+const islandGroup = new THREE.Group();
+scene.add(islandGroup);
+
+const baseGeo = new THREE.CylinderGeometry(9, 9.8, 1.2, 32);
+const baseMat = new THREE.MeshPhongMaterial({ color: 0x0f172a, flatShading: false });
+const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+baseMesh.position.y = -0.6;
+baseMesh.receiveShadow = true;
+islandGroup.add(baseMesh);
+
+// Grass/Park Layer
+const grassGeo = new THREE.CylinderGeometry(8.8, 8.8, 0.3, 32);
+const grassMat = new THREE.MeshPhongMaterial({ color: 0x10b981 });
+const grassMesh = new THREE.Mesh(grassGeo, grassMat);
+grassMesh.position.y = 0.1;
+grassMesh.receiveShadow = true;
+islandGroup.add(grassMesh);
+
+// Roads
+const roadGeo = new THREE.RingGeometry(3.5, 5.2, 32);
+const roadMat = new THREE.MeshBasicMaterial({ color: 0x334155, side: THREE.DoubleSide });
+const roadMesh = new THREE.Mesh(roadGeo, roadMat);
+roadMesh.rotation.x = -Math.PI / 2;
+roadMesh.position.y = 0.26;
+islandGroup.add(roadMesh);
+
+// Centerpiece: Kantor Kelurahan / Civic Hub
+const civicGroup = new THREE.Group();
+const civicBaseGeo = new THREE.BoxGeometry(3.2, 2.2, 2.6);
+const civicBaseMat = new THREE.MeshPhongMaterial({ color: 0x0284c7 });
+const civicBase = new THREE.Mesh(civicBaseGeo, civicBaseMat);
+civicBase.position.y = 1.1;
+civicBase.castShadow = true;
+civicBase.receiveShadow = true;
+civicGroup.add(civicBase);
+
+// Roof
+const roofGeo = new THREE.ConeGeometry(2.5, 1.4, 4);
+const roofMat = new THREE.MeshPhongMaterial({ color: 0xe11d48 });
+const roof = new THREE.Mesh(roofGeo, roofMat);
+roof.position.y = 2.9;
+roof.rotation.y = Math.PI / 4;
+roof.castShadow = true;
+civicGroup.add(roof);
+
+// Pin / Data Beacon over Kelurahan
+const beaconPoleGeo = new THREE.CylinderGeometry(0.06, 0.06, 2, 8);
+const beaconPoleMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+const pole = new THREE.Mesh(beaconPoleGeo, beaconPoleMat);
+pole.position.y = 4.2;
+civicGroup.add(pole);
+
+const beaconSphereGeo = new THREE.SphereGeometry(0.4, 16, 16);
+const beaconSphereMat = new THREE.MeshPhongMaterial({ color: 0x06b6d4, emissive: 0x0284c7, shininess: 100 });
+const beaconSphere = new THREE.Mesh(beaconSphereGeo, beaconSphereMat);
+beaconSphere.position.y = 5.2;
+civicGroup.add(beaconSphere);
+
+civicGroup.position.set(0, 0.25, 0);
+islandGroup.add(civicGroup);
+
+// Small UMKM Kiosks around the perimeter
+const shops = [];
+const shopColors = [0xf59e0b, 0x10b981, 0xec4899, 0x8b5cf6, 0x06b6d4, 0xeab308];
+const shopNames = ['Kuliner Bu Sari', 'Kopi Seduh', 'Batik Cantik', 'Bengkel Barokah', 'Toko Beras', 'Snack Renyah'];
+
+for (let i = 0; i < 6; i++) {
+  const angle = (i / 6) * Math.PI * 2;
+  const radius = 6.2;
+  const shopGroup = new THREE.Group();
+
+  // Shop Building
+  const bldgGeo = new THREE.BoxGeometry(1.4, 1.3, 1.4);
+  const bldgMat = new THREE.MeshPhongMaterial({ color: shopColors[i] });
+  const bldg = new THREE.Mesh(bldgGeo, bldgMat);
+  bldg.position.y = 0.65;
+  bldg.castShadow = true;
+  shopGroup.add(bldg);
+
+  // Shop Awning / Roof (Striped effect simulation)
+  const awningGeo = new THREE.BoxGeometry(1.6, 0.35, 1.6);
+  const awningMat = new THREE.MeshPhongMaterial({ color: 0xffffff });
+  const awning = new THREE.Mesh(awningGeo, awningMat);
+  awning.position.y = 1.4;
+  shopGroup.add(awning);
+
+  // Little Floating Data Badge / Coin above each shop
+  const badgeGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.08, 16);
+  const badgeMat = new THREE.MeshPhongMaterial({ color: 0xffd700, emissive: 0xb45309 });
+  const badge = new THREE.Mesh(badgeGeo, badgeMat);
+  badge.rotation.x = Math.PI / 2;
+  badge.position.y = 2.1;
+  shopGroup.add(badge);
+
+  // Trees near shops
+  const trunkGeo = new THREE.CylinderGeometry(0.12, 0.16, 0.8, 8);
+  const trunkMat = new THREE.MeshPhongMaterial({ color: 0x78350f });
+  const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+  trunk.position.set(1.1, 0.4, 0.4);
+  shopGroup.add(trunk);
+
+  const foliageGeo = new THREE.DodecahedronGeometry(0.45);
+  const foliageMat = new THREE.MeshPhongMaterial({ color: 0x22c55e });
+  const foliage = new THREE.Mesh(foliageGeo, foliageMat);
+  foliage.position.set(1.1, 1.0, 0.4);
+  shopGroup.add(foliage);
+
+  shopGroup.position.set(Math.cos(angle) * radius, 0.25, Math.sin(angle) * radius);
+  shopGroup.lookAt(0, 0.25, 0);
+  islandGroup.add(shopGroup);
+
+  shops.push({ group: shopGroup, badge: badge, baseAngle: angle, initialY: 2.1 });
+}
+
+// Data floating packet particles linking UMKM to Kelurahan
+const particleCount = 28;
+const particleGeo = new THREE.SphereGeometry(0.12, 8, 8);
+const particleMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+const dataPackets = [];
+
+for (let i = 0; i < particleCount; i++) {
+  const p = new THREE.Mesh(particleGeo, particleMat);
+  const shopIdx = i % 6;
+  const progress = Math.random();
+  scene.add(p);
+  dataPackets.push({ mesh: p, shopIdx: shopIdx, progress: progress, speed: 0.006 + Math.random() * 0.007 });
+}
+
+// Mouse interaction tracking
+let mouseX = 0;
+let mouseY = 0;
+let targetRotY = 0;
+let targetRotX = 0;
+
+function onMouseMove(event) {
+  const rect = container.getBoundingClientRect();
+  mouseX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouseY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  targetRotY = mouseX * 0.4;
+  targetRotX = mouseY * 0.2;
+}
+window.addEventListener('mousemove', onMouseMove);
+
+// Animation Loop
+let clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const elapsedTime = clock.getElapsedTime();
+
+  // Gentle diorama continuous rotation + mouse tilt
+  islandGroup.rotation.y += 0.0035;
+  islandGroup.position.y = Math.sin(elapsedTime * 1.5) * 0.15;
+  camera.position.x += (Math.sin(targetRotY) * 16 - camera.position.x) * 0.05;
+  camera.position.y += (14 + targetRotX * 6 - camera.position.y) * 0.05;
+  camera.lookAt(0, 1.2, 0);
+
+  // Animate shop badges
+  shops.forEach((item, index) => {
+    item.badge.rotation.z += 0.03;
+    item.badge.position.y = item.initialY + Math.sin(elapsedTime * 3 + index) * 0.12;
+  });
+
+  // Beacon pulse
+  beaconSphere.scale.setScalar(1 + Math.sin(elapsedTime * 4) * 0.15);
+
+  // Animate data packets streaming from shops into the Kelurahan Civic Hub
+  dataPackets.forEach(p => {
+    p.progress += p.speed;
+    if (p.progress > 1) p.progress = 0;
+    
+    // Calculate 3D position along arc from shop to center
+    const shopAngle = (p.shopIdx / 6) * Math.PI * 2 + islandGroup.rotation.y;
+    const shopRadius = 6.2;
+    const sx = Math.cos(shopAngle) * shopRadius;
+    const sz = Math.sin(shopAngle) * shopRadius;
+    const sy = 1.8;
+
+    const tx = 0;
+    const tz = 0;
+    const ty = 4.2;
+
+    const t = p.progress;
+    // Parabolic arc
+    const currentX = sx * (1 - t) + tx * t;
+    const currentZ = sz * (1 - t) + tz * t;
+    const currentY = (sy * (1 - t) + ty * t) + Math.sin(t * Math.PI) * 2.2;
+
+    p.mesh.position.set(currentX, currentY, currentZ);
+    p.mesh.scale.setScalar(0.7 + Math.sin(t * Math.PI) * 0.5);
+  });
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+function handleResize() {
+  const w = container.clientWidth || window.innerWidth;
+  const h = container.clientHeight || window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+window.addEventListener('resize', handleResize);
+
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_2 -->
+</body>
+</html>
