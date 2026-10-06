@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Kerangka Pikir Aksi Perubahan</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    /* Flow connectors and SVG positioning */
+    .flow-card {
+      transition: all 0.2s ease-in-out;
+    }
+    .flow-card:hover {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: white;
+        padding: 0;
+      }
+      .page-break {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-indigo-100 selection:text-indigo-900">
+
+  <!-- Top Navigation Bar -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-sky-500 flex items-center justify-center text-white shadow-md shadow-indigo-100">
+          <i class="fa-solid fa-diagram-project text-lg"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-slate-900 text-lg leading-tight flex items-center gap-2">
+            Aksi Perubahan Studio
+            <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-semibold tracking-wide uppercase">Bagan Interaktif</span>
+          </h1>
+          <p class="text-xs text-slate-500">Penyusunan Kerangka Pikir & Diagnosa Organisasi (Latsar / PKA / PKP)</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button id="btnViewToggle" onclick="toggleViewMode()" class="px-3 py-2 text-xs sm:text-sm font-medium rounded-lg text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors flex items-center gap-2">
+          <i class="fa-solid fa-table-columns text-slate-500"></i>
+          <span id="viewModeText">Bagan Visual</span>
+        </button>
+
+        <button onclick="resetToSampleData()" class="px-3 py-2 text-xs sm:text-sm font-medium rounded-lg text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200/60 transition-colors flex items-center gap-1.5" title="Muat Contoh Data">
+          <i class="fa-solid fa-arrows-rotate text-amber-600"></i>
+          <span class="hidden sm:inline">Isi Contoh</span>
+        </button>
+
+        <button onclick="clearAllData()" class="px-3 py-2 text-xs sm:text-sm font-medium rounded-lg text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200/60 transition-colors flex items-center gap-1.5" title="Kosongkan Semua Data">
+          <i class="fa-regular fa-trash-can text-rose-500"></i>
+          <span class="hidden sm:inline">Bersihkan</span>
+        </button>
+
+        <div class="h-6 w-px bg-slate-200 mx-1"></div>
+
+        <button onclick="exportToJSON()" class="px-3 py-2 text-xs sm:text-sm font-medium rounded-lg text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-sm" title="Simpan file JSON">
+          <i class="fa-solid fa-download text-slate-500"></i>
+          <span class="hidden md:inline">Export</span>
+        </button>
+
+        <label for="importFileInput" class="px-3 py-2 text-xs sm:text-sm font-medium rounded-lg text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer" title="Impor file JSON">
+          <i class="fa-solid fa-upload text-slate-500"></i>
+          <span class="hidden md:inline">Import</span>
+          <input type="file" id="importFileInput" class="hidden" accept=".json" onchange="importFromJSON(event)">
+        </label>
+
+        <button onclick="window.print()" class="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all shadow-sm shadow-indigo-200 flex items-center gap-2">
+          <i class="fa-solid fa-print"></i>
+          <span>Cetak / PDF</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Title / Meta Bar -->
+  <div class="bg-white border-b border-slate-200 py-3 px-4 sm:px-6 lg:px-8 shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div class="flex-1">
+        <input type="text" id="projectTitle" value="Kerangka Pikir Aksi Perubahan Pelayanan Publik" 
+               oninput="updateProjectMeta()"
+               placeholder="Judul Kerangka Pikir Aksi Perubahan..."
+               class="text-xl sm:text-2xl font-black text-slate-900 w-full bg-transparent border-0 border-b border-transparent hover:border-slate-300 focus:border-indigo-500 focus:ring-0 px-1 py-0.5 rounded transition">
+        <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-1 px-1">
+          <span class="flex items-center gap-1">
+            <i class="fa-regular fa-user text-slate-400"></i>
+            Inovator: <input type="text" id="projectAuthor" value="Reformer / Peserta Pelatihan" oninput="updateProjectMeta()" class="bg-transparent border-none text-slate-700 font-medium focus:ring-0 p-0 text-xs w-48 underline decoration-slate-300 underline-offset-2">
+          </span>
+          <span class="flex items-center gap-1">
+            <i class="fa-regular fa-building text-slate-400"></i>
+            Instansi: <input type="text" id="projectOrg" value="Unit Kerja / Instansi Pemerintah" oninput="updateProjectMeta()" class="bg-transparent border-none text-slate-700 font-medium focus:ring-0 p-0 text-xs w-56 underline decoration-slate-300 underline-offset-2">
+          </span>
+          <span class="text-emerald-600 flex items-center gap-1 font-medium bg-emerald-50 px-2 py-0.5 rounded">
+            <i class="fa-solid fa-circle-check text-xs"></i> Tersimpan Otomatis (Local Storage)
+          </span>
+        </div>
+      </div>
+      
+      <!-- Quick Info / Help Badge -->
+      <div class="flex items-center gap-2 self-start md:self-center text-xs bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-600 no-print">
+        <i class="fa-solid fa-circle-info text-indigo-500 text-sm"></i>
+        <span>Klik tombol <strong>+ Tambah</strong> atau ikon <strong>Edit/Hapus</strong> pada setiap kotak bagan.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Canvas Area -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- TAB 1: VISUAL DIAGRAM VIEW (Mirip persis bagan referensi) -->
+    <div id="diagramView" class="block space-y-6">
+
+      <!-- Diagram Flow Overview Banner -->
+      <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-400 px-1 no-print">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Diagnosa Masalah (Kiri)
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span> Solusi & Inovasi (Tengah)
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> Sasaran & Dampak (Kanan)
+        </div>
+      </div>
+
+      <!-- 3-Column Diagram Grid Matching Provided Sketch -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- KOLOM KIRI (Cols 1-4): Diagnosa Kondisi Saat Ini, Sebab, & Akibat -->
+        <div class="lg:col-span-4 flex flex-col gap-6 justify-between">
+
+          <!-- 1. SEBAB (Penyebab Utama Masalah) -->
+          <div class="flow-card bg-white rounded-2xl border-2 border-red-300 shadow-sm p-4 relative overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between border-b border-red-100 pb-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-red-100 text-red-700 flex items-center justify-center font-bold text-xs">1</span>
+                <div>
+                  <h3 class="font-bold text-red-700 text-sm tracking-wide uppercase">SEBAB :</h3>
+                  <p class="text-[11px] text-slate-500">Akar penyebab timbulnya masalah saat ini</p>
+                </div>
+              </div>
+              <button onclick="openModal('sebab')" class="no-print text-xs font-semibold px-2.5 py-1 rounded-md bg-red-50 text-red-700 hover:bg-red-100 transition flex items-center gap-1 border border-red-200">
+                <i class="fa-solid fa-plus text-[10px]"></i> Tambah
+              </button>
+            </div>
+
+            <!-- List of Sebab Items -->
+            <ul id="list-sebab" class="space-y-2 flex-1 custom-scrollbar overflow-y-auto max-h-56 pr-1">
+              <!-- Rendered via JS -->
+            </ul>
+
+            <!-- Connection Indicator to Kondisi Saat Ini -->
+            <div class="mt-3 pt-2 text-center text-red-400 font-semibold text-xs flex items-center justify-center gap-1.5 no-print">
+              <span>Menyebabkan</span>
+              <i class="fa-solid fa-arrow-down text-red-500 animate-bounce"></i>
+            </div>
+          </div>
+
+          <!-- 2. KONDISI SAAT INI (Core Baseline Issue) -->
+          <div class="flow-card bg-gradient-to-br from-fuchsia-50 to-pink-50 rounded-2xl border-2 border-fuchsia-400 shadow-md p-5 relative overflow-hidden">
+            <div class="flex items-center justify-between border-b border-fuchsia-200 pb-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-fuchsia-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">2</span>
+                <div>
+                  <h3 class="font-extrabold text-fuchsia-900 text-sm tracking-wide uppercase">KONDISI SAAT INI</h3>
+                  <p class="text-[11px] text-fuchsia-700">Fakta / realita permasalahan mendesak</p>
+                </div>
+              </div>
+              <button onclick="openModal('kondisi_saat_ini')" class="no-print text-xs font-semibold px-2.5 py-1 rounded-md bg-fuchsia-100 text-fuchsia-800 hover:bg-fuchsia-200 transition flex items-center gap-1 border border-fuchsia-300">
+                <i class="fa-solid fa-pen text-[10px]"></i> Edit Isi
+              </button>
+            </div>
+
+            <!-- Kondisi Saat Ini Content -->
+            <div id="content-kondisi-saat-ini" class="p-3 bg-white/90 backdrop-blur-sm rounded-xl border border-fuchsia-200/80 text-sm text-slate-800 shadow-inner min-h-[90px] flex items-center">
+              <!-- Content via JS -->
+            </div>
+
+            <!-- Red Flow Indicators (Connecting upward to Sebab, downward to Akibat, and right to Gagasan Perubahan) -->
+            <div class="mt-3 flex items-center justify-between text-[11px] font-semibold text-fuchsia-700 no-print">
+              <span class="flex items-center gap-1">
+                <i class="fa-solid fa-arrow-down text-rose-500"></i> Akibat jika diabaikan
+              </span>
+              <span class="flex items-center gap-1 bg-fuchsia-200/70 px-2 py-0.5 rounded text-fuchsia-900">
+                Diusulkan Solusi <i class="fa-solid fa-arrow-right text-indigo-600"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- 3. AKIBAT (Bila Tidak Segera Diatasi) -->
+          <div class="flow-card bg-white rounded-2xl border-2 border-slate-300 shadow-sm p-4 relative overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-slate-800 text-white flex items-center justify-center font-bold text-xs">3</span>
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm tracking-wide leading-tight uppercase">AKIBAT</h3>
+                  <p class="text-[11px] text-rose-600 font-medium">Bila tidak segera diatasi :</p>
+                </div>
+              </div>
+              <button onclick="openModal('akibat')" class="no-print text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center gap-1 border border-slate-200">
+                <i class="fa-solid fa-plus text-[10px]"></i> Tambah
+              </button>
+            </div>
+
+            <!-- List of Akibat Items -->
+            <ul id="list-akibat" class="space-y-2 flex-1 custom-scrollbar overflow-y-auto max-h-56 pr-1">
+              <!-- Rendered via JS -->
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- KOLOM TENGAH (Cols 5-8): Gagasan Perubahan & Stakeholder -->
+        <div class="lg:col-span-4 flex flex-col gap-6 justify-between">
+
+          <!-- 4. GAGASAN PERUBAHAN (The Core Solution / Breakthrough) -->
+          <div class="flow-card bg-gradient-to-b from-indigo-50/60 to-white rounded-2xl border-2 border-indigo-400 shadow-md p-5 flex flex-col flex-1 relative">
+            <div class="flex items-center justify-between border-b border-indigo-100 pb-3 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow">4</span>
+                <div>
+                  <h3 class="font-extrabold text-indigo-950 text-base tracking-wide uppercase">GAGASAN PERUBAHAN</h3>
+                  <p class="text-[11px] text-indigo-600 font-medium">Terobosan inovatif pemecahan masalah</p>
+                </div>
+              </div>
+              <button onclick="openModal('gagasan')" class="no-print text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-plus text-[11px]"></i> Tambah Terobosan
+              </button>
+            </div>
+
+            <!-- Subtitle / Penjelasan Singkat Gagasan -->
+            <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3 mb-4 text-xs text-indigo-900 leading-relaxed">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-bold flex items-center gap-1 text-indigo-800">
+                  <i class="fa-solid fa-lightbulb text-amber-500"></i> Judul / Nama Inovasi:
+                </span>
+                <button onclick="editInovationName()" class="no-print text-[10px] text-indigo-600 hover:underline">Ubah Nama</button>
+              </div>
+              <p id="innovationNameDisplay" class="font-semibold text-slate-800 text-sm">Sistem Informasi & Manajemen Layanan Terpadu Berbasis Digital</p>
+            </div>
+
+            <!-- List of Inovasi / Gagasan Milestones -->
+            <div class="flex-1 custom-scrollbar overflow-y-auto max-h-[360px] pr-1">
+              <ul id="list-gagasan" class="space-y-2.5">
+                <!-- Rendered via JS -->
+              </ul>
+            </div>
+
+            <!-- Direction Indicator to Stakeholder & Tujuan/Manfaat -->
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 no-print">
+              <span class="flex items-center gap-1 text-sky-600 font-medium">
+                <i class="fa-solid fa-arrow-down"></i> Melibatkan Stakeholder
+              </span>
+              <span class="flex items-center gap-1 text-emerald-600 font-medium">
+                Mewujudkan Hasil <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- 5. STAKE HOLDER (Internal & Eksternal) -->
+          <div class="flow-card bg-white rounded-2xl border-2 border-sky-300 shadow-sm p-4 relative flex flex-col">
+            <div class="flex items-center justify-between border-b border-sky-100 pb-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-sky-600 text-white flex items-center justify-center font-bold text-xs">5</span>
+                <div>
+                  <h3 class="font-bold text-sky-950 text-sm tracking-wide uppercase">STAKE HOLDER</h3>
+                  <p class="text-[11px] text-sky-600 font-medium">Pemangku kepentingan internal & eksternal</p>
+                </div>
+              </div>
+              <button onclick="openModal('stakeholder')" class="no-print text-xs font-semibold px-2.5 py-1 rounded-md bg-sky-50 text-sky-700 hover:bg-sky-100 transition flex items-center gap-1 border border-sky-200">
+                <i class="fa-solid fa-plus text-[10px]"></i> Tambah
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+              <!-- Internal Stakeholders -->
+              <div class="bg-sky-50/50 rounded-xl p-2.5 border border-sky-100">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-bold text-sky-900 uppercase tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-users text-sky-600"></i> Internal :
+                  </span>
+                  <span id="badge-internal-count" class="text-[10px] bg-sky-200 text-sky-800 px-1.5 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <ul id="list-stakeholder-internal" class="space-y-1.5 text-xs text-slate-700 custom-scrollbar overflow-y-auto max-h-40">
+                  <!-- Rendered via JS -->
+                </ul>
+              </div>
+
+              <!-- Eksternal Stakeholders -->
+              <div class="bg-indigo-50/40 rounded-xl p-2.5 border border-indigo-100">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-bold text-indigo-950 uppercase tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-earth-americas text-indigo-600"></i> Eksternal :
+                  </span>
+                  <span id="badge-eksternal-count" class="text-[10px] bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <ul id="list-stakeholder-eksternal" class="space-y-1.5 text-xs text-slate-700 custom-scrollbar overflow-y-auto max-h-40">
+                  <!-- Rendered via JS -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- KOLOM KANAN (Cols 9-12): Kondisi Diharapkan, Tujuan, & Manfaat -->
+        <div class="lg:col-span-4 flex flex-col gap-6 justify-between">
+
+          <!-- 6. KONDISI DIHARAPKAN (Target Future State / Output Ideal) -->
+          <div class="flow-card bg-gradient-to-br from-sky-100 via-cyan-50 to-blue-50 rounded-2xl border-2 border-sky-400 shadow-md p-5 relative overflow-hidden">
+            <div class="flex items-center justify-between border-b border-sky-200 pb-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-sky-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">6</span>
+                <div>
+                  <h3 class="font-extrabold text-sky-950 text-sm tracking-wide uppercase">KONDISI DIHARAPKAN</h3>
+                  <p class="text-[11px] text-sky-700 font-medium">Kondisi ideal pasca inovasi terlaksana</p>
+                </div>
+              </div>
+              <button onclick="openModal('kondisi_diharapkan')" class="no-print text-xs font-semibold px-2.5 py-1 rounded-md bg-sky-200/70 text-sky-900 hover:bg-sky-200 transition flex items-center gap-1 border border-sky-300">
+                <i class="fa-solid fa-pen text-[10px]"></i> Edit Isi
+              </button>
+            </div>
+
+            <!-- Content Kondisi Diharapkan -->
+            <div id="content-kondisi-diharapkan" class="p-3 bg-white/95 rounded-xl border border-sky-200 text-sm text-slate-800 shadow-inner min-h-[85px] flex items-center">
+              <!-- Content via JS -->
+            </div>
+
+            <div class="mt-2 text-[11px] text-sky-800 text-right font-medium no-print">
+              <span>Goal akhir dari Gagasan Perubahan</span> <i class="fa-solid fa-flag-checkered text-sky-600"></i>
+            </div>
+          </div>
+
+          <!-- 7. TUJUAN (Jangka Pendek, Menengah, Panjang) -->
+          <div class="flow-card bg-white rounded-2xl border-2 border-emerald-400 shadow-sm p-4 relative flex flex-col">
+            <div class="flex items-center justify-between border-b border-emerald-100 pb-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">7</span>
+                <div>
+                  <h3 class="font-bold text-emerald-950 text-sm tracking-wide uppercase">TUJUAN</h3>
+                  <p class="text-[11px] text-emerald-600 font-medium">Target capaian terukur & bertahap</p>
+                </div>
+              </div>
+              <button onclick="openModal('tujuan')" class="no-print text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition flex items-center gap-1 border border-emerald-200">
+                <i class="fa-solid fa-plus text-[10px]"></i> Tambah
+              </button>
+            </div>
+
+            <!-- List of Tujuan Items -->
+            <ul id="list-tujuan" class="space-y-2 flex-1 custom-scrollbar overflow-y-auto max-h-52 pr-1">
+              <!-- Rendered via JS -->
+            </ul>
+          </div>
+
+          <!-- 8. MANFAAT (Organisasi & Masyarakat) -->
+          <div class="flow-card bg-white rounded-2xl border-2 border-teal-400 shadow-sm p-4 relative flex flex-col flex-1">
+            <div class="flex items-center justify-between border-b border-teal-100 pb-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-xs">8</span>
+                <div>
+                  <h3 class="font-bold text-teal-950 text-sm tracking-wide uppercase">MANFAAT</h3>
+                  <p class="text-[11px] text-teal-600 font-medium">Dampak bagi organisasi & masyarakat</p>
+                </div>
+              </div>
+              <button onclick="openModal('manfaat')" class="no-print text-xs font-semibold px-2.5 py-1 rounded-md bg-teal-50 text-teal-700 hover:bg-teal-100 transition flex items-center gap-1 border border-teal-200">
+                <i class="fa-solid fa-plus text-[10px]"></i> Tambah
+              </button>
+            </div>
+
+            <div class="space-y-3.5 flex-1">
+              <!-- Manfaat Organisasi -->
+              <div class="bg-teal-50/50 rounded-xl p-2.5 border border-teal-100">
+                <div class="flex items-center justify-between mb-1.5">
+                  <h4 class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
+                    <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px]">a</span>
+                    Organisasi :
+                  </h4>
+                  <span id="badge-organisasi-count" class="text-[10px] bg-teal-200 text-teal-800 px-1.5 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <ul id="list-manfaat-organisasi" class="space-y-1.5 text-xs text-slate-700 custom-scrollbar overflow-y-auto max-h-36">
+                  <!-- Rendered via JS -->
+                </ul>
+              </div>
+
+              <!-- Manfaat Masyarakat -->
+              <div class="bg-emerald-50/50 rounded-xl p-2.5 border border-emerald-100">
+                <div class="flex items-center justify-between mb-1.5">
+                  <h4 class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+                    <span class="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">b</span>
+                    Masyarakat :
+                  </h4>
+                  <span id="badge-masyarakat-count" class="text-[10px] bg-emerald-200 text-emerald-800 px-1.5 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <ul id="list-manfaat-masyarakat" class="space-y-1.5 text-xs text-slate-700 custom-scrollbar overflow-y-auto max-h-36">
+                  <!-- Rendered via JS -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TAB 2: TABULAR / LIST SUMMARY VIEW (Alternatif untuk pengeditan terpadu) -->
+    <div id="tableView" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Rekapitulasi Data Matriks Aksi Perubahan</h2>
+            <p class="text-xs text-slate-500">Kelola semua butir poin kerangka pikir secara terstruktur dalam satu tabel</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-500">Total Komponen:</span>
+            <span id="totalItemsCount" class="text-xs font-bold bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full border border-indigo-200">0 Butir</span>
+          </div>
+        </div>
+
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                <th class="py-3 px-4 w-40">Bagan / Sektor</th>
+                <th class="py-3 px-4 w-32">Kategori</th>
+                <th class="py-3 px-4">Uraian / Isi Butir</th>
+                <th class="py-3 px-4 w-28 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="fullTableBody" class="divide-y divide-slate-100">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL CRUD DIALOG -->
+  <div id="crudModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm hidden no-print transition-all">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 transform transition-all scale-95 opacity-0 duration-200" id="crudModalContainer">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div id="modalIconContainer" class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </div>
+          <div>
+            <h3 id="modalTitle" class="font-bold text-slate-900 text-base">Tambah Butir Poin</h3>
+            <p id="modalSubtitle" class="text-xs text-slate-500">Isi detail penjelasan di bawah ini</p>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body Form -->
+      <form id="crudForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4">
+        <!-- Hidden Inputs for State Tracking -->
+        <input type="hidden" id="formSectionKey">
+        <input type="hidden" id="formItemId">
+        <input type="hidden" id="formSubKey">
+
+        <!-- Optional Category Selection (e.g. Stakeholder Internal/Eksternal or Manfaat Organisasi/Masyarakat) -->
+        <div id="categoryGroup" class="hidden">
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Klasifikasi / Sub Kategori</label>
+          <select id="formCategorySelect" class="w-full text-sm rounded-lg border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 bg-white">
+            <!-- Populated conditionally -->
+          </select>
+        </div>
+
+        <!-- Optional Timeline / Level (Jangka Pendek, Menengah, Panjang) for TUJUAN -->
+        <div id="timelineGroup" class="hidden">
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Tahapan / Jangka Waktu</label>
+          <select id="formTimelineSelect" class="w-full text-sm rounded-lg border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 bg-white">
+            <option value="Jangka Pendek">Jangka Pendek (1 - 2 Bulan)</option>
+            <option value="Jangka Menengah">Jangka Menengah (6 Bulan - 1 Tahun)</option>
+            <option value="Jangka Panjang">Jangka Panjang (> 1 Tahun)</option>
+            <option value="Umum">Umum / Keseluruhan</option>
+          </select>
+        </div>
+
+        <!-- Text / Deskripsi Input -->
+        <div>
+          <label id="formTextLabel" class="block text-xs font-semibold text-slate-700 mb-1.5">Uraian / Deskripsi <span class="text-rose-500">*</span></label>
+          <textarea id="formTextInput" rows="4" required
+                    class="w-full text-sm rounded-xl border-slate-300 focus:border-indigo-500 focus:ring-indigo-500 p-3 text-slate-800 placeholder-slate-400"
+                    placeholder="Tuliskan butir poin secara rinci dan lugas..."></textarea>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 text-sm font-medium rounded-xl text-slate-700 hover:bg-slate-100 transition">
+            Batal
+          </button>
+          <button type="submit" id="btnSubmitForm" class="px-5 py-2 text-sm font-semibold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-100 transition flex items-center gap-2">
+            <i class="fa-solid fa-check"></i>
+            <span>Simpan</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL CHANGE INOVASI TITLE -->
+  <div id="inovasiModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm hidden no-print">
+    <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4">
+      <h3 class="font-bold text-slate-900 text-base">Ubah Nama Inovasi / Gagasan</h3>
+      <input type="text" id="inputInovasiTitle" class="w-full text-sm rounded-xl border-slate-300 focus:border-indigo-500 p-2.5">
+      <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeInovasiModal()" class="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
+        <button type="button" onclick="saveInovasiTitle()" class="px-4 py-1.5 text-xs font-semibold bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    // Storage Key
+    const STORAGE_KEY = 'KERANGKA_AKSI_PERUBAHAN_DATA_V1';
+
+    // Default Template Data matching the reference diagram
+    const defaultData = {
+      meta: {
+        title: "Kerangka Pikir Aksi Perubahan Pelayanan Publik",
+        author: "Reformer / Peserta Diklat",
+        org: "Dinas / Instansi Pemerintah",
+        innovationName: "Sistem Terintegrasi Layanan Responsif & Akuntabel (SILERA)"
+      },
+      // 1. Sebab
+      sebab: [
+        { id: "seb-1", text: "Belum tersedianya SOP baku dan terstandarisasi berbasis teknologi digital" },
+        { id: "seb-2", text: "Kompetensi SDM aparatur dalam pemanfaatan sistem informasi masih terbatas" },
+        { id: "seb-3", text: "Koordinasi lintas instansi/bidang masih dilakukan secara konvensional dan parsial" }
+      ],
+      // 2. Kondisi Saat Ini (Singular core description)
+      kondisi_saat_ini: {
+        text: "Pelayanan publik masih lambat, sering terjadi penumpukan antrean berkas fisik, dan waktu respon pengaduan masyarakat memakan waktu lebih dari 5 hari kerja."
+      },
+      // 3. Akibat
+      akibat: [
+        { id: "akb-1", text: "Menurunnya tingkat kepuasan masyarakat terhadap kinerja birokrasi" },
+        { id: "akb-2", text: "Potensi maladministrasi dan penumpukan beban kerja di akhir tahun anggaran" },
+        { id: "akb-3", text: "Rendahnya capaian nilai Indeks Reformasi Birokrasi (RB) instansi" }
+      ],
+      // 4. Gagasan Perubahan
+      gagasan: [
+        { id: "gag-1", text: "Membangun sistem portal layanan digital terpadu one-stop service" },
+        { id: "gag-2", text: "Penyusunan regulasi, juknis, dan SOP percepatan pelayanan 24/7" },
+        { id: "gag-3", text: "Pelatihan peningkatan kapasitas teknis bagi operator dan pejabat pengawas" }
+      ],
+      // 5. Stakeholder
+      stakeholder: [
+        { id: "stk-1", sub: "internal", text: "Pimpinan Instansi (Mentor)" },
+        { id: "stk-2", sub: "internal", text: "Tim Efektif Aksi Perubahan" },
+        { id: "stk-3", sub: "internal", text: "Pranata Komputer / Tim IT" },
+        { id: "stk-4", sub: "eksternal", text: "Masyarakat / Pengguna Layanan" },
+        { id: "stk-5", sub: "eksternal", text: "Ombudsman / Lembaga Pengawas" },
+        { id: "stk-6", sub: "eksternal", text: "Media Massa & Komunitas Mitra" }
+      ],
+      // 6. Kondisi Diharapkan
+      kondisi_diharapkan: {
+        text: "Terwujudnya pelayanan yang cepat, transparan, terukur secara real-time, dan waktu respon penyelesaian aduan terpangkas menjadi maksimal 1x24 jam dengan indeks kepuasan >85%."
+      },
+      // 7. Tujuan
+      tujuan: [
+        { id: "tuj-1", timeline: "Jangka Pendek", text: "Terbentuknya Tim Kerja Efektif dan tersedianya prototipe aplikasi sistem terpadu (2 Bulan)" },
+        { id: "tuj-2", timeline: "Jangka Menengah", text: "Pemberlakuan regulasi SOP baru dan sosialisasi ke seluruh unit pelayanan (6 Bulan)" },
+        { id: "tuj-3", timeline: "Jangka Panjang", text: "Integrasi penuh ke portal Satu Data Nasional dan replikasi ke unit kerja lainnya" }
+      ],
+      // 8. Manfaat
+      manfaat: [
+        { id: "mnf-1", sub: "organisasi", text: "Meningkatkan efisiensi waktu kerja dan akurasi pelaporan administrasi" },
+        { id: "mnf-2", sub: "organisasi", text: "Menaikkan skor evaluasi SAKIP dan Kepatuhan Standar Pelayanan Publik" },
+        { id: "mnf-3", sub: "organisasi", text: "Menciptakan budaya kerja berbasis data dan continuous improvement" },
+        { id: "mnf-4", sub: "masyarakat", text: "Memperoleh kepastian persyaratan, biaya Rp 0, dan durasi pengurusan" },
+        { id: "mnf-5", sub: "masyarakat", text: "Kemudahan akses layanan dari mana saja tanpa harus tatap muka langsung" }
+      ]
+    };
+
+    // Active state in memory
+    let appData = {};
+
+    // Initialization
+    function initApp() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          appData = JSON.parse(stored);
+        } catch (e) {
+          appData = JSON.parse(JSON.stringify(defaultData));
+        }
+      } else {
+        appData = JSON.parse(JSON.stringify(defaultData));
+        saveState();
+      }
+
+      // Populate meta inputs
+      document.getElementById('projectTitle').value = appData.meta.title || '';
+      document.getElementById('projectAuthor').value = appData.meta.author || '';
+      document.getElementById('projectOrg').value = appData.meta.org || '';
+      document.getElementById('innovationNameDisplay').textContent = appData.meta.innovationName || 'Gagasan Perubahan';
+
+      renderAllSections();
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      renderSummaryTable();
+    }
+
+    function updateProjectMeta() {
+      appData.meta.title = document.getElementById('projectTitle').value;
+      appData.meta.author = document.getElementById('projectAuthor').value;
+      appData.meta.org = document.getElementById('projectOrg').value;
+      saveState();
+    }
+
+    // Modal Inovasi Name
+    function editInovationName() {
+      document.getElementById('inputInovasiTitle').value = appData.meta.innovationName || '';
+      document.getElementById('inovasiModal').classList.remove('hidden');
+    }
+    function closeInovasiModal() {
+      document.getElementById('inovasiModal').classList.add('hidden');
+    }
+    function saveInovasiTitle() {
+      const val = document.getElementById('inputInovasiTitle').value.trim();
+      if (val) {
+        appData.meta.innovationName = val;
+        document.getElementById('innovationNameDisplay').textContent = val;
+        saveState();
+      }
+      closeInovasiModal();
+    }
+
+    // Render Helpers
+    function renderAllSections() {
+      renderSebab();
+      renderKondisiSaatIni();
+      renderAkibat();
+      renderGagasan();
+      renderStakeholder();
+      renderKondisiDiharapkan();
+      renderTujuan();
+      renderManfaat();
+      renderSummaryTable();
+    }
+
+    // 1. Render Sebab
+    function renderSebab() {
+      const container = document.getElementById('list-sebab');
+      if (!appData.sebab || appData.sebab.length === 0) {
+        container.innerHTML = `<li class="text-xs text-slate-400 italic p-3 text-center bg-slate-50 rounded-lg">Belum ada butir sebab. Klik + Tambah</li>`;
+        return;
+      }
+      container.innerHTML = appData.sebab.map((item, idx) => `
+        <li class="group bg-red-50/60 hover:bg-red-50 rounded-xl p-2.5 border border-red-100 flex items-start justify-between gap-2 transition">
+          <div class="flex items-start gap-2 flex-1">
+            <span class="font-bold text-red-600 text-xs mt-0.5">${idx + 1}.</span>
+            <span class="text-xs text-slate-800 leading-snug">${escapeHtml(item.text)}</span>
+          </div>
+          <div class="opacity-0 group-hover:opacity-100 flex items-center gap-1 transition no-print">
+            <button onclick="editItem('sebab', '${item.id}')" class="text-slate-400 hover:text-indigo-600 p-1 rounded" title="Edit">
+              <i class="fa-regular fa-pen-to-square text-xs"></i>
+            </button>
+            <button onclick="deleteItem('sebab', '${item.id}')" class="text-slate-400 hover:text-rose-600 p-1 rounded" title="Hapus">
+              <i class="fa-regular fa-trash-can text-xs"></i>
+            </button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    // 2. Render Kondisi Saat Ini
+    function renderKondisiSaatIni() {
+      const container = document.getElementById('content-kondisi-saat-ini');
+      const text = appData.kondisi_saat_ini?.text || '';
+      if (!text.trim()) {
+        container.innerHTML = `<span class="text-xs text-slate-400 italic">Klik tombol "Edit Isi" untuk menjabarkan kondisi permasalahan saat ini...</span>`;
+      } else {
+        container.innerHTML = `<p class="leading-relaxed font-medium text-slate-800">${escapeHtml(text)}</p>`;
+      }
+    }
+
+    // 3. Render Akibat
+    function renderAkibat() {
+      const container = document.getElementById('list-akibat');
+      if (!appData.akibat || appData.akibat.length === 0) {
+        container.innerHTML = `<li class="text-xs text-slate-400 italic p-3 text-center bg-slate-50 rounded-lg">Belum ada butir akibat. Klik + Tambah</li>`;
+        return;
+      }
+      container.innerHTML = appData.akibat.map((item, idx) => `
+        <li class="group bg-slate-50 hover:bg-slate-100/80 rounded-xl p-2.5 border border-slate-200 flex items-start justify-between gap-2 transition">
+          <div class="flex items-start gap-2 flex-1">
+            <span class="font-bold text-slate-700 text-xs mt-0.5">${idx + 1}.</span>
+            <span class="text-xs text-slate-800 leading-snug">${escapeHtml(item.text)}</span>
+          </div>
+          <div class="opacity-0 group-hover:opacity-100 flex items-center gap-1 transition no-print">
+            <button onclick="editItem('akibat', '${item.id}')" class="text-slate-400 hover:text-indigo-600 p-1 rounded" title="Edit">
+              <i class="fa-regular fa-pen-to-square text-xs"></i>
+            </button>
+            <button onclick="deleteItem('akibat', '${item.id}')" class="text-slate-400 hover:text-rose-600 p-1 rounded" title="Hapus">
+              <i class="fa-regular fa-trash-can text-xs"></i>
+            </button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    // 4. Render Gagasan
+    function renderGagasan() {
+      const container = document.getElementById('list-gagasan');
+      if (!appData.gagasan || appData.gagasan.length === 0) {
+        container.innerHTML = `<li class="text-xs text-slate-400 italic p-4 text-center bg-indigo-50/40 rounded-xl">Belum ada langkah gagasan. Klik + Tambah Terobosan</li>`;
+        return;
+      }
+      container.innerHTML = appData.gagasan.map((item, idx) => `
+        <li class="group bg-white rounded-xl p-3 border border-indigo-200 shadow-sm hover:border-indigo-400 flex items-start justify-between gap-2 transition">
+          <div class="flex items-start gap-2.5 flex-1">
+            <span class="w-5 h-5 rounded-md bg-indigo-100 text-indigo-700 font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
+            <span class="text-xs sm:text-sm font-medium text-slate-800 leading-relaxed">${escapeHtml(item.text)}</span>
+          </div>
+          <div class="opacity-0 group-hover:opacity-100 flex items-center gap-1 transition no-print shrink-0">
+            <button onclick="editItem('gagasan', '${item.id}')" class="text-slate-400 hover:text-indigo-600 p-1 rounded" title="Edit">
+              <i class="fa-regular fa-pen-to-square text-xs"></i>
+            </button>
+            <button onclick="deleteItem('gagasan', '${item.id}')" class="text-slate-400 hover:text-rose-600 p-1 rounded" title="Hapus">
+              <i class="fa-regular fa-trash-can text-xs"></i>
+            </button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    // 5. Render Stakeholder
+    function renderStakeholder() {
+      const listInt = document.getElementById('list-stakeholder-internal');
+      const listEks = document.getElementById('list-stakeholder-eksternal');
+
+      const internals = (appData.stakeholder || []).filter(s => s.sub === 'internal');
+      const eksternals = (appData.stakeholder || []).filter(s => s.sub === 'eksternal');
+
+      document.getElementById('badge-internal-count').textContent = internals.length;
+      document.getElementById('badge-eksternal-count').textContent = eksternals.length;
+
+      listInt.innerHTML = internals.length === 0 
+        ? `<li class="text-[11px] text-slate-400 italic py-1">Belum ada internal</li>` 
+        : internals.map((item, idx) => `
+          <li class="group flex items-start justify-between gap-1.5 py-1 px-1.5 rounded hover:bg-sky-100/60 transition">
+            <span class="leading-tight"><span class="font-semibold text-sky-800">${idx + 1})</span> ${escapeHtml(item.text)}</span>
+            <div class="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 no-print shrink-0">
+              <button onclick="editItem('stakeholder', '${item.id}')" class="text-slate-400 hover:text-sky-800 text-[10px]"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="deleteItem('stakeholder', '${item.id}')" class="text-slate-400 hover:text-rose-600 text-[10px]"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </li>
+        `).join('');
+
+      listEks.innerHTML = eksternals.length === 0 
+        ? `<li class="text-[11px] text-slate-400 italic py-1">Belum ada eksternal</li>` 
+        : eksternals.map((item, idx) => `
+          <li class="group flex items-start justify-between gap-1.5 py-1 px-1.5 rounded hover:bg-indigo-100/60 transition">
+            <span class="leading-tight"><span class="font-semibold text-indigo-800">${idx + 1})</span> ${escapeHtml(item.text)}</span>
+            <div class="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 no-print shrink-0">
+              <button onclick="editItem('stakeholder', '${item.id}')" class="text-slate-400 hover:text-indigo-800 text-[10px]"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="deleteItem('stakeholder', '${item.id}')" class="text-slate-400 hover:text-rose-600 text-[10px]"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </li>
+        `).join('');
+    }
+
+    // 6. Render Kondisi Diharapkan
+    function renderKondisiDiharapkan() {
+      const container = document.getElementById('content-kondisi-diharapkan');
+      const text = appData.kondisi_diharapkan?.text || '';
+      if (!text.trim()) {
+        container.innerHTML = `<span class="text-xs text-slate-400 italic">Klik tombol "Edit Isi" untuk merumuskan target kondisi ideal yang ingin dicapai...</span>`;
+      } else {
+        container.innerHTML = `<p class="leading-relaxed font-semibold text-sky-950">${escapeHtml(text)}</p>`;
+      }
+    }
+
+    // 7. Render Tujuan
+    function renderTujuan() {
+      const container = document.getElementById('list-tujuan');
+      if (!appData.tujuan || appData.tujuan.length === 0) {
+        container.innerHTML = `<li class="text-xs text-slate-400 italic p-3 text-center bg-slate-50 rounded-lg">Belum ada tujuan. Klik + Tambah</li>`;
+        return;
+      }
+      container.innerHTML = appData.tujuan.map((item, idx) => `
+        <li class="group bg-emerald-50/50 hover:bg-emerald-50 rounded-xl p-2.5 border border-emerald-100 flex items-start justify-between gap-2 transition">
+          <div class="flex items-start gap-2 flex-1">
+            <span class="font-bold text-emerald-700 text-xs mt-0.5">${idx + 1}.</span>
+            <div class="flex-1">
+              ${item.timeline ? `<span class="inline-block text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-200/70 text-emerald-800 mb-1">${escapeHtml(item.timeline)}</span>` : ''}
+              <p class="text-xs text-slate-800 leading-snug">${escapeHtml(item.text)}</p>
+            </div>
+          </div>
+          <div class="opacity-0 group-hover:opacity-100 flex items-center gap-1 transition no-print shrink-0">
+            <button onclick="editItem('tujuan', '${item.id}')" class="text-slate-400 hover:text-emerald-700 p-1 rounded" title="Edit">
+              <i class="fa-regular fa-pen-to-square text-xs"></i>
+            </button>
+            <button onclick="deleteItem('tujuan', '${item.id}')" class="text-slate-400 hover:text-rose-600 p-1 rounded" title="Hapus">
+              <i class="fa-regular fa-trash-can text-xs"></i>
+            </button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    // 8. Render Manfaat
+    function renderManfaat() {
+      const listOrg = document.getElementById('list-manfaat-organisasi');
+      const listMas = document.getElementById('list-manfaat-masyarakat');
+
+      const orgs = (appData.manfaat || []).filter(m => m.sub === 'organisasi');
+      const mass = (appData.manfaat || []).filter(m => m.sub === 'masyarakat');
+
+      document.getElementById('badge-organisasi-count').textContent = orgs.length;
+      document.getElementById('badge-masyarakat-count').textContent = mass.length;
+
+      listOrg.innerHTML = orgs.length === 0
+        ? `<li class="text-[11px] text-slate-400 italic py-1">Belum ada manfaat organisasi</li>`
+        : orgs.map((item, idx) => `
+          <li class="group flex items-start justify-between gap-1.5 py-1 px-1.5 rounded hover:bg-teal-100/60 transition">
+            <span class="leading-tight"><span class="font-semibold text-teal-800">${idx + 1})</span> ${escapeHtml(item.text)}</span>
+            <div class="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 no-print shrink-0">
+              <button onclick="editItem('manfaat', '${item.id}')" class="text-slate-400 hover:text-teal-800 text-[10px]"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="deleteItem('manfaat', '${item.id}')" class="text-slate-400 hover:text-rose-600 text-[10px]"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </li>
+        `).join('');
+
+      listMas.innerHTML = mass.length === 0
+        ? `<li class="text-[11px] text-slate-400 italic py-1">Belum ada manfaat masyarakat</li>`
+        : mass.map((item, idx) => `
+          <li class="group flex items-start justify-between gap-1.5 py-1 px-1.5 rounded hover:bg-emerald-100/60 transition">
+            <span class="leading-tight"><span class="font-semibold text-emerald-800">${idx + 1})</span> ${escapeHtml(item.text)}</span>
+            <div class="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 no-print shrink-0">
+              <button onclick="editItem('manfaat', '${item.id}')" class="text-slate-400 hover:text-emerald-800 text-[10px]"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="deleteItem('manfaat', '${item.id}')" class="text-slate-400 hover:text-rose-600 text-[10px]"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </li>
+        `).join('');
+    }
+
+    // Render Full Table for Data Review
+    function renderSummaryTable() {
+      const tbody = document.getElementById('fullTableBody');
+      const rows = [];
+      let count = 0;
+
+      // Sebab
+      (appData.sebab || []).forEach(s => {
+        count++;
+        rows.push(`
+          <tr>
+            <td class="py-2.5 px-4 font-bold text-red-600"><i class="fa-solid fa-circle-exclamation mr-1.5"></i> 1. SEBAB</td>
+            <td class="py-2.5 px-4 text-slate-500">Penyebab</td>
+            <td class="py-2.5 px-4 text-slate-800 font-medium">${escapeHtml(s.text)}</td>
+            <td class="py-2.5 px-4 text-center">
+              <button onclick="editItem('sebab', '${s.id}')" class="text-indigo-600 hover:underline mr-2">Edit</button>
+              <button onclick="deleteItem('sebab', '${s.id}')" class="text-rose-600 hover:underline">Hapus</button>
+            </td>
+          </tr>
+        `);
+      });
+
+      // Kondisi Saat Ini
+      count++;
+      rows.push(`
+        <tr class="bg-fuchsia-50/30">
+          <td class="py-2.5 px-4 font-bold text-fuchsia-700"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> 2. KONDISI SAAT INI</td>
+          <td class="py-2.5 px-4 text-slate-500">Baseline Realita</td>
+          <td class="py-2.5 px-4 text-slate-800 font-medium">${escapeHtml(appData.kondisi_saat_ini?.text || '-')}</td>
+          <td class="py-2.5 px-4 text-center">
+            <button onclick="openModal('kondisi_saat_ini')" class="text-indigo-600 hover:underline">Edit</button>
+          </td>
+        </tr>
+      `);
+
+      // Akibat
+      (appData.akibat || []).forEach(a => {
+        count++;
+        rows.push(`
+          <tr>
+            <td class="py-2.5 px-4 font-bold text-slate-700"><i class="fa-solid fa-bolt mr-1.5"></i> 3. AKIBAT</td>
+            <td class="py-2.5 px-4 text-rose-500 font-medium">Bila Diabaikan</td>
+            <td class="py-2.5 px-4 text-slate-800 font-medium">${escapeHtml(a.text)}</td>
+            <td class="py-2.5 px-4 text-center">
+              <button onclick="editItem('akibat', '${a.id}')" class="text-indigo-600 hover:underline mr-2">Edit</button>
+              <button onclick="deleteItem('akibat', '${a.id}')" class="text-rose-600 hover:underline">Hapus</button>
+            </td>
+          </tr>
+        `);
+      });
+
+      // Gagasan
+      (appData.gagasan || []).forEach(g => {
+        count++;
+        rows.push(`
+          <tr class="bg-indigo-50/20">
+            <td class="py-2.5 px-4 font-bold text-indigo-700"><i class="fa-solid fa-lightbulb mr-1.5"></i> 4. GAGASAN PERUBAHAN</td>
+            <td class="py-2.5 px-4 text-indigo-600 font-medium">Inovasi / Terobosan</td>
+            <td class="py-2.5 px-4 text-slate-800 font-semibold">${escapeHtml(g.text)}</td>
+            <td class="py-2.5 px-4 text-center">
+              <button onclick="editItem('gagasan', '${g.id}')" class="text-indigo-600 hover:underline mr-2">Edit</button>
+              <button onclick="deleteItem('gagasan', '${g.id}')" class="text-rose-600 hover:underline">Hapus</button>
+            </td>
+          </tr>
+        `);
+      });
+
+      // Stakeholder
+      (appData.stakeholder || []).forEach(st => {
+        count++;
+        rows.push(`
+          <tr>
+            <td class="py-2.5 px-4 font-bold text-sky-700"><i class="fa-solid fa-users mr-1.5"></i> 5. STAKE HOLDER</td>
+            <td class="py-2.5 px-4 capitalize font-semibold ${st.sub === 'internal' ? 'text-sky-600' : 'text-indigo-600'}">${st.sub}</td>
+            <td class="py-2.5 px-4 text-slate-800 font-medium">${escapeHtml(st.text)}</td>
+            <td class="py-2.5 px-4 text-center">
+              <button onclick="editItem('stakeholder', '${st.id}')" class="text-indigo-600 hover:underline mr-2">Edit</button>
+              <button onclick="deleteItem('stakeholder', '${st.id}')" class="text-rose-600 hover:underline">Hapus</button>
+            </td>
+          </tr>
+        `);
+      });
+
+      // Kondisi Diharapkan
+      count++;
+      rows.push(`
+        <tr class="bg-sky-50/40">
+          <td class="py-2.5 px-4 font-bold text-sky-800"><i class="fa-solid fa-bullseye mr-1.5"></i> 6. KONDISI DIHARAPKAN</td>
+          <td class="py-2.5 px-4 text-sky-600 font-medium">Target Masa Depan</td>
+          <td class="py-2.5 px-4 text-slate-800 font-medium">${escapeHtml(appData.kondisi_diharapkan?.text || '-')}</td>
+          <td class="py-2.5 px-4 text-center">
+            <button onclick="openModal('kondisi_diharapkan')" class="text-indigo-600 hover:underline">Edit</button>
+          </td>
+        </tr>
+      `);
+
+      // Tujuan
+      (appData.tujuan || []).forEach(t => {
+        count++;
+        rows.push(`
+          <tr>
+            <td class="py-2.5 px-4 font-bold text-emerald-700"><i class="fa-solid fa-flag mr-1.5"></i> 7. TUJUAN</td>
+            <td class="py-2.5 px-4 text-emerald-600 font-medium">${escapeHtml(t.timeline || 'Umum')}</td>
+            <td class="py-2.5 px-4 text-slate-800 font-medium">${escapeHtml(t.text)}</td>
+            <td class="py-2.5 px-4 text-center">
+              <button onclick="editItem('tujuan', '${t.id}')" class="text-indigo-600 hover:underline mr-2">Edit</button>
+              <button onclick="deleteItem('tujuan', '${t.id}')" class="text-rose-600 hover:underline">Hapus</button>
+            </td>
+          </tr>
+        `);
+      });
+
+      // Manfaat
+      (appData.manfaat || []).forEach(m => {
+        count++;
+        rows.push(`
+          <tr>
+            <td class="py-2.5 px-4 font-bold text-teal-700"><i class="fa-solid fa-award mr-1.5"></i> 8. MANFAAT</td>
+            <td class="py-2.5 px-4 capitalize font-semibold ${m.sub === 'organisasi' ? 'text-teal-600' : 'text-emerald-600'}">${m.sub}</td>
+            <td class="py-2.5 px-4 text-slate-800 font-medium">${escapeHtml(m.text)}</td>
+            <td class="py-2.5 px-4 text-center">
+              <button onclick="editItem('manfaat', '${m.id}')" class="text-indigo-600 hover:underline mr-2">Edit</button>
+              <button onclick="deleteItem('manfaat', '${m.id}')" class="text-rose-600 hover:underline">Hapus</button>
+            </td>
+          </tr>
+        `);
+      });
+
+      tbody.innerHTML = rows.join('');
+      document.getElementById('totalItemsCount').textContent = count + ' Butir Poin';
+    }
+
+    // MODAL OPEN / CLOSE & CRUD ROUTING
+    function openModal(sectionKey, itemId = null) {
+      const modal = document.getElementById('crudModal');
+      const container = document.getElementById('crudModalContainer');
+      const form = document.getElementById('crudForm');
+      
+      form.reset();
+      document.getElementById('formSectionKey').value = sectionKey;
+      document.getElementById('formItemId').value = itemId || '';
+
+      const catGroup = document.getElementById('categoryGroup');
+      const catSelect = document.getElementById('formCategorySelect');
+      const timelineGroup = document.getElementById('timelineGroup');
+      const timelineSelect = document.getElementById('formTimelineSelect');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalSubtitle = document.getElementById('modalSubtitle');
+      const textLabel = document.getElementById('formTextLabel');
+      const textInput = document.getElementById('formTextInput');
+
+      catGroup.classList.add('hidden');
+      timelineGroup.classList.add('hidden');
+
+      // Section specific configuration
+      if (sectionKey === 'kondisi_saat_ini') {
+        modalTitle.textContent = "Edit Kondisi Saat Ini";
+        modalSubtitle.textContent = "Uraikan permasalahan utama dan fakta empiris yang dihadapi unit kerja";
+        textLabel.textContent = "Narasi Kondisi Saat Ini";
+        textInput.value = appData.kondisi_saat_ini?.text || '';
+      } 
+      else if (sectionKey === 'kondisi_diharapkan') {
+        modalTitle.textContent = "Edit Kondisi Diharapkan";
+        modalSubtitle.textContent = "Uraikan target capaian ideal pasca diterapkannya gagasan perubahan";
+        textLabel.textContent = "Narasi Kondisi Diharapkan";
+        textInput.value = appData.kondisi_diharapkan?.text || '';
+      }
+      else {
+        // Multi-item array sections
+        const isEditing = Boolean(itemId);
+        let currentItem = null;
+        if (isEditing) {
+          currentItem = appData[sectionKey]?.find(it => it.id === itemId);
+        }
+
+        if (sectionKey === 'sebab') {
+          modalTitle.textContent = isEditing ? "Edit Butir Sebab" : "Tambah Butir Sebab";
+          modalSubtitle.textContent = "Akar masalah atau faktor penyebab munculnya kesenjangan kinerja";
+          textLabel.textContent = "Uraian Penyebab";
+        }
+        else if (sectionKey === 'akibat') {
+          modalTitle.textContent = isEditing ? "Edit Butir Akibat" : "Tambah Butir Akibat";
+          modalSubtitle.textContent = "Dampak negatif / kerugian jika masalah ini tidak segera diatasi";
+          textLabel.textContent = "Uraian Akibat Bila Dibiarkan";
+        }
+        else if (sectionKey === 'gagasan') {
+          modalTitle.textContent = isEditing ? "Edit Gagasan Perubahan" : "Tambah Gagasan Terobosan";
+          modalSubtitle.textContent = "Kegiatan terobosan, inovasi metode, atau sistem baru yang diusulkan";
+          textLabel.textContent = "Langkah / Gagasan Perubahan";
+        }
+        else if (sectionKey === 'stakeholder') {
+          catGroup.classList.remove('hidden');
+          catSelect.innerHTML = `
+            <option value="internal">Internal (Mentor, Tim Kerja, Rekan Sejawat, Atasan)</option>
+            <option value="eksternal">Eksternal (Masyarakat, Mitra, Asosiasi, Instansi Lain)</option>
+          `;
+          modalTitle.textContent = isEditing ? "Edit Stakeholder" : "Tambah Pemangku Kepentingan";
+          modalSubtitle.textContent = "Identifikasi peran stakeholder pendukung aksi perubahan";
+          textLabel.textContent = "Nama / Kelompok Stakeholder";
+          if (currentItem) catSelect.value = currentItem.sub || 'internal';
+        }
+        else if (sectionKey === 'tujuan') {
+          timelineGroup.classList.remove('hidden');
+          modalTitle.textContent = isEditing ? "Edit Tujuan Capaian" : "Tambah Tujuan Capaian";
+          modalSubtitle.textContent = "Sasaran target yang ingin diwujudkan secara bertahap";
+          textLabel.textContent = "Uraian Capaian / Target";
+          if (currentItem) timelineSelect.value = currentItem.timeline || 'Jangka Pendek';
+        }
+        else if (sectionKey === 'manfaat') {
+          catGroup.classList.remove('hidden');
+          catSelect.innerHTML = `
+            <option value="organisasi">a. Organisasi (Efisiensi, Akuntabilitas, Reputasi)</option>
+            <option value="masyarakat">b. Masyarakat (Kemudahan, Kecepatan, Kepuasan)</option>
+          `;
+          modalTitle.textContent = isEditing ? "Edit Manfaat" : "Tambah Manfaat Perubahan";
+          modalSubtitle.textContent = "Keuntungan nyata yang diperoleh setelah aksi perubahan berhasil";
+          textLabel.textContent = "Uraian Manfaat";
+          if (currentItem) catSelect.value = currentItem.sub || 'organisasi';
+        }
+
+        if (currentItem) {
+          textInput.value = currentItem.text || '';
+        }
+      }
+
+      // Show modal with animation
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        container.classList.remove('scale-95', 'opacity-0');
+        container.classList.add('scale-100', 'opacity-100');
+        textInput.focus();
+      }, 10);
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('crudModal');
+      const container = document.getElementById('crudModalContainer');
+      container.classList.remove('scale-100', 'opacity-100');
+      container.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 150);
+    }
+
+    // Submit handler
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const sectionKey = document.getElementById('formSectionKey').value;
+      const itemId = document.getElementById('formItemId').value;
+      const text = document.getElementById('formTextInput').value.trim();
+
+      if (!text) return;
+
+      // Handle single-object properties
+      if (sectionKey === 'kondisi_saat_ini' || sectionKey === 'kondisi_diharapkan') {
+        appData[sectionKey] = { text };
+      } 
+      else {
+        // Array items
+        if (!appData[sectionKey]) appData[sectionKey] = [];
+
+        if (itemId) {
+          // UPDATE Existing
+          const idx = appData[sectionKey].findIndex(it => it.id === itemId);
+          if (idx !== -1) {
+            appData[sectionKey][idx].text = text;
+            if (sectionKey === 'stakeholder' || sectionKey === 'manfaat') {
+              appData[sectionKey][idx].sub = document.getElementById('formCategorySelect').value;
+            }
+            if (sectionKey === 'tujuan') {
+              appData[sectionKey][idx].timeline = document.getElementById('formTimelineSelect').value;
+            }
+          }
+        } else {
+          // CREATE New
+          const newItem = {
+            id: sectionKey.substring(0, 3) + '-' + Date.now().toString(36),
+            text: text
+          };
+          if (sectionKey === 'stakeholder' || sectionKey === 'manfaat') {
+            newItem.sub = document.getElementById('formCategorySelect').value;
+          }
+          if (sectionKey === 'tujuan') {
+            newItem.timeline = document.getElementById('formTimelineSelect').value;
+          }
+          appData[sectionKey].push(newItem);
+        }
+      }
+
+      saveState();
+      renderAllSections();
+      closeModal();
+    }
+
+    function editItem(sectionKey, id) {
+      openModal(sectionKey, id);
+    }
+
+    function deleteItem(sectionKey, id) {
+      if (confirm('Yakin ingin menghapus butir poin ini?')) {
+        if (appData[sectionKey]) {
+          appData[sectionKey] = appData[sectionKey].filter(it => it.id !== id);
+          saveState();
+          renderAllSections();
+        }
+      }
+    }
+
+    // Switch between Diagram View and Table Matrix View
+    let isTableView = false;
+    function toggleViewMode() {
+      isTableView = !isTableView;
+      const diag = document.getElementById('diagramView');
+      const table = document.getElementById('tableView');
+      const btnText = document.getElementById('viewModeText');
+
+      if (isTableView) {
+        diag.classList.add('hidden');
+        table.classList.remove('hidden');
+        btnText.textContent = "Lihat Bagan";
+        renderSummaryTable();
+      } else {
+        table.classList.add('hidden');
+        diag.classList.remove('hidden');
+        btnText.textContent = "Rekap Tabel";
+      }
+    }
+
+    // Reset with confirmation
+    function resetToSampleData() {
+      if (confirm("Muat ulang contoh data standar? (Perubahan tersimpan saat ini akan ditimpa dengan contoh)")) {
+        appData = JSON.parse(JSON.stringify(defaultData));
+        saveState();
+        initApp();
+      }
+    }
+
+    function clearAllData() {
+      if (confirm("Peringatan: Kosongkan seluruh data bagan kerangka pikir?")) {
+        appData = {
+          meta: {
+            title: "Kerangka Pikir Aksi Perubahan",
+            author: "",
+            org: "",
+            innovationName: "Gagasan Perubahan"
+          },
+          sebab: [],
+          kondisi_saat_ini: { text: "" },
+          akibat: [],
+          gagasan: [],
+          stakeholder: [],
+          kondisi_diharapkan: { text: "" },
+          tujuan: [],
+          manfaat: []
+        };
+        saveState();
+        initApp();
+      }
+    }
+
+    // Export to JSON file
+    function exportToJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      const safeTitle = (appData.meta.title || "kerangka-aksi-perubahan").replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      downloadAnchor.setAttribute("download", `${safeTitle}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    // Import from JSON file
+    function importFromJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed && typeof parsed === 'object') {
+            appData = parsed;
+            saveState();
+            initApp();
+            alert("Berhasil mengimpor data kerangka pikir!");
+          }
+        } catch (err) {
+          alert("Gagal membaca file JSON. Format tidak valid.");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    // Helper sanitization
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Initialize on page ready
+    document.addEventListener('DOMContentLoaded', () => {
+      initApp();
+    });
+  </script>
+</body>
+</html>
