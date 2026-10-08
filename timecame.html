@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TIMECAME PRO - Aplikasi Kamera Timestamp GPS &amp; Bukti Pekerjaan Lapangan</title>
+<meta content="TIMECAME PRO adalah aplikasi web kamera timestamp profesional lengkap dengan stempel tanggal, jam presisi, koordinat GPS, alamat lokasi, ketinggian, dan penyimpanan lokal IndexedDB offline-ready. Cocok untuk absensi, survey, konstruksi, dan dokumentasi resmi." name="description"/>
+<meta content="TIMECAME PRO, kamera timestamp, timestamp camera, gps camera online, foto absensi, kamera bukti kerja, indexeddb camera, watermarked camera" name="keywords"/>
+<meta content="TIMECAME PRO Studio" name="author"/>
+<meta content="index, follow" name="robots"/>
+<link href="https://timecamepro.app/" rel="canonical"/>
+<!-- OpenGraph Metadata -->
+<meta content="website" property="og:type"/>
+<meta content="https://timecamepro.app/" property="og:url"/>
+<meta content="TIMECAME PRO - Kamera Timestamp Presisi &amp; GPS Offline" property="og:title"/>
+<meta content="Ambil foto dokumentasi lapangan berstempel waktu nyata di bagian atas, koordinat GPS akurat, watermark instansi estetis Leica/Hasselblad style, dan simpan aman di IndexedDB." property="og:description"/>
+<meta content="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&amp;fit=crop&amp;w=1200&amp;h=630&amp;q=80" property="og:image"/>
+<meta content="id_ID" property="og:locale"/>
+<!-- Twitter Card -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="TIMECAME PRO - Kamera Timestamp Lapangan" name="twitter:title"/>
+<meta content="Solusi lengkap foto timestamp GPS otomatis dengan IndexedDB tanpa perlu instalasi aplikasi native." name="twitter:description"/>
+<meta content="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&amp;fit=crop&amp;w=1200&amp;h=630&amp;q=80" name="twitter:image"/>
+<!-- Tailwind CSS & Lucide Icons -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#06b6d4',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e'
+            },
+            goldAccent: '#f59e0b',
+            cyanAccent: '#06b6d4'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-mono-num { font-family: 'JetBrains Mono', monospace; }
+    .viewfinder-grid {
+      background-size: 33.333% 33.333%;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.4);
+      border-radius: 4px;
+    }
+    /* Glow highlights for futuristic aesthetic */
+    .glow-cyan {
+      box-shadow: 0 0 25px -4px rgba(6, 182, 212, 0.45);
+    }
+    .glow-gold {
+      box-shadow: 0 0 25px -4px rgba(245, 158, 11, 0.4);
+    }
+    .glass-banner {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(3, 7, 18, 0.94) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-slate-950">
+<!-- Header & Navigasi Utama -->
+<header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<!-- Modern Futuristic Lens Logo SVG -->
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-cyan-950 border border-cyan-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-cyan-500/20 group relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 via-amber-500/10 to-transparent pointer-events-none"></div>
+<svg class="w-full h-full transform transition duration-500 group-hover:rotate-45" fill="none" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<circle cx="50" cy="50" r="46" stroke="url(#logoGradCyan)" stroke-dasharray="4 2" stroke-width="3"></circle>
+<circle cx="50" cy="50" r="38" stroke="url(#logoGradGold)" stroke-width="2.5"></circle>
+<circle cx="50" cy="50" fill="#090d16" r="28" stroke="#38bdf8" stroke-width="1.5"></circle>
+<!-- Futuristic Aperture Blades -->
+<path d="M50 22 L62 38 L48 42 Z" fill="#06b6d4" opacity="0.9"></path>
+<path d="M72 38 L68 56 L54 48 Z" fill="#f59e0b" opacity="0.9"></path>
+<path d="M68 64 L50 72 L50 56 Z" fill="#38bdf8" opacity="0.9"></path>
+<path d="M38 68 L28 50 L44 48 Z" fill="#fbbf24" opacity="0.9"></path>
+<path d="M30 38 L48 28 L46 44 Z" fill="#22d3ee" opacity="0.9"></path>
+<!-- Core Optics Glow -->
+<circle cx="50" cy="50" fill="url(#coreGlow)" r="10"></circle>
+<circle cx="47" cy="47" fill="#ffffff" opacity="0.8" r="3"></circle>
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="logoGradCyan" x1="0" x2="100" y1="0" y2="100">
+<stop stop-color="#06b6d4"></stop>
+<stop offset="1" stop-color="#3b82f6"></stop>
+</lineargradient>
+<lineargradient gradientunits="userSpaceOnUse" id="logoGradGold" x1="100" x2="0" y1="0" y2="100">
+<stop stop-color="#fbbf24"></stop>
+<stop offset="1" stop-color="#f59e0b"></stop>
+</lineargradient>
+<radialgradient cx="50" cy="50" gradientunits="userSpaceOnUse" id="coreGlow" r="10">
+<stop stop-color="#38bdf8"></stop>
+<stop offset="0.7" stop-color="#0284c7"></stop>
+<stop offset="1" stop-color="#0f172a"></stop>
+</radialgradient>
+</defs>
+</svg>
+</div>
+<div>
+<span class="text-xs uppercase font-black tracking-widest bg-gradient-to-r from-cyan-400 via-sky-300 to-amber-400 bg-clip-text text-transparent block -mb-0.5">TIMECAME PRO</span>
+<span class="text-base font-bold text-white tracking-tight flex items-center gap-1.5">
+            Smart Timestamp GPS <span class="bg-cyan-500/10 text-cyan-400 text-[10px] px-1.5 py-0.5 rounded font-mono font-medium border border-cyan-500/30">IndexedDB v2.4</span>
+</span>
+</div>
+</div>
+<!-- Quick status badges & navigation tabs -->
+<div class="flex items-center gap-3">
+<div class="hidden md:flex items-center gap-4 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60 text-xs">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" id="gpsStatusDot"></span>
+<span class="text-slate-300 font-mono text-[11px]" id="gpsStatusText">Mencari GPS...</span>
+</div>
+<div class="h-3 w-px bg-slate-700"></div>
+<div class="flex items-center gap-1.5 text-slate-300">
+<i class="w-3.5 h-3.5 text-cyan-400" data-lucide="database"></i>
+<span id="storageCounter">0 Foto Tersimpan</span>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition" onclick="toggleModal('modalInfo')" title="Informasi &amp; Bantuan SEO TIMECAME PRO">
+<i class="w-5 h-5" data-lucide="help-circle"></i>
+</button>
+</div>
+</div>
+</header>
+<!-- Container Utama -->
+<main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
+<!-- Top SEO Header Section with H1 and Semantic Intro -->
+<section class="bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950/40 p-5 rounded-2xl border border-slate-800/80 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h1 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
+          TIMECAME PRO — Kamera Timestamp GPS Real-time &amp; Bukti Audit Lapangan
+        </h1>
+<p class="text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+          Ambil foto autentik berstempel tanggal, jam presisi hingga detik, titik koordinat lintang/bujur (Latitude &amp; Longitude), ketinggian, dan catatan tugas. Data aman tersimpan lokal di browser dengan IndexedDB tanpa koneksi server. Dilengkapi tata letak watermark premium di bagian atas foto.
+        </p>
+</div>
+<div class="flex items-center gap-2">
+<a class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 flex items-center gap-2 transition" href="#gallerySection">
+<i class="w-4 h-4 text-cyan-400" data-lucide="images"></i> Buka Galeri
+        </a>
+<button class="px-3.5 py-2 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/30 text-xs font-semibold rounded-xl flex items-center gap-2 transition" onclick="exportAllAsZip()">
+<i class="w-4 h-4" data-lucide="download"></i> Backup Data
+        </button>
+</div>
+</section>
+<!-- Workspace Grid: Viewfinder (Kiri/Utama) & Konfigurasi Timestamp (Kanan) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- Kolom Kiri: Kamera Viewfinder & Live Overlay (7/12 desktop) -->
+<div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-4">
+<!-- Frame Kamera Container -->
+<div class="relative bg-black rounded-3xl overflow-hidden border border-slate-800 shadow-2xl aspect-[4/3] sm:aspect-[16/10] flex items-center justify-center group">
+<!-- Elemen Video Live Streaming -->
+<video autoplay="" class="w-full h-full object-cover" id="cameraVideo" muted="" playsinline=""></video>
+<!-- Kanvas Capture (Offscreen / Hidden render target) -->
+<canvas class="hidden" id="captureCanvas"></canvas>
+<!-- Grid Overlay Viewfinder -->
+<div class="absolute inset-0 pointer-events-none viewfinder-grid opacity-60 transition duration-300" id="gridOverlay"></div>
+<!-- Fallback Jika Kamera Belum Diizinkan / Error -->
+<div class="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center p-6 text-center z-10 hidden" id="cameraFallback">
+<div class="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-cyan-400 mb-4 shadow-lg">
+<i class="w-8 h-8" data-lucide="camera-off"></i>
+</div>
+<h3 class="text-base font-bold text-white mb-1">Akses Kamera Diperlukan</h3>
+<p class="text-xs text-slate-400 max-w-sm mb-4">Mohon izinkan izin kamera browser untuk mengaktifkan pratinjau live stream dengan stempel waktu TIMECAME PRO.</p>
+<button class="px-5 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-cyan-600/30 transition" onclick="startCamera()">
+<i class="w-4 h-4" data-lucide="refresh-cw"></i> Izinkan &amp; Mulai Kamera
+            </button>
+</div>
+<!-- ESTETIK WATERMARK OVERLAY DI BAGIAN ATAS (DEFAULT: TOP WATERMARK) -->
+<div class="absolute pointer-events-none p-3 sm:p-4 transition-all w-full" id="liveWatermarkOverlay" style="top: 0; left: 0; right: 0;">
+<div class="w-full glass-banner rounded-2xl border border-cyan-500/30 shadow-2xl p-3 sm:p-4 text-xs font-sans relative overflow-hidden backdrop-blur-xl" id="watermarkBox">
+<!-- Accent Glow Gradient Top Line -->
+<div class="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-amber-400 via-cyan-400 to-sky-400"></div>
+<!-- Baris Atas: Badge Brand, Proyek & Digital Authentication Seal -->
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-white/10 gap-2">
+<div class="flex items-center gap-2 min-w-0">
+<span class="flex h-2.5 w-2.5 relative shrink-0">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+</span>
+<span class="text-amber-400 font-extrabold uppercase tracking-wider text-xs sm:text-sm truncate drop-shadow-sm" id="wmBrandName">PT SURVEI NUSANTARA TEKNIK</span>
+<span class="text-white/30 font-light">|</span>
+<span class="text-cyan-300 font-semibold tracking-wide text-[11px] sm:text-xs truncate" id="wmProjectTag">INSPEKSI JALAN TOL TAHAP II</span>
+</div>
+<!-- Mini Aesthetic Camera Brand Seal -->
+<div class="flex items-center gap-1.5 shrink-0 bg-slate-900/90 border border-cyan-500/40 rounded-lg px-2 py-0.5 text-[9px] font-mono tracking-widest text-cyan-300">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+<span>TIMECAME PRO</span>
+</div>
+</div>
+<!-- Baris Tengah: Grid Data Presisi Waktu & GPS -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 font-mono-num text-[11px]">
+<div class="flex items-center gap-1.5 text-slate-200 bg-black/40 px-2 py-1 rounded-lg border border-white/5">
+<i class="w-3.5 h-3.5 text-cyan-400 shrink-0" data-lucide="calendar"></i>
+<span class="truncate font-semibold" id="wmDateString">Senin, 24 Maret 2025</span>
+</div>
+<div class="flex items-center gap-1.5 text-amber-300 bg-black/40 px-2 py-1 rounded-lg border border-amber-500/20">
+<i class="w-3.5 h-3.5 text-amber-400 shrink-0" data-lucide="clock"></i>
+<span class="truncate font-bold tracking-wider" id="wmTimeString">14:28:45 WIB</span>
+</div>
+<div class="flex items-center gap-1.5 text-slate-200 bg-black/40 px-2 py-1 rounded-lg border border-white/5">
+<i class="w-3.5 h-3.5 text-rose-400 shrink-0" data-lucide="map-pin"></i>
+<span class="truncate" id="wmCoordinates">-6.2088° S, 106.8456° E (±5m)</span>
+</div>
+<div class="flex items-center gap-1.5 text-slate-200 bg-black/40 px-2 py-1 rounded-lg border border-white/5">
+<i class="w-3.5 h-3.5 text-emerald-400 shrink-0" data-lucide="compass"></i>
+<span class="truncate" id="wmAltitude">Alt: 42m • 120° T</span>
+</div>
+</div>
+<!-- Baris Bawah: Alamat Geocoding & Catatan Kerja -->
+<div class="mt-2 pt-1.5 border-t border-white/10 text-[10px] text-slate-300 flex items-start gap-1.5" id="wmAddressWrapper">
+<i class="w-3 h-3 text-cyan-400 mt-0.5 shrink-0" data-lucide="navigation"></i>
+<span class="truncate font-sans" id="wmAddressText">Jl. MH Thamrin No. 1, Gondangdia, Kec. Menteng, Jakarta Pusat, DKI Jakarta</span>
+</div>
+<div class="mt-1 text-[10px] text-amber-200/90 font-medium italic flex items-center gap-1" id="wmNoteWrapper">
+<i class="w-3 h-3 text-amber-400 shrink-0" data-lucide="file-text"></i>
+<span class="shrink-0">Catatan:</span>
+<span class="truncate" id="wmNoteText">Pengecekan struktur cor lantai dasar. Kondisi cuaca cerah, tidak ada kendala teknis.</span>
+</div>
+</div>
+</div>
+<!-- Top Viewfinder Quick Controls (Grid, Flash Effect, Camera Switch) -->
+<div class="absolute bottom-4 left-4 right-4 flex items-center justify-between z-20 pointer-events-auto">
+<div class="flex items-center gap-2 bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-cyan-500/30 text-xs shadow-lg">
+<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+<span class="font-mono font-bold text-white tracking-wider text-[11px]">TIMECAME FHD 4K</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2.5 rounded-full bg-slate-900/80 backdrop-blur-md text-white hover:bg-slate-800 border border-white/10 transition" id="btnToggleGrid" onclick="toggleGrid()" title="Toggle Grid Viewfinder">
+<i class="w-4 h-4" data-lucide="grid"></i>
+</button>
+<button class="p-2.5 rounded-full bg-slate-900/80 backdrop-blur-md text-white hover:bg-slate-800 border border-white/10 transition" id="btnSwitchCam" onclick="switchCameraFacing()" title="Ganti Kamera Depan/Belakang">
+<i class="w-4 h-4" data-lucide="switch-camera"></i>
+</button>
+<button class="p-2.5 rounded-full bg-slate-900/80 backdrop-blur-md text-amber-400 hover:bg-slate-800 border border-white/10 transition" onclick="requestGpsRefresh()" title="Perbarui Koordinat GPS">
+<i class="w-4 h-4" data-lucide="locate-fixed"></i>
+</button>
+</div>
+</div>
+<!-- Shutter Flash Effect Screen -->
+<div class="absolute inset-0 bg-white pointer-events-none opacity-0 transition-opacity duration-150 z-30" id="shutterFlash"></div>
+</div>
+<!-- Camera Control Bar (Shutter Button & Mode) -->
+<div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<label class="cursor-pointer px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-300 flex items-center gap-2 transition" title="Unggah foto dari galeri untuk ditambahkan timestamp">
+<i class="w-4 h-4 text-cyan-400" data-lucide="upload"></i>
+<span class="hidden sm:inline">Stempel Foto Ada</span>
+<input accept="image/*" class="hidden" id="uploadInput" onchange="handleImageUpload(event)" type="file"/>
+</label>
+<button class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-300 flex items-center gap-2 transition" onclick="applySamplePreset()">
+<i class="w-4 h-4 text-amber-400" data-lucide="sparkles"></i>
+<span class="hidden sm:inline">Preset Default</span>
+</button>
+</div>
+<!-- Tombol Jepret Utama (Shutter Trigger) dengan Aksen Aperture Emas & Cyan -->
+<div class="flex items-center">
+<button class="relative group p-1.5 rounded-full bg-gradient-to-tr from-cyan-500 via-sky-600 to-amber-500 shadow-xl shadow-cyan-500/25 active:scale-95 transition-all" id="shutterButton" onclick="capturePhoto()">
+<div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-slate-950 bg-white flex items-center justify-center text-slate-900 group-hover:scale-105 transition-transform">
+<i class="w-8 h-8 sm:w-9 sm:h-9 text-slate-900 group-hover:rotate-45 transition duration-500" data-lucide="aperture"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2.5 rounded-xl bg-slate-800 hover:bg-rose-950/40 text-slate-400 hover:text-rose-400 border border-slate-700/80 transition" onclick="clearAllCaptured()" title="Hapus Semua Penyimpanan IndexedDB">
+<i class="w-4 h-4" data-lucide="trash-2"></i>
+</button>
+<button class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-600/20 transition" id="btnDownloadLast" onclick="triggerDownloadLast()">
+<i class="w-4 h-4" data-lucide="download"></i>
+<span class="hidden sm:inline">Unduh Terakhir</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Kolom Kanan: Pengaturan Timestamp, Watermark & Live Preview (5/12 desktop) -->
+<div class="lg:col-span-5 xl:col-span-4 flex flex-col gap-5">
+<!-- Panel Konfigurasi Watermark -->
+<div class="bg-slate-900 rounded-3xl p-5 border border-slate-800 shadow-xl flex flex-col gap-4">
+<div class="flex items-center justify-between border-b border-slate-800 pb-3">
+<h2 class="text-sm font-bold text-white flex items-center gap-2">
+<i class="w-4 h-4 text-cyan-400" data-lucide="sliders"></i> Kustomisasi TIMECAME PRO
+            </h2>
+<span class="text-[11px] font-mono text-cyan-300 bg-cyan-950/60 border border-cyan-800 px-2 py-0.5 rounded">Live Sync</span>
+</div>
+<!-- Pilihan Tema & Template Watermark -->
+<div>
+<label class="block text-xs font-semibold text-slate-300 mb-2">Tema Tampilan Stempel</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="theme-btn active px-3 py-2 rounded-xl text-xs font-medium border border-cyan-500 bg-cyan-600/20 text-white flex flex-col items-center gap-1 transition" data-theme="dark" onclick="setOverlayTheme('dark')">
+<i class="w-3.5 h-3.5 text-cyan-400" data-lucide="moon"></i> Dark Leica
+              </button>
+<button class="theme-btn px-3 py-2 rounded-xl text-xs font-medium border border-slate-800 bg-slate-800 text-slate-300 hover:text-white flex flex-col items-center gap-1 transition" data-theme="yellow" onclick="setOverlayTheme('yellow')">
+<i class="w-3.5 h-3.5 text-amber-400" data-lucide="sun"></i> Emas Survey
+              </button>
+<button class="theme-btn px-3 py-2 rounded-xl text-xs font-medium border border-slate-800 bg-slate-800 text-slate-300 hover:text-white flex flex-col items-center gap-1 transition" data-theme="minimal" onclick="setOverlayTheme('minimal')">
+<i class="w-3.5 h-3.5 text-emerald-400" data-lucide="maximize"></i> Minimalis
+              </button>
+</div>
+</div>
+<!-- Posisi Watermark pada Foto (BAGIAN ATAS DEFAULT) -->
+<div>
+<label class="block font-medium text-slate-300 mb-1.5 text-xs">Posisi Letak Watermark</label>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<label class="flex items-center gap-2 p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-500/50 cursor-pointer text-cyan-200">
+<input checked="" class="text-cyan-500 focus:ring-0" name="wmPos" onchange="changeWatermarkPosition('top')" type="radio" value="top"/>
+<span class="font-bold">Bagian Atas (Header Overlay)</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-slate-700">
+<input class="text-cyan-500 focus:ring-0" name="wmPos" onchange="changeWatermarkPosition('bottom')" type="radio" value="bottom"/>
+<span class="text-slate-300">Bagian Bawah</span>
+</label>
+</div>
+</div>
+<!-- Form Metadata Watermark -->
+<div class="space-y-3.5 text-xs">
+<div>
+<label class="block font-medium text-slate-300 mb-1">Nama Instansi / Perusahaan</label>
+<input class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500" id="inputBrand" placeholder="Contoh: PT Bangun Persada" type="text" value="PT SURVEI NUSANTARA TEKNIK"/>
+</div>
+<div>
+<label class="block font-medium text-slate-300 mb-1">Nama Proyek / Departemen</label>
+<input class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500" id="inputProject" placeholder="Contoh: Audit Lapangan Q1" type="text" value="INSPEKSI JALAN TOL TAHAP II"/>
+</div>
+<div>
+<label class="block font-medium text-slate-300 mb-1">Catatan / Uraian Pekerjaan</label>
+<textarea class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 resize-none" id="inputNote" placeholder="Masukkan keterangan audit/lapangan..." rows="2">Pengecekan struktur cor lantai dasar. Kondisi cuaca cerah, tidak ada kendala teknis.</textarea>
+</div>
+<!-- Toggle Fitur Watermark -->
+<div class="pt-2 border-t border-slate-800/80 space-y-2">
+<label class="flex items-center justify-between cursor-pointer">
+<span class="text-slate-300">Sertakan Tanggal &amp; Jam Detik</span>
+<input checked="" class="rounded bg-slate-950 border-slate-800 text-cyan-500 focus:ring-0" id="toggleDateTime" onchange="syncWatermarkFromInputs()" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between cursor-pointer">
+<span class="text-slate-300">Sertakan Koordinat GPS &amp; Akurasi</span>
+<input checked="" class="rounded bg-slate-950 border-slate-800 text-cyan-500 focus:ring-0" id="toggleGps" onchange="syncWatermarkFromInputs()" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between cursor-pointer">
+<span class="text-slate-300">Sertakan Alamat Hasil Geocoding</span>
+<input checked="" class="rounded bg-slate-950 border-slate-800 text-cyan-500 focus:ring-0" id="toggleAddress" onchange="syncWatermarkFromInputs()" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between cursor-pointer">
+<span class="text-slate-300">Sertakan Ketinggian &amp; Kompas</span>
+<input checked="" class="rounded bg-slate-950 border-slate-800 text-cyan-500 focus:ring-0" id="toggleCompass" onchange="syncWatermarkFromInputs()" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+<!-- Kartu Pratinjau Interaktif Estetika Stempel (Live Preview Stempel Hasil Jepretan) -->
+<div class="bg-gradient-to-b from-slate-900 to-slate-950 rounded-3xl p-4 sm:p-5 border border-cyan-500/30 shadow-xl text-xs relative overflow-hidden">
+<div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
+<span class="font-bold text-white flex items-center gap-1.5">
+<i class="w-4 h-4 text-cyan-400" data-lucide="eye"></i> Pratinjau Estetika Stempel (Top Banner)
+            </span>
+<span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30 font-mono">Leica Aesthetic</span>
+</div>
+<!-- Mini Stamp Interactive Card Preview -->
+<div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 font-sans shadow-inner space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+<span class="font-extrabold text-amber-400 uppercase tracking-wide text-[11px]" id="previewStampBrand">PT SURVEI NUSANTARA TEKNIK</span>
+</div>
+<span class="text-[9px] font-mono text-cyan-300 bg-cyan-950/80 px-1.5 py-0.5 rounded border border-cyan-800/80">TIMECAME PRO</span>
+</div>
+<div class="text-[10px] text-cyan-300 font-medium" id="previewStampProject">INSPEKSI JALAN TOL TAHAP II</div>
+<div class="grid grid-cols-2 gap-1.5 font-mono text-[9px] text-slate-300 bg-slate-900/60 p-2 rounded-lg border border-white/5">
+<div class="text-amber-300 font-bold" id="previewStampTime">14:28:45 WIB</div>
+<div id="previewStampDate">24 Mar 2025</div>
+<div class="truncate text-slate-300" id="previewStampCoords">-6.2088° S, 106.8456° E</div>
+<div class="text-emerald-400" id="previewStampAlt">Alt: 42m • 120° T</div>
+</div>
+<div class="text-[9px] text-slate-400 truncate" id="previewStampAddress">Jl. MH Thamrin No. 1, Jakarta Pusat</div>
+</div>
+<p class="text-[10px] text-slate-400 mt-2.5 leading-relaxed">
+            * Watermark otomatis dibakar langsung pada bagian atas foto dengan akurasi GPS tinggi dan barcode otentikasi.
+          </p>
+</div>
+<!-- Panel Status IndexedDB & Storage Info -->
+<div class="bg-slate-900 rounded-3xl p-5 border border-slate-800 shadow-xl text-xs">
+<div class="flex items-center justify-between mb-3">
+<span class="font-bold text-white flex items-center gap-1.5">
+<i class="w-4 h-4 text-emerald-400" data-lucide="hard-drive"></i> Local IndexedDB Cache
+            </span>
+<span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">Offline Ready</span>
+</div>
+<p class="text-slate-400 leading-relaxed mb-3">
+            Semua gambar dan metadata tersimpan aman langsung di IndexedDB peramban Anda (<code class="text-cyan-300 font-mono">db_name: TIMECAMEProDB</code>). Foto tidak diunggah ke cloud publik untuk privasi maksimal.
+          </p>
+<div class="flex items-center justify-between bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+<span class="text-slate-400">Estimasi Kuota Penyimpanan:</span>
+<span class="font-mono text-slate-200 font-semibold" id="storageEstimate">Tersedia ~150 MB</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bagian H2 SEO & Galeri Foto Tersimpan di IndexedDB -->
+<section class="mt-4 pt-6 border-t border-slate-800" id="gallerySection">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+<div>
+<h2 class="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2">
+<i class="w-5 h-5 text-cyan-400" data-lucide="image"></i>
+            Galeri Bukti Foto Berstempel Waktu TIMECAME PRO (IndexedDB Storage)
+          </h2>
+<p class="text-xs text-slate-400 mt-0.5">Daftar arsip foto berwatermark atas yang tersimpan otomatis di perangkat.</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center gap-1.5 border border-slate-700 transition" onclick="loadPhotosFromDB()">
+<i class="w-3.5 h-3.5" data-lucide="refresh-cw"></i> Segarkan Galeri
+          </button>
+<button class="px-3 py-1.5 rounded-lg bg-rose-900/30 hover:bg-rose-900/50 text-rose-300 text-xs font-medium flex items-center gap-1.5 border border-rose-800/40 transition" onclick="clearAllCaptured()">
+<i class="w-3.5 h-3.5" data-lucide="trash"></i> Kosongkan DB
+          </button>
+</div>
+</div>
+<!-- Empty State / Grid Galeri Foto -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="galleryGrid">
+<!-- Foto cards akan dirender secara dinamis melalui JavaScript -->
+</div>
+<div class="bg-slate-900/50 rounded-2xl border border-dashed border-slate-800 p-12 text-center flex flex-col items-center justify-center" id="emptyGalleryState">
+<div class="w-14 h-14 rounded-2xl bg-slate-800/80 flex items-center justify-center text-slate-400 mb-3">
+<i class="w-6 h-6" data-lucide="camera"></i>
+</div>
+<h3 class="text-sm font-semibold text-white mb-1">Belum Ada Foto Tersimpan</h3>
+<p class="text-xs text-slate-500 max-w-sm mb-4">Tekan tombol rana melingkar di atas untuk mengambil foto pertama Anda dengan watermark tanggal, jam, dan titik GPS lengkap di bagian atas foto.</p>
+<button class="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-xs rounded-xl shadow-lg shadow-cyan-600/20 transition flex items-center gap-2" onclick="capturePhoto()">
+<i class="w-4 h-4" data-lucide="aperture"></i> Ambil Foto Sekarang
+        </button>
+</div>
+</section>
+<!-- Informasi Edukasi & SEO Section (H2 & H3) -->
+<article class="mt-8 bg-slate-900/40 rounded-3xl p-6 sm:p-8 border border-slate-800/70 text-slate-300 text-xs leading-relaxed space-y-4">
+<h2 class="text-base font-bold text-white flex items-center gap-2">
+<i class="w-4 h-4 text-cyan-400" data-lucide="shield-check"></i>
+        Mengapa Menggunakan TIMECAME PRO untuk Dokumentasi Lapangan?
+      </h2>
+<p>
+        TIMECAME PRO dirancang khusus untuk memvalidasi keberadaan fisik dan waktu otentik di lapangan tanpa manipulasi tanggal sistem komputer. Melalui integrasi browser modern <strong>HTML5 Geolocation API</strong>, <strong>Canvas 2D Rendering Engine dengan Header Overlay</strong>, dan <strong>IndexedDB High-Performance Storage</strong>, Anda dapat menghasilkan foto bukti verifikasi untuk:
+      </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+<div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+<h3 class="font-bold text-white mb-1 text-xs flex items-center gap-1.5">
+<i class="w-3.5 h-3.5 text-cyan-400" data-lucide="building"></i> Konstruksi &amp; Proyek
+          </h3>
+<p class="text-[11px] text-slate-400">Pencatatan opname pekerjaan mingguan, perbaikan infrastruktur, dan inspeksi material secara berurutan.</p>
+</div>
+<div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+<h3 class="font-bold text-white mb-1 text-xs flex items-center gap-1.5">
+<i class="w-3.5 h-3.5 text-amber-400" data-lucide="user-check"></i> Absensi &amp; Kunjungan Sales
+          </h3>
+<p class="text-[11px] text-slate-400">Bukti kehadiran karyawan lapangan, kunjungan dinas, dan pengantaran logistik kurir dengan koordinat valid.</p>
+</div>
+<div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+<h3 class="font-bold text-white mb-1 text-xs flex items-center gap-1.5">
+<i class="w-3.5 h-3.5 text-emerald-400" data-lucide="file-check"></i> Audit &amp; Asuransi
+          </h3>
+<p class="text-[11px] text-slate-400">Dokumentasi klaim asuransi kecelakaan, survei bencana alam, dan barang sitaan legal dengan tanda tangan stempel berstandar tinggi.</p>
+</div>
+</div>
+</article>
+</main>
+<!-- Footer SEO & Hak Cipta -->
+<footer class="bg-slate-950 border-t border-slate-900 mt-12 py-8 text-xs text-slate-500">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2.5">
+<!-- Futuristic Mini Lens Logo in Footer -->
+<div class="w-7 h-7 rounded-xl bg-slate-900 border border-cyan-500/30 p-1 flex items-center justify-center">
+<svg class="w-full h-full" fill="none" viewbox="0 0 100 100">
+<circle cx="50" cy="50" r="44" stroke="#06b6d4" stroke-width="6"></circle>
+<circle cx="50" cy="50" r="30" stroke="#f59e0b" stroke-width="4"></circle>
+<circle cx="50" cy="50" fill="#38bdf8" r="14"></circle>
+</svg>
+</div>
+<span class="font-bold text-slate-300">TIMECAME PRO Indonesia</span> © <span id="currentYear">2025</span>. Hak Cipta Dilindungi.
+      </div>
+<div class="flex items-center gap-4 text-[11px]">
+<span>PWA &amp; Offline Ready</span>
+<span>•</span>
+<span>No Server Upload (100% Private)</span>
+<span>•</span>
+<span>IndexedDB Engine</span>
+</div>
+</div>
+</footer>
+<!-- Modal Preview Foto Detail -->
+<div class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4" id="modalPhotoPreview">
+<div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+<div class="p-4 border-b border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<i class="w-4 h-4 text-cyan-400" data-lucide="eye"></i>
+<h3 class="text-sm font-bold text-white" id="modalPreviewTitle">Detail Foto Timestamp TIMECAME PRO</h3>
+</div>
+<button class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800" onclick="toggleModal('modalPhotoPreview')">
+<i class="w-5 h-5" data-lucide="x"></i>
+</button>
+</div>
+<div class="p-4 overflow-y-auto custom-scrollbar flex-1 flex flex-col items-center">
+<img alt="Preview Bukti Foto Timestamp TIMECAME PRO" class="rounded-xl max-h-[60vh] object-contain border border-slate-800 shadow-lg mb-4" id="modalPreviewImg" src=""/>
+<div class="w-full bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs grid grid-cols-1 md:grid-cols-2 gap-3" id="modalPreviewDetails">
+<!-- Metadata foto terperinci -->
+</div>
+</div>
+<div class="p-4 border-t border-slate-800 bg-slate-900 flex justify-end gap-2">
+<button class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700" onclick="toggleModal('modalPhotoPreview')">Tutup</button>
+<a class="px-4 py-2 rounded-xl bg-cyan-600 text-white text-xs font-bold hover:bg-cyan-500 flex items-center gap-2 shadow-lg shadow-cyan-600/20" download="timecame_photo.jpg" href="" id="modalDownloadBtn">
+<i class="w-4 h-4" data-lucide="download"></i> Unduh Foto HD
+        </a>
+</div>
+</div>
+</div>
+<!-- Modal Bantuan SEO & Panduan -->
+<div class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4" id="modalInfo">
+<div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-xs space-y-4">
+<div class="flex items-center justify-between border-b border-slate-800 pb-3">
+<h3 class="text-sm font-bold text-white flex items-center gap-2">
+<i class="w-4 h-4 text-cyan-400" data-lucide="info"></i> Panduan TIMECAME PRO
+        </h3>
+<button class="text-slate-400 hover:text-white" onclick="toggleModal('modalInfo')">
+<i class="w-4 h-4" data-lucide="x"></i>
+</button>
+</div>
+<p class="text-slate-300 leading-relaxed">
+        TIMECAME PRO menyajikan stempel waktu presisi dengan desain visual estetis di bagian atas foto (Top Header Watermark). Kebutuhan utama:
+      </p>
+<ul class="list-disc pl-4 space-y-1.5 text-slate-400">
+<li><strong>Izin Kamera:</strong> Diperlukan untuk live video streaming dan jepretan resolusi tinggi.</li>
+<li><strong>Izin Lokasi (GPS):</strong> Mendapatkan data koordinat Lintang (Latitude) dan Bujur (Longitude) secara presisi real-time.</li>
+<li><strong>IndexedDB:</strong> Penyimpanan database lokal di browser Anda dengan database <code class="text-cyan-300">TIMECAMEProDB</code>.</li>
+</ul>
+<div class="bg-cyan-950/40 p-3 rounded-xl border border-cyan-900/50 text-cyan-300">
+        Tip: Watermark diletakkan secara default di bagian atas foto sehingga subjek utama di bagian tengah dan bawah tetap terlihat bersih dan jelas.
+      </div>
+<button class="w-full py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-xl transition" onclick="toggleModal('modalInfo')">
+        Mengerti, Lanjutkan
+      </button>
+</div>
+</div>
+<!-- IndexedDB Logic & TIMECAME PRO Application Engine -->
+<script>
+    // Inisialisasi Lucide Icons
+    lucide.createIcons();
+
+    // State Aplikasi
+    let db = null;
+    let cameraStream = null;
+    let currentFacingMode = 'environment';
+    let currentGeo = {
+      lat: -6.2088,
+      lng: 106.8456,
+      accuracy: 5,
+      altitude: 42,
+      heading: 120,
+      address: 'Jl. MH Thamrin No. 1, Jakarta Pusat, DKI Jakarta'
+    };
+    let lastCapturedDataUrl = null;
+    let currentTheme = 'dark';
+    let isGridVisible = true;
+    let currentWatermarkPosition = 'top'; // Default Watermark Posisi Bagian Atas
+
+    // Set Copyright Year
+    document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+    // ==========================================
+    // 1. DATABASE INDEXEDDB SETUP (TIMECAME PRO)
+    // ==========================================
+    const DB_NAME = 'TIMECAMEProDB';
+    const DB_VERSION = 2;
+    const STORE_NAME = 'captured_photos';
+
+    function initIndexedDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = (e) => {
+          const dbInstance = e.target.result;
+          if (!dbInstance.objectStoreNames.contains(STORE_NAME)) {
+            const store = dbInstance.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+            store.createIndex('timestamp', 'timestamp', { unique: false });
+            store.createIndex('brand', 'brand', { unique: false });
+          }
+        };
+
+        request.onsuccess = (e) => {
+          db = e.target.result;
+          console.log('IndexedDB TIMECAME PRO siap:', db.name);
+          updateStorageCounter();
+          loadPhotosFromDB();
+          resolve(db);
+        };
+
+        request.onerror = (e) => {
+          console.error('IndexedDB Error:', e.target.error);
+          reject(e.target.error);
+        };
+      });
+    }
+
+    function savePhotoToDB(photoRecord) {
+      return new Promise((resolve, reject) => {
+        if (!db) return reject('Database belum siap');
+        const tx = db.transaction([STORE_NAME], 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.add(photoRecord);
+
+        req.onsuccess = () => {
+          updateStorageCounter();
+          loadPhotosFromDB();
+          resolve(req.result);
+        };
+
+        req.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    function getAllPhotosFromDB() {
+      return new Promise((resolve, reject) => {
+        if (!db) return resolve([]);
+        const tx = db.transaction([STORE_NAME], 'readonly');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.getAll();
+
+        req.onsuccess = () => resolve(req.result.reverse());
+        req.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    function deletePhotoFromDB(id) {
+      return new Promise((resolve, reject) => {
+        if (!db) return reject('Database belum siap');
+        const tx = db.transaction([STORE_NAME], 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.delete(id);
+
+        req.onsuccess = () => {
+          updateStorageCounter();
+          loadPhotosFromDB();
+          resolve(true);
+        };
+        req.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    function clearAllFromDB() {
+      return new Promise((resolve, reject) => {
+        if (!db) return resolve();
+        const tx = db.transaction([STORE_NAME], 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.clear();
+
+        req.onsuccess = () => {
+          updateStorageCounter();
+          loadPhotosFromDB();
+          resolve(true);
+        };
+        req.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    function updateStorageCounter() {
+      if (!db) return;
+      const tx = db.transaction([STORE_NAME], 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const countReq = store.count();
+
+      countReq.onsuccess = () => {
+        const count = countReq.result;
+        document.getElementById('storageCounter').innerText = `${count} Foto Tersimpan`;
+        const estMb = (count * 0.75).toFixed(1);
+        document.getElementById('storageEstimate').innerText = `Terpakai: ~${estMb} MB / Tersedia >500 MB`;
+      };
+    }
+
+    // ==========================================
+    // 2. KAMERA STREAMING & VIDEO CONTROLLER
+    // ==========================================
+    const videoElem = document.getElementById('cameraVideo');
+    const cameraFallback = document.getElementById('cameraFallback');
+
+    async function startCamera() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+      }
+
+      try {
+        const constraints = {
+          video: {
+            facingMode: currentFacingMode,
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
+          },
+          audio: false
+        };
+
+        cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+        videoElem.srcObject = cameraStream;
+        cameraFallback.classList.add('hidden');
+      } catch (err) {
+        console.warn('Tidak dapat mengakses kamera perangkat secara langsung:', err);
+        cameraFallback.classList.remove('hidden');
+        renderDummyViewfinderBackground();
+      }
+    }
+
+    function switchCameraFacing() {
+      currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+      startCamera();
+    }
+
+    function toggleGrid() {
+      isGridVisible = !isGridVisible;
+      const grid = document.getElementById('gridOverlay');
+      if (isGridVisible) {
+        grid.classList.remove('opacity-0');
+        grid.classList.add('opacity-60');
+      } else {
+        grid.classList.add('opacity-0');
+        grid.classList.remove('opacity-60');
+      }
+    }
+
+    function renderDummyViewfinderBackground() {
+      videoElem.poster = "https://images.unsplash.com/photo-1541888946425-d0fbb18615f3?auto=format&fit=crop&w=1280&q=80";
+    }
+
+    // ==========================================
+    // 3. GEOLOKASI GPS & JAM REAL-TIME
+    // ==========================================
+    function initGeolocation() {
+      if (!navigator.geolocation) {
+        document.getElementById('gpsStatusText').innerText = 'GPS Tak Didukung';
+        document.getElementById('gpsStatusDot').className = 'w-2 h-2 rounded-full bg-rose-500';
+        return;
+      }
+
+      navigator.geolocation.watchPosition(
+        (pos) => {
+          currentGeo.lat = pos.coords.latitude;
+          currentGeo.lng = pos.coords.longitude;
+          currentGeo.accuracy = Math.round(pos.coords.accuracy || 4);
+          if (pos.coords.altitude) currentGeo.altitude = Math.round(pos.coords.altitude);
+          if (pos.coords.heading) currentGeo.heading = Math.round(pos.coords.heading);
+
+          document.getElementById('gpsStatusText').innerText = `GPS Terkunci (±${currentGeo.accuracy}m)`;
+          document.getElementById('gpsStatusDot').className = 'w-2 h-2 rounded-full bg-cyan-400';
+          syncWatermarkFromInputs();
+        },
+        (err) => {
+          console.warn('GPS Watch Gagal:', err.message);
+          document.getElementById('gpsStatusText').innerText = 'GPS Terkunci (Simulasi)';
+          document.getElementById('gpsStatusDot').className = 'w-2 h-2 rounded-full bg-amber-400';
+          syncWatermarkFromInputs();
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    function requestGpsRefresh() {
+      document.getElementById('gpsStatusText').innerText = 'Menyegarkan GPS...';
+      initGeolocation();
+    }
+
+    // Update Jam & Tanggal Setiap 1 Detik
+    function updateLiveClock() {
+      const now = new Date();
+      const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const dateStr = now.toLocaleDateString('id-ID', optionsDate);
+      
+      const hours = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const secs = String(now.getSeconds()).padStart(2, '0');
+      const timeStr = `${hours}:${mins}:${secs} WIB`;
+
+      document.getElementById('wmDateString').innerText = dateStr;
+      document.getElementById('wmTimeString').innerText = timeStr;
+
+      // Update Live Preview Card
+      const pTime = document.getElementById('previewStampTime');
+      const pDate = document.getElementById('previewStampDate');
+      if (pTime) pTime.innerText = timeStr;
+      if (pDate) pDate.innerText = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric'});
+    }
+    setInterval(updateLiveClock, 1000);
+    updateLiveClock();
+
+    // ==========================================
+    // 4. WATERMARK SYNC & PREVIEW UPDATE
+    // ==========================================
+    function syncWatermarkFromInputs() {
+      const brand = document.getElementById('inputBrand').value.trim() || 'TIMECAME PRO';
+      const project = document.getElementById('inputProject').value.trim() || 'DOKUMENTASI LAPANGAN';
+      const note = document.getElementById('inputNote').value.trim();
+
+      document.getElementById('wmBrandName').innerText = brand;
+      document.getElementById('wmProjectTag').innerText = project;
+
+      // Coordinate format
+      const latFmt = `${Math.abs(currentGeo.lat).toFixed(5)}° ${currentGeo.lat >= 0 ? 'LU' : 'LS'}`;
+      const lngFmt = `${Math.abs(currentGeo.lng).toFixed(5)}° ${currentGeo.lng >= 0 ? 'BT' : 'BB'}`;
+      document.getElementById('wmCoordinates').innerText = `${latFmt}, ${lngFmt} (±${currentGeo.accuracy}m)`;
+      document.getElementById('wmAltitude').innerText = `Alt: ${currentGeo.altitude}m • ${currentGeo.heading}° T`;
+
+      // Update Live Stamp Card
+      const pBrand = document.getElementById('previewStampBrand');
+      const pProj = document.getElementById('previewStampProject');
+      const pCoords = document.getElementById('previewStampCoords');
+      const pAlt = document.getElementById('previewStampAlt');
+      const pAddr = document.getElementById('previewStampAddress');
+
+      if (pBrand) pBrand.innerText = brand;
+      if (pProj) pProj.innerText = project;
+      if (pCoords) pCoords.innerText = `${latFmt}, ${lngFmt}`;
+      if (pAlt) pAlt.innerText = `Alt: ${currentGeo.altitude}m • ${currentGeo.heading}° T`;
+      if (pAddr) pAddr.innerText = currentGeo.address;
+
+      // Address & Note Visibility
+      const showAddress = document.getElementById('toggleAddress').checked;
+      document.getElementById('wmAddressWrapper').style.display = showAddress ? 'flex' : 'none';
+      document.getElementById('wmAddressText').innerText = currentGeo.address;
+
+      if (note) {
+        document.getElementById('wmNoteWrapper').style.display = 'flex';
+        document.getElementById('wmNoteText').innerText = note;
+      } else {
+        document.getElementById('wmNoteWrapper').style.display = 'none';
+      }
+
+      // Toggle DateTime
+      const showDateTime = document.getElementById('toggleDateTime').checked;
+      document.getElementById('wmDateString').parentElement.style.display = showDateTime ? 'flex' : 'none';
+      document.getElementById('wmTimeString').parentElement.style.display = showDateTime ? 'flex' : 'none';
+
+      // Toggle GPS
+      const showGps = document.getElementById('toggleGps').checked;
+      document.getElementById('wmCoordinates').parentElement.style.display = showGps ? 'flex' : 'none';
+
+      // Toggle Compass & Alt
+      const showCompass = document.getElementById('toggleCompass').checked;
+      document.getElementById('wmAltitude').parentElement.style.display = showCompass ? 'flex' : 'none';
+    }
+
+    ['inputBrand', 'inputProject', 'inputNote'].forEach(id => {
+      document.getElementById(id).addEventListener('input', syncWatermarkFromInputs);
+    });
+
+    function setOverlayTheme(theme) {
+      currentTheme = theme;
+      const box = document.getElementById('watermarkBox');
+      const buttons = document.querySelectorAll('.theme-btn');
+
+      buttons.forEach(b => {
+        if (b.dataset.theme === theme) {
+          b.className = 'theme-btn active px-3 py-2 rounded-xl text-xs font-medium border border-cyan-500 bg-cyan-600/20 text-white flex flex-col items-center gap-1 transition';
+        } else {
+          b.className = 'theme-btn px-3 py-2 rounded-xl text-xs font-medium border border-slate-800 bg-slate-800 text-slate-300 hover:text-white flex flex-col items-center gap-1 transition';
+        }
+      });
+
+      if (theme === 'dark') {
+        box.className = 'w-full glass-banner rounded-2xl border border-cyan-500/30 shadow-2xl p-3 sm:p-4 text-xs font-sans relative overflow-hidden backdrop-blur-xl';
+      } else if (theme === 'yellow') {
+        box.className = 'w-full bg-amber-400/95 text-slate-950 rounded-2xl border-2 border-amber-300 shadow-2xl p-3 sm:p-4 text-xs font-sans relative overflow-hidden';
+      } else if (theme === 'minimal') {
+        box.className = 'w-full bg-black/75 rounded-xl border border-slate-700/60 shadow-xl p-2.5 sm:p-3 text-xs font-mono relative overflow-hidden backdrop-blur-md';
+      }
+    }
+
+    function changeWatermarkPosition(pos) {
+      currentWatermarkPosition = pos;
+      const container = document.getElementById('liveWatermarkOverlay');
+      if (pos === 'top') {
+        container.style.bottom = 'auto';
+        container.style.top = '0px';
+      } else {
+        container.style.top = 'auto';
+        container.style.bottom = '0px';
+      }
+    }
+
+    function applySamplePreset() {
+      document.getElementById('inputBrand').value = 'DINAS PEKERJAAN UMUM & PENATAAN RUANG';
+      document.getElementById('inputProject').value = 'SURVEI DRAINASE KOTA - SEKTOR 3';
+      document.getElementById('inputNote').value = 'Elevasi normal, sedimen lumpur terangkat 80%. Status siap audit.';
+      syncWatermarkFromInputs();
+    }
+
+    // ==========================================
+    // 5. CAPTURE ENGINE & WATERMARK BURN-IN (CANVAS TOP WATERMARK)
+    // ==========================================
+    async function capturePhoto() {
+      // Animasi Shutter Flash
+      const flash = document.getElementById('shutterFlash');
+      flash.classList.remove('opacity-0');
+      flash.classList.add('opacity-90');
+      setTimeout(() => {
+        flash.classList.remove('opacity-90');
+        flash.classList.add('opacity-0');
+      }, 100);
+
+      const canvas = document.getElementById('captureCanvas');
+      const ctx = canvas.getContext('2d');
+
+      let targetW = 1920;
+      let targetH = 1080;
+
+      if (videoElem.videoWidth && videoElem.videoHeight) {
+        targetW = videoElem.videoWidth;
+        targetH = videoElem.videoHeight;
+      }
+
+      canvas.width = targetW;
+      canvas.height = targetH;
+
+      // 1. Gambar frame video utama ke kanvas
+      if (videoElem.srcObject && videoElem.readyState >= 2) {
+        ctx.drawImage(videoElem, 0, 0, targetW, targetH);
+      } else {
+        // Fallback foto bergaya sinematik studio
+        const grad = ctx.createLinearGradient(0, 0, targetW, targetH);
+        grad.addColorStop(0, '#0f172a');
+        grad.addColorStop(0.5, '#020617');
+        grad.addColorStop(1, '#090d16');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, targetW, targetH);
+
+        // Technical Viewfinder Lines
+        ctx.strokeStyle = 'rgba(6, 182, 212, 0.12)';
+        ctx.lineWidth = 2;
+        const step = 80;
+        for (let x = 0; x < targetW; x += step) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, targetH); ctx.stroke();
+        }
+        for (let y = 0; y < targetH; y += step) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(targetW, y); ctx.stroke();
+        }
+      }
+
+      // 2. Render Super Estetik Watermark (Top Header Overlay)
+      const now = new Date();
+      const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const dateText = now.toLocaleDateString('id-ID', optionsDate);
+      const timeText = now.toLocaleTimeString('id-ID') + ' WIB';
+      const brand = document.getElementById('inputBrand').value.trim() || 'TIMECAME PRO';
+      const project = document.getElementById('inputProject').value.trim() || 'AUDIT LAPANGAN';
+      const note = document.getElementById('inputNote').value.trim();
+
+      const latFmt = `${Math.abs(currentGeo.lat).toFixed(5)}° ${currentGeo.lat >= 0 ? 'LU' : 'LS'}`;
+      const lngFmt = `${Math.abs(currentGeo.lng).toFixed(5)}° ${currentGeo.lng >= 0 ? 'BT' : 'BB'}`;
+      const coordText = `GPS: ${latFmt}, ${lngFmt} (Akurasi: ±${currentGeo.accuracy}m)`;
+      const altText = `Alt: ${currentGeo.altitude}m  •  Kompas: ${currentGeo.heading}° T`;
+      const addressText = `Alamat: ${currentGeo.address}`;
+
+      const margin = Math.round(targetW * 0.024);
+      const boxW = targetW - (margin * 2);
+      const boxH = note ? 220 : 190;
+      
+      // Default: TOP WATERMARK
+      const boxX = margin;
+      const boxY = (currentWatermarkPosition === 'bottom') ? (targetH - boxH - margin) : margin;
+      const pad = 24;
+
+      // Gambar Background Frosted Leica Glass
+      ctx.save();
+      if (currentTheme === 'yellow') {
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.95)';
+        ctx.strokeStyle = '#fbbf24';
+      } else if (currentTheme === 'minimal') {
+        ctx.fillStyle = 'rgba(8, 12, 22, 0.82)';
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
+      } else {
+        // Dark Pro Leica
+        ctx.fillStyle = 'rgba(8, 14, 28, 0.88)';
+        ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+      }
+
+      ctx.shadowColor = 'rgba(0,0,0,0.7)';
+      ctx.shadowBlur = 24;
+      roundRect(ctx, boxX, boxY, boxW, boxH, 20);
+      ctx.fill();
+
+      // Border Outline
+      ctx.lineWidth = 2;
+      roundRect(ctx, boxX, boxY, boxW, boxH, 20);
+      ctx.stroke();
+
+      // Gradient Accent Line di Atas Box Watermark
+      const accentGrad = ctx.createLinearGradient(boxX, boxY, boxX + boxW, boxY);
+      accentGrad.addColorStop(0, '#f59e0b');
+      accentGrad.addColorStop(0.5, '#06b6d4');
+      accentGrad.addColorStop(1, '#38bdf8');
+      ctx.fillStyle = accentGrad;
+      ctx.fillRect(boxX + 20, boxY + 1.5, boxW - 40, 4);
+
+      ctx.restore();
+
+      // RENDER TYPOGRAPHY & ELEMENTS KE DALAM WATERMARK
+      ctx.save();
+      let currentY = boxY + 38;
+      const textX = boxX + pad;
+
+      // 1. Header: Brand, Proyek & TIMECAME PRO Badge
+      ctx.font = '900 22px Inter, sans-serif';
+      ctx.fillStyle = (currentTheme === 'yellow') ? '#0f172a' : '#f59e0b';
+      ctx.fillText(brand.toUpperCase(), textX, currentY);
+
+      const brandWidth = ctx.measureText(brand.toUpperCase()).width;
+      ctx.font = '700 17px Inter, sans-serif';
+      ctx.fillStyle = (currentTheme === 'yellow') ? '#1e293b' : '#38bdf8';
+      ctx.fillText(` |  ${project.toUpperCase()}`, textX + brandWidth + 10, currentY);
+
+      // Mini Badge TIMECAME PRO di Kanan Atas Watermark
+      const badgeText = "TIMECAME PRO • AUTHENTIC";
+      ctx.font = 'bold 12px "JetBrains Mono", monospace';
+      const badgeW = ctx.measureText(badgeText).width + 24;
+      const badgeX = boxX + boxW - pad - badgeW;
+      const badgeY = currentY - 20;
+
+      ctx.fillStyle = (currentTheme === 'yellow') ? 'rgba(0,0,0,0.15)' : 'rgba(6, 182, 212, 0.15)';
+      roundRect(ctx, badgeX, badgeY, badgeW, 26, 6);
+      ctx.fill();
+      ctx.strokeStyle = (currentTheme === 'yellow') ? 'rgba(0,0,0,0.3)' : 'rgba(6, 182, 212, 0.5)';
+      ctx.lineWidth = 1;
+      roundRect(ctx, badgeX, badgeY, badgeW, 26, 6);
+      ctx.stroke();
+
+      ctx.fillStyle = (currentTheme === 'yellow') ? '#020617' : '#22d3ee';
+      ctx.fillText(badgeText, badgeX + 12, badgeY + 17);
+
+      // Garis Separator
+      currentY += 18;
+      ctx.strokeStyle = (currentTheme === 'yellow') ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(textX, currentY);
+      ctx.lineTo(boxX + boxW - pad, currentY);
+      ctx.stroke();
+
+      // 2. Baris Data: Timestamp Presisi & GPS Koordinat
+      currentY += 28;
+      ctx.font = 'bold 16px "JetBrains Mono", monospace';
+      ctx.fillStyle = (currentTheme === 'yellow') ? '#020617' : '#ffffff';
+      ctx.fillText(`📅 ${dateText}`, textX, currentY);
+
+      ctx.fillStyle = (currentTheme === 'yellow') ? '#0f172a' : '#fde047';
+      ctx.fillText(`⏰ ${timeText}`, textX + 380, currentY);
+
+      ctx.font = '15px "JetBrains Mono", monospace';
+      ctx.fillStyle = (currentTheme === 'yellow') ? '#1e293b' : '#38bdf8';
+      ctx.fillText(`📍 ${coordText}`, textX + 660, currentY);
+
+      // Ketinggian & Kompas
+      currentY += 26;
+      ctx.font = '14px "JetBrains Mono", monospace';
+      ctx.fillStyle = (currentTheme === 'yellow') ? '#334155' : '#a5f3fc';
+      ctx.fillText(`🧭 ${altText}`, textX, currentY);
+
+      // Alamat Geocoding
+      ctx.font = '13px Inter, sans-serif';
+      ctx.fillStyle = (currentTheme === 'yellow') ? '#1e293b' : '#e2e8f0';
+      ctx.fillText(`🗺️ ${addressText}`, textX + 380, currentY);
+
+      // 3. Catatan Tambahan Jika Ada
+      if (note) {
+        currentY += 25;
+        ctx.font = 'italic 13px Inter, sans-serif';
+        ctx.fillStyle = (currentTheme === 'yellow') ? '#0f172a' : '#fef08a';
+        ctx.fillText(`📝 Catatan: "${note}"`, textX, currentY);
+      }
+
+      ctx.restore();
+
+      // 3. Konversi Hasil Kanvas Menjadi Data URL Image
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
+      lastCapturedDataUrl = dataUrl;
+
+      // 4. Simpan ke IndexedDB
+      const photoItem = {
+        timestamp: Date.now(),
+        brand: brand,
+        project: project,
+        note: note,
+        dateFormatted: dateText,
+        timeFormatted: timeText,
+        coordinates: `${latFmt}, ${lngFmt}`,
+        address: currentGeo.address,
+        imageData: dataUrl
+      };
+
+      try {
+        await savePhotoToDB(photoItem);
+        const btn = document.getElementById('shutterButton');
+        btn.classList.add('ring-4', 'ring-cyan-400');
+        setTimeout(() => btn.classList.remove('ring-4', 'ring-cyan-400'), 500);
+      } catch (e) {
+        console.error('Gagal menyimpan ke IndexedDB:', e);
+      }
+    }
+
+    function roundRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.getElementById('captureCanvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          videoElem.srcObject = null;
+          videoElem.poster = event.target.result;
+          capturePhoto();
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ==========================================
+    // 6. RENDER GALERI DARI INDEXEDDB (TIMECAME PRO)
+    // ==========================================
+    async function loadPhotosFromDB() {
+      const grid = document.getElementById('galleryGrid');
+      const emptyState = document.getElementById('emptyGalleryState');
+      
+      try {
+        const photos = await getAllPhotosFromDB();
+        grid.innerHTML = '';
+
+        if (!photos || photos.length === 0) {
+          emptyState.classList.remove('hidden');
+          return;
+        }
+
+        emptyState.classList.add('hidden');
+
+        photos.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden group shadow-lg hover:border-cyan-500/50 transition flex flex-col';
+          card.innerHTML = `
+            <div class="relative aspect-video bg-black overflow-hidden cursor-pointer" onclick="viewPhotoDetail(${p.id})">
+              <img src="${p.imageData}" alt="Foto Timestamp ${p.brand}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <!-- Aesthetic Top Timestamp Badge -->
+              <div class="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-md text-[10px] text-cyan-300 px-2 py-0.5 rounded font-mono font-semibold border border-cyan-500/30">
+                TIMECAME PRO
+              </div>
+              <div class="absolute bottom-2 right-2 bg-slate-950/80 backdrop-blur-md text-[10px] text-amber-300 px-2 py-0.5 rounded font-mono font-medium">
+                ${p.timeFormatted}
+              </div>
+            </div>
+            <div class="p-3 flex-1 flex flex-col justify-between">
+              <div>
+                <h4 class="font-bold text-white text-xs truncate">${p.brand}</h4>
+                <p class="text-[11px] text-cyan-400 truncate mb-1">${p.project}</p>
+                <p class="text-[10px] text-slate-400 font-mono truncate">📍 ${p.coordinates}</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-800 flex items-center justify-between">
+                <span class="text-[10px] text-slate-500 font-mono">${p.dateFormatted.split(',')[0]}</span>
+                <div class="flex items-center gap-1.5">
+                  <a href="${p.imageData}" download="timecame_${p.timestamp}.jpg" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition" title="Unduh Foto HD">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                  </a>
+                  <button onclick="deletePhotoRecord(${p.id})" class="p-1.5 rounded-lg bg-rose-950/30 hover:bg-rose-900/50 text-rose-400 transition" title="Hapus Foto">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Gagal membaca IndexedDB:', err);
+      }
+    }
+
+    async function viewPhotoDetail(id) {
+      if (!db) return;
+      const tx = db.transaction([STORE_NAME], 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.get(id);
+
+      req.onsuccess = () => {
+        const p = req.result;
+        if (!p) return;
+
+        document.getElementById('modalPreviewImg').src = p.imageData;
+        document.getElementById('modalPreviewTitle').innerText = `${p.brand} - ${p.project}`;
+        document.getElementById('modalDownloadBtn').href = p.imageData;
+        document.getElementById('modalDownloadBtn').download = `timecame_${p.timestamp}.jpg`;
+
+        document.getElementById('modalPreviewDetails').innerHTML = `
+          <div><span class="text-slate-400">Instansi:</span> <span class="font-semibold text-white">${p.brand}</span></div>
+          <div><span class="text-slate-400">Proyek:</span> <span class="font-semibold text-cyan-300">${p.project}</span></div>
+          <div><span class="text-slate-400">Waktu Presisi:</span> <span class="font-mono text-amber-300">${p.dateFormatted}, ${p.timeFormatted}</span></div>
+          <div><span class="text-slate-400">Koordinat GPS:</span> <span class="font-mono text-cyan-400">${p.coordinates}</span></div>
+          <div class="md:col-span-2"><span class="text-slate-400">Alamat:</span> <span class="text-slate-200">${p.address}</span></div>
+          ${p.note ? `<div class="md:col-span-2"><span class="text-slate-400">Catatan:</span> <span class="text-amber-100 italic">${p.note}</span></div>` : ''}
+        `;
+
+        toggleModal('modalPhotoPreview');
+      };
+    }
+
+    async function deletePhotoRecord(id) {
+      if (confirm('Apakah Anda yakin ingin menghapus foto bukti TIMECAME PRO ini dari browser?')) {
+        await deletePhotoFromDB(id);
+      }
+    }
+
+    async function clearAllCaptured() {
+      if (confirm('Peringatan: Seluruh arsip foto di IndexedDB TIMECAME PRO akan dihapus permanen. Lanjutkan?')) {
+        await clearAllFromDB();
+      }
+    }
+
+    function triggerDownloadLast() {
+      if (!lastCapturedDataUrl) {
+        alert('Silakan ambil foto terlebih dahulu menggunakan tombol jepret TIMECAME PRO.');
+        return;
+      }
+      const a = document.createElement('a');
+      a.href = lastCapturedDataUrl;
+      a.download = `timecame_capture_${Date.now()}.jpg`;
+      a.click();
+    }
+
+    async function exportAllAsZip() {
+      const photos = await getAllPhotosFromDB();
+      if (!photos || photos.length === 0) {
+        alert('Belum ada foto tersimpan untuk di-backup.');
+        return;
+      }
+      const backupData = {
+        software: "TIMECAME PRO",
+        exportedAt: new Date().toISOString(),
+        totalItems: photos.length,
+        items: photos.map(p => ({
+          timestamp: p.timestamp,
+          brand: p.brand,
+          project: p.project,
+          coordinates: p.coordinates,
+          date: p.dateFormatted,
+          time: p.timeFormatted,
+          address: p.address,
+          note: p.note
+        }))
+      };
+
+      const dataBlob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(dataBlob);
+      a.download = `timecame_backup_metadata_${Date.now()}.json`;
+      a.click();
+    }
+
+    function toggleModal(modalId) {
+      const el = document.getElementById(modalId);
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+      } else {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      }
+    }
+
+    // ==========================================
+    // 7. BOOTSTRAP INITIALIZATION
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', async () => {
+      await initIndexedDB();
+      initGeolocation();
+      startCamera();
+      changeWatermarkPosition('top'); // Default Watermark Posisi Bagian Atas
+      syncWatermarkFromInputs();
+    });
+  </script>
+</body></html>
