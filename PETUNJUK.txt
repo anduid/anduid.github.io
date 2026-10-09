@@ -1,0 +1,14 @@
+FILE UNTUK REPO anduid/anduid.github.io (situs utama andu.my.id), BUKAN repo blog
+
+1. ads.txt
+   - Ganti XXXXXXXXXXXXXXXX dengan ID penerbit AdSense Anda (angka setelah "ca-pub-").
+     Contoh: client ca-pub-1234567890123456  ->  pub-1234567890123456
+   - Simpan sebagai ads.txt di ROOT repo anduid.github.io, sehingga terbuka di
+     https://andu.my.id/ads.txt
+   - Salin baris persis dari halaman AdSense (Situs > ads.txt) jika berbeda.
+
+2. robots.txt (di root repo yang sama; jika sudah ada, cukup tambahkan baris Sitemap)
+   User-agent: *
+   Allow: /
+
+   Sitemap: https://andu.my.id/blog/sitemap.xml
