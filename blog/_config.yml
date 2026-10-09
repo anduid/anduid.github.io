@@ -9,7 +9,7 @@ email: andhuvatamourgana@gmail.com
 # Untuk repo bernama username.github.io: url diisi, baseurl dikosongkan.
 # Untuk repo proyek (username.github.io/nama-repo): baseurl: "/nama-repo"
 url: "https://anduid.github.io"
-baseurl: ""
+baseurl: "/blog"
 
 # Tautan sosial (kosongkan jika tidak dipakai)
 github_username: anduid
@@ -25,7 +25,7 @@ nav:
 
 # Komentar (opsional, gratis lewat GitHub Discussions): isi dari https://giscus.app
 giscus:
-  repo: "anduid/anduid.github.io/blog"          # contoh: username/username.github.io
+  repo: "anduid/anduid.github.io"          # contoh: username/username.github.io
   repo_id: ""
   category: "Announcements"
   category_id: ""
