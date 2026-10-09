@@ -1,0 +1,63 @@
+# ====== PENGATURAN UTAMA ======
+title: Blog Andu
+seo_title: "Blog Andu | Catatan, Cerita, dan Hal yang Saya Pelajari"   # judul tab di beranda (ideal 50-60 karakter)
+tagline: Catatan, cerita, dan hal yang saya pelajari
+description: Blog pribadi Andu berisi tulisan, catatan harian, dan pengalaman seputar teknologi dan pengembangan aplikasi.   # meta description beranda (ideal 120-160 karakter)
+lang: id
+locale: id_ID
+author: Andu
+author_bio: Pengembang dan pendiri andu.my.id, Creative Engineering Studio di Bekasi. Menulis tentang pengembangan aplikasi, digitalisasi, dan hal yang dipelajari di lapangan.
+publisher: andu.my.id
+email: andhuvatamourgana@gmail.com
+
+# Alamat situs. Blog tampil di https://andu.my.id/blog/
+url: "https://andu.my.id"
+baseurl: "/blog"
+studio_url: "https://andu.my.id/"      # tautan "situs utama" di header dan footer
+
+# Gambar bawaan untuk pratinjau media sosial (1200x630). Ganti per tulisan dengan "image:" di front matter.
+default_image: /assets/images/og-default.png
+twitter_username: ""                   # tanpa @, kosongkan jika tidak ada
+
+# Tautan sosial (kosongkan jika tidak dipakai)
+github_username: anduid
+instagram_username: ""
+
+# Menu navigasi
+nav:
+  - { judul: Beranda, url: / }
+  - { judul: Arsip, url: /arsip/ }
+  - { judul: Topik, url: /topik/ }
+  - { judul: Tentang, url: /tentang/ }
+
+# Menu di footer
+nav_footer:
+  - { judul: Kontak, url: /kontak/ }
+  - { judul: Kebijakan Privasi, url: /privasi/ }
+
+# Google AdSense (opsional). Biarkan client kosong jika belum disetujui: tidak ada skrip/iklan yang dimuat.
+adsense:
+  client: "1088097367723130"        # contoh: ca-pub-1234567890123456
+  slot_atas: ""     # ID unit iklan di bawah judul tulisan (angka)
+  slot_tengah: ""   # ID unit iklan di tengah tulisan (butuh minimal 2 subjudul ##)
+  slot_bawah: ""    # ID unit iklan di bawah tulisan
+
+# Komentar (opsional): isi lengkap dari https://giscus.app, jika kosong komentar tidak tampil
+giscus:
+  repo: ""
+  repo_id: ""
+  category: "Announcements"
+  category_id: ""
+
+# ====== TEKNIS ======
+markdown: kramdown
+excerpt_separator: "<!--more-->"
+permalink: /:year/:month/:day/:title/
+paginate: 6
+paginate_path: "/halaman:num/"
+timezone: Asia/Jakarta
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-paginate
+exclude: [README.md, Gemfile, Gemfile.lock, vendor, node_modules]

@@ -1,0 +1,74 @@
+---
+layout: default
+---
+{%- assign url_lengkap = page.url | absolute_url -%}
+<article class="bungkus bungkus-sempit tulisan" itemscope itemtype="https://schema.org/BlogPosting">
+  <nav class="remah" aria-label="Posisi halaman">
+    <a href="{{ '/' | relative_url }}">Beranda</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ page.title | truncate: 48 }}</span>
+  </nav>
+
+  <header class="tulisan-kepala">
+    {% if page.tags.size > 0 %}
+    <p class="tag-daftar">
+      {% for t in page.tags %}<a class="tag" href="{{ '/topik/' | relative_url }}#{{ t | slugify }}">{{ t }}</a>{% endfor %}
+    </p>
+    {% endif %}
+    <h1 class="judul-halaman" itemprop="headline">{{ page.title }}</h1>
+    {% if page.description %}<p class="tulisan-deskripsi">{{ page.description }}</p>{% endif %}
+    <p class="meta">
+      <span class="meta-item"><svg class="ikon" aria-hidden="true"><use href="#i-calendar"/></svg><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{% include tanggal.html tanggal=page.date %}</time></span>
+      <span class="meta-item"><svg class="ikon" aria-hidden="true"><use href="#i-clock"/></svg>{{ content | number_of_words | divided_by: 200 | plus: 1 }} menit baca</span>
+      <span class="meta-item" itemprop="author">oleh {{ page.author | default: site.author }}</span>
+    </p>
+  </header>
+
+  {% if page.image %}
+  <figure class="tulisan-gambar">
+    {% include gambar.html src=page.image alt=page.image_alt muat="eager" %}
+  </figure>
+  {% endif %}
+
+  {% include iklan.html posisi="atas" slot=site.adsense.slot_atas %}
+
+  <div class="isi-tulisan" itemprop="articleBody">
+    {%- assign potong = content | split: '<h2' -%}
+    {%- if potong.size > 2 and site.adsense.slot_tengah and site.adsense.slot_tengah != "" -%}
+      {%- for b in potong -%}
+        {%- if forloop.first -%}{{ b }}{%- else -%}
+          {%- if forloop.index == 3 -%}{% include iklan.html posisi="tengah" slot=site.adsense.slot_tengah %}{%- endif -%}
+          <h2{{ b }}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {{ content }}
+    {%- endif -%}
+  </div>
+
+  {% include iklan.html posisi="bawah" slot=site.adsense.slot_bawah %}
+
+  <aside class="bagikan" aria-label="Bagikan tulisan">
+    <p class="bagikan-judul">Bagikan tulisan ini</p>
+    <div class="bagikan-aksi">
+      <a class="tombol tombol-sekunder" href="https://wa.me/?text={{ page.title | append: ' ' | append: url_lengkap | url_encode }}" target="_blank" rel="noopener"><svg class="ikon" aria-hidden="true"><use href="#i-chat"/></svg> WhatsApp</a>
+      <button class="tombol tombol-sekunder" type="button" data-salin="{{ url_lengkap }}"><svg class="ikon" aria-hidden="true"><use href="#i-link"/></svg> <span>Salin tautan</span></button>
+    </div>
+  </aside>
+
+  <aside class="penulis" aria-label="Tentang penulis">
+    <img src="{{ '/assets/images/icon-192.png' | relative_url }}" width="56" height="56" alt="" loading="lazy" class="penulis-foto">
+    <div>
+      <p class="penulis-nama">{{ page.author | default: site.author }}</p>
+      <p class="penulis-bio">{{ site.author_bio }}</p>
+      <a href="{{ site.studio_url }}">Kunjungi {{ site.publisher }}</a>
+    </div>
+  </aside>
+
+  <nav class="sebelah" aria-label="Tulisan lainnya">
+    {% if page.previous %}<a class="sebelah-kiri" href="{{ page.previous.url | relative_url }}"><small><svg class="ikon" aria-hidden="true"><use href="#i-left"/></svg>Sebelumnya</small>{{ page.previous.title }}</a>{% endif %}
+    {% if page.next %}<a class="sebelah-kanan" href="{{ page.next.url | relative_url }}"><small>Berikutnya<svg class="ikon" aria-hidden="true"><use href="#i-right"/></svg></small>{{ page.next.title }}</a>{% endif %}
+  </nav>
+
+  {% include komentar.html %}
+</article>

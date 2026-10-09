@@ -1,0 +1,12 @@
+{%- assign p = include.post -%}
+<article class="utama">
+  {% if p.image %}
+  <a class="utama-gambar" href="{{ p.url | relative_url }}" tabindex="-1" aria-hidden="true">{% include gambar.html src=p.image alt="" muat="eager" %}</a>
+  {% endif %}
+  <div class="utama-isi">
+    {% if p.tags.size > 0 %}<p class="tag-daftar">{% for t in p.tags limit:2 %}<a class="tag" href="{{ '/topik/' | relative_url }}#{{ t | slugify }}">{{ t }}</a>{% endfor %}</p>{% endif %}
+    <h2 class="utama-judul"><a href="{{ p.url | relative_url }}">{{ p.title }}</a></h2>
+    <p class="utama-ringkas">{{ p.excerpt | strip_html | strip_newlines | truncate: 220 }}</p>
+    {% include meta-tulisan.html post=p %}
+  </div>
+</article>

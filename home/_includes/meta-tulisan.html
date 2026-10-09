@@ -1,0 +1,5 @@
+{%- assign p = include.post -%}
+<p class="meta">
+  <span class="meta-item"><svg class="ikon" aria-hidden="true"><use href="#i-calendar"/></svg><time datetime="{{ p.date | date_to_xmlschema }}">{% include tanggal.html tanggal=p.date %}</time></span>
+  <span class="meta-item"><svg class="ikon" aria-hidden="true"><use href="#i-clock"/></svg>{{ p.content | number_of_words | divided_by: 200 | plus: 1 }} menit baca</span>
+</p>
