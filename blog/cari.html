@@ -1,0 +1,11 @@
+---
+layout: page
+title: Cari tulisan
+permalink: /cari/
+---
+<label for="kolom-cari" class="sr">Kata kunci</label>
+<input id="kolom-cari" class="kolom-cari" type="search" placeholder="Ketik judul atau kata kunci…" autocomplete="off">
+<p id="status-cari" class="meta" aria-live="polite"></p>
+<ul id="hasil-cari" class="arsip hasil"></ul>
+<script>window.URL_INDEKS = "{{ '/search.json' | relative_url }}";</script>
+<script src="{{ '/assets/js/cari.js' | relative_url }}"></script>

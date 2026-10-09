@@ -1,0 +1,23 @@
+---
+layout: page
+title: Topik
+permalink: /topik/
+---
+{% assign semua = site.tags | sort %}
+{% if semua.size == 0 %}
+<p>Belum ada topik. Tambahkan <code>tags: [catatan, tutorial]</code> pada tulisan.</p>
+{% endif %}
+<p class="tag-daftar">
+  {% for tag in semua %}<a class="tag" href="#{{ tag[0] | slugify }}">{{ tag[0] }} ({{ tag[1].size }})</a>{% endfor %}
+</p>
+{% for tag in semua %}
+<h2 id="{{ tag[0] | slugify }}">{{ tag[0] }}</h2>
+<ul class="arsip">
+  {% for post in tag[1] %}
+  <li>
+    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d/%m/%y" }}</time>
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endfor %}

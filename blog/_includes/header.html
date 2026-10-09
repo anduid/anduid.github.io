@@ -1,0 +1,13 @@
+<header class="kepala">
+  <div class="bungkus kepala-isi">
+    <a class="logo" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <nav class="menu" aria-label="Menu utama">
+      {% for item in site.nav %}
+        <a href="{{ item.url | relative_url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.judul }}</a>
+      {% endfor %}
+      <button id="tombol-tema" class="tombol-tema" type="button" aria-label="Ganti tema terang/gelap">
+        <span class="ikon-terang" aria-hidden="true">☀</span><span class="ikon-gelap" aria-hidden="true">☾</span>
+      </button>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,17 @@
+---
+layout: page
+title: Arsip
+permalink: /arsip/
+---
+{% assign per_tahun = site.posts | group_by_exp: "p", "p.date | date: '%Y'" %}
+{% for tahun in per_tahun %}
+<h2>{{ tahun.name }}</h2>
+<ul class="arsip">
+  {% for post in tahun.items %}
+  <li>
+    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d/%m" }}</time>
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endfor %}

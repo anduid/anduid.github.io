@@ -1,0 +1,45 @@
+# ====== PENGATURAN UTAMA (ubah bagian ini) ======
+title: Blog Andu
+tagline: Catatan, cerita, dan hal-hal yang saya pelajari
+description: Blog pribadi berisi tulisan dan catatan harian.
+lang: id
+author: Andu
+email: andhuvatamourgana@gmail.com
+
+# Untuk repo bernama username.github.io: url diisi, baseurl dikosongkan.
+# Untuk repo proyek (username.github.io/nama-repo): baseurl: "/nama-repo"
+url: "https://anduid.github.io"
+baseurl: ""
+
+# Tautan sosial (kosongkan jika tidak dipakai)
+github_username: anduid
+instagram_username: ""
+
+# Menu navigasi
+nav:
+  - { judul: Beranda, url: / }
+  - { judul: Arsip, url: /arsip/ }
+  - { judul: Topik, url: /topik/ }
+  - { judul: Cari, url: /cari/ }
+  - { judul: Tentang, url: /tentang/ }
+
+# Komentar (opsional, gratis lewat GitHub Discussions): isi dari https://giscus.app
+giscus:
+  repo: "anduid/anduid.github.io/blog"          # contoh: username/username.github.io
+  repo_id: ""
+  category: "Announcements"
+  category_id: ""
+
+# ====== TEKNIS (biasanya tidak perlu diubah) ======
+markdown: kramdown
+excerpt_separator: "<!--more-->"
+permalink: /:year/:month/:day/:title/
+paginate: 5
+paginate_path: "/halaman/:num/"
+timezone: Asia/Jakarta
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+exclude: [README.md, Gemfile, Gemfile.lock, vendor, node_modules]

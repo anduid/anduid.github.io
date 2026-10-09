@@ -1,0 +1,9 @@
+{%- assign p = include.post -%}
+<article class="kartu">
+  <h2 class="kartu-judul"><a href="{{ p.url | relative_url }}">{{ p.title }}</a></h2>
+  <p class="meta">
+    <time datetime="{{ p.date | date_to_xmlschema }}">{% include tanggal.html tanggal=p.date %}</time>
+    <span>{{ p.content | number_of_words | divided_by: 200 | plus: 1 }} menit baca</span>
+  </p>
+  <p class="kartu-ringkas">{{ p.excerpt | strip_html | strip_newlines | truncate: 190 }}</p>
+</article>

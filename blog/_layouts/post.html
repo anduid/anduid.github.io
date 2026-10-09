@@ -1,0 +1,27 @@
+---
+layout: default
+---
+<article class="tulisan">
+  <header class="tulisan-kepala">
+    <h1 class="judul-halaman">{{ page.title }}</h1>
+    <p class="meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{% include tanggal.html tanggal=page.date %}</time>
+      <span>{{ content | number_of_words | divided_by: 200 | plus: 1 }} menit baca</span>
+      {% if page.author %}<span>{{ page.author }}</span>{% endif %}
+    </p>
+    {% if page.tags.size > 0 %}
+    <p class="tag-daftar">
+      {% for t in page.tags %}<a class="tag" href="{{ '/topik/' | relative_url }}#{{ t | slugify }}">{{ t }}</a>{% endfor %}
+    </p>
+    {% endif %}
+  </header>
+
+  <div class="isi-tulisan">{{ content }}</div>
+
+  <nav class="sebelah" aria-label="Tulisan lainnya">
+    {% if page.previous %}<a class="sebelah-kiri" href="{{ page.previous.url | relative_url }}"><small>Sebelumnya</small>{{ page.previous.title }}</a>{% endif %}
+    {% if page.next %}<a class="sebelah-kanan" href="{{ page.next.url | relative_url }}"><small>Berikutnya</small>{{ page.next.title }}</a>{% endif %}
+  </nav>
+
+  {% include komentar.html %}
+</article>
