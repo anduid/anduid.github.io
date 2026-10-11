@@ -133,6 +133,7 @@
 <button class="nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors" data-page="home" onclick="navigateTo('home')">Beranda</button>
 <button class="nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors" data-page="daftar" onclick="navigateTo('daftar')">Portal UMKM Mandiri</button>
 <button class="nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors" data-page="etalase" onclick="navigateTo('etalase')">Etalase Binaan</button>
+<button class="nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors inline-flex items-center gap-1.5" data-page="komunitas" onclick="navigateTo('komunitas')">Komunitas<span id="komBadgeDesktop" class="hidden min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold items-center justify-center"></span></button>
 <button class="nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors" data-page="admin" id="navAdminBtnDesktop" onclick="handleAdminEntry()">Petugas Kelurahan</button>
 </nav>
 <!-- Admin Quick Status or Login Button -->
@@ -206,6 +207,10 @@
 <button class="mobile-nav-item flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition active:bg-slate-100 text-sm" data-page="etalase" onclick="navigateTo('etalase'); toggleMobileDrawer(false)">
 <span class="material-symbols-outlined text-[20px] text-amber-500">shopping_bag</span>
 <span class="">Etalase Binaan RW</span>
+</button>
+<button class="mobile-nav-item flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition active:bg-slate-100 text-sm" data-page="komunitas" onclick="navigateTo('komunitas'); toggleMobileDrawer(false)">
+<span class="material-symbols-outlined text-[20px] text-rose-500">forum</span>
+<span class="">Komunitas UMKM (Feed &amp; Chat)</span>
 </button>
 <button class="mobile-nav-item flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition active:bg-slate-100 text-sm" data-page="admin" onclick="handleAdminEntry(); toggleMobileDrawer(false)">
 <span class="material-symbols-outlined text-[20px] text-indigo-600">shield_person</span>
@@ -599,6 +604,25 @@ Terdaftar Mandiri
 <label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regAddress">Alamat Lengkap / Patokan <span class="text-red-500">*</span></label>
 <textarea class="w-full px-3.5 py-2.5 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regAddress" oninput="updateLivePreview()" placeholder="Contoh: Jl. Swatantra IV No. 12, samping Pos Ronda RT 03" required="" rows="2"></textarea>
 </div>
+<!-- AKUN LOGIN KOMUNITAS -->
+<div class="rounded-2xl border border-teal-200 bg-teal-50/50 p-4 space-y-3">
+<div class="flex items-start gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[20px]">account_circle</span></div>
+<div><h4 class="font-display font-bold text-sm text-slate-900">Akun Login Komunitas UMKM</h4>
+<p class="text-[11px] text-slate-600 leading-relaxed">Dengan akun ini usaha Anda bisa chat dengan UMKM lain dan membagikan promo, informasi, status &amp; lowongan di Feed.</p></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regUsername">Username <span class="text-red-500">*</span></label>
+<input class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regUsername" type="text" required minlength="4" maxlength="20" autocapitalize="none" autocomplete="username" placeholder="contoh: kopiseduh07">
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regPassword">Kata Sandi <span class="text-red-500">*</span></label>
+<input class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regPassword" type="password" required minlength="6" autocomplete="new-password" placeholder="Minimal 6 karakter">
+</div>
+</div>
+<p class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2" id="regAccError"></p>
+</div>
 <!-- LEAFLET INTERACTIVE PINPOINT MAP -->
 <div class="space-y-2">
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -872,6 +896,113 @@ Terdaftar Mandiri
 </div>
 </div>
 </section>
+<!-- ===== KOMUNITAS UMKM (Feed + Chat) — terintegrasi dari Pesaner ===== -->
+<section class="page-view hidden max-w-3xl mx-auto space-y-4" id="view-komunitas">
+
+  <!-- AUTH GATE -->
+  <div id="komAuth" class="max-w-md mx-auto">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-7 space-y-4">
+      <div class="text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-teal-600 to-emerald-500 text-white flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-3xl">forum</span></div>
+        <h2 class="font-display font-extrabold text-xl text-slate-900 mt-3">Komunitas UMKM Jatiasih</h2>
+        <p class="text-xs text-slate-500 mt-1 leading-relaxed">Masuk dengan akun usaha Anda untuk berbagi promo, info, status &amp; lowongan, serta chat dengan sesama pelaku UMKM.</p>
+      </div>
+      <form class="space-y-3" onsubmit="komHandleLogin(event)">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1" for="komLoginUser">Username</label>
+          <input id="komLoginUser" type="text" autocomplete="username" autocapitalize="none" required class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-slate-50/50" placeholder="username usaha">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1" for="komLoginPass">Kata Sandi</label>
+          <input id="komLoginPass" type="password" autocomplete="current-password" required class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-slate-50/50" placeholder="••••••">
+        </div>
+        <p id="komLoginError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
+        <button id="komLoginBtn" type="submit" class="w-full h-12 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm flex items-center justify-center gap-1.5 shadow-sm transition disabled:opacity-60">
+          <span class="material-symbols-outlined text-lg">login</span><span id="komLoginBtnText">Masuk</span>
+        </button>
+      </form>
+      <div class="pt-3 border-t border-slate-100 text-center text-xs text-slate-500">
+        Belum punya akun? Akun dibuat otomatis saat usaha didaftarkan.
+        <button type="button" onclick="navigateTo('daftar')" class="block mx-auto mt-1.5 font-bold text-teal-700 hover:underline">Daftarkan usaha &amp; buat akun →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP (setelah login) -->
+  <div id="komApp" class="hidden space-y-4">
+    <!-- Profile bar -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3.5 flex items-center gap-3">
+      <img id="komMeAvatar" class="w-11 h-11 rounded-full object-cover bg-slate-100 shrink-0" alt="">
+      <div class="min-w-0 flex-1">
+        <p id="komMeName" class="font-display font-bold text-sm text-slate-900 truncate"></p>
+        <p id="komMeSub" class="text-[11px] text-slate-500 truncate"></p>
+      </div>
+      <button type="button" onclick="komLogout()" class="px-3 py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">logout</span>Keluar</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="grid grid-cols-2 gap-1.5 bg-slate-200/60 p-1 rounded-xl">
+      <button id="komTabFeed" type="button" onclick="komSwitchTab('feed')" class="py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition"><span class="material-symbols-outlined text-[18px]">dynamic_feed</span>Feed</button>
+      <button id="komTabChat" type="button" onclick="komSwitchTab('chat')" class="py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition relative"><span class="material-symbols-outlined text-[18px]">chat</span>Chat<span id="komBadgeTab" class="hidden ml-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold items-center justify-center"></span></button>
+    </div>
+
+    <!-- FEED PANEL -->
+    <div id="komPanelFeed" class="space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 space-y-3">
+        <div class="flex flex-wrap gap-1.5" id="komTypeChips"></div>
+        <textarea id="komPostText" rows="3" maxlength="268" oninput="komCountChars()" class="w-full px-3.5 py-3 text-sm text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-slate-50/50 resize-none" placeholder="Tulis promo, informasi, status, atau lowongan..."></textarea>
+        <div class="flex items-center justify-between">
+          <span id="komCharCount" class="text-[11px] text-slate-400 font-mono">0/268</span>
+          <button id="komPostBtn" type="button" onclick="komSubmitPost()" class="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition disabled:opacity-60"><span class="material-symbols-outlined text-[16px]">send</span>Bagikan</button>
+        </div>
+      </div>
+
+      <div class="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1" id="komFilterChips"></div>
+
+      <div id="komFeedLoading" class="hidden text-center text-xs text-slate-500 py-6"><span class="material-symbols-outlined animate-spin align-middle text-teal-600">progress_activity</span> Memuat feed...</div>
+      <div id="komFeedList" class="space-y-3"></div>
+      <div id="komFeedEmpty" class="hidden text-center py-10 bg-white rounded-2xl border border-dashed border-slate-300">
+        <span class="material-symbols-outlined text-4xl text-slate-300">campaign</span>
+        <p class="text-sm font-semibold text-slate-600 mt-1">Belum ada kiriman</p>
+        <p class="text-xs text-slate-400">Jadilah yang pertama membagikan promo atau informasi.</p>
+      </div>
+      <button id="komMoreBtn" type="button" onclick="komLoadMore()" class="hidden w-full py-3 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition">Muat lebih banyak</button>
+    </div>
+
+    <!-- CHAT PANEL -->
+    <div id="komPanelChat" class="hidden">
+      <!-- list -->
+      <div id="komChatListView" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-3 border-b border-slate-100">
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+            <input id="komChatSearch" type="text" oninput="komChatSearchInput()" class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-slate-50/50" placeholder="Cari usaha / username untuk mulai chat (min. 3 huruf)">
+          </div>
+        </div>
+        <div id="komChatList" class="divide-y divide-slate-100 max-h-[60vh] overflow-y-auto"></div>
+        <div id="komChatEmpty" class="hidden text-center py-10 px-4">
+          <span class="material-symbols-outlined text-4xl text-slate-300">forum</span>
+          <p class="text-sm font-semibold text-slate-600 mt-1">Belum ada percakapan</p>
+          <p class="text-xs text-slate-400">Cari nama usaha di atas atau tekan tombol Chat pada kiriman di Feed.</p>
+        </div>
+      </div>
+      <!-- thread -->
+      <div id="komThreadView" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div class="p-3 border-b border-slate-100 flex items-center gap-2.5">
+          <button type="button" onclick="komBackToList()" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600"><span class="material-symbols-outlined">arrow_back</span></button>
+          <img id="komThreadAvatar" class="w-9 h-9 rounded-full object-cover bg-slate-100" alt="">
+          <div class="min-w-0"><p id="komThreadName" class="font-bold text-sm text-slate-900 truncate"></p><p id="komThreadUser" class="text-[11px] text-slate-500 truncate"></p></div>
+        </div>
+        <div id="komMsgs" class="flex-1 h-[55vh] overflow-y-auto p-3 space-y-1.5 bg-slate-50"></div>
+        <div class="p-2.5 border-t border-slate-100 flex items-end gap-2 bg-white">
+          <textarea id="komMsgInput" rows="1" maxlength="1000" onkeydown="komMsgKey(event)" class="flex-1 px-3.5 py-2.5 text-sm border border-slate-300 rounded-2xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none resize-none max-h-28" placeholder="Tulis pesan..."></textarea>
+          <button type="button" onclick="komSendMessage()" class="w-11 h-11 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center shrink-0 shadow-sm"><span class="material-symbols-outlined text-[20px]">send</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
 <!-- BOTTOM MOBILE NAVIGATION BAR (TOUCH FRIENDLY FIXED ON PHONE) -->
 <nav class="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around shadow-lg">
@@ -886,6 +1017,11 @@ Terdaftar Mandiri
 <button class="mobile-bottom-btn flex flex-col items-center py-1 px-3 text-slate-500 hover:text-teal-600" data-page="etalase" onclick="navigateTo('etalase')">
 <span class="material-symbols-outlined text-[22px]">store</span>
 <span class="text-[10px] font-medium mt-0.5">Etalase</span>
+</button>
+<button class="mobile-bottom-btn flex flex-col items-center py-1 px-3 text-slate-500 hover:text-teal-600 relative" data-page="komunitas" onclick="navigateTo('komunitas')">
+<span class="material-symbols-outlined text-[22px]">forum</span>
+<span class="text-[10px] font-medium mt-0.5">Komunitas</span>
+<span id="komBadgeMobile" class="hidden absolute top-0 right-1 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[9px] font-bold items-center justify-center"></span>
 </button>
 <button class="mobile-bottom-btn flex flex-col items-center py-1 px-3 text-slate-500 hover:text-teal-600" data-page="admin" onclick="handleAdminEntry()">
 <span class="material-symbols-outlined text-[22px]">shield_person</span>
@@ -938,6 +1074,11 @@ Terdaftar Mandiri
 <div class="mt-4 p-3 bg-slate-50 rounded-xl text-left text-[11px] font-mono text-slate-600 border border-slate-200">
 <p class="">No. Registrasi: <strong class="text-teal-700" id="regIdResult">SIP-RW01-8821</strong></p>
 <p class="">Status: <span class="text-emerald-600 font-semibold">Tersimpan di IndexedDB &amp; Etalase</span></p>
+</div>
+<div id="regAccBox" class="hidden mt-3 p-3 bg-teal-50 rounded-xl text-left text-[11px] text-teal-900 border border-teal-200">
+<p class="font-semibold">Akun Komunitas aktif: <strong class="font-mono" id="regAccUsername"></strong></p>
+<p class="mt-0.5 text-teal-700">Anda sudah masuk otomatis. Mulai berbagi promo &amp; chat dengan UMKM lain.</p>
+<button type="button" onclick="closeSuccessModal(); navigateTo('komunitas')" class="mt-2 w-full py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs flex items-center justify-center gap-1"><span class="material-symbols-outlined text-sm">forum</span>Buka Komunitas</button>
 </div>
 <div class="mt-5 flex flex-col gap-2">
 <button class="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition" onclick="goToRegisteredEtalase()">
@@ -1589,7 +1730,7 @@ Terdaftar Mandiri
   </script>
 
 
-<script class="">function selectHeroRwBar(rw, count, sector, loc, colorClass) { const title = document.getElementById('heroRwDetailTitle'); const sec = document.getElementById('heroRwDetailSector'); const locElem = document.getElementById('heroRwDetailLoc'); if(title) title.innerText = rw + ' • ' + count + ' UMKM'; if(sec) sec.innerText = 'Dominan: ' + sector; if(locElem) locElem.innerText = 'Lokasi sentra: ' + loc; }</script><!-- CRUD MODAL: CREATE & EDIT UMKM --><div id="adminCrudModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto"><div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-100 my-8"><div class="flex items-center justify-between pb-3 border-b border-slate-100"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center"><span class="material-symbols-outlined text-lg" id="crudModalIcon">add_business</span></div><div><h4 class="font-display font-bold text-sm text-slate-900" id="crudModalTitle">Tambah Usaha Binaan Baru</h4><p class="text-[10px] text-slate-500">Kelurahan Jatiasih • Verifikasi Lapangan</p></div></div><button type="button" onclick="closeCrudModal()" class="text-slate-400 hover:text-slate-600 p-1"><span class="material-symbols-outlined text-lg">close</span></button></div><form id="adminCrudForm" class="mt-4 space-y-3" onsubmit="handleAdminCrudSubmit(event)"><input type="hidden" id="crudEditId" value=""><div><label class="block text-xs font-semibold text-slate-700 mb-1">Nama Usaha / Merk Dagang <span class="text-red-500">*</span></label><input type="text" id="crudName" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="Contoh: Kue Kering Jatiasih"></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-700 mb-1">Nama Pemilik <span class="text-red-500">*</span></label><input type="text" id="crudOwner" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="Ibu / Bapak ..."></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Wilayah Rukun Warga <span class="text-red-500">*</span></label><select id="crudRw" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="RW 01">RW 01</option><option value="RW 02">RW 02</option><option value="RW 03">RW 03</option><option value="RW 04">RW 04</option><option value="RW 05">RW 05</option><option value="RW 06">RW 06</option><option value="RW 07">RW 07</option><option value="RW 08">RW 08</option><option value="RW 09">RW 09</option><option value="RW 10">RW 10</option><option value="RW 11">RW 11</option><option value="RW 12">RW 12</option><option value="RW 13">RW 13</option><option value="RW 14">RW 14</option><option value="RW 15">RW 15</option><option value="RW 16">RW 16</option><option value="RW 17">RW 17</option><option value="RW 18">RW 18</option></select></div></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-700 mb-1">Sektor Usaha <span class="text-red-500">*</span></label><select id="crudCategory" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="Kuliner &amp; Minuman">Kuliner &amp; Minuman</option><option value="Fashion &amp; Kriya">Fashion &amp; Kriya</option><option value="Jasa &amp; Reparasi">Jasa &amp; Reparasi</option><option value="Kelontong &amp; Sembako">Kelontong &amp; Sembako</option><option value="Agribisnis &amp; Tanaman">Agribisnis &amp; Tanaman</option><option value="Kesehatan &amp; Herbal">Kesehatan &amp; Herbal</option></select></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Estimasi Omzet / Bulan <span class="text-red-500">*</span></label><select id="crudOmzet" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="Di bawah Rp 5 Juta">&lt; Rp 5 Juta / bln</option><option value="Rp 5 - 15 Juta">Rp 5 - 15 Juta</option><option value="Rp 15 - 50 Juta">Rp 15 - 50 Juta</option><option value="Di atas Rp 50 Juta">&gt; Rp 50 Juta</option></select></div></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp <span class="text-red-500">*</span></label><input type="tel" id="crudPhone" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="08xxxxxxxxxx"></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Status Verifikasi <span class="text-red-500">*</span></label><select id="crudStatus" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="Terverifikasi">Terverifikasi (Resmi)</option><option value="Menunggu">Menunggu Survei</option></select></div></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Lokasi Usaha <span class="text-red-500">*</span></label><textarea id="crudAddress" required="" rows="2" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="Jl. ... RT/RW"></textarea></div><div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100"><button type="button" onclick="closeCrudModal()" class="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition">Batal</button><button type="submit" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition flex items-center gap-1.5"><span class="material-symbols-outlined text-base">save</span><span id="crudSubmitBtnText" class="">Simpan Data</span></button></div></form></div></div><!-- CRUD MODAL: DETAIL / READ UMKM --><div id="adminDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-100 transform transition-all"><div class="relative h-44 w-full bg-slate-100"><img id="detailModalImg" src="" alt="Foto Usaha" class="w-full h-full object-cover"><button type="button" onclick="closeDetailModal()" class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition"><span class="material-symbols-outlined text-base">close</span></button><div class="absolute bottom-2.5 left-2.5 flex items-center gap-2"><span id="detailModalRw" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-slate-900 shadow-md"></span><span id="detailModalStatus" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md"></span></div></div><div class="p-5 space-y-3"><div class="flex items-center justify-between"><span id="detailModalCategory" class="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-md"></span><span id="detailModalId" class="text-[11px] font-mono text-slate-400 font-semibold"></span></div><h3 id="detailModalName" class="font-display text-lg font-bold text-slate-900"></h3><div class="space-y-1.5 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">person</span><span class="text-slate-500">Pemilik:</span> <strong id="detailModalOwner" class="text-slate-800"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">payments</span><span class="text-slate-500">Estimasi Omzet:</span> <strong id="detailModalOmzet" class="text-slate-800 font-mono"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">call</span><span class="text-slate-500">WhatsApp:</span> <strong id="detailModalPhone" class="text-slate-800 font-mono"></strong></p><p class="flex items-start gap-2"><span class="material-symbols-outlined text-base text-slate-400 mt-0.5">location_on</span><span id="detailModalAddress" class="text-slate-700"></span></p></div><div class="flex items-center justify-end gap-2 pt-2"><button type="button" id="detailModalEditBtn" class="px-3.5 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold text-xs flex items-center gap-1.5 transition"><span class="material-symbols-outlined text-[16px]">edit</span> Edit Data</button><button type="button" onclick="closeDetailModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition">Tutup</button></div></div></div></div><!-- CRUD MODAL: DELETE CONFIRMATION --><div id="adminDeleteModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-sm w-full p-5 text-center shadow-2xl border border-slate-100"><div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-2xl">delete</span></div><h3 class="font-display font-bold text-base text-slate-900">Hapus Data UMKM?</h3><p class="text-xs text-slate-600 mt-1.5 leading-relaxed">Anda akan menghapus data usaha <strong id="deleteTargetName" class="text-slate-900"></strong> dari database kelurahan.</p><input type="hidden" id="deleteTargetId" value=""><div class="mt-5 flex gap-2"><button type="button" onclick="closeDeleteModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition">Batal</button><button type="button" onclick="executeDelete()" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition shadow-sm">Ya, Hapus</button></div></div></div><!-- TOAST NOTIFICATION --><div id="adminToast" class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-xl border border-slate-800"><span class="material-symbols-outlined text-emerald-400 text-base" id="toastIcon">check_circle</span><span id="toastMessage" class="">Aksi berhasil dijalankan.</span></div><script class="">function showToast(msg, isError=false){const toast=document.getElementById('adminToast');const txt=document.getElementById('toastMessage');const icn=document.getElementById('toastIcon');if(!toast)return;txt.innerText=msg;icn.innerText=isError?'error':'check_circle';icn.className=isError?'material-symbols-outlined text-red-400 text-base':'material-symbols-outlined text-emerald-400 text-base';toast.classList.remove('translate-y-20','opacity-0','pointer-events-none');setTimeout(()=>{toast.classList.add('translate-y-20','opacity-0','pointer-events-none');},3000);}function openCreateModal(){document.getElementById('crudEditId').value='';document.getElementById('crudModalTitle').innerText='Tambah Usaha Binaan Baru';document.getElementById('crudModalIcon').innerText='add_business';document.getElementById('crudSubmitBtnText').innerText='Simpan Data UMKM';document.getElementById('adminCrudForm').reset();document.getElementById('adminCrudModal').classList.remove('hidden');}function closeCrudModal(){document.getElementById('adminCrudModal').classList.add('hidden');}function openEditModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('crudEditId').value=item.id;document.getElementById('crudModalTitle').innerText='Edit Data Usaha Binaan';document.getElementById('crudModalIcon').innerText='edit';document.getElementById('crudSubmitBtnText').innerText='Perbarui Data';document.getElementById('crudName').value=item.name;document.getElementById('crudOwner').value=item.owner;document.getElementById('crudRw').value=item.rw;document.getElementById('crudCategory').value=item.category;document.getElementById('crudOmzet').value=item.omzet;document.getElementById('crudPhone').value=item.phone;document.getElementById('crudStatus').value=item.status;document.getElementById('crudAddress').value=item.address;document.getElementById('adminCrudModal').classList.remove('hidden');}function handleAdminCrudSubmit(e){e.preventDefault();const editId=document.getElementById('crudEditId').value;const name=document.getElementById('crudName').value.trim();const owner=document.getElementById('crudOwner').value.trim();const rw=document.getElementById('crudRw').value;const category=document.getElementById('crudCategory').value;const omzet=document.getElementById('crudOmzet').value;const phone=document.getElementById('crudPhone').value.trim();const status=document.getElementById('crudStatus').value;const address=document.getElementById('crudAddress').value.trim();if(editId){const idx=umkmList.findIndex(i=>i.id===editId);if(idx>-1){umkmList[idx]={...umkmList[idx],name,owner,rw,category,omzet,phone,status,address};showToast('Data usaha berhasil diperbarui.');}}else{const newId='SIP-'+rw.replace(/\s+/g,'')+'-'+Math.floor(1000+Math.random()*9000);const newEntry={id:newId,name,owner,rw,category,omzet,phone,status,address,lat:-6.3050+(Math.random()-0.5)*0.015,lng:106.9635+(Math.random()-0.5)*0.015,image:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',isNew:true};umkmList.unshift(newEntry);showToast('Usaha binaan baru berhasil ditambahkan.');}saveData();renderAdminDirectory();renderEtalase();updateKpis();closeCrudModal();}function openDetailModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('detailModalImg').src=item.image;document.getElementById('detailModalName').innerText=item.name;document.getElementById('detailModalId').innerText=item.id;document.getElementById('detailModalOwner').innerText=item.owner;document.getElementById('detailModalRw').innerText=item.rw;document.getElementById('detailModalCategory').innerText=item.category;document.getElementById('detailModalOmzet').innerText=item.omzet;document.getElementById('detailModalPhone').innerText=item.phone;document.getElementById('detailModalAddress').innerText=item.address;const st=document.getElementById('detailModalStatus');st.innerText=item.status;st.className='px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md '+(item.status==='Terverifikasi'?'bg-emerald-600':'bg-amber-500');document.getElementById('detailModalEditBtn').onclick=()=>{closeDetailModal();openEditModal(item.id);};document.getElementById('adminDetailModal').classList.remove('hidden');}function closeDetailModal(){document.getElementById('adminDetailModal').classList.add('hidden');}function confirmDelete(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('deleteTargetId').value=item.id;document.getElementById('deleteTargetName').innerText='"'+item.name+'"';document.getElementById('adminDeleteModal').classList.remove('hidden');}function closeDeleteModal(){document.getElementById('adminDeleteModal').classList.add('hidden');}function executeDelete(){const id=document.getElementById('deleteTargetId').value;const idx=umkmList.findIndex(i=>i.id===id);if(idx>-1){umkmList.splice(idx,1);saveData();renderAdminDirectory();renderEtalase();updateKpis();showToast('Data usaha berhasil dihapus.');}closeDeleteModal();renderAdminDirectory=function(filtered=null){const list=filtered||umkmList;const tbody=document.getElementById('adminTableBody');const mobileList=document.getElementById('mobileDirectoryList');if(tbody){tbody.innerHTML=list.map(item=>`<tr class="hover:bg-slate-50/80 transition"><td class="px-4 py-3"><div class="font-bold text-slate-900">${item.name}</div><div class="text-[11px] text-slate-500">${item.owner} &bull; ${item.id}</div></td><td class="px-4 py-3 font-semibold text-slate-700">${item.rw}</td><td class="px-4 py-3">${item.category}</td><td class="px-4 py-3 font-mono">${item.omzet}</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></td><td class="px-4 py-3 text-right"><div class="flex items-center justify-end gap-1"><button type="button" onclick="openDetailModal('${item.id}')" class="p-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition" title="Detail"><span class="material-symbols-outlined text-[17px]">visibility</span></button><button type="button" onclick="openEditModal('${item.id}')" class="p-1.5 rounded-lg text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition" title="Edit"><span class="material-symbols-outlined text-[17px]">edit</span></button><button type="button" onclick="confirmDelete('${item.id}')" class="p-1.5 rounded-lg text-red-600 hover:text-red-700 hover:bg-red-50 transition" title="Hapus"><span class="material-symbols-outlined text-[17px]">delete</span></button></div></td></tr>`).join('');}if(mobileList){mobileList.innerHTML=list.map(item=>`<div class="p-3.5 space-y-2"><div class="flex items-start justify-between gap-2"><div><span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase">${item.rw}</span><h4 class="font-display font-bold text-sm text-slate-900 mt-1">${item.name}</h4><p class="text-xs text-slate-500">${item.owner} &bull; ${item.category}</p></div><span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></div><div class="text-[11px] text-slate-400 font-mono">Omzet: ${item.omzet} &bull; ${item.id}</div><div class="flex items-center gap-1.5 pt-1"><button type="button" onclick="openDetailModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 text-slate-700 hover:bg-slate-50 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">visibility</span> Detail</button><button type="button" onclick="openEditModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">edit</span> Edit</button><button type="button" onclick="confirmDelete('${item.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">delete</span> Hapus</button></div></div>`).join('');}};renderAdminDirectory();</script><script id="geospasialMapScript">
+<script class="">function selectHeroRwBar(rw, count, sector, loc, colorClass) { const title = document.getElementById('heroRwDetailTitle'); const sec = document.getElementById('heroRwDetailSector'); const locElem = document.getElementById('heroRwDetailLoc'); if(title) title.innerText = rw + ' • ' + count + ' UMKM'; if(sec) sec.innerText = 'Dominan: ' + sector; if(locElem) locElem.innerText = 'Lokasi sentra: ' + loc; }</script><!-- CRUD MODAL: CREATE & EDIT UMKM --><div id="adminCrudModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto"><div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-100 my-8"><div class="flex items-center justify-between pb-3 border-b border-slate-100"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center"><span class="material-symbols-outlined text-lg" id="crudModalIcon">add_business</span></div><div><h4 class="font-display font-bold text-sm text-slate-900" id="crudModalTitle">Tambah Usaha Binaan Baru</h4><p class="text-[10px] text-slate-500">Kelurahan Jatiasih • Verifikasi Lapangan</p></div></div><button type="button" onclick="closeCrudModal()" class="text-slate-400 hover:text-slate-600 p-1"><span class="material-symbols-outlined text-lg">close</span></button></div><form id="adminCrudForm" class="mt-4 space-y-3" onsubmit="handleAdminCrudSubmit(event)"><input type="hidden" id="crudEditId" value=""><div><label class="block text-xs font-semibold text-slate-700 mb-1">Nama Usaha / Merk Dagang <span class="text-red-500">*</span></label><input type="text" id="crudName" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="Contoh: Kue Kering Jatiasih"></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-700 mb-1">Nama Pemilik <span class="text-red-500">*</span></label><input type="text" id="crudOwner" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="Ibu / Bapak ..."></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Wilayah Rukun Warga <span class="text-red-500">*</span></label><select id="crudRw" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="RW 01">RW 01</option><option value="RW 02">RW 02</option><option value="RW 03">RW 03</option><option value="RW 04">RW 04</option><option value="RW 05">RW 05</option><option value="RW 06">RW 06</option><option value="RW 07">RW 07</option><option value="RW 08">RW 08</option><option value="RW 09">RW 09</option><option value="RW 10">RW 10</option><option value="RW 11">RW 11</option><option value="RW 12">RW 12</option><option value="RW 13">RW 13</option><option value="RW 14">RW 14</option><option value="RW 15">RW 15</option><option value="RW 16">RW 16</option><option value="RW 17">RW 17</option><option value="RW 18">RW 18</option></select></div></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-700 mb-1">Sektor Usaha <span class="text-red-500">*</span></label><select id="crudCategory" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="Kuliner &amp; Minuman">Kuliner &amp; Minuman</option><option value="Fashion &amp; Kriya">Fashion &amp; Kriya</option><option value="Jasa &amp; Reparasi">Jasa &amp; Reparasi</option><option value="Kelontong &amp; Sembako">Kelontong &amp; Sembako</option><option value="Agribisnis &amp; Tanaman">Agribisnis &amp; Tanaman</option><option value="Kesehatan &amp; Herbal">Kesehatan &amp; Herbal</option></select></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Estimasi Omzet / Bulan <span class="text-red-500">*</span></label><select id="crudOmzet" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="Di bawah Rp 5 Juta">&lt; Rp 5 Juta / bln</option><option value="Rp 5 - 15 Juta">Rp 5 - 15 Juta</option><option value="Rp 15 - 50 Juta">Rp 15 - 50 Juta</option><option value="Di atas Rp 50 Juta">&gt; Rp 50 Juta</option></select></div></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp <span class="text-red-500">*</span></label><input type="tel" id="crudPhone" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="08xxxxxxxxxx"></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Status Verifikasi <span class="text-red-500">*</span></label><select id="crudStatus" required="" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none"><option value="Terverifikasi">Terverifikasi (Resmi)</option><option value="Menunggu">Menunggu Survei</option></select></div></div><div><label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Lokasi Usaha <span class="text-red-500">*</span></label><textarea id="crudAddress" required="" rows="2" class="w-full px-3 py-2 text-xs text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 outline-none" placeholder="Jl. ... RT/RW"></textarea></div><div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100"><button type="button" onclick="closeCrudModal()" class="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition">Batal</button><button type="submit" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition flex items-center gap-1.5"><span class="material-symbols-outlined text-base">save</span><span id="crudSubmitBtnText" class="">Simpan Data</span></button></div></form></div></div><!-- CRUD MODAL: DETAIL / READ UMKM --><div id="adminDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-100 transform transition-all"><div class="relative h-44 w-full bg-slate-100"><img id="detailModalImg" src="" alt="Foto Usaha" class="w-full h-full object-cover"><button type="button" onclick="closeDetailModal()" class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition"><span class="material-symbols-outlined text-base">close</span></button><div class="absolute bottom-2.5 left-2.5 flex items-center gap-2"><span id="detailModalRw" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-slate-900 shadow-md"></span><span id="detailModalStatus" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md"></span></div></div><div class="p-5 space-y-3"><div class="flex items-center justify-between"><span id="detailModalCategory" class="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-md"></span><span id="detailModalId" class="text-[11px] font-mono text-slate-400 font-semibold"></span></div><h3 id="detailModalName" class="font-display text-lg font-bold text-slate-900"></h3><div class="space-y-1.5 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">person</span><span class="text-slate-500">Pemilik:</span> <strong id="detailModalOwner" class="text-slate-800"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">payments</span><span class="text-slate-500">Estimasi Omzet:</span> <strong id="detailModalOmzet" class="text-slate-800 font-mono"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">call</span><span class="text-slate-500">WhatsApp:</span> <strong id="detailModalPhone" class="text-slate-800 font-mono"></strong></p><p class="flex items-start gap-2"><span class="material-symbols-outlined text-base text-slate-400 mt-0.5">location_on</span><span id="detailModalAddress" class="text-slate-700"></span></p></div><div class="flex items-center justify-end gap-2 pt-2"><button type="button" id="detailModalEditBtn" class="px-3.5 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold text-xs flex items-center gap-1.5 transition"><span class="material-symbols-outlined text-[16px]">edit</span> Edit Data</button><button type="button" onclick="closeDetailModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition">Tutup</button></div></div></div></div><!-- CRUD MODAL: DELETE CONFIRMATION --><div id="adminDeleteModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-sm w-full p-5 text-center shadow-2xl border border-slate-100"><div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-2xl">delete</span></div><h3 class="font-display font-bold text-base text-slate-900">Hapus Data UMKM?</h3><p class="text-xs text-slate-600 mt-1.5 leading-relaxed">Anda akan menghapus data usaha <strong id="deleteTargetName" class="text-slate-900"></strong> dari database kelurahan.</p><input type="hidden" id="deleteTargetId" value=""><div class="mt-5 flex gap-2"><button type="button" onclick="closeDeleteModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition">Batal</button><button type="button" onclick="executeDelete()" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition shadow-sm">Ya, Hapus</button></div></div></div><!-- TOAST NOTIFICATION --><div id="adminToast" class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-xl border border-slate-800"><span class="material-symbols-outlined text-emerald-400 text-base" id="toastIcon">check_circle</span><span id="toastMessage" class="">Aksi berhasil dijalankan.</span></div><script class="">function showToast(msg, isError=false){const toast=document.getElementById('adminToast');const txt=document.getElementById('toastMessage');const icn=document.getElementById('toastIcon');if(!toast)return;txt.innerText=msg;icn.innerText=isError?'error':'check_circle';icn.className=isError?'material-symbols-outlined text-red-400 text-base':'material-symbols-outlined text-emerald-400 text-base';toast.classList.remove('translate-y-20','opacity-0','pointer-events-none');setTimeout(()=>{toast.classList.add('translate-y-20','opacity-0','pointer-events-none');},3000);}function openCreateModal(){document.getElementById('crudEditId').value='';document.getElementById('crudModalTitle').innerText='Tambah Usaha Binaan Baru';document.getElementById('crudModalIcon').innerText='add_business';document.getElementById('crudSubmitBtnText').innerText='Simpan Data UMKM';document.getElementById('adminCrudForm').reset();document.getElementById('adminCrudModal').classList.remove('hidden');}function closeCrudModal(){document.getElementById('adminCrudModal').classList.add('hidden');}function openEditModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('crudEditId').value=item.id;document.getElementById('crudModalTitle').innerText='Edit Data Usaha Binaan';document.getElementById('crudModalIcon').innerText='edit';document.getElementById('crudSubmitBtnText').innerText='Perbarui Data';document.getElementById('crudName').value=item.name;document.getElementById('crudOwner').value=item.owner;document.getElementById('crudRw').value=item.rw;document.getElementById('crudCategory').value=item.category;document.getElementById('crudOmzet').value=item.omzet;document.getElementById('crudPhone').value=item.phone;document.getElementById('crudStatus').value=item.status;document.getElementById('crudAddress').value=item.address;document.getElementById('adminCrudModal').classList.remove('hidden');}function handleAdminCrudSubmit(e){e.preventDefault();const editId=document.getElementById('crudEditId').value;const name=document.getElementById('crudName').value.trim();const owner=document.getElementById('crudOwner').value.trim();const rw=document.getElementById('crudRw').value;const category=document.getElementById('crudCategory').value;const omzet=document.getElementById('crudOmzet').value;const phone=document.getElementById('crudPhone').value.trim();const status=document.getElementById('crudStatus').value;const address=document.getElementById('crudAddress').value.trim();if(editId){const idx=umkmList.findIndex(i=>i.id===editId);if(idx>-1){umkmList[idx]={...umkmList[idx],name,owner,rw,category,omzet,phone,status,address};showToast('Data usaha berhasil diperbarui.');}}else{const newId='SIP-'+rw.replace(/\s+/g,'')+'-'+Math.floor(1000+Math.random()*9000);const newEntry={id:newId,name,owner,rw,category,omzet,phone,status,address,lat:-6.3050+(Math.random()-0.5)*0.015,lng:106.9635+(Math.random()-0.5)*0.015,image:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',isNew:true};umkmList.unshift(newEntry);showToast('Usaha binaan baru berhasil ditambahkan.');}saveData();renderAdminDirectory();renderEtalase();updateKpis();closeCrudModal();}function openDetailModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('detailModalImg').src=item.image;document.getElementById('detailModalName').innerText=item.name;document.getElementById('detailModalId').innerText=item.id;document.getElementById('detailModalOwner').innerText=item.owner;document.getElementById('detailModalRw').innerText=item.rw;document.getElementById('detailModalCategory').innerText=item.category;document.getElementById('detailModalOmzet').innerText=item.omzet;document.getElementById('detailModalPhone').innerText=item.phone;document.getElementById('detailModalAddress').innerText=item.address;const st=document.getElementById('detailModalStatus');st.innerText=item.status;st.className='px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md '+(item.status==='Terverifikasi'?'bg-emerald-600':'bg-amber-500');document.getElementById('detailModalEditBtn').onclick=()=>{closeDetailModal();openEditModal(item.id);};document.getElementById('adminDetailModal').classList.remove('hidden');}function closeDetailModal(){document.getElementById('adminDetailModal').classList.add('hidden');}function confirmDelete(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('deleteTargetId').value=item.id;document.getElementById('deleteTargetName').innerText='"'+item.name+'"';document.getElementById('adminDeleteModal').classList.remove('hidden');}function closeDeleteModal(){document.getElementById('adminDeleteModal').classList.add('hidden');}function executeDelete(){const id=document.getElementById('deleteTargetId').value;const idx=umkmList.findIndex(i=>i.id===id);if(idx>-1){umkmList.splice(idx,1);saveData();renderAdminDirectory();renderEtalase();updateKpis();showToast('Data usaha berhasil dihapus.');}closeDeleteModal();}renderAdminDirectory=function(filtered=null){const list=filtered||umkmList;const tbody=document.getElementById('adminTableBody');const mobileList=document.getElementById('mobileDirectoryList');if(tbody){tbody.innerHTML=list.map(item=>`<tr class="hover:bg-slate-50/80 transition"><td class="px-4 py-3"><div class="font-bold text-slate-900">${item.name}</div><div class="text-[11px] text-slate-500">${item.owner} &bull; ${item.id}</div></td><td class="px-4 py-3 font-semibold text-slate-700">${item.rw}</td><td class="px-4 py-3">${item.category}</td><td class="px-4 py-3 font-mono">${item.omzet}</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></td><td class="px-4 py-3 text-right"><div class="flex items-center justify-end gap-1"><button type="button" onclick="openDetailModal('${item.id}')" class="p-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition" title="Detail"><span class="material-symbols-outlined text-[17px]">visibility</span></button><button type="button" onclick="openEditModal('${item.id}')" class="p-1.5 rounded-lg text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition" title="Edit"><span class="material-symbols-outlined text-[17px]">edit</span></button><button type="button" onclick="confirmDelete('${item.id}')" class="p-1.5 rounded-lg text-red-600 hover:text-red-700 hover:bg-red-50 transition" title="Hapus"><span class="material-symbols-outlined text-[17px]">delete</span></button></div></td></tr>`).join('');}if(mobileList){mobileList.innerHTML=list.map(item=>`<div class="p-3.5 space-y-2"><div class="flex items-start justify-between gap-2"><div><span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase">${item.rw}</span><h4 class="font-display font-bold text-sm text-slate-900 mt-1">${item.name}</h4><p class="text-xs text-slate-500">${item.owner} &bull; ${item.category}</p></div><span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></div><div class="text-[11px] text-slate-400 font-mono">Omzet: ${item.omzet} &bull; ${item.id}</div><div class="flex items-center gap-1.5 pt-1"><button type="button" onclick="openDetailModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 text-slate-700 hover:bg-slate-50 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">visibility</span> Detail</button><button type="button" onclick="openEditModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">edit</span> Edit</button><button type="button" onclick="confirmDelete('${item.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">delete</span> Hapus</button></div></div>`).join('');}};renderAdminDirectory();</script><script id="geospasialMapScript">
 let geospasialMapInstance = null;
 let geospasialMarkersLayer = null;
 let activeRwFilter = 'ALL';
@@ -1782,4 +1923,455 @@ window.switchAdminTab = function(tabName) {
 };
 </script><script id="geospasialStatusFilterScript">let activeStatusFilter = 'ALL'; function setStatusFilter(status, btnElem) { activeStatusFilter = status; document.querySelectorAll('.status-filter-btn').forEach(btn => { btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); btn.classList.add('bg-white'); }); if (btnElem) { btnElem.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); btnElem.classList.remove('bg-white'); } if (typeof updateMapFilterSubtext === 'function') updateMapFilterSubtext(); if (typeof renderGeospasialMarkers === 'function') renderGeospasialMarkers(); } const originalRenderGeospasialMarkers = renderGeospasialMarkers; renderGeospasialMarkers = function() { if (!geospasialMapInstance || !geospasialMarkersLayer) return; geospasialMarkersLayer.clearLayers(); const filtered = umkmList.filter(item => { const matchRw = activeRwFilter === 'ALL' || item.rw === activeRwFilter; let matchKlaster = true; if (activeKlasterFilter === 'Kuliner & Minuman') { matchKlaster = item.category.includes('Kuliner'); } else if (activeKlasterFilter === 'Fashion & Kriya') { matchKlaster = item.category.includes('Fashion') || item.category.includes('Kriya'); } else if (activeKlasterFilter === 'Jasa & Reparasi') { matchKlaster = item.category.includes('Jasa') || item.category.includes('Reparasi'); } else if (activeKlasterFilter === 'Ritel') { matchKlaster = !item.category.includes('Kuliner') && !item.category.includes('Fashion') && !item.category.includes('Kriya') && !item.category.includes('Jasa') && !item.category.includes('Reparasi'); } let matchStatus = true; if (activeStatusFilter === 'Terverifikasi') { matchStatus = item.status === 'Terverifikasi'; } else if (activeStatusFilter === 'Menunggu') { matchStatus = item.status !== 'Terverifikasi'; } return matchRw && matchKlaster && matchStatus; }); const counterElem = document.getElementById('mapActivePinsCount'); if (counterElem) { counterElem.innerText = `${filtered.length} Titik Terpetakan Real-time`; } filtered.forEach(item => { const lat = item.lat || -6.3050; const lng = item.lng || 106.9635; const pinIcon = createCustomMapPinIcon(item.category); const isVerified = item.status === 'Terverifikasi'; const statusBadgeColor = isVerified ? '#10b981' : '#f59e0b'; const statusText = isVerified ? '✅ Terverifikasi' : '⏳ Belum Terverifikasi'; const popupHtml = `<div style="min-width: 220px; max-width: 260px; font-family: inherit; font-size: 12px; color: #1e293b;"><div style="position: relative; height: 100px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #e2e8f0;"><img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" /><span style="position: absolute; top: 6px; left: 6px; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.95); font-weight: 700; font-size: 10px; color: #0f172a;">${item.rw}</span><span style="position: absolute; top: 6px; right: 6px; padding: 2px 8px; border-radius: 9999px; background: ${statusBadgeColor}; color: white; font-weight: 700; font-size: 10px;">${statusText}</span></div><strong style="display: block; font-size: 14px; color: #0f172a; margin-bottom: 2px; line-height: 1.2;">${item.name}</strong><p style="margin: 0 0 4px 0; color: #64748b; font-size: 11px;">Pemilik: <b>${item.owner}</b></p><span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: #f0fdfa; color: #0f766e; font-weight: 600; font-size: 10px; margin-bottom: 6px;">${item.category}</span><p style="margin: 0 0 8px 0; color: #475569; font-size: 11px; line-height: 1.3;">${item.address}</p><div style="display: flex; gap: 6px; margin-top: 6px;"><a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #10b981; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Chat WA</a><a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Google Maps</a></div></div>`; const marker = L.marker([lat, lng], { icon: pinIcon }); marker.bindPopup(popupHtml, { maxWidth: 280 }); geospasialMarkersLayer.addLayer(marker); }); if (filtered.length > 0 && geospasialMapInstance) { const group = L.featureGroup(geospasialMarkersLayer.getLayers()); geospasialMapInstance.fitBounds(group.getBounds().pad(0.15)); } }; const origResetMapFilters = resetMapFilters; resetMapFilters = function() { activeStatusFilter = 'ALL'; document.querySelectorAll('.status-filter-btn').forEach((b, i) => { if (i === 0) { b.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); } else { b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); } }); if (origResetMapFilters) origResetMapFilters(); };</script>
 
+<script id="komunitasScript">
+// ===================================================================
+// KOMUNITAS UMKM — Akun, Feed & Chat (diadaptasi dari Pesaner v2)
+// Memakai backend Google Apps Script yang sama dengan Pesaner.
+// ===================================================================
+const KOM_API = 'https://script.google.com/macros/s/AKfycbyohmBDHfhqdb7Vc8GXp49q0MXzL8eI0LJSZ9eogoRQmHCqGU95bAEBxpPSUx9MhY02/exec';
+const KOM_SESSION_KEY = 'siplokal_kom_user';
+const KOM_TYPES = {
+  PROMO:    { label: 'Promo',    icon: 'local_offer', badge: 'bg-rose-100 text-rose-700' },
+  INFO:     { label: 'Info',     icon: 'campaign',    badge: 'bg-sky-100 text-sky-700' },
+  STATUS:   { label: 'Status',   icon: 'chat_bubble', badge: 'bg-violet-100 text-violet-700' },
+  LOWONGAN: { label: 'Lowongan', icon: 'work',        badge: 'bg-amber-100 text-amber-800' },
+  LAINNYA:  { label: 'Lainnya',  icon: 'more_horiz',  badge: 'bg-slate-100 text-slate-700' }
+};
+const KOM_TAG_RE = /^\[(PROMO|INFO|STATUS|LOWONGAN|LAINNYA)\]\s*/;
+
+let komUser = null, komPosts = [], komRawOffset = 0, komHasMore = false, komFeedBusy = false;
+let komFilter = 'ALL', komType = 'INFO', komTab = 'feed';
+let komConvs = [], komUserMap = {}, komActive = null, komMsgs = [], komSending = 0;
+let komListTimer = null, komThreadTimer = null, komBadgeTimer = null, komSearchTimer = null;
+
+// ---------- helpers ----------
+async function komApi(action, data) {
+  const params = new URLSearchParams(Object.assign({ action }, data || {}));
+  const resp = await fetch(KOM_API + '?' + params.toString(), { method: 'GET', redirect: 'follow' });
+  const text = await resp.text();
+  try { return JSON.parse(text); } catch (e) { throw new Error('Server error: ' + text.substring(0, 120)); }
+}
+function komEsc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function komLinkify(s) {
+  return komEsc(s).replace(/((https?:\/\/|www\.)[^\s<]+)/gi, function (m) {
+    let trail = ''; const t = m.match(/[.,!?;:)\]]+$/);
+    if (t) { trail = t[0]; m = m.slice(0, -trail.length); }
+    const href = /^https?:\/\//i.test(m) ? m : 'https://' + m;
+    return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" class="text-teal-700 underline break-all">' + m + '</a>' + trail;
+  });
+}
+function komAvatar(name, url) {
+  return url || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(name || 'U') + '&background=0d9488&color=fff&size=128&bold=true');
+}
+function komAgo(d) {
+  const diff = (Date.now() - new Date(d).getTime()) / 1000;
+  if (isNaN(diff)) return '';
+  if (diff < 60) return 'baru saja';
+  if (diff < 3600) return Math.floor(diff / 60) + ' mnt';
+  if (diff < 86400) return Math.floor(diff / 3600) + ' jam';
+  return Math.floor(diff / 86400) + ' hari';
+}
+function komClock(d) {
+  const x = new Date(d); if (isNaN(x)) return '';
+  return String(x.getHours()).padStart(2, '0') + ':' + String(x.getMinutes()).padStart(2, '0');
+}
+function komParse(content) {
+  const m = String(content || '').match(KOM_TAG_RE);
+  return m ? { type: m[1], body: String(content).replace(KOM_TAG_RE, '') } : { type: null, body: content };
+}
+function komRemember(u, name, av) { if (u) komUserMap[u] = { name: name || u, avatarUrl: av || '' }; }
+function komChip(active) {
+  return 'shrink-0 px-3.5 py-1.5 rounded-full border text-xs font-bold flex items-center gap-1 transition ' +
+    (active ? 'bg-teal-600 text-white border-teal-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50');
+}
+function komMyUmkm() { return komUser ? (umkmList || []).find(u => u.username === komUser.username) : null; }
+
+// ---------- session & auth ----------
+function komSaveSession() { try { localStorage.setItem(KOM_SESSION_KEY, JSON.stringify(komUser)); } catch (e) {} }
+function komLoadSession() { try { const r = localStorage.getItem(KOM_SESSION_KEY); komUser = r ? JSON.parse(r) : null; } catch (e) { komUser = null; } }
+
+async function komHandleLogin(e) {
+  e.preventDefault();
+  const username = document.getElementById('komLoginUser').value.trim().toLowerCase();
+  const password = document.getElementById('komLoginPass').value;
+  const err = document.getElementById('komLoginError');
+  const btn = document.getElementById('komLoginBtn');
+  err.classList.add('hidden');
+  btn.disabled = true; document.getElementById('komLoginBtnText').textContent = 'Memproses...';
+  try {
+    const res = await komApi('login', { username, password });
+    if (res.success) {
+      komUser = res.user; komSaveSession();
+      document.getElementById('komLoginPass').value = '';
+      komShowApp();
+    } else {
+      err.textContent = res.message || 'Username atau kata sandi salah'; err.classList.remove('hidden');
+    }
+  } catch (ex) { err.textContent = 'Gagal terhubung ke server. Coba lagi.'; err.classList.remove('hidden'); }
+  btn.disabled = false; document.getElementById('komLoginBtnText').textContent = 'Masuk';
+}
+
+function komLogout() {
+  komStopTimers(true);
+  komUser = null; komPosts = []; komConvs = []; komActive = null; komMsgs = [];
+  try { localStorage.removeItem(KOM_SESSION_KEY); } catch (e) {}
+  komUpdateBadges(0);
+  komRenderAuthState();
+  showToast('Anda telah keluar dari Komunitas.');
+}
+
+function komRenderAuthState() {
+  document.getElementById('komAuth').classList.toggle('hidden', !!komUser);
+  document.getElementById('komApp').classList.toggle('hidden', !komUser);
+}
+
+function komShowApp() {
+  komRenderAuthState();
+  const um = komMyUmkm();
+  document.getElementById('komMeAvatar').src = komAvatar(komUser.name, komUser.avatarUrl);
+  document.getElementById('komMeName').textContent = komUser.name || komUser.username;
+  document.getElementById('komMeSub').textContent = '@' + komUser.username + (um ? ' • ' + um.category + ' • ' + um.rw : '');
+  komRenderChips();
+  komSwitchTab('feed');
+  komStartBadgePolling();
+}
+
+// ---------- tabs ----------
+function komSwitchTab(tab) {
+  komTab = tab;
+  document.getElementById('komPanelFeed').classList.toggle('hidden', tab !== 'feed');
+  document.getElementById('komPanelChat').classList.toggle('hidden', tab !== 'chat');
+  const on = 'py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition bg-white text-teal-700 shadow-sm';
+  const off = 'py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition text-slate-600 hover:text-teal-700';
+  document.getElementById('komTabFeed').className = tab === 'feed' ? on : off;
+  document.getElementById('komTabChat').className = (tab === 'chat' ? on : off) + ' relative';
+  if (tab === 'feed') { komStopTimers(false); komLoadFeed(true); }
+  else { komBackToList(); }
+}
+
+function komStopTimers(includeBadge) {
+  clearInterval(komListTimer); komListTimer = null;
+  clearInterval(komThreadTimer); komThreadTimer = null;
+  if (includeBadge) { clearInterval(komBadgeTimer); komBadgeTimer = null; }
+}
+
+// ---------- feed ----------
+function komRenderChips() {
+  document.getElementById('komTypeChips').innerHTML = Object.keys(KOM_TYPES).map(k =>
+    '<button type="button" onclick="komPickType(\'' + k + '\')" class="' + komChip(komType === k) + '"><span class="material-symbols-outlined text-[15px]">' + KOM_TYPES[k].icon + '</span>' + KOM_TYPES[k].label + '</button>').join('');
+  document.getElementById('komFilterChips').innerHTML =
+    '<button type="button" onclick="komPickFilter(\'ALL\')" class="' + komChip(komFilter === 'ALL') + '">Semua</button>' +
+    Object.keys(KOM_TYPES).map(k => '<button type="button" onclick="komPickFilter(\'' + k + '\')" class="' + komChip(komFilter === k) + '">' + KOM_TYPES[k].label + '</button>').join('');
+}
+function komPickType(k) { komType = k; komRenderChips(); }
+function komPickFilter(k) { komFilter = k; komRenderChips(); komRenderFeed(); }
+function komCountChars() {
+  const n = document.getElementById('komPostText').value.length;
+  document.getElementById('komCharCount').textContent = n + '/268';
+}
+
+async function komSubmitPost() {
+  const ta = document.getElementById('komPostText');
+  const body = ta.value.trim();
+  if (!body) { showToast('Tulis sesuatu terlebih dahulu.', true); return; }
+  const btn = document.getElementById('komPostBtn'); btn.disabled = true;
+  try {
+    const res = await komApi('createPost', { username: komUser.username, content: '[' + komType + '] ' + body, privacy: 'public' });
+    if (res.success) { ta.value = ''; komCountChars(); showToast('Kiriman berhasil dibagikan.'); komLoadFeed(true); }
+    else showToast(res.message || 'Gagal membagikan kiriman.', true);
+  } catch (e) { showToast('Gagal terhubung ke server.', true); }
+  btn.disabled = false;
+}
+
+// Feed backend bercampur dengan pengguna Pesaner lain; hanya kiriman bertag SIPLokal yang ditampilkan.
+async function komLoadFeed(reset) {
+  if (komFeedBusy || !komUser) return;
+  komFeedBusy = true;
+  if (reset) { komPosts = []; komRawOffset = 0; komHasMore = true; }
+  document.getElementById('komFeedLoading').classList.toggle('hidden', komPosts.length > 0 && !reset);
+  document.getElementById('komMoreBtn').classList.add('hidden');
+  let got = 0, loops = 0;
+  try {
+    while (komHasMore && got < 8 && loops < 6) {
+      const res = await komApi('getPosts', { username: komUser.username, offset: komRawOffset, limit: 10 });
+      const raw = res.posts || [];
+      komRawOffset += raw.length;
+      komHasMore = !!res.hasMore && raw.length > 0;
+      const tagged = raw.filter(p => komParse(p.content).type);
+      komPosts = komPosts.concat(tagged); got += tagged.length; loops++;
+    }
+  } catch (e) { showToast('Gagal memuat feed.', true); }
+  komFeedBusy = false;
+  document.getElementById('komFeedLoading').classList.add('hidden');
+  komRenderFeed();
+}
+function komLoadMore() { komLoadFeed(false); }
+
+function komRenderFeed() {
+  const list = komPosts.filter(p => komFilter === 'ALL' || komParse(p.content).type === komFilter);
+  document.getElementById('komFeedEmpty').classList.toggle('hidden', list.length > 0 || komFeedBusy);
+  document.getElementById('komMoreBtn').classList.toggle('hidden', !komHasMore);
+  document.getElementById('komFeedList').innerHTML = list.map(komPostCard).join('');
+}
+
+function komPostCard(p) {
+  const parsed = komParse(p.content), T = KOM_TYPES[parsed.type] || KOM_TYPES.LAINNYA;
+  komRemember(p.authorUsername, p.authorName, p.authorAvatarUrl);
+  const mine = p.authorUsername === komUser.username;
+  const liked = p.likedBy && p.likedBy.includes(komUser.username);
+  const um = (umkmList || []).find(u => u.username === p.authorUsername);
+  const sub = um ? (um.category + ' • ' + um.rw) : '@' + p.authorUsername;
+  return '<article class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4" id="kpost-' + komEsc(p.id) + '">' +
+    '<div class="flex gap-3">' +
+    '<img src="' + komEsc(komAvatar(p.authorName, p.authorAvatarUrl)) + '" class="w-10 h-10 rounded-full object-cover bg-slate-100 shrink-0" alt="">' +
+    '<div class="min-w-0 flex-1">' +
+    '<div class="flex items-start justify-between gap-2">' +
+    '<div class="min-w-0"><p class="font-bold text-sm text-slate-900 truncate flex items-center gap-1">' + komEsc(p.authorName) +
+    (um && um.status === 'Terverifikasi' ? '<span class="material-symbols-outlined text-[15px] text-teal-600" title="Usaha terverifikasi" style="font-variation-settings:\'FILL\' 1">verified</span>' : '') + '</p>' +
+    '<p class="text-[11px] text-slate-500 truncate">' + komEsc(sub) + ' • ' + komAgo(p.createdAt) + '</p></div>' +
+    '<div class="flex items-center gap-1 shrink-0"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-0.5 ' + T.badge + '"><span class="material-symbols-outlined text-[12px]">' + T.icon + '</span>' + T.label + '</span>' +
+    ((mine || komUser.role === 'admin') ? '<button type="button" onclick="komDeletePost(\'' + komEsc(p.id) + '\')" class="p-1 rounded-full text-slate-400 hover:text-red-500" title="Hapus"><span class="material-symbols-outlined text-[18px]">delete</span></button>' : '') +
+    '</div></div>' +
+    '<p class="text-sm text-slate-800 mt-2 mb-3 leading-relaxed whitespace-pre-line break-words">' + komLinkify(parsed.body) + '</p>' +
+    '<div class="flex items-center gap-1.5">' +
+    '<button type="button" onclick="komToggleLike(\'' + komEsc(p.id) + '\')" class="px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 transition ' + (liked ? 'bg-rose-50 text-rose-600' : 'text-slate-500 hover:bg-slate-100') + '"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings:\'FILL\' ' + (liked ? 1 : 0) + '">favorite</span>' + (p.likes || 0) + '</button>' +
+    (mine ? '' : '<button type="button" onclick="komOpenChatWith(\'' + komEsc(p.authorUsername) + '\')" class="px-3 py-1.5 rounded-full text-xs font-semibold text-teal-700 hover:bg-teal-50 flex items-center gap-1 transition"><span class="material-symbols-outlined text-[18px]">chat</span>Chat</button>') +
+    '</div></div></div></article>';
+}
+
+async function komToggleLike(id) {
+  try {
+    const res = await komApi('toggleLike', { username: komUser.username, postId: id });
+    if (res.success) {
+      const p = komPosts.find(x => x.id === id);
+      if (p) {
+        p.likes = res.likes; p.likedBy = (p.likedBy || []).filter(u => u !== komUser.username);
+        if (res.liked) p.likedBy.push(komUser.username);
+      }
+      komRenderFeed();
+    }
+  } catch (e) { showToast('Aksi gagal. Coba lagi.', true); }
+}
+async function komDeletePost(id) {
+  if (!confirm('Hapus kiriman ini?')) return;
+  try {
+    const res = await komApi('deletePost', { username: komUser.username, postId: id });
+    if (res.success) { komPosts = komPosts.filter(p => p.id !== id); komRenderFeed(); showToast('Kiriman dihapus.'); }
+    else showToast(res.message || 'Gagal menghapus.', true);
+  } catch (e) { showToast('Aksi gagal. Coba lagi.', true); }
+}
+
+// ---------- chat: list ----------
+function komUpdateBadges(n) {
+  ['komBadgeTab', 'komBadgeDesktop', 'komBadgeMobile'].forEach(id => {
+    const el = document.getElementById(id); if (!el) return;
+    el.textContent = n > 99 ? '99+' : n;
+    el.classList.toggle('hidden', !n);
+    el.classList.toggle('inline-flex', !!n);
+  });
+}
+function komStartBadgePolling() {
+  clearInterval(komBadgeTimer);
+  komRefreshBadge();
+  komBadgeTimer = setInterval(komRefreshBadge, 20000);
+}
+async function komRefreshBadge() {
+  if (!komUser) return;
+  try {
+    const res = await komApi('getConversations', { username: komUser.username });
+    komUpdateBadges((res.conversations || []).reduce((s, c) => s + (c.unread || 0), 0));
+  } catch (e) {}
+}
+
+function komBackToList() {
+  komActive = null; clearInterval(komThreadTimer); komThreadTimer = null;
+  document.getElementById('komThreadView').classList.add('hidden');
+  document.getElementById('komChatListView').classList.remove('hidden');
+  komLoadChatList();
+  clearInterval(komListTimer);
+  komListTimer = setInterval(function () { if (!document.getElementById('komChatSearch').value.trim()) komLoadChatList(); }, 8000);
+}
+
+async function komLoadChatList() {
+  if (!komUser) return;
+  try {
+    const res = await komApi('getConversations', { username: komUser.username });
+    komConvs = (res.conversations || []).sort((a, b) => new Date(b.lastAt || 0) - new Date(a.lastAt || 0));
+    komConvs.forEach(c => komRemember(c.username, c.name, c.avatarUrl));
+    komUpdateBadges(komConvs.reduce((s, c) => s + (c.unread || 0), 0));
+    if (!document.getElementById('komChatSearch').value.trim()) komRenderConvs();
+  } catch (e) {}
+}
+function komUserRow(u, preview, time, unread) {
+  return '<div class="flex items-center gap-3 px-3.5 py-3 hover:bg-slate-50 cursor-pointer transition" onclick="komOpenThread(\'' + komEsc(u.username) + '\')">' +
+    '<img src="' + komEsc(komAvatar(u.name, u.avatarUrl)) + '" class="w-11 h-11 rounded-full object-cover bg-slate-100 shrink-0" alt="">' +
+    '<div class="min-w-0 flex-1"><div class="flex justify-between items-baseline gap-2"><p class="font-bold text-sm text-slate-900 truncate">' + komEsc(u.name) + '</p>' +
+    '<span class="text-[11px] text-slate-400 shrink-0">' + (time ? komAgo(time) : '') + '</span></div>' +
+    '<p class="text-xs truncate ' + (unread ? 'text-slate-900 font-semibold' : 'text-slate-500') + '">' + komEsc(preview) + '</p></div>' +
+    (unread ? '<span class="min-w-[20px] h-5 px-1.5 rounded-full bg-teal-600 text-white text-[10px] font-bold flex items-center justify-center">' + (unread > 99 ? '99+' : unread) + '</span>' : '') + '</div>';
+}
+function komRenderConvs() {
+  document.getElementById('komChatEmpty').classList.toggle('hidden', komConvs.length > 0);
+  document.getElementById('komChatList').innerHTML = komConvs.map(c => {
+    const lm = c.lastMessage || 'Belum ada pesan';
+    const pv = (c.lastFromMe ? 'Kamu: ' : '') + (lm.length > 42 ? lm.slice(0, 42) + '…' : lm);
+    return komUserRow(c, pv, c.lastAt, c.unread || 0);
+  }).join('');
+}
+
+function komChatSearchInput() {
+  clearTimeout(komSearchTimer);
+  const q = document.getElementById('komChatSearch').value.trim();
+  if (q.length < 3) { komRenderConvs(); return; }
+  komSearchTimer = setTimeout(async function () {
+    try {
+      const res = await komApi('searchUsers', { query: q, excludeUsername: komUser.username });
+      const users = res.users || [];
+      users.forEach(u => komRemember(u.username, u.name, u.avatarUrl));
+      document.getElementById('komChatEmpty').classList.add('hidden');
+      document.getElementById('komChatList').innerHTML = users.length
+        ? users.map(u => komUserRow({ username: u.username, name: u.name, avatarUrl: u.avatarUrl }, '@' + u.username, null, 0)).join('')
+        : '<p class="text-center text-xs text-slate-400 py-8">Pengguna tidak ditemukan.</p>';
+    } catch (e) { showToast('Pencarian gagal.', true); }
+  }, 300);
+}
+
+// ---------- chat: thread ----------
+function komOpenChatWith(username) { komSwitchTab('chat'); komOpenThread(username); }
+
+function komOpenThread(username) {
+  const info = komUserMap[username] || { name: username, avatarUrl: '' };
+  komActive = username; komMsgs = [];
+  clearInterval(komListTimer); komListTimer = null;
+  document.getElementById('komChatListView').classList.add('hidden');
+  document.getElementById('komThreadView').classList.remove('hidden');
+  document.getElementById('komThreadName').textContent = info.name;
+  document.getElementById('komThreadUser').textContent = '@' + username;
+  document.getElementById('komThreadAvatar').src = komAvatar(info.name, info.avatarUrl);
+  document.getElementById('komMsgs').innerHTML = '<p class="text-center text-xs text-slate-400 py-6">Memuat pesan...</p>';
+  komFetchThread(true);
+  clearInterval(komThreadTimer);
+  komThreadTimer = setInterval(function () { komFetchThread(false); }, 4000);
+}
+
+async function komFetchThread(first) {
+  if (!komActive || komSending > 0) return;
+  const who = komActive;
+  try {
+    const res = await komApi('getConversation', { username: komUser.username, otherUsername: who, offset: 0, limit: 50 });
+    if (who !== komActive || komSending > 0) return;
+    const server = (res.messages || []).slice().sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    const failed = komMsgs.filter(m => m.status === 'failed');
+    const sig = function (arr) { return arr.map(m => m.id + ':' + (m.read ? 1 : 0)).join('|'); };
+    const changed = first || sig(server) !== sig(komMsgs.filter(m => m.status !== 'failed'));
+    const hadIncoming = server.some(m => m.fromUsername === who && !komMsgs.some(o => o.id === m.id));
+    komMsgs = server.concat(failed);
+    if (changed) komRenderMsgs(first || hadIncoming);
+    if (first || hadIncoming) {
+      komApi('markConversationRead', { username: komUser.username, otherUsername: who }).then(komRefreshBadge).catch(function () {});
+    }
+  } catch (e) {
+    if (first) document.getElementById('komMsgs').innerHTML = '<p class="text-center text-xs text-red-500 py-6">Gagal memuat pesan.</p>';
+  }
+}
+
+function komMsgBody(m) {
+  const type = m.type || 'text';
+  if (type === 'text') return komLinkify(m.content);
+  if (type === 'image' && m.fileUrl) return '<a href="' + komEsc(m.fileUrl) + '" target="_blank" rel="noopener"><img src="' + komEsc(m.fileUrl) + '" class="rounded-xl max-w-[220px] max-h-[260px] object-cover" alt=""></a>' + (m.content ? '<div class="mt-1">' + komLinkify(m.content) + '</div>' : '');
+  if (m.fileUrl) return '<a href="' + komEsc(m.fileUrl) + '" target="_blank" rel="noopener" class="underline flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">attach_file</span>' + komEsc(m.fileName || 'Lampiran') + '</a>';
+  return komLinkify(m.content || '[Pesan tidak didukung]');
+}
+function komRenderMsgs(forceBottom) {
+  const box = document.getElementById('komMsgs');
+  const near = box.scrollHeight - box.scrollTop - box.clientHeight < 90;
+  if (!komMsgs.length) { box.innerHTML = '<p class="text-center text-xs text-slate-400 py-8">Belum ada pesan. Sapa duluan! 👋</p>'; return; }
+  box.innerHTML = komMsgs.map(function (m) {
+    const mine = m.fromUsername === komUser.username;
+    const tick = !mine ? '' : (m.status === 'pending' ? '<span class="material-symbols-outlined text-[13px]">schedule</span>' : m.status === 'failed' ? '' : '<span class="material-symbols-outlined text-[14px]">' + (m.read ? 'done_all' : 'done') + '</span>');
+    const retry = m.status === 'failed' ? '<button type="button" onclick="komRetry(\'' + komEsc(m.id) + '\')" class="text-[10px] font-bold underline">Gagal — kirim ulang</button>' : '';
+    return '<div class="flex ' + (mine ? 'justify-end' : 'justify-start') + '"><div class="max-w-[80%] px-3 py-2 rounded-2xl text-sm break-words whitespace-pre-line ' +
+      (mine ? 'bg-teal-600 text-white rounded-br-md' : 'bg-white text-slate-800 border border-slate-200 rounded-bl-md') + (m.status === 'pending' ? ' opacity-70' : '') + '">' +
+      komMsgBody(m) + '<div class="flex items-center justify-end gap-1 mt-0.5 text-[10px] ' + (mine ? 'text-teal-100' : 'text-slate-400') + '">' + retry + komClock(m.createdAt) + tick + '</div></div></div>';
+  }).join('');
+  if (forceBottom || near) box.scrollTop = box.scrollHeight;
+}
+
+function komMsgKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); komSendMessage(); } }
+
+async function komSendMessage(retryMsg) {
+  const input = document.getElementById('komMsgInput');
+  const content = retryMsg ? retryMsg.content : input.value.trim();
+  if (!content || !komActive) return;
+  if (!retryMsg) input.value = '';
+  const msg = retryMsg || { id: 'tmp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6), fromUsername: komUser.username, toUsername: komActive, content: content, createdAt: new Date().toISOString(), read: false };
+  msg.status = 'pending';
+  if (!retryMsg) komMsgs.push(msg);
+  komRenderMsgs(true);
+  komSending++;
+  try {
+    const res = await komApi('sendMessage', { fromUsername: komUser.username, toUsername: msg.toUsername, content: content });
+    if (res.success) { msg.id = res.messageId; msg.createdAt = res.createdAt || msg.createdAt; msg.status = 'sent'; }
+    else { msg.status = 'failed'; showToast(res.message || 'Pesan gagal terkirim.', true); }
+  } catch (e) { msg.status = 'failed'; showToast('Pesan gagal terkirim.', true); }
+  komSending--;
+  komRenderMsgs(true);
+}
+function komRetry(id) { const m = komMsgs.find(x => x.id === id); if (m) komSendMessage(m); }
+
+// ---------- integrasi pendaftaran UMKM -> akun ----------
+const komOrigHandleFormSubmit = handleFormSubmit;
+handleFormSubmit = async function (e) {
+  e.preventDefault();
+  const usernameEl = document.getElementById('regUsername'), passEl = document.getElementById('regPassword'), errEl = document.getElementById('regAccError');
+  const username = usernameEl.value.trim().toLowerCase().replace(/\s+/g, '');
+  const password = passEl.value;
+  const bizName = document.getElementById('regName').value.trim();
+  errEl.classList.add('hidden');
+  const fail = function (msg) { errEl.textContent = msg; errEl.classList.remove('hidden'); errEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+  if (!/^[a-z0-9_.]{4,20}$/.test(username)) return fail('Username 4–20 karakter, hanya huruf kecil, angka, titik atau garis bawah.');
+  if (password.length < 6) return fail('Kata sandi minimal 6 karakter.');
+
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  if (submitBtn) submitBtn.disabled = true;
+  let res;
+  try { res = await komApi('register', { name: bizName, username: username, password: password }); }
+  catch (ex) { if (submitBtn) submitBtn.disabled = false; return fail('Gagal terhubung ke server akun. Periksa internet lalu coba lagi.'); }
+  if (!res || !res.success) { if (submitBtn) submitBtn.disabled = false; return fail((res && res.message) || 'Pendaftaran akun gagal. Username mungkin sudah dipakai.'); }
+
+  komOrigHandleFormSubmit(e);                       // simpan data usaha seperti semula
+  if (umkmList[0]) { umkmList[0].username = username; saveData(); renderEtalase(); renderAdminDirectory(); }
+  if (submitBtn) submitBtn.disabled = false;
+
+  // login otomatis agar UMKM langsung bisa memakai Komunitas
+  try {
+    const lg = await komApi('login', { username: username, password: password });
+    if (lg.success) { komUser = lg.user; komSaveSession(); }
+  } catch (ex) {}
+  const box = document.getElementById('regAccBox');
+  if (box) {
+    box.classList.remove('hidden');
+    document.getElementById('regAccUsername').textContent = '@' + username;
+  }
+};
+
+// ---------- navigasi ----------
+const komOrigNavigateTo = navigateTo;
+navigateTo = function (pageId) {
+  komOrigNavigateTo(pageId);
+  if (pageId === 'komunitas') {
+    komLoadSession();
+    if (komUser) komShowApp(); else komRenderAuthState();
+  } else {
+    komStopTimers(false);
+  }
+};
+
+window.addEventListener('DOMContentLoaded', function () {
+  komLoadSession();
+  komRenderChips();
+  if (komUser) komStartBadgePolling();
+});
+
+</script>
 </body></html>
