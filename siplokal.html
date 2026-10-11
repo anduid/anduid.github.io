@@ -1,43 +1,7 @@
 <!DOCTYPE html><html class="h-full" lang="id" style=""><head>
 <meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 <title>SIPLokal - Sistem Integrasi Potensi &amp; UMKM Kelurahan Jatiasih</title>
-<meta name="description" content="SIPLokal: pendataan, verifikasi, etalase, dan peta sebaran UMKM serta potensi warga Kelurahan Jatiasih, Kota Bekasi. Daftarkan usaha Anda dan temukan UMKM terverifikasi di sekitar Anda.">
-<meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="theme-color" content="#0d9488">
-<meta name="referrer" content="strict-origin-when-cross-origin">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="SIPLokal">
-<meta property="og:locale" content="id_ID">
-<meta property="og:title" content="SIPLokal - Sistem Integrasi Potensi &amp; UMKM Kelurahan Jatiasih">
-<meta property="og:description" content="Daftarkan usaha Anda, temukan UMKM terverifikasi, dan lihat peta sebaran UMKM Kelurahan Jatiasih, Kota Bekasi.">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SIPLokal - UMKM Kelurahan Jatiasih">
-<meta name="twitter:description" content="Pendataan, verifikasi, etalase, dan peta UMKM Kelurahan Jatiasih, Kota Bekasi.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d9488'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='26' fill='white'%3ESIP%3C/text%3E%3C/svg%3E">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "SIPLokal",
-  "alternateName": "Sistem Integrasi Potensi & UMKM Kelurahan Jatiasih",
-  "description": "Aplikasi pendataan, verifikasi, etalase, dan pemetaan UMKM serta potensi warga Kelurahan Jatiasih, Kota Bekasi.",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web",
-  "inLanguage": "id",
-  "areaServed": {
-    "@type": "AdministrativeArea",
-    "name": "Kelurahan Jatiasih, Kota Bekasi"
-  }
-}
-</script>
-<style>
-  /* Perbaikan aksesibilitas */
-  :focus-visible { outline: 2px solid #0d9488; outline-offset: 2px; }
-  .skip-link { position: absolute; left: -9999px; top: 0; z-index: 1000; background: #0f766e; color: #fff; padding: .6rem 1rem; border-radius: 0 0 .75rem 0; font-weight: 700; font-size: .85rem; }
-  .skip-link:focus { left: 0; }
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
-</style>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Google Fonts & Material Symbols -->
@@ -140,8 +104,6 @@
   </style>
 </head>
 <body class="bg-[#f8fafc] text-on-surface font-sans antialiased min-h-screen flex flex-col pb-20 md:pb-0 selection:bg-primary/20 selection:text-primary">
-<a class="skip-link" href="#main-content">Lompat ke konten utama</a>
-<noscript><div style="padding:1rem;background:#fef3c7;color:#78350f;font:600 14px/1.4 Arial,sans-serif;text-align:center">SIPLokal membutuhkan JavaScript. Aktifkan JavaScript di peramban Anda untuk memakai aplikasi ini.</div></noscript>
 <!-- TOP COMPACT STICKY HEADER -->
 <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-200 shadow-sm">
 <div class="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
@@ -230,7 +192,7 @@
 <p class="text-[10px] text-slate-500">Pendataan &amp; Pemberdayaan</p>
 </div>
 </div>
-<button class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 text-lg" onclick="toggleMobileDrawer(false)" aria-label="Tutup">
+<button class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 text-lg" onclick="toggleMobileDrawer(false)">
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
@@ -272,7 +234,7 @@
 </div>
 </div>
 <!-- MAIN VIEW CONTAINER -->
-<main id="main-content" tabindex="-1" class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-8 outline-none">
+<main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-8">
 <!-- ============================================================ -->
 <!-- VIEW 1: BERANDA / HOME (HERO, DIORAMA, KPI CARDS, KOMPARASI) -->
 <!-- ============================================================ -->
@@ -495,25 +457,25 @@ Pilih Contoh Foto Estetik Sesuai Kategori:
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
 <!-- Preset 1 -->
 <button class="preset-btn group text-left p-1.5 rounded-xl border border-slate-200 hover:border-teal-500 bg-white transition relative overflow-hidden active:scale-95" onclick="selectPresetImage('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&amp;fit=crop&amp;w=600&amp;q=80', 'Kuliner Khas Jatiasih', this)" type="button">
-<img loading="lazy" decoding="async" alt="Kuliner Khas" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXvpTpDAWCuEF2i6UAlPiYlbOIxlOsvN2xHVe37c8tn9LXRg9Gg_-krJV0rx7BMBLNPkzdfVLC3jYXhpeBqAY_fisL1F6zrxDG4t113Pgss1aal7YYj5nUJWllnIkmyxEKYccYuOXWlrkmxIcDGGgpmupFZOqvBOO24VIzNb1xeKxypXMGZgOCRlHHzE8aPrSnT2W2R76BvtR0k35yhlPh2sU4LCP5RUDd_5uiKXkLWBsDmKo57aRQ">
+<img alt="Kuliner Khas" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXvpTpDAWCuEF2i6UAlPiYlbOIxlOsvN2xHVe37c8tn9LXRg9Gg_-krJV0rx7BMBLNPkzdfVLC3jYXhpeBqAY_fisL1F6zrxDG4t113Pgss1aal7YYj5nUJWllnIkmyxEKYccYuOXWlrkmxIcDGGgpmupFZOqvBOO24VIzNb1xeKxypXMGZgOCRlHHzE8aPrSnT2W2R76BvtR0k35yhlPh2sU4LCP5RUDd_5uiKXkLWBsDmKo57aRQ">
 <p class="text-[10px] font-bold text-slate-800 mt-1 line-clamp-1">Kuliner Nusantara</p>
 <span class="text-[9px] text-teal-600 block">Nasi/Lauk/Kue</span>
 </button>
 <!-- Preset 2 -->
 <button class="preset-btn group text-left p-1.5 rounded-xl border border-slate-200 hover:border-teal-500 bg-white transition relative overflow-hidden active:scale-95" onclick="selectPresetImage('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&amp;fit=crop&amp;w=600&amp;q=80', 'Minuman Herbal &amp; Kopi', this)" type="button">
-<img loading="lazy" decoding="async" alt="Minuman &amp; Kopi" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMr9hejFv-k0bqSkSfrieWgJb48pGQzUzgJgFklFQHOouhjSwOJyvjlFGoK8erSs_NSfVbsVzsgtUramB7_Xvew8bDroziYKiASSxMazdK9Ahuh2aYiMcVkBBXDCaYlSfFXb_-2zBp42Qx_QMFJV0NXnxI3esPfclNE7bMKyYuABM8Tx8taSqs_icWdFPNo4MBeHP8sfZ7yI8-zqowSDistECSpIu1vCW7QYZqROgq0VaR0UPbu-gW">
+<img alt="Minuman &amp; Kopi" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMr9hejFv-k0bqSkSfrieWgJb48pGQzUzgJgFklFQHOouhjSwOJyvjlFGoK8erSs_NSfVbsVzsgtUramB7_Xvew8bDroziYKiASSxMazdK9Ahuh2aYiMcVkBBXDCaYlSfFXb_-2zBp42Qx_QMFJV0NXnxI3esPfclNE7bMKyYuABM8Tx8taSqs_icWdFPNo4MBeHP8sfZ7yI8-zqowSDistECSpIu1vCW7QYZqROgq0VaR0UPbu-gW">
 <p class="text-[10px] font-bold text-slate-800 mt-1 line-clamp-1">Kopi &amp; Minuman</p>
 <span class="text-[9px] text-teal-600 block">Herbal / Seduhan</span>
 </button>
 <!-- Preset 3 -->
 <button class="preset-btn group text-left p-1.5 rounded-xl border border-slate-200 hover:border-teal-500 bg-white transition relative overflow-hidden active:scale-95" onclick="selectPresetImage('https://images.unsplash.com/photo-1528458876885-5b6aae76184b?auto=format&amp;fit=crop&amp;w=600&amp;q=80', 'Kriya Anyam &amp; Batik', this)" type="button">
-<img loading="lazy" decoding="async" alt="Kriya &amp; Batik" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAznAUzglwi6Vxc_m_0W-5r-sCwo8EMc1ymA5Z08atJQMnJa6DZ-7hd6JCpBu67wCo0jH6Fo6CjWfKlDB-rHwtmn3g7NKeRp-lhDrMn0N8iKrwCYAjuzoB_HxxCcGkoi27eEMu_sRU4VvcACFXHGwXumIsyLmG2YSeJAWTBinecJg1e4nq0HRmRX7c7mvS5hLMQa8k6brX1Q6u2cKtM9sXjO0ogB_xBweMiJ3P1JhHc_0BGdDIjTgB">
+<img alt="Kriya &amp; Batik" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAznAUzglwi6Vxc_m_0W-5r-sCwo8EMc1ymA5Z08atJQMnJa6DZ-7hd6JCpBu67wCo0jH6Fo6CjWfKlDB-rHwtmn3g7NKeRp-lhDrMn0N8iKrwCYAjuzoB_HxxCcGkoi27eEMu_sRU4VvcACFXHGwXumIsyLmG2YSeJAWTBinecJg1e4nq0HRmRX7c7mvS5hLMQa8k6brX1Q6u2cKtM9sXjO0ogB_xBweMiJ3P1JhHc_0BGdDIjTgB">
 <p class="text-[10px] font-bold text-slate-800 mt-1 line-clamp-1">Kriya &amp; Kerajinan</p>
 <span class="text-[9px] text-teal-600 block">Batik / Anyam</span>
 </button>
 <!-- Preset 4 -->
 <button class="preset-btn group text-left p-1.5 rounded-xl border border-slate-200 hover:border-teal-500 bg-white transition relative overflow-hidden active:scale-95" onclick="selectPresetImage('https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&amp;fit=crop&amp;w=600&amp;q=80', 'Jasa Servis Presisi', this)" type="button">
-<img loading="lazy" decoding="async" alt="Jasa &amp; Reparasi" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-LDOnOuoV-a_rFBPO7SD5RCYzy4yDXTiSmqoNEN79DEftJygfpwcljpj7YYHqfgkZy_C0ZFnbUiRpCwO9-yi8d2kTLCNw6TMHs_Rv2-NZN5QigQrmBJviTignRhQBCXIBTlX9vk5DmcyUOGP-YP1UgpE45gqaQZn5pMt7R5N90A6DEroWMA96lOqVaR1CyI-m4i3IKpHECLDrjGfeObODuIXf3JN_nkXTLCiFZkC1l5NY2iPFkHad">
+<img alt="Jasa &amp; Reparasi" class="w-full h-16 object-cover rounded-lg group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-LDOnOuoV-a_rFBPO7SD5RCYzy4yDXTiSmqoNEN79DEftJygfpwcljpj7YYHqfgkZy_C0ZFnbUiRpCwO9-yi8d2kTLCNw6TMHs_Rv2-NZN5QigQrmBJviTignRhQBCXIBTlX9vk5DmcyUOGP-YP1UgpE45gqaQZn5pMt7R5N90A6DEroWMA96lOqVaR1CyI-m4i3IKpHECLDrjGfeObODuIXf3JN_nkXTLCiFZkC1l5NY2iPFkHad">
 <p class="text-[10px] font-bold text-slate-800 mt-1 line-clamp-1">Jasa &amp; Bengkel</p>
 <span class="text-[9px] text-teal-600 block">Servis Presisi</span>
 </button>
@@ -530,7 +492,7 @@ Preview Tampilan di Etalase Binaan
 </div>
 <div class="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden max-w-sm mx-auto">
 <div class="relative h-44 w-full bg-slate-100 overflow-hidden">
-<img loading="lazy" decoding="async" alt="Preview Usaha" class="w-full h-full object-cover transition-all duration-300" id="livePreviewImg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBciJ0AoImfWp6Iuk5jGmf0R3vW_VLtGxu_55cHQoxQrPYFCH5WeGX7Rmt6rGUI1mfla62TxfR_HYbBS5H4Uvrxu1Ed03yy-kYpW9ILvlIZXecFM0xw3b1eaXkcYW8n-2LXxArojqBWNYEhjxCji-bqvXFDm_utMhCjUdGIY6T4K0PFOQH-GZgRameTkHmieUtpewmu5UY2Vo9b0_3c7iZ1ozDE6DGDBCyo_c-YBQzRrk8r87-Q8BYS">
+<img alt="Preview Usaha" class="w-full h-full object-cover transition-all duration-300" id="livePreviewImg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBciJ0AoImfWp6Iuk5jGmf0R3vW_VLtGxu_55cHQoxQrPYFCH5WeGX7Rmt6rGUI1mfla62TxfR_HYbBS5H4Uvrxu1Ed03yy-kYpW9ILvlIZXecFM0xw3b1eaXkcYW8n-2LXxArojqBWNYEhjxCji-bqvXFDm_utMhCjUdGIY6T4K0PFOQH-GZgRameTkHmieUtpewmu5UY2Vo9b0_3c7iZ1ozDE6DGDBCyo_c-YBQzRrk8r87-Q8BYS">
 <div class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/95 backdrop-blur-sm text-slate-900 shadow" id="livePreviewRwBadge">
 RW 01
 </div>
@@ -920,20 +882,6 @@ Terdaftar Mandiri
 <span class="">Cetak / Simpan Ringkasan PDF</span>
 </button>
 </div>
-<!-- Cadangan & pemulihan data (JSON) -->
-<div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 sm:col-span-2">
-<div class="flex items-center gap-2.5">
-<span class="material-symbols-outlined text-2xl text-indigo-600">backup</span>
-<div>
-<h4 class="font-semibold text-xs text-slate-900">Cadangan &amp; Pemulihan Data (.JSON)</h4>
-<p class="text-[11px] text-slate-500">Data UMKM dan petugas tersimpan di perangkat ini. Unduh cadangan secara berkala, atau pulihkan/pindahkan data ke perangkat lain. Hanya superadmin. Simpan berkas cadangan dengan aman karena memuat nomor telepon.</p>
-</div>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-<button type="button" class="h-11 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm" onclick="sipBackupJson()"><span class="material-symbols-outlined text-base">download</span><span>Unduh Cadangan</span></button>
-<label class="h-11 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm cursor-pointer"><span class="material-symbols-outlined text-base">upload_file</span><span>Pulihkan dari Cadangan</span><input type="file" accept="application/json,.json" class="sr-only" onchange="sipRestoreJson(this)"></label>
-</div>
-</div>
 </div>
 <div class="mt-4 pt-4 border-t border-slate-100"><h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Sebaran Klaster Usaha (data pendaftaran)</h4><div class="space-y-2 text-xs" id="analisisKlaster"></div></div>
 </div>
@@ -1089,7 +1037,7 @@ Terdaftar Mandiri
   <div id="komApp" class="hidden space-y-4">
     <!-- Profile bar -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3.5 flex items-center gap-3">
-      <img loading="lazy" decoding="async" id="komMeAvatar" class="w-11 h-11 rounded-full object-cover bg-slate-100 shrink-0" alt="">
+      <img id="komMeAvatar" class="w-11 h-11 rounded-full object-cover bg-slate-100 shrink-0" alt="">
       <div class="min-w-0 flex-1">
         <p id="komMeName" class="font-display font-bold text-sm text-slate-900 truncate"></p>
         <p id="komMeSub" class="text-[11px] text-slate-500 truncate"></p>
@@ -1149,14 +1097,14 @@ Terdaftar Mandiri
       <!-- thread -->
       <div id="komThreadView" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
         <div class="p-3 border-b border-slate-100 flex items-center gap-2.5">
-          <button type="button" onclick="komBackToList()" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600" aria-label="Kembali"><span class="material-symbols-outlined">arrow_back</span></button>
-          <img loading="lazy" decoding="async" id="komThreadAvatar" class="w-9 h-9 rounded-full object-cover bg-slate-100" alt="">
+          <button type="button" onclick="komBackToList()" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600"><span class="material-symbols-outlined">arrow_back</span></button>
+          <img id="komThreadAvatar" class="w-9 h-9 rounded-full object-cover bg-slate-100" alt="">
           <div class="min-w-0"><p id="komThreadName" class="font-bold text-sm text-slate-900 truncate"></p><p id="komThreadUser" class="text-[11px] text-slate-500 truncate"></p></div>
         </div>
         <div id="komMsgs" class="flex-1 h-[55vh] overflow-y-auto p-3 space-y-1.5 bg-slate-50"></div>
         <div class="p-2.5 border-t border-slate-100 flex items-end gap-2 bg-white">
           <textarea id="komMsgInput" rows="1" maxlength="1000" onkeydown="komMsgKey(event)" class="flex-1 px-3.5 py-2.5 text-sm border border-slate-300 rounded-2xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none resize-none max-h-28" placeholder="Tulis pesan..."></textarea>
-          <button type="button" onclick="komSendMessage()" class="w-11 h-11 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center shrink-0 shadow-sm" aria-label="Kirim"><span class="material-symbols-outlined text-[20px]">send</span></button>
+          <button type="button" onclick="komSendMessage()" class="w-11 h-11 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center shrink-0 shadow-sm"><span class="material-symbols-outlined text-[20px]">send</span></button>
         </div>
       </div>
     </div>
@@ -1201,7 +1149,7 @@ Terdaftar Mandiri
 <p class="text-[10px] text-slate-500">Kelurahan Jatiasih</p>
 </div>
 </div>
-<button class="text-slate-400 hover:text-slate-600" onclick="closeLoginModal()" aria-label="Tutup">
+<button class="text-slate-400 hover:text-slate-600" onclick="closeLoginModal()">
 <span class="material-symbols-outlined text-lg">close</span>
 </button>
 </div>
@@ -1219,7 +1167,7 @@ Terdaftar Mandiri
   <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl border border-slate-100 my-8">
     <div class="flex items-center justify-between pb-3 border-b border-slate-100">
       <h4 class="font-display font-bold text-sm text-slate-900">Tinjau Pengajuan Petugas</h4>
-      <button type="button" onclick="closeStaffModal()" class="text-slate-400 hover:text-slate-600" aria-label="Tutup"><span class="material-symbols-outlined text-lg">close</span></button>
+      <button type="button" onclick="closeStaffModal()" class="text-slate-400 hover:text-slate-600"><span class="material-symbols-outlined text-lg">close</span></button>
     </div>
     <div id="staffModalInfo" class="mt-3 text-xs text-slate-700 bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-0.5"></div>
     <p class="mt-4 text-xs font-semibold text-slate-700">Tetapkan RW wilayah pendampingan:</p>
@@ -1626,7 +1574,7 @@ Terdaftar Mandiri
         <div id="card-${item.id}" class="bg-white rounded-2xl border ${item.isNew ? 'border-teal-500 shadow-md ring-1 ring-teal-400' : 'border-slate-200/90 shadow-sm'} overflow-hidden flex flex-col justify-between hover:shadow-md transition">
           <div>
             <div class="relative h-48 w-full bg-slate-100 overflow-hidden">
-              <img loading="lazy" decoding="async" src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+              <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
               <div class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/95 backdrop-blur-sm text-slate-900 shadow">
                 ${item.rw}
               </div>
@@ -1650,10 +1598,10 @@ Terdaftar Mandiri
           </div>
 
           <div class="p-4 pt-0 border-t border-slate-100 flex items-center justify-between gap-2 mt-3">
-            <a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" rel="noopener noreferrer" class="h-10 px-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1.5 transition">
+            <a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" class="h-10 px-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1.5 transition">
               <span class="material-symbols-outlined text-[16px]">chat</span> Chat WA
             </a>
-            <a href="https://maps.google.com/?q=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer" class="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center gap-1 transition">
+            <a href="https://maps.google.com/?q=${item.lat},${item.lng}" target="_blank" class="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center gap-1 transition">
               <span class="material-symbols-outlined text-[16px]">location_on</span> Titik GPS
             </a>
           </div>
@@ -1692,7 +1640,7 @@ Terdaftar Mandiri
                 <button onclick="toggleVerificationStatus('${item.id}')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold ${item.status === 'Terverifikasi' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
                   ${item.status === 'Terverifikasi' ? 'Batalkan' : 'Verifikasi'}
                 </button>
-                <a href="https://maps.google.com/?q=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer" class="p-1 rounded-lg text-slate-500 hover:text-teal-700" title="Buka Titik Maps">
+                <a href="https://maps.google.com/?q=${item.lat},${item.lng}" target="_blank" class="p-1 rounded-lg text-slate-500 hover:text-teal-700" title="Buka Titik Maps">
                   <span class="material-symbols-outlined text-[18px]">map</span>
                 </a>
               </div>
@@ -1722,7 +1670,7 @@ Terdaftar Mandiri
               <button onclick="toggleVerificationStatus('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold ${item.status === 'Terverifikasi' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
                 ${item.status === 'Terverifikasi' ? 'Pendingkan' : 'Verifikasi Resmi'}
               </button>
-              <a href="https://maps.google.com/?q=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1">
+              <a href="https://maps.google.com/?q=${item.lat},${item.lng}" target="_blank" class="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">near_me</span> Rute
               </a>
             </div>
@@ -1790,7 +1738,6 @@ Terdaftar Mandiri
 
     function submitAdminLogin(e) {
       e.preventDefault();
-      return; // definisi lama dinonaktifkan; login yang sah ada di skrip sipRolesScript
       isAdminLoggedIn = true;
       closeLoginModal();
       navigateTo('admin');
@@ -1896,7 +1843,7 @@ Terdaftar Mandiri
   </script>
 
 
-<script class="">function selectHeroRwBar(rw, count, sector, loc, colorClass) { const title = document.getElementById('heroRwDetailTitle'); const sec = document.getElementById('heroRwDetailSector'); const locElem = document.getElementById('heroRwDetailLoc'); if(title) title.innerText = rw + ' • ' + count + ' UMKM'; if(sec) sec.innerText = 'Dominan: ' + sector; if(locElem) locElem.innerText = 'Lokasi sentra: ' + loc; }</script><!-- CRUD MODAL: DETAIL / READ UMKM --><div id="adminDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-100 transform transition-all"><div class="relative h-44 w-full bg-slate-100"><img loading="lazy" decoding="async" id="detailModalImg" src="" alt="Foto Usaha" class="w-full h-full object-cover"><button type="button" onclick="closeDetailModal()" class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition" aria-label="Tutup"><span class="material-symbols-outlined text-base">close</span></button><div class="absolute bottom-2.5 left-2.5 flex items-center gap-2"><span id="detailModalRw" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-slate-900 shadow-md"></span><span id="detailModalStatus" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md"></span></div></div><div class="p-5 space-y-3"><div class="flex items-center justify-between"><span id="detailModalCategory" class="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-md"></span><span id="detailModalId" class="text-[11px] font-mono text-slate-400 font-semibold"></span></div><h3 id="detailModalName" class="font-display text-lg font-bold text-slate-900"></h3><div class="space-y-1.5 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">person</span><span class="text-slate-500">Pemilik:</span> <strong id="detailModalOwner" class="text-slate-800"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">payments</span><span class="text-slate-500">Estimasi Omzet:</span> <strong id="detailModalOmzet" class="text-slate-800 font-mono"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">call</span><span class="text-slate-500">WhatsApp:</span> <strong id="detailModalPhone" class="text-slate-800 font-mono"></strong></p><p class="flex items-start gap-2"><span class="material-symbols-outlined text-base text-slate-400 mt-0.5">location_on</span><span id="detailModalAddress" class="text-slate-700"></span></p></div><div id="detailExtra" class="space-y-2"></div><div class="flex items-center justify-end gap-2 pt-2"><button type="button" id="detailModalEditBtn" class="px-3.5 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold text-xs flex items-center gap-1.5 transition"><span class="material-symbols-outlined text-[16px]">edit</span> Edit Data</button><button type="button" onclick="closeDetailModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition">Tutup</button></div></div></div></div><!-- CRUD MODAL: DELETE CONFIRMATION --><div id="adminDeleteModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-sm w-full p-5 text-center shadow-2xl border border-slate-100"><div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-2xl">delete</span></div><h3 class="font-display font-bold text-base text-slate-900">Hapus Data UMKM?</h3><p class="text-xs text-slate-600 mt-1.5 leading-relaxed">Anda akan menghapus data usaha <strong id="deleteTargetName" class="text-slate-900"></strong> dari database kelurahan.</p><input type="hidden" id="deleteTargetId" value=""><div class="mt-5 flex gap-2"><button type="button" onclick="closeDeleteModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition">Batal</button><button type="button" onclick="executeDelete()" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition shadow-sm">Ya, Hapus</button></div></div></div><!-- TOAST NOTIFICATION --><div id="adminToast" class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-xl border border-slate-800"><span class="material-symbols-outlined text-emerald-400 text-base" id="toastIcon">check_circle</span><span id="toastMessage" class="">Aksi berhasil dijalankan.</span></div><script class="">function showToast(msg, isError=false){const toast=document.getElementById('adminToast');const txt=document.getElementById('toastMessage');const icn=document.getElementById('toastIcon');if(!toast)return;txt.innerText=msg;icn.innerText=isError?'error':'check_circle';icn.className=isError?'material-symbols-outlined text-red-400 text-base':'material-symbols-outlined text-emerald-400 text-base';toast.classList.remove('translate-y-20','opacity-0','pointer-events-none');setTimeout(()=>{toast.classList.add('translate-y-20','opacity-0','pointer-events-none');},3000);}function openCreateModal(){document.getElementById('crudEditId').value='';document.getElementById('crudModalTitle').innerText='Tambah Usaha Binaan Baru';document.getElementById('crudModalIcon').innerText='add_business';document.getElementById('crudSubmitBtnText').innerText='Simpan Data UMKM';document.getElementById('adminCrudForm').reset();document.getElementById('adminCrudModal').classList.remove('hidden');}function closeCrudModal(){document.getElementById('adminCrudModal').classList.add('hidden');}function openEditModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('crudEditId').value=item.id;document.getElementById('crudModalTitle').innerText='Edit Data Usaha Binaan';document.getElementById('crudModalIcon').innerText='edit';document.getElementById('crudSubmitBtnText').innerText='Perbarui Data';document.getElementById('crudName').value=item.name;document.getElementById('crudOwner').value=item.owner;document.getElementById('crudRw').value=item.rw;document.getElementById('crudCategory').value=item.category;document.getElementById('crudOmzet').value=item.omzet;document.getElementById('crudPhone').value=item.phone;document.getElementById('crudStatus').value=item.status;document.getElementById('crudAddress').value=item.address;document.getElementById('adminCrudModal').classList.remove('hidden');}function handleAdminCrudSubmit(e){e.preventDefault();const editId=document.getElementById('crudEditId').value;const name=document.getElementById('crudName').value.trim();const owner=document.getElementById('crudOwner').value.trim();const rw=document.getElementById('crudRw').value;const category=document.getElementById('crudCategory').value;const omzet=document.getElementById('crudOmzet').value;const phone=document.getElementById('crudPhone').value.trim();const status=document.getElementById('crudStatus').value;const address=document.getElementById('crudAddress').value.trim();if(editId){const idx=umkmList.findIndex(i=>i.id===editId);if(idx>-1){umkmList[idx]={...umkmList[idx],name,owner,rw,category,omzet,phone,status,address};showToast('Data usaha berhasil diperbarui.');}}else{const newId='SIP-'+rw.replace(/\s+/g,'')+'-'+Math.floor(1000+Math.random()*9000);const newEntry={id:newId,name,owner,rw,category,omzet,phone,status,address,lat:-6.3050+(Math.random()-0.5)*0.015,lng:106.9635+(Math.random()-0.5)*0.015,image:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',isNew:true};umkmList.unshift(newEntry);showToast('Usaha binaan baru berhasil ditambahkan.');}saveData();renderAdminDirectory();renderEtalase();updateKpis();closeCrudModal();}function openDetailModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('detailModalImg').src=item.image;document.getElementById('detailModalName').innerText=item.name;document.getElementById('detailModalId').innerText=item.id;document.getElementById('detailModalOwner').innerText=item.owner;document.getElementById('detailModalRw').innerText=item.rw;document.getElementById('detailModalCategory').innerText=item.category;document.getElementById('detailModalOmzet').innerText=item.omzet;document.getElementById('detailModalPhone').innerText=item.phone;document.getElementById('detailModalAddress').innerText=item.address;const st=document.getElementById('detailModalStatus');st.innerText=item.status;st.className='px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md '+(item.status==='Terverifikasi'?'bg-emerald-600':'bg-amber-500');document.getElementById('detailModalEditBtn').onclick=()=>{closeDetailModal();openEditModal(item.id);};document.getElementById('adminDetailModal').classList.remove('hidden');}function closeDetailModal(){document.getElementById('adminDetailModal').classList.add('hidden');}function confirmDelete(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('deleteTargetId').value=item.id;document.getElementById('deleteTargetName').innerText='"'+item.name+'"';document.getElementById('adminDeleteModal').classList.remove('hidden');}function closeDeleteModal(){document.getElementById('adminDeleteModal').classList.add('hidden');}function executeDelete(){const id=document.getElementById('deleteTargetId').value;const idx=umkmList.findIndex(i=>i.id===id);if(idx>-1){umkmList.splice(idx,1);saveData();renderAdminDirectory();renderEtalase();updateKpis();showToast('Data usaha berhasil dihapus.');}closeDeleteModal();}renderAdminDirectory=function(filtered=null){const list=filtered||umkmList;const tbody=document.getElementById('adminTableBody');const mobileList=document.getElementById('mobileDirectoryList');if(tbody){tbody.innerHTML=list.map(item=>`<tr class="hover:bg-slate-50/80 transition"><td class="px-4 py-3"><div class="font-bold text-slate-900">${item.name}</div><div class="text-[11px] text-slate-500">${item.owner} &bull; ${item.id}</div></td><td class="px-4 py-3 font-semibold text-slate-700">${item.rw}</td><td class="px-4 py-3">${item.category}</td><td class="px-4 py-3 font-mono">${item.omzet}</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></td><td class="px-4 py-3 text-right"><div class="flex items-center justify-end gap-1"><button type="button" onclick="openDetailModal('${item.id}')" class="p-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition" title="Detail" aria-label="Lihat detail"><span class="material-symbols-outlined text-[17px]">visibility</span></button><button type="button" onclick="openEditModal('${item.id}')" class="p-1.5 rounded-lg text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition" title="Edit" aria-label="Ubah"><span class="material-symbols-outlined text-[17px]">edit</span></button><button type="button" onclick="confirmDelete('${item.id}')" class="p-1.5 rounded-lg text-red-600 hover:text-red-700 hover:bg-red-50 transition" title="Hapus" aria-label="Hapus"><span class="material-symbols-outlined text-[17px]">delete</span></button></div></td></tr>`).join('');}if(mobileList){mobileList.innerHTML=list.map(item=>`<div class="p-3.5 space-y-2"><div class="flex items-start justify-between gap-2"><div><span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase">${item.rw}</span><h4 class="font-display font-bold text-sm text-slate-900 mt-1">${item.name}</h4><p class="text-xs text-slate-500">${item.owner} &bull; ${item.category}</p></div><span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></div><div class="text-[11px] text-slate-400 font-mono">Omzet: ${item.omzet} &bull; ${item.id}</div><div class="flex items-center gap-1.5 pt-1"><button type="button" onclick="openDetailModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 text-slate-700 hover:bg-slate-50 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">visibility</span> Detail</button><button type="button" onclick="openEditModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">edit</span> Edit</button><button type="button" onclick="confirmDelete('${item.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">delete</span> Hapus</button></div></div>`).join('');}};renderAdminDirectory();</script><script id="geospasialMapScript">
+<script class="">function selectHeroRwBar(rw, count, sector, loc, colorClass) { const title = document.getElementById('heroRwDetailTitle'); const sec = document.getElementById('heroRwDetailSector'); const locElem = document.getElementById('heroRwDetailLoc'); if(title) title.innerText = rw + ' • ' + count + ' UMKM'; if(sec) sec.innerText = 'Dominan: ' + sector; if(locElem) locElem.innerText = 'Lokasi sentra: ' + loc; }</script><!-- CRUD MODAL: DETAIL / READ UMKM --><div id="adminDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-100 transform transition-all"><div class="relative h-44 w-full bg-slate-100"><img id="detailModalImg" src="" alt="Foto Usaha" class="w-full h-full object-cover"><button type="button" onclick="closeDetailModal()" class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition"><span class="material-symbols-outlined text-base">close</span></button><div class="absolute bottom-2.5 left-2.5 flex items-center gap-2"><span id="detailModalRw" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-slate-900 shadow-md"></span><span id="detailModalStatus" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md"></span></div></div><div class="p-5 space-y-3"><div class="flex items-center justify-between"><span id="detailModalCategory" class="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-md"></span><span id="detailModalId" class="text-[11px] font-mono text-slate-400 font-semibold"></span></div><h3 id="detailModalName" class="font-display text-lg font-bold text-slate-900"></h3><div class="space-y-1.5 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">person</span><span class="text-slate-500">Pemilik:</span> <strong id="detailModalOwner" class="text-slate-800"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">payments</span><span class="text-slate-500">Estimasi Omzet:</span> <strong id="detailModalOmzet" class="text-slate-800 font-mono"></strong></p><p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">call</span><span class="text-slate-500">WhatsApp:</span> <strong id="detailModalPhone" class="text-slate-800 font-mono"></strong></p><p class="flex items-start gap-2"><span class="material-symbols-outlined text-base text-slate-400 mt-0.5">location_on</span><span id="detailModalAddress" class="text-slate-700"></span></p></div><div id="detailExtra" class="space-y-2"></div><div class="flex items-center justify-end gap-2 pt-2"><button type="button" id="detailModalEditBtn" class="px-3.5 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold text-xs flex items-center gap-1.5 transition"><span class="material-symbols-outlined text-[16px]">edit</span> Edit Data</button><button type="button" onclick="closeDetailModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition">Tutup</button></div></div></div></div><!-- CRUD MODAL: DELETE CONFIRMATION --><div id="adminDeleteModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"><div class="bg-white rounded-2xl max-w-sm w-full p-5 text-center shadow-2xl border border-slate-100"><div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-2xl">delete</span></div><h3 class="font-display font-bold text-base text-slate-900">Hapus Data UMKM?</h3><p class="text-xs text-slate-600 mt-1.5 leading-relaxed">Anda akan menghapus data usaha <strong id="deleteTargetName" class="text-slate-900"></strong> dari database kelurahan.</p><input type="hidden" id="deleteTargetId" value=""><div class="mt-5 flex gap-2"><button type="button" onclick="closeDeleteModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition">Batal</button><button type="button" onclick="executeDelete()" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition shadow-sm">Ya, Hapus</button></div></div></div><!-- TOAST NOTIFICATION --><div id="adminToast" class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-xl border border-slate-800"><span class="material-symbols-outlined text-emerald-400 text-base" id="toastIcon">check_circle</span><span id="toastMessage" class="">Aksi berhasil dijalankan.</span></div><script class="">function showToast(msg, isError=false){const toast=document.getElementById('adminToast');const txt=document.getElementById('toastMessage');const icn=document.getElementById('toastIcon');if(!toast)return;txt.innerText=msg;icn.innerText=isError?'error':'check_circle';icn.className=isError?'material-symbols-outlined text-red-400 text-base':'material-symbols-outlined text-emerald-400 text-base';toast.classList.remove('translate-y-20','opacity-0','pointer-events-none');setTimeout(()=>{toast.classList.add('translate-y-20','opacity-0','pointer-events-none');},3000);}function openCreateModal(){document.getElementById('crudEditId').value='';document.getElementById('crudModalTitle').innerText='Tambah Usaha Binaan Baru';document.getElementById('crudModalIcon').innerText='add_business';document.getElementById('crudSubmitBtnText').innerText='Simpan Data UMKM';document.getElementById('adminCrudForm').reset();document.getElementById('adminCrudModal').classList.remove('hidden');}function closeCrudModal(){document.getElementById('adminCrudModal').classList.add('hidden');}function openEditModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('crudEditId').value=item.id;document.getElementById('crudModalTitle').innerText='Edit Data Usaha Binaan';document.getElementById('crudModalIcon').innerText='edit';document.getElementById('crudSubmitBtnText').innerText='Perbarui Data';document.getElementById('crudName').value=item.name;document.getElementById('crudOwner').value=item.owner;document.getElementById('crudRw').value=item.rw;document.getElementById('crudCategory').value=item.category;document.getElementById('crudOmzet').value=item.omzet;document.getElementById('crudPhone').value=item.phone;document.getElementById('crudStatus').value=item.status;document.getElementById('crudAddress').value=item.address;document.getElementById('adminCrudModal').classList.remove('hidden');}function handleAdminCrudSubmit(e){e.preventDefault();const editId=document.getElementById('crudEditId').value;const name=document.getElementById('crudName').value.trim();const owner=document.getElementById('crudOwner').value.trim();const rw=document.getElementById('crudRw').value;const category=document.getElementById('crudCategory').value;const omzet=document.getElementById('crudOmzet').value;const phone=document.getElementById('crudPhone').value.trim();const status=document.getElementById('crudStatus').value;const address=document.getElementById('crudAddress').value.trim();if(editId){const idx=umkmList.findIndex(i=>i.id===editId);if(idx>-1){umkmList[idx]={...umkmList[idx],name,owner,rw,category,omzet,phone,status,address};showToast('Data usaha berhasil diperbarui.');}}else{const newId='SIP-'+rw.replace(/\s+/g,'')+'-'+Math.floor(1000+Math.random()*9000);const newEntry={id:newId,name,owner,rw,category,omzet,phone,status,address,lat:-6.3050+(Math.random()-0.5)*0.015,lng:106.9635+(Math.random()-0.5)*0.015,image:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',isNew:true};umkmList.unshift(newEntry);showToast('Usaha binaan baru berhasil ditambahkan.');}saveData();renderAdminDirectory();renderEtalase();updateKpis();closeCrudModal();}function openDetailModal(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('detailModalImg').src=item.image;document.getElementById('detailModalName').innerText=item.name;document.getElementById('detailModalId').innerText=item.id;document.getElementById('detailModalOwner').innerText=item.owner;document.getElementById('detailModalRw').innerText=item.rw;document.getElementById('detailModalCategory').innerText=item.category;document.getElementById('detailModalOmzet').innerText=item.omzet;document.getElementById('detailModalPhone').innerText=item.phone;document.getElementById('detailModalAddress').innerText=item.address;const st=document.getElementById('detailModalStatus');st.innerText=item.status;st.className='px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md '+(item.status==='Terverifikasi'?'bg-emerald-600':'bg-amber-500');document.getElementById('detailModalEditBtn').onclick=()=>{closeDetailModal();openEditModal(item.id);};document.getElementById('adminDetailModal').classList.remove('hidden');}function closeDetailModal(){document.getElementById('adminDetailModal').classList.add('hidden');}function confirmDelete(id){const item=umkmList.find(i=>i.id===id);if(!item)return;document.getElementById('deleteTargetId').value=item.id;document.getElementById('deleteTargetName').innerText='"'+item.name+'"';document.getElementById('adminDeleteModal').classList.remove('hidden');}function closeDeleteModal(){document.getElementById('adminDeleteModal').classList.add('hidden');}function executeDelete(){const id=document.getElementById('deleteTargetId').value;const idx=umkmList.findIndex(i=>i.id===id);if(idx>-1){umkmList.splice(idx,1);saveData();renderAdminDirectory();renderEtalase();updateKpis();showToast('Data usaha berhasil dihapus.');}closeDeleteModal();}renderAdminDirectory=function(filtered=null){const list=filtered||umkmList;const tbody=document.getElementById('adminTableBody');const mobileList=document.getElementById('mobileDirectoryList');if(tbody){tbody.innerHTML=list.map(item=>`<tr class="hover:bg-slate-50/80 transition"><td class="px-4 py-3"><div class="font-bold text-slate-900">${item.name}</div><div class="text-[11px] text-slate-500">${item.owner} &bull; ${item.id}</div></td><td class="px-4 py-3 font-semibold text-slate-700">${item.rw}</td><td class="px-4 py-3">${item.category}</td><td class="px-4 py-3 font-mono">${item.omzet}</td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></td><td class="px-4 py-3 text-right"><div class="flex items-center justify-end gap-1"><button type="button" onclick="openDetailModal('${item.id}')" class="p-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition" title="Detail"><span class="material-symbols-outlined text-[17px]">visibility</span></button><button type="button" onclick="openEditModal('${item.id}')" class="p-1.5 rounded-lg text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition" title="Edit"><span class="material-symbols-outlined text-[17px]">edit</span></button><button type="button" onclick="confirmDelete('${item.id}')" class="p-1.5 rounded-lg text-red-600 hover:text-red-700 hover:bg-red-50 transition" title="Hapus"><span class="material-symbols-outlined text-[17px]">delete</span></button></div></td></tr>`).join('');}if(mobileList){mobileList.innerHTML=list.map(item=>`<div class="p-3.5 space-y-2"><div class="flex items-start justify-between gap-2"><div><span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase">${item.rw}</span><h4 class="font-display font-bold text-sm text-slate-900 mt-1">${item.name}</h4><p class="text-xs text-slate-500">${item.owner} &bull; ${item.category}</p></div><span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${item.status==='Terverifikasi'?'bg-emerald-100 text-emerald-800':'bg-amber-100 text-amber-800'}">${item.status}</span></div><div class="text-[11px] text-slate-400 font-mono">Omzet: ${item.omzet} &bull; ${item.id}</div><div class="flex items-center gap-1.5 pt-1"><button type="button" onclick="openDetailModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 text-slate-700 hover:bg-slate-50 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">visibility</span> Detail</button><button type="button" onclick="openEditModal('${item.id}')" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">edit</span> Edit</button><button type="button" onclick="confirmDelete('${item.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px]">delete</span> Hapus</button></div></div>`).join('');}};renderAdminDirectory();</script><script id="geospasialMapScript">
 let geospasialMapInstance = null;
 let geospasialMarkersLayer = null;
 let activeRwFilter = 'ALL';
@@ -1994,7 +1941,7 @@ function renderGeospasialMarkers() {
     const popupHtml = `
       <div style="min-width: 220px; max-width: 260px; font-family: inherit; font-size: 12px; color: #1e293b;">
         <div style="position: relative; height: 100px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #e2e8f0;">
-          <img loading="lazy" decoding="async" src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+          <img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" />
           <span style="position: absolute; top: 6px; left: 6px; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.95); font-weight: 700; font-size: 10px; color: #0f172a;">${item.rw}</span>
           <span style="position: absolute; top: 6px; right: 6px; padding: 2px 8px; border-radius: 9999px; background: ${getKlasterColor(item.category)}; color: white; font-weight: 700; font-size: 10px;">${item.status}</span>
         </div>
@@ -2003,8 +1950,8 @@ function renderGeospasialMarkers() {
         <span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: #f0fdfa; color: #0f766e; font-weight: 600; font-size: 10px; margin-bottom: 6px;">${item.category}</span>
         <p style="margin: 0 0 8px 0; color: #475569; font-size: 11px; line-height: 1.3;">${item.address}</p>
         <div style="display: flex; gap: 6px; margin-top: 6px;">
-          <a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" rel="noopener noreferrer" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #10b981; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Chat WA</a>
-          <a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" rel="noopener noreferrer" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Google Maps</a>
+          <a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #10b981; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Chat WA</a>
+          <a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Google Maps</a>
         </div>
       </div>
     `;
@@ -2087,7 +2034,7 @@ window.switchAdminTab = function(tabName) {
     setTimeout(initGeospasialMap, 200);
   }
 };
-</script><script id="geospasialStatusFilterScript">let activeStatusFilter = 'ALL'; function setStatusFilter(status, btnElem) { activeStatusFilter = status; document.querySelectorAll('.status-filter-btn').forEach(btn => { btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); btn.classList.add('bg-white'); }); if (btnElem) { btnElem.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); btnElem.classList.remove('bg-white'); } if (typeof updateMapFilterSubtext === 'function') updateMapFilterSubtext(); if (typeof renderGeospasialMarkers === 'function') renderGeospasialMarkers(); } const originalRenderGeospasialMarkers = renderGeospasialMarkers; renderGeospasialMarkers = function() { if (!geospasialMapInstance || !geospasialMarkersLayer) return; geospasialMarkersLayer.clearLayers(); const filtered = umkmList.filter(item => { const matchRw = activeRwFilter === 'ALL' || item.rw === activeRwFilter; let matchKlaster = true; if (activeKlasterFilter === 'Kuliner & Minuman') { matchKlaster = item.category.includes('Kuliner'); } else if (activeKlasterFilter === 'Fashion & Kriya') { matchKlaster = item.category.includes('Fashion') || item.category.includes('Kriya'); } else if (activeKlasterFilter === 'Jasa & Reparasi') { matchKlaster = item.category.includes('Jasa') || item.category.includes('Reparasi'); } else if (activeKlasterFilter === 'Ritel') { matchKlaster = !item.category.includes('Kuliner') && !item.category.includes('Fashion') && !item.category.includes('Kriya') && !item.category.includes('Jasa') && !item.category.includes('Reparasi'); } let matchStatus = true; if (activeStatusFilter === 'Terverifikasi') { matchStatus = item.status === 'Terverifikasi'; } else if (activeStatusFilter === 'Menunggu') { matchStatus = item.status !== 'Terverifikasi'; } return matchRw && matchKlaster && matchStatus; }); const counterElem = document.getElementById('mapActivePinsCount'); if (counterElem) { counterElem.innerText = `${filtered.length} Titik Terpetakan Real-time`; } filtered.forEach(item => { const lat = item.lat || -6.3050; const lng = item.lng || 106.9635; const pinIcon = createCustomMapPinIcon(item.category); const isVerified = item.status === 'Terverifikasi'; const statusBadgeColor = isVerified ? '#10b981' : '#f59e0b'; const statusText = isVerified ? '✅ Terverifikasi' : '⏳ Belum Terverifikasi'; const popupHtml = `<div style="min-width: 220px; max-width: 260px; font-family: inherit; font-size: 12px; color: #1e293b;"><div style="position: relative; height: 100px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #e2e8f0;"><img loading="lazy" decoding="async" src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" /><span style="position: absolute; top: 6px; left: 6px; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.95); font-weight: 700; font-size: 10px; color: #0f172a;">${item.rw}</span><span style="position: absolute; top: 6px; right: 6px; padding: 2px 8px; border-radius: 9999px; background: ${statusBadgeColor}; color: white; font-weight: 700; font-size: 10px;">${statusText}</span></div><strong style="display: block; font-size: 14px; color: #0f172a; margin-bottom: 2px; line-height: 1.2;">${item.name}</strong><p style="margin: 0 0 4px 0; color: #64748b; font-size: 11px;">Pemilik: <b>${item.owner}</b></p><span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: #f0fdfa; color: #0f766e; font-weight: 600; font-size: 10px; margin-bottom: 6px;">${item.category}</span><p style="margin: 0 0 8px 0; color: #475569; font-size: 11px; line-height: 1.3;">${item.address}</p><div style="display: flex; gap: 6px; margin-top: 6px;"><a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" rel="noopener noreferrer" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #10b981; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Chat WA</a><a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" rel="noopener noreferrer" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Google Maps</a></div></div>`; const marker = L.marker([lat, lng], { icon: pinIcon }); marker.bindPopup(popupHtml, { maxWidth: 280 }); geospasialMarkersLayer.addLayer(marker); }); if (filtered.length > 0 && geospasialMapInstance) { const group = L.featureGroup(geospasialMarkersLayer.getLayers()); geospasialMapInstance.fitBounds(group.getBounds().pad(0.15)); } }; const origResetMapFilters = resetMapFilters; resetMapFilters = function() { activeStatusFilter = 'ALL'; document.querySelectorAll('.status-filter-btn').forEach((b, i) => { if (i === 0) { b.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); } else { b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); } }); if (origResetMapFilters) origResetMapFilters(); };</script>
+</script><script id="geospasialStatusFilterScript">let activeStatusFilter = 'ALL'; function setStatusFilter(status, btnElem) { activeStatusFilter = status; document.querySelectorAll('.status-filter-btn').forEach(btn => { btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); btn.classList.add('bg-white'); }); if (btnElem) { btnElem.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); btnElem.classList.remove('bg-white'); } if (typeof updateMapFilterSubtext === 'function') updateMapFilterSubtext(); if (typeof renderGeospasialMarkers === 'function') renderGeospasialMarkers(); } const originalRenderGeospasialMarkers = renderGeospasialMarkers; renderGeospasialMarkers = function() { if (!geospasialMapInstance || !geospasialMarkersLayer) return; geospasialMarkersLayer.clearLayers(); const filtered = umkmList.filter(item => { const matchRw = activeRwFilter === 'ALL' || item.rw === activeRwFilter; let matchKlaster = true; if (activeKlasterFilter === 'Kuliner & Minuman') { matchKlaster = item.category.includes('Kuliner'); } else if (activeKlasterFilter === 'Fashion & Kriya') { matchKlaster = item.category.includes('Fashion') || item.category.includes('Kriya'); } else if (activeKlasterFilter === 'Jasa & Reparasi') { matchKlaster = item.category.includes('Jasa') || item.category.includes('Reparasi'); } else if (activeKlasterFilter === 'Ritel') { matchKlaster = !item.category.includes('Kuliner') && !item.category.includes('Fashion') && !item.category.includes('Kriya') && !item.category.includes('Jasa') && !item.category.includes('Reparasi'); } let matchStatus = true; if (activeStatusFilter === 'Terverifikasi') { matchStatus = item.status === 'Terverifikasi'; } else if (activeStatusFilter === 'Menunggu') { matchStatus = item.status !== 'Terverifikasi'; } return matchRw && matchKlaster && matchStatus; }); const counterElem = document.getElementById('mapActivePinsCount'); if (counterElem) { counterElem.innerText = `${filtered.length} Titik Terpetakan Real-time`; } filtered.forEach(item => { const lat = item.lat || -6.3050; const lng = item.lng || 106.9635; const pinIcon = createCustomMapPinIcon(item.category); const isVerified = item.status === 'Terverifikasi'; const statusBadgeColor = isVerified ? '#10b981' : '#f59e0b'; const statusText = isVerified ? '✅ Terverifikasi' : '⏳ Belum Terverifikasi'; const popupHtml = `<div style="min-width: 220px; max-width: 260px; font-family: inherit; font-size: 12px; color: #1e293b;"><div style="position: relative; height: 100px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #e2e8f0;"><img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" /><span style="position: absolute; top: 6px; left: 6px; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.95); font-weight: 700; font-size: 10px; color: #0f172a;">${item.rw}</span><span style="position: absolute; top: 6px; right: 6px; padding: 2px 8px; border-radius: 9999px; background: ${statusBadgeColor}; color: white; font-weight: 700; font-size: 10px;">${statusText}</span></div><strong style="display: block; font-size: 14px; color: #0f172a; margin-bottom: 2px; line-height: 1.2;">${item.name}</strong><p style="margin: 0 0 4px 0; color: #64748b; font-size: 11px;">Pemilik: <b>${item.owner}</b></p><span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: #f0fdfa; color: #0f766e; font-weight: 600; font-size: 10px; margin-bottom: 6px;">${item.category}</span><p style="margin: 0 0 8px 0; color: #475569; font-size: 11px; line-height: 1.3;">${item.address}</p><div style="display: flex; gap: 6px; margin-top: 6px;"><a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #10b981; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Chat WA</a><a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Google Maps</a></div></div>`; const marker = L.marker([lat, lng], { icon: pinIcon }); marker.bindPopup(popupHtml, { maxWidth: 280 }); geospasialMarkersLayer.addLayer(marker); }); if (filtered.length > 0 && geospasialMapInstance) { const group = L.featureGroup(geospasialMarkersLayer.getLayers()); geospasialMapInstance.fitBounds(group.getBounds().pad(0.15)); } }; const origResetMapFilters = resetMapFilters; resetMapFilters = function() { activeStatusFilter = 'ALL'; document.querySelectorAll('.status-filter-btn').forEach((b, i) => { if (i === 0) { b.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); } else { b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); } }); if (origResetMapFilters) origResetMapFilters(); };</script>
 
 <script id="komunitasScript">
 // ===================================================================
@@ -2289,14 +2236,14 @@ function komPostCard(p) {
   const sub = um ? (um.category + ' • ' + um.rw) : '@' + p.authorUsername;
   return '<article class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4" id="kpost-' + komEsc(p.id) + '">' +
     '<div class="flex gap-3">' +
-    '<img loading="lazy" decoding="async" src="' + komEsc(komAvatar(p.authorName, p.authorAvatarUrl)) + '" class="w-10 h-10 rounded-full object-cover bg-slate-100 shrink-0" alt="">' +
+    '<img src="' + komEsc(komAvatar(p.authorName, p.authorAvatarUrl)) + '" class="w-10 h-10 rounded-full object-cover bg-slate-100 shrink-0" alt="">' +
     '<div class="min-w-0 flex-1">' +
     '<div class="flex items-start justify-between gap-2">' +
     '<div class="min-w-0"><p class="font-bold text-sm text-slate-900 truncate flex items-center gap-1">' + komEsc(p.authorName) +
     (um && um.status === 'Terverifikasi' ? '<span class="material-symbols-outlined text-[15px] text-teal-600" title="Usaha terverifikasi" style="font-variation-settings:\'FILL\' 1">verified</span>' : '') + '</p>' +
     '<p class="text-[11px] text-slate-500 truncate">' + komEsc(sub) + ' • ' + komAgo(p.createdAt) + '</p></div>' +
     '<div class="flex items-center gap-1 shrink-0"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-0.5 ' + T.badge + '"><span class="material-symbols-outlined text-[12px]">' + T.icon + '</span>' + T.label + '</span>' +
-    ((mine || komUser.role === 'admin') ? '<button type="button" onclick="komDeletePost(\'' + komEsc(p.id) + '\')" class="p-1 rounded-full text-slate-400 hover:text-red-500" title="Hapus" aria-label="Hapus"><span class="material-symbols-outlined text-[18px]">delete</span></button>' : '') +
+    ((mine || komUser.role === 'admin') ? '<button type="button" onclick="komDeletePost(\'' + komEsc(p.id) + '\')" class="p-1 rounded-full text-slate-400 hover:text-red-500" title="Hapus"><span class="material-symbols-outlined text-[18px]">delete</span></button>' : '') +
     '</div></div>' +
     '<p class="text-sm text-slate-800 mt-2 mb-3 leading-relaxed whitespace-pre-line break-words">' + komLinkify(parsed.body) + '</p>' +
     '<div class="flex items-center gap-1.5">' +
@@ -2370,7 +2317,7 @@ async function komLoadChatList() {
 }
 function komUserRow(u, preview, time, unread) {
   return '<div class="flex items-center gap-3 px-3.5 py-3 hover:bg-slate-50 cursor-pointer transition" onclick="komOpenThread(\'' + komEsc(u.username) + '\')">' +
-    '<img loading="lazy" decoding="async" src="' + komEsc(komAvatar(u.name, u.avatarUrl)) + '" class="w-11 h-11 rounded-full object-cover bg-slate-100 shrink-0" alt="">' +
+    '<img src="' + komEsc(komAvatar(u.name, u.avatarUrl)) + '" class="w-11 h-11 rounded-full object-cover bg-slate-100 shrink-0" alt="">' +
     '<div class="min-w-0 flex-1"><div class="flex justify-between items-baseline gap-2"><p class="font-bold text-sm text-slate-900 truncate">' + komEsc(u.name) + '</p>' +
     '<span class="text-[11px] text-slate-400 shrink-0">' + (time ? komAgo(time) : '') + '</span></div>' +
     '<p class="text-xs truncate ' + (unread ? 'text-slate-900 font-semibold' : 'text-slate-500') + '">' + komEsc(preview) + '</p></div>' +
@@ -2444,7 +2391,7 @@ async function komFetchThread(first) {
 function komMsgBody(m) {
   const type = m.type || 'text';
   if (type === 'text') return komLinkify(m.content);
-  if (type === 'image' && m.fileUrl) return '<a href="' + komEsc(m.fileUrl) + '" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="' + komEsc(m.fileUrl) + '" class="rounded-xl max-w-[220px] max-h-[260px] object-cover" alt=""></a>' + (m.content ? '<div class="mt-1">' + komLinkify(m.content) + '</div>' : '');
+  if (type === 'image' && m.fileUrl) return '<a href="' + komEsc(m.fileUrl) + '" target="_blank" rel="noopener"><img src="' + komEsc(m.fileUrl) + '" class="rounded-xl max-w-[220px] max-h-[260px] object-cover" alt=""></a>' + (m.content ? '<div class="mt-1">' + komLinkify(m.content) + '</div>' : '');
   if (m.fileUrl) return '<a href="' + komEsc(m.fileUrl) + '" target="_blank" rel="noopener" class="underline flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">attach_file</span>' + komEsc(m.fileName || 'Lampiran') + '</a>';
   return komLinkify(m.content || '[Pesan tidak didukung]');
 }
@@ -2508,31 +2455,7 @@ window.addEventListener('DOMContentLoaded', function () {
 // ===================================================================
 // SIPLokal v3 — data lengkap UMKM, etalase terverifikasi, peran petugas
 // ===================================================================
-// Kata sandi superadmin TIDAK disimpan di sini (hanya hash PBKDF2-SHA256 + salt).
-// Untuk mengganti: jalankan sipBuatHashSuperadmin('KATA_SANDI_BARU') di konsol peramban
-// (halaman HTTPS), lalu salin salt & hash ke objek di bawah.
-const SIP_SUPERADMIN = { code: '19870512-JATIASIH', name: 'Superadmin Kelurahan', iter: 210000, salt: 'aa40c42edbcb27f721993df578bbee77', hash: '36ad217300326f92cbfaf36d1982220b79df414f3caacb0014b40d14d953ed03' };
-const sipHexBytes = h => new Uint8Array((h.match(/../g) || []).map(b => parseInt(b, 16)));
-const sipBytesHex = b => Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, '0')).join('');
-async function sipPbkdf2(pass, saltHex, iter) {
-  if (!(window.crypto && crypto.subtle)) throw new Error('crypto-tidak-tersedia');
-  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveBits']);
-  const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: sipHexBytes(saltHex), iterations: iter, hash: 'SHA-256' }, key, 256);
-  return sipBytesHex(bits);
-}
-async function sipBuatHashSuperadmin(passBaru) {
-  const bytes = crypto.getRandomValues(new Uint8Array(16)); const saltHex = sipBytesHex(bytes);
-  const hash = await sipPbkdf2(passBaru, saltHex, SIP_SUPERADMIN.iter);
-  const out = { salt: saltHex, hash: hash, iter: SIP_SUPERADMIN.iter }; console.log(out); return out;
-}
-async function sipCheckSuper(pass) {
-  try {
-    const h = await sipPbkdf2(pass, SIP_SUPERADMIN.salt, SIP_SUPERADMIN.iter);
-    let beda = h.length ^ SIP_SUPERADMIN.hash.length;
-    for (let i = 0; i < h.length && i < SIP_SUPERADMIN.hash.length; i++) beda |= h.charCodeAt(i) ^ SIP_SUPERADMIN.hash.charCodeAt(i);
-    return beda === 0;
-  } catch (e) { return false; }
-}
+const SIP_SUPERADMIN = { code: '19870512-JATIASIH', pass: 'admin', name: 'Superadmin Kelurahan' };
 const STAFF_KEY = 'siplokal_staff', ADMIN_SESSION_KEY = 'siplokal_admin_session';
 const STAFF_ROLES = ['Satgas Pamor','Pengurus RT','Pengurus RW','Kader PKK','Kader Posyandu','LPM','BKM','KPM','Karang Taruna','Paguyuban UMKM','Lainnya'];
 const ALL_RW = Array.from({ length: 18 }, (_, i) => 'RW ' + String(i + 1).padStart(2, '0'));
@@ -2626,7 +2549,7 @@ submitAdminLogin = async function (e) {
   const code = sipVal('adminNip').trim(), pass = sipVal('adminPass');
   const err = sipEl('adminLoginError'); err.classList.add('hidden');
   const fail = m => { err.textContent = m; err.classList.remove('hidden'); };
-  if (code === SIP_SUPERADMIN.code && await sipCheckSuper(pass)) {
+  if (code === SIP_SUPERADMIN.code && pass === SIP_SUPERADMIN.pass) {
     sipSetAdmin({ role: 'superadmin', username: 'superadmin', name: SIP_SUPERADMIN.name, rw: null });
     sipEl('adminPass').value = ''; closeLoginModal(); navigateTo('admin'); switchAdminTab('dashboard'); return;
   }
@@ -2644,53 +2567,6 @@ submitAdminLogin = async function (e) {
   showToast(r && r.status === 'pending' ? 'Pengajuan petugas Anda masih menunggu persetujuan superadmin. Anda masuk sebagai warga.' : 'Akun ini terdaftar sebagai warga biasa.', false);
   navigateTo('komunitas');
 };
-
-
-// ---------------- cadangan & pemulihan data (JSON) ----------------
-function sipBackupJson() {
-  if (!sipIsSuper()) { showToast('Hanya superadmin yang dapat mencadangkan data.', true); return; }
-  const paket = { aplikasi: 'SIPLokal', versi: 1, dibuat: new Date().toISOString(), umkm: umkmList, petugas: staffLoad() };
-  const blob = new Blob([JSON.stringify(paket, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'siplokal-cadangan-' + new Date().toISOString().slice(0, 10) + '.json';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
-  showToast('Cadangan data diunduh (' + umkmList.length + ' UMKM).');
-}
-function sipRestoreJson(input) {
-  const file = input.files && input.files[0];
-  input.value = '';
-  if (!file) return;
-  if (!sipIsSuper()) { showToast('Hanya superadmin yang dapat memulihkan data.', true); return; }
-  if (file.size > 20 * 1024 * 1024) { showToast('Berkas terlalu besar (maks 20 MB).', true); return; }
-  const reader = new FileReader();
-  reader.onerror = function () { showToast('Gagal membaca berkas.', true); };
-  reader.onload = function () {
-    let paket;
-    try { paket = JSON.parse(reader.result); } catch (e) { showToast('Berkas bukan JSON yang valid.', true); return; }
-    if (!paket || paket.aplikasi !== 'SIPLokal' || !Array.isArray(paket.umkm)) { showToast('Format cadangan SIPLokal tidak dikenali.', true); return; }
-    const ids = new Set();
-    const valid = paket.umkm.filter(function (u) {
-      if (!u || typeof u.id !== 'string' || typeof u.name !== 'string' || typeof u.rw !== 'string') return false;
-      if (ids.has(u.id)) return false; ids.add(u.id); return true;
-    }).slice(0, 5000).map(function (u) {
-      u.lat = Number(u.lat); u.lng = Number(u.lng);
-      if (!isFinite(u.lat) || !isFinite(u.lng)) { u.lat = -6.3050; u.lng = 106.9650; }
-      return u;
-    });
-    if (!valid.length) { showToast('Tidak ada data UMKM yang valid di berkas ini.', true); return; }
-    if (!confirm('Pulihkan ' + valid.length + ' UMKM dari cadangan?\n\nData UMKM di perangkat ini akan DIGANTI. Unduh cadangan terbaru dulu bila perlu.')) return;
-    umkmList = valid;
-    if (Array.isArray(paket.petugas)) {
-      staffSave(paket.petugas.filter(function (r) { return r && typeof r.username === 'string'; }));
-    }
-    sipNormalize();
-    sipRenderAll();
-    showToast('Data dipulihkan: ' + valid.length + ' UMKM.');
-  };
-  reader.readAsText(file);
-}
 
 // ---------------- helper statistik ----------------
 function klasterOf(cat) {
@@ -2819,10 +2695,10 @@ function renderAdminDirectory(filtered) {
   const acts = (u, big) => {
     const b = big ? 'flex-1 py-1.5 text-xs' : 'px-2.5 py-1 text-[11px]';
     return '<button onclick="toggleVerificationStatus(\'' + E(u.id) + '\')" class="' + b + ' rounded-lg font-bold ' + (ok(u) ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200') + '">' + (ok(u) ? 'Batalkan' : 'Verifikasi') + '</button>' +
-      '<button onclick="openDetailModal(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100" title="Detail" aria-label="Lihat detail"><span class="material-symbols-outlined text-[18px]">visibility</span></button>' +
-      '<button onclick="openEditModal(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Edit" aria-label="Ubah"><span class="material-symbols-outlined text-[18px]">edit</span></button>' +
-      '<a href="https://maps.google.com/?q=' + u.lat + ',' + u.lng + '" target="_blank" rel="noopener noreferrer" class="p-1.5 rounded-lg text-slate-500 hover:text-teal-700" title="Maps"><span class="material-symbols-outlined text-[18px]">map</span></a>' +
-      (sipIsSuper() ? '<button onclick="confirmDelete(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-red-600 hover:bg-red-50" title="Hapus" aria-label="Hapus"><span class="material-symbols-outlined text-[18px]">delete</span></button>' : '');
+      '<button onclick="openDetailModal(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100" title="Detail"><span class="material-symbols-outlined text-[18px]">visibility</span></button>' +
+      '<button onclick="openEditModal(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Edit"><span class="material-symbols-outlined text-[18px]">edit</span></button>' +
+      '<a href="https://maps.google.com/?q=' + u.lat + ',' + u.lng + '" target="_blank" class="p-1.5 rounded-lg text-slate-500 hover:text-teal-700" title="Maps"><span class="material-symbols-outlined text-[18px]">map</span></a>' +
+      (sipIsSuper() ? '<button onclick="confirmDelete(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-red-600 hover:bg-red-50" title="Hapus"><span class="material-symbols-outlined text-[18px]">delete</span></button>' : '');
   };
   if (tbody) tbody.innerHTML = list.length ? list.map(u => '<tr class="hover:bg-slate-50/80 transition align-top">' +
     '<td class="px-3 py-3"><div class="font-bold text-slate-900">' + E(u.name) + '</div><div class="text-[11px] text-slate-500">' + E(u.owner) + ' • ' + E(u.id) + '</div><div class="mt-1">' + srcChip(u) + '</div></td>' +
@@ -2891,7 +2767,7 @@ function renderFasilitasi() {
       '<div class="min-w-0"><div class="flex flex-wrap items-center gap-1.5"><span class="font-bold text-sm text-slate-900">' + E(u.name) + '</span><span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">' + E(u.rw) + '</span>' + srcChip(u) + '</div>' +
       '<p class="text-xs text-slate-500">' + E(u.owner) + ' • ' + E(u.address) + '</p>' +
       '<p class="text-xs mt-1"><strong class="text-rose-700">' + E(NEEDS[r.k].label) + '</strong>' + (d ? ' <span class="text-slate-400">— ' + NEEDS[r.k].short + ' belum dimiliki</span>' : '') + '</p></div>' +
-      '<div class="flex items-center gap-2 shrink-0"><a href="https://wa.me/' + String(u.phone).replace(/[^0-9]/g, '').replace(/^0/, '62') + '" target="_blank" rel="noopener noreferrer" class="h-9 px-3 rounded-lg bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">chat</span>WA</a>' +
+      '<div class="flex items-center gap-2 shrink-0"><a href="https://wa.me/' + String(u.phone).replace(/[^0-9]/g, '').replace(/^0/, '62') + '" target="_blank" class="h-9 px-3 rounded-lg bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">chat</span>WA</a>' +
       '<select onchange="sipSetFollowup(\'' + E(u.id) + '\',\'' + E(r.k) + '\',this.value)" class="px-2 py-2 text-xs rounded-lg border border-slate-300 bg-white">' + FU_STATUS.map(s => '<option' + (s === r.st ? ' selected' : '') + '>' + s + '</option>').join('') + '</select></div></div>';
   }).join('') : '<p class="text-center text-xs text-slate-400 py-8">Tidak ada tindak lanjut pada filter ini. 🎉</p>';
 }
@@ -2913,7 +2789,7 @@ renderEtalase = function (filterRw) {
   container.innerHTML = items.map(u => {
     const pet = u.source === 'petugas';
     return '<div id="card-' + E(u.id) + '" class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition"><div>' +
-      '<div class="relative h-48 w-full bg-slate-100 overflow-hidden"><img loading="lazy" decoding="async" src="' + E(u.image) + '" alt="' + E(u.name) + '" class="w-full h-full object-cover">' +
+      '<div class="relative h-48 w-full bg-slate-100 overflow-hidden"><img src="' + E(u.image) + '" alt="' + E(u.name) + '" class="w-full h-full object-cover">' +
       '<div class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/95 backdrop-blur-sm text-slate-900 shadow">' + E(u.rw) + '</div>' +
       '<div class="absolute top-2.5 right-2.5 flex flex-col gap-1 items-end"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-600 text-white shadow flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">verified</span>Terverifikasi</span>' +
       '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow flex items-center gap-0.5 ' + (pet ? 'bg-indigo-600' : 'bg-amber-500') + '"><span class="material-symbols-outlined text-[12px]">' + (pet ? 'support_agent' : 'smartphone') + '</span>' + (pet ? 'Pendampingan Petugas' : 'Daftar Mandiri') + '</span></div></div>' +
@@ -2921,8 +2797,8 @@ renderEtalase = function (filterRw) {
       '<h3 class="font-display font-bold text-base text-slate-900 line-clamp-1">' + E(u.name) + '</h3><p class="text-xs text-slate-600 font-medium line-clamp-1">Pemilik: ' + E(u.owner) + '</p>' +
       '<p class="text-xs text-slate-400 line-clamp-2">' + E(u.address) + '</p>' +
       '<div class="flex flex-wrap gap-1 pt-0.5">' + (u.nib ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">NIB</span>' : '') + (u.halal ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Halal</span>' : '') + (u.bpom ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">BPOM</span>' : '') + '</div></div></div>' +
-      '<div class="p-4 pt-0 border-t border-slate-100 flex items-center justify-between gap-2 mt-3"><a href="https://wa.me/' + String(u.phone).replace(/[^0-9]/g, '').replace(/^0/, '62') + '" target="_blank" rel="noopener noreferrer" class="h-10 px-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1.5 transition"><span class="material-symbols-outlined text-[16px]">chat</span> Chat WA</a>' +
-      '<a href="https://maps.google.com/?q=' + u.lat + ',' + u.lng + '" target="_blank" rel="noopener noreferrer" class="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center gap-1 transition"><span class="material-symbols-outlined text-[16px]">location_on</span> Titik GPS</a></div></div>';
+      '<div class="p-4 pt-0 border-t border-slate-100 flex items-center justify-between gap-2 mt-3"><a href="https://wa.me/' + String(u.phone).replace(/[^0-9]/g, '').replace(/^0/, '62') + '" target="_blank" class="h-10 px-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1.5 transition"><span class="material-symbols-outlined text-[16px]">chat</span> Chat WA</a>' +
+      '<a href="https://maps.google.com/?q=' + u.lat + ',' + u.lng + '" target="_blank" class="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center gap-1 transition"><span class="material-symbols-outlined text-[16px]">location_on</span> Titik GPS</a></div></div>';
   }).join('');
 };
 
