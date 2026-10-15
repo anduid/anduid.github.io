@@ -184,6 +184,7 @@
 </button>
 </div>
 </div>
+<<<<<<< HEAD
 <!-- SUB-NAVBAR PETUGAS: baris identitas+Keluar selalu terlihat; tab membungkus ke baris berikutnya (tidak terpotong) -->
 <div class="hidden bg-slate-50 border-t border-slate-200 px-3 sm:px-6 py-2" id="adminSubNav">
 <div class="max-w-7xl mx-auto flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2">
@@ -198,6 +199,30 @@
 <div class="flex items-center justify-between sm:justify-end gap-2 min-w-0 sm:pl-3 sm:border-l sm:border-slate-200">
 <span class="text-xs text-slate-600 font-medium flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span><span id="adminWho" class="truncate"></span></span>
 <button class="shrink-0 px-3 py-1.5 rounded-lg border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 text-xs font-bold flex items-center gap-1" onclick="logoutAdmin()"><span class="material-symbols-outlined text-[16px]">logout</span>Keluar</button>
+=======
+<!-- SUB-NAVBAR FOR ADMIN (HORIZONTAL SCROLLABLE ON MOBILE) -->
+<div class="hidden bg-slate-50 border-t border-slate-200 px-3 sm:px-6 py-2 overflow-x-auto scrollbar-none" id="adminSubNav">
+<div class="max-w-7xl mx-auto flex items-center justify-between gap-3 min-w-max">
+<div class="flex items-center gap-1">
+<span class="text-[11px] uppercase tracking-wider font-bold text-slate-400 mr-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">admin_panel_settings</span> Mode Petugas:
+          </span>
+<button class="admin-tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-teal-600 text-white shadow-sm flex items-center gap-1.5" id="adminTab-dashboard" onclick="switchAdminTab('dashboard')">
+<span class="material-symbols-outlined text-[16px]">grid_view</span> Ringkasan
+          </button>
+<button class="admin-tab-btn px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slate-200/70 flex items-center gap-1.5" id="adminTab-peta" onclick="switchAdminTab('peta')">
+<span class="material-symbols-outlined text-[16px]">map</span> Peta 18 RW
+          </button>
+<button class="admin-tab-btn px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slate-200/70 flex items-center gap-1.5" id="adminTab-analisis" onclick="switchAdminTab('analisis')">
+<span class="material-symbols-outlined text-[16px]">insights</span> Ekspor &amp; Analisis
+          </button>
+<button class="admin-tab-btn px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slate-200/70 flex items-center gap-1.5" id="adminTab-fasilitasi" onclick="switchAdminTab('fasilitasi')"><span class="material-symbols-outlined text-[16px]">assignment_turned_in</span> Tindak Lanjut</button>
+<button class="admin-tab-btn hidden px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slate-200/70 items-center gap-1.5" id="adminTab-petugas" onclick="switchAdminTab('petugas')"><span class="material-symbols-outlined text-[16px]">manage_accounts</span> Kelola Petugas</button>
+</div>
+<div class="flex items-center gap-2 pl-4 border-l border-slate-200">
+<span class="text-xs text-slate-600 font-medium flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> <span id="adminWho"></span></span>
+<button class="text-xs text-red-600 hover:underline font-semibold ml-2" onclick="logoutAdmin()">Keluar</button>
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 </div>
 </div>
 </div>
@@ -241,7 +266,10 @@
 <span class="material-symbols-outlined text-[20px] text-rose-500">forum</span>
 <span class="">Komunitas UMKM (Feed &amp; Chat)</span>
 </button>
+<<<<<<< HEAD
 <button id="drawerLogoutAdmin" class="hidden mobile-nav-item flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium text-red-600 hover:bg-red-50 transition text-sm" onclick="logoutAdmin(); toggleMobileDrawer(false)"><span class="material-symbols-outlined text-[20px]">logout</span><span>Keluar Petugas</span></button>
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 <button class="mobile-nav-item flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition active:bg-slate-100 text-sm" data-page="admin" onclick="handleAdminEntry(); toggleMobileDrawer(false)">
 <span class="material-symbols-outlined text-[20px] text-indigo-600">shield_person</span>
 <span class="">Panel Admin Kelurahan</span>
@@ -296,7 +324,11 @@
 </div>
 </div>
 <!-- 3D/Interactive Diorama Simulation Widget (Touch-Friendly) -->
+<<<<<<< HEAD
 <div class="lg:col-span-5"><div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 shadow-inner text-white space-y-3"><div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-300 text-sm">bar_chart</span><span class="text-xs font-semibold uppercase tracking-wider text-slate-200">Statistik &amp; Klaster Potensi 17 RW</span></div><span class="text-[11px] text-emerald-300 font-mono bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/30">Live Sync</span></div><div class="bg-slate-950/80 rounded-xl border border-slate-800 p-3 space-y-3"><div class="flex items-center justify-between text-xs border-b border-slate-800 pb-2"><div><span class="text-slate-400 text-[11px] block">Klik RW untuk Memeriksa Klaster:</span><strong class="font-display text-emerald-400 text-xs sm:text-sm" id="heroRwDetailTitle">RW 01 • 34 UMKM</strong></div><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" id="heroRwDetailSector">Dominan: Kuliner</span></div><div class="space-y-1"><div class="flex justify-between text-[10px] text-slate-400 font-mono"><span class="">Distribusi 17 RW</span><span class="">Tinggi bar = vol. usaha</span></div><div class="h-24 w-full flex items-end justify-between gap-1 pt-2 px-1 border-b border-slate-800" id="heroRwBars"></div></div><div class="flex items-center justify-between pt-1 text-[10px] text-slate-300"><div class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px] text-teal-300">pin_drop</span><span id="heroRwDetailLoc" class="line-clamp-1">Lokasi sentra: Jl. Swatantra I &amp; II</span></div><button type="button" onclick="navigateTo('admin'); switchAdminTab('peta');" class="text-emerald-300 hover:text-emerald-200 underline shrink-0 font-medium">Peta Lengkap →</button></div></div><div class="flex flex-wrap items-center justify-between gap-2 pt-1"><span class="text-[11px] font-semibold text-slate-300">Legenda Klaster:</span><div class="flex flex-wrap items-center gap-2 text-[10px]"><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span>Kuliner</span><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Kriya</span><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400"></span>Jasa</span><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-400"></span>Ritel &amp; Tani</span></div></div></div></div>
+=======
+<div class="lg:col-span-5"><div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 shadow-inner text-white space-y-3"><div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-300 text-sm">bar_chart</span><span class="text-xs font-semibold uppercase tracking-wider text-slate-200">Statistik &amp; Klaster Potensi 18 RW</span></div><span class="text-[11px] text-emerald-300 font-mono bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/30">Live Sync</span></div><div class="bg-slate-950/80 rounded-xl border border-slate-800 p-3 space-y-3"><div class="flex items-center justify-between text-xs border-b border-slate-800 pb-2"><div><span class="text-slate-400 text-[11px] block">Klik RW untuk Memeriksa Klaster:</span><strong class="font-display text-emerald-400 text-xs sm:text-sm" id="heroRwDetailTitle">RW 01 • 34 UMKM</strong></div><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" id="heroRwDetailSector">Dominan: Kuliner</span></div><div class="space-y-1"><div class="flex justify-between text-[10px] text-slate-400 font-mono"><span class="">Distribusi 18 RW</span><span class="">Tinggi bar = vol. usaha</span></div><div class="h-24 w-full flex items-end justify-between gap-1 pt-2 px-1 border-b border-slate-800" id="heroRwBars"></div></div><div class="flex items-center justify-between pt-1 text-[10px] text-slate-300"><div class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px] text-teal-300">pin_drop</span><span id="heroRwDetailLoc" class="line-clamp-1">Lokasi sentra: Jl. Swatantra I &amp; II</span></div><button type="button" onclick="navigateTo('admin'); switchAdminTab('peta');" class="text-emerald-300 hover:text-emerald-200 underline shrink-0 font-medium">Peta Lengkap →</button></div></div><div class="flex flex-wrap items-center justify-between gap-2 pt-1"><span class="text-[11px] font-semibold text-slate-300">Legenda Klaster:</span><div class="flex flex-wrap items-center gap-2 text-[10px]"><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span>Kuliner</span><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Kriya</span><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400"></span>Jasa</span><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-400"></span>Ritel &amp; Tani</span></div></div></div></div>
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 </div>
 </div>
 <!-- METRIK KPI CARDS (2-Columns on Mobile, 4 on Desktop) -->
@@ -451,11 +483,18 @@ Designed by <a href="https://andu.my.id" target="_blank" rel="noopener" class="f
 <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
 <span class="material-symbols-outlined text-2xl">edit_note</span>
 </div>
+<<<<<<< HEAD
 <div class="min-w-0 flex-1">
 <h2 class="font-display font-bold text-lg sm:text-xl text-slate-900" id="formTitle">Formulir Mandiri Pelaku UMKM</h2>
 <p class="text-xs sm:text-sm text-slate-500">Kelurahan Jatiasih • Pendaftaran Binaan &amp; Pemetaan Wilayah 17 RW</p>
 </div>
 <button type="button" id="formCloseBtn" onclick="cancelStaffForm()" class="hidden shrink-0 w-10 h-10 rounded-xl border border-slate-200 text-slate-500 hover:text-red-600 hover:bg-red-50 hover:border-red-200 items-center justify-center transition" title="Tutup formulir" aria-label="Tutup formulir"><span class="material-symbols-outlined text-[22px]">close</span></button>
+=======
+<div>
+<h2 class="font-display font-bold text-lg sm:text-xl text-slate-900" id="formTitle">Formulir Mandiri Pelaku UMKM</h2>
+<p class="text-xs sm:text-sm text-slate-500">Kecamatan Jatiasih • Pendaftaran Binaan &amp; Pemetaan Wilayah 18 RW</p>
+</div>
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 </div>
 </div>
 <div id="umkmFormBanner" class="hidden flex items-start gap-2.5 p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs leading-relaxed"></div>
@@ -672,12 +711,17 @@ Terdaftar Mandiri
 <div id="regAccountBlock" class="rounded-2xl border border-teal-200 bg-teal-50/50 p-4 space-y-3">
 <div class="flex items-start gap-2.5">
 <div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[20px]">account_circle</span></div>
+<<<<<<< HEAD
 <div><h4 class="font-display font-bold text-sm text-slate-900" id="regAccTitle">Akun Login Komunitas UMKM</h4>
 <p class="text-[11px] text-slate-600 leading-relaxed" id="regAccDesc">Dengan akun ini usaha Anda bisa chat dengan UMKM lain dan membagikan promo, informasi, status &amp; lowongan di Feed.</p></div>
 </div>
 <div id="regAccToggleWrap" class="hidden flex flex-wrap items-center justify-between gap-2 rounded-xl bg-white border border-teal-100 px-3 py-2">
 <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer"><input type="checkbox" id="regCreateAcc" checked onchange="sipSetupAccBlock(umkmFormMode)" class="rounded text-teal-600"> Buatkan akun Komunitas untuk UMKM ini</label>
 <button type="button" id="regAccAutoBtn" onclick="sipSuggestAcc(true)" class="px-2.5 py-1 rounded-lg bg-teal-50 text-teal-700 border border-teal-200 text-[11px] font-bold inline-flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">autorenew</span>Acak ulang</button>
+=======
+<div><h4 class="font-display font-bold text-sm text-slate-900">Akun Login Komunitas UMKM</h4>
+<p class="text-[11px] text-slate-600 leading-relaxed">Dengan akun ini usaha Anda bisa chat dengan UMKM lain dan membagikan promo, informasi, status &amp; lowongan di Feed.</p></div>
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 <div>
@@ -753,7 +797,10 @@ Terdaftar Mandiri
 <span class="material-symbols-outlined text-xl">send</span>
 <span class="" id="submitRegText">Kirim Pendaftaran ke Kelurahan Jatiasih</span>
 </button>
+<<<<<<< HEAD
 <button type="button" id="formCancelBtn" onclick="cancelStaffForm()" class="hidden w-full h-11 mt-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 font-bold text-sm items-center justify-center gap-2 transition"><span class="material-symbols-outlined text-lg">close</span>Batal</button>
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 <p class="text-[11px] text-center text-slate-400 mt-2" id="regFootNote"></p>
 </div>
 </form>
@@ -836,7 +883,11 @@ Terdaftar Mandiri
 <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
 <span class="text-[11px] font-semibold text-slate-500 block">Total Masuk</span>
 <span class="font-display text-2xl font-bold text-slate-900" id="adminKpiTotal">0</span>
+<<<<<<< HEAD
 <span class="text-[10px] text-slate-400 block mt-0.5" id="adminKpiScope">Semua 17 RW</span>
+=======
+<span class="text-[10px] text-slate-400 block mt-0.5" id="adminKpiScope">Semua 18 RW</span>
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 </div>
 <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
 <span class="text-[11px] font-semibold text-emerald-700 block">Terverifikasi</span>
@@ -856,7 +907,11 @@ Terdaftar Mandiri
 </div>
 <!-- REKAP PER RW (data yang sama dengan Statistik & Klaster di Beranda) -->
 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+<<<<<<< HEAD
 <div class="p-4 border-b border-slate-100"><h3 class="font-display font-bold text-base text-slate-900">Rekap Statistik &amp; Klaster per RW</h3><p class="text-xs text-slate-500">Sumber data widget "Statistik &amp; Klaster Potensi 17 RW" di Beranda: jumlah usaha, sektor dominan, lokasi sentra, dan estimasi omzet.</p></div>
+=======
+<div class="p-4 border-b border-slate-100"><h3 class="font-display font-bold text-base text-slate-900">Rekap Statistik &amp; Klaster per RW</h3><p class="text-xs text-slate-500">Sumber data widget "Statistik &amp; Klaster Potensi 18 RW" di Beranda: jumlah usaha, sektor dominan, lokasi sentra, dan estimasi omzet.</p></div>
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 <div class="overflow-x-auto"><table class="w-full text-left text-xs text-slate-700"><thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider"><tr><th class="px-3 py-3">RW</th><th class="px-3 py-3">Jumlah UMKM</th><th class="px-3 py-3">Verif. / Menunggu</th><th class="px-3 py-3">Sektor Dominan</th><th class="px-3 py-3">Lokasi Sentra</th><th class="px-3 py-3">Est. Omzet/bln</th><th class="px-3 py-3">Butuh Tindak Lanjut</th></tr></thead><tbody id="adminRekapRw" class="divide-y divide-slate-100"></tbody></table></div>
 </div>
 <!-- DIRECTORY TABLE -->
@@ -931,6 +986,7 @@ Terdaftar Mandiri
 </button>
 </div>
 </div>
+<<<<<<< HEAD
 <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-3">
 <div><h4 class="font-semibold text-xs text-slate-900">Data Surat Laporan Resmi</h4><p class="text-[11px] text-slate-500">Diisi sebelum mencetak. Tersimpan di perangkat ini untuk pencetakan berikutnya.</p></div>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -939,6 +995,8 @@ Terdaftar Mandiri
 <label class="block text-[11px] font-semibold text-slate-600">Nama Lurah (penandatangan)<input id="rptLurah" type="text" maxlength="80" placeholder="Nama lengkap beserta gelar" class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none focus:border-teal-500 font-normal"></label>
 <label class="block text-[11px] font-semibold text-slate-600">NIP Lurah<input id="rptNip" type="text" maxlength="30" placeholder="18 digit NIP" class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none focus:border-teal-500 font-normal"></label>
 </div></div>
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 <div class="mt-4 pt-4 border-t border-slate-100"><h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Sebaran Klaster Usaha (data pendaftaran)</h4><div class="space-y-2 text-xs" id="analisisKlaster"></div></div>
 </div>
 </div>
@@ -1064,7 +1122,11 @@ Terdaftar Mandiri
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-7 space-y-4">
       <div class="text-center">
         <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-teal-600 to-emerald-500 text-white flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-3xl">forum</span></div>
+<<<<<<< HEAD
         <h2 class="font-display font-extrabold text-xl text-slate-900 mt-3">Komunitas UMKM Kelurahan Jatiasih</h2>
+=======
+        <h2 class="font-display font-extrabold text-xl text-slate-900 mt-3">Komunitas UMKM Jatiasih</h2>
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
         <p class="text-xs text-slate-500 mt-1 leading-relaxed">Masuk dengan akun usaha Anda untuk berbagi promo, info, status &amp; lowongan, serta chat dengan sesama pelaku UMKM.</p>
       </div>
       <form class="space-y-3" onsubmit="komHandleLogin(event)">
@@ -1100,7 +1162,10 @@ Terdaftar Mandiri
 <p id="komMeRole" class="hidden text-[10px] font-bold text-indigo-700 truncate"></p>
       </div>
       <button id="komDashBtn" type="button" onclick="handleAdminEntry()" class="hidden px-3 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700">Dashboard Petugas</button>
+<<<<<<< HEAD
 <button id="komProfBtn" type="button" onclick="sipOpenProfile()" class="hidden px-3 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 items-center gap-1"><span class="material-symbols-outlined text-[16px]">storefront</span>Profil UMKM</button>
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 <button id="komApplyBtn" type="button" onclick="navigateTo('petugas')" class="px-3 py-2 rounded-xl border border-indigo-200 text-indigo-700 text-xs font-bold hover:bg-indigo-50">Ajukan jadi petugas</button>
 <button type="button" onclick="komLogout()" class="px-3 py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">logout</span>Keluar</button>
     </div>
@@ -2512,6 +2577,7 @@ window.addEventListener('DOMContentLoaded', function () {
 // ===================================================================
 // SIPLokal v3 — data lengkap UMKM, etalase terverifikasi, peran petugas
 // ===================================================================
+<<<<<<< HEAD
 // URL Web App hasil deploy Code.gs (Google Apps Script). Kosong = mode lokal (data di browser).
 const SIP_API = 'https://script.google.com/macros/s/AKfycbwMhZOAE1NE8te5-P5mVeB1ZsR8HoY8DtB_COw02VxnckyqQzox3xs0R3O2G7jWymMc/exec';
 const SIP_REMOTE = /^https:\/\//.test(SIP_API);
@@ -2519,6 +2585,12 @@ const SIP_SUPERADMIN = { code: '19870512-JATIASIH', pass: 'admin', name: 'Supera
 const STAFF_KEY = 'siplokal_staff', ADMIN_SESSION_KEY = 'siplokal_admin_session';
 const STAFF_ROLES = ['Satgas Pamor','Pengurus RT','Pengurus RW','Kader PKK','Kader Posyandu','LPM','BKM','KPM','Karang Taruna','Paguyuban UMKM','Lainnya'];
 const ALL_RW = Array.from({ length: 17 }, (_, i) => 'RW ' + String(i + 1).padStart(2, '0'));
+=======
+const SIP_SUPERADMIN = { code: '19870512-JATIASIH', pass: 'admin', name: 'Superadmin Kelurahan' };
+const STAFF_KEY = 'siplokal_staff', ADMIN_SESSION_KEY = 'siplokal_admin_session';
+const STAFF_ROLES = ['Satgas Pamor','Pengurus RT','Pengurus RW','Kader PKK','Kader Posyandu','LPM','BKM','KPM','Karang Taruna','Paguyuban UMKM','Lainnya'];
+const ALL_RW = Array.from({ length: 18 }, (_, i) => 'RW ' + String(i + 1).padStart(2, '0'));
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 const DEFAULT_PHOTO = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80';
 const NEEDS = {
   'NIB OSS':            { label: 'Pengurusan NIB / Izin Usaha', short: 'NIB',      doc: 'nib' },
@@ -2583,12 +2655,19 @@ function sipSetAdmin(s) {
   sipApplyAdminUi(); sipRenderAll();
 }
 function sipApplyAdminUi() {
+<<<<<<< HEAD
   sipEl('adminSubNav').classList.toggle('hidden', !sipAdmin || sipPage !== 'admin');
   const who = sipEl('adminWho');
   if (who) who.textContent = !sipAdmin ? '' : sipIsSuper() ? 'Superadmin • Semua RW' : (sipAdmin.name + ' • ' + sipAdmin.peran + ' • ' + (sipAdmin.rw.length ? sipAdmin.rw.join(', ') : 'belum ada RW'));
   const tabP = sipEl('adminTab-petugas'); if (tabP) tabP.classList.toggle('hidden', !sipIsSuper());
   const dl = sipEl('drawerLogoutAdmin'); if (dl) dl.classList.toggle('hidden', !sipAdmin);
   const mb = sipEl('mobileDrawerAuthBtn'); if (mb) mb.classList.toggle('hidden', !!sipAdmin);   // menu HP: sembunyikan tombol login saat sudah masuk
+=======
+  sipEl('adminSubNav').classList.toggle('hidden', !sipAdmin);
+  const who = sipEl('adminWho');
+  if (who) who.textContent = !sipAdmin ? '' : sipIsSuper() ? 'Superadmin • Semua RW' : (sipAdmin.name + ' • ' + sipAdmin.peran + ' • ' + (sipAdmin.rw.length ? sipAdmin.rw.join(', ') : 'belum ada RW'));
+  const tabP = sipEl('adminTab-petugas'); if (tabP) tabP.classList.toggle('hidden', !sipIsSuper());
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
   const btn = sipEl('loginModalBtnDesktop');
   if (btn) {
     if (sipAdmin) { btn.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> ' + (sipIsSuper() ? 'Superadmin' : 'Petugas'); btn.onclick = function () { handleAdminEntry(); }; }
@@ -2604,12 +2683,16 @@ handleAdminEntry = function () {
   if (!sipAdmin) { openLoginModal(); return; }
   navigateTo('admin');
 };
+<<<<<<< HEAD
 logoutAdmin = function () {
   const wasStaff = !!sipAdmin && sipAdmin.role === 'petugas';
   sipSetAdmin(null);
   if (wasStaff && typeof komUser !== 'undefined' && komUser) komLogout();
   navigateTo('home');
 };
+=======
+logoutAdmin = function () { sipSetAdmin(null); navigateTo('home'); };
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 
 submitAdminLogin = async function (e) {
   e.preventDefault();
@@ -2689,7 +2772,11 @@ function renderHeroStats() {
   // KPI
   const verified = umkmList.filter(u => u.status === 'Terverifikasi').length, active = st.filter(x => x.count > 0).length;
   sipEl('kpiRwActive').textContent = active;
+<<<<<<< HEAD
   sipEl('kpiRwActiveSub').textContent = Math.round(active / 17 * 100) + '% dari 17 RW terjangkau';
+=======
+  sipEl('kpiRwActiveSub').textContent = Math.round(active / 18 * 100) + '% dari 18 RW terjangkau';
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
   sipEl('kpiTotalUmkm').textContent = total;
   sipEl('kpiTotalSub').textContent = verified + ' terverifikasi • ' + (total - verified) + ' menunggu';
   const om = fmtOmzet(umkmList.reduce((a, u) => a + (OMZET_MID[u.omzet] || 0), 0));
@@ -2707,7 +2794,11 @@ function renderAdminKpis() {
   sipEl('adminKpiTotal').textContent = l.length; sipEl('adminKpiVerified').textContent = v;
   sipEl('adminKpiPending').textContent = l.length - v;
   sipEl('adminKpiKur').textContent = l.filter(u => (u.needs || []).includes('Bantuan Permodalan')).length;
+<<<<<<< HEAD
   sipEl('adminKpiScope').textContent = sipScope() ? sipScope().join(', ') || '-' : 'Semua 17 RW';
+=======
+  sipEl('adminKpiScope').textContent = sipScope() ? sipScope().join(', ') || '-' : 'Semua 18 RW';
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 }
 function renderRekapRw() {
   const body = sipEl('adminRekapRw'); if (!body) return;
@@ -2754,6 +2845,7 @@ function needChips(u) {
   return u.needs.map(k => { const miss = needsFollowUp(u).includes(k), done = fuStatus(u, k) === 'Selesai';
     return '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold ' + (!miss ? 'bg-slate-100 text-slate-500' : done ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700') + '">' + (NEEDS[k] ? NEEDS[k].short : k) + '</span>'; }).join(' ');
 }
+<<<<<<< HEAD
 // ---------------- akun Komunitas otomatis untuk UMKM binaan, batal form, bilah petugas ----------------
 let sipPage = 'home';
 function sipRandPass() {
@@ -2952,6 +3044,8 @@ function sipContactBtns(u, big) {
   return (u.username ? '<button type="button" onclick="sipChatUmkm(\'' + E(u.id) + '\')" class="' + cls + ' rounded-lg font-bold bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100 inline-flex items-center gap-1" title="Chat di Komunitas"><span class="material-symbols-outlined text-[15px]">forum</span>Chat</button>' : '') +
     (wa ? '<a href="' + wa + '" target="_blank" rel="noopener" class="' + cls + ' rounded-lg font-bold bg-emerald-600 text-white hover:bg-emerald-700 inline-flex items-center gap-1" title="Chat WhatsApp"><span class="material-symbols-outlined text-[15px]">call</span>WA</a>' : '');
 }
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 function renderAdminDirectory(filtered) {
   const list = filtered || dirFiltered(), E = komEsc;
   const cnt = sipEl('adminDirCount'); if (cnt) cnt.textContent = list.length + ' data';
@@ -2966,7 +3060,11 @@ function renderAdminDirectory(filtered) {
       (sipIsSuper() ? '<button onclick="confirmDelete(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-red-600 hover:bg-red-50" title="Hapus"><span class="material-symbols-outlined text-[18px]">delete</span></button>' : '');
   };
   if (tbody) tbody.innerHTML = list.length ? list.map(u => '<tr class="hover:bg-slate-50/80 transition align-top">' +
+<<<<<<< HEAD
     '<td class="px-3 py-3"><div class="font-bold text-slate-900">' + E(u.name) + '</div><div class="text-[11px] text-slate-500">' + E(u.owner) + ' • ' + E(u.id) + '</div>' + (u.username ? '<div class="text-[11px] font-semibold text-teal-700">@' + E(u.username) + '</div>' : '<div class="text-[11px] text-slate-400">tanpa akun</div>') + '<div class="mt-1 flex flex-wrap items-center gap-1">' + srcChip(u) + sipContactBtns(u, false) + '</div></td>' +
+=======
+    '<td class="px-3 py-3"><div class="font-bold text-slate-900">' + E(u.name) + '</div><div class="text-[11px] text-slate-500">' + E(u.owner) + ' • ' + E(u.id) + '</div><div class="mt-1">' + srcChip(u) + '</div></td>' +
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
     '<td class="px-3 py-3 font-semibold">' + E(u.rw) + '<div class="text-[11px] font-normal text-slate-500">' + E(u.area) + '</div></td>' +
     '<td class="px-3 py-3">' + E(u.category) + '<div class="font-mono text-[11px] text-slate-500">' + E(u.omzet) + '</div></td>' +
     '<td class="px-3 py-3 whitespace-nowrap">' + legalChips(u) + '</td><td class="px-3 py-3">' + needChips(u) + '</td>' +
@@ -2975,10 +3073,17 @@ function renderAdminDirectory(filtered) {
     : '<tr><td colspan="7" class="px-4 py-8 text-center text-slate-400">Tidak ada data pada filter ini.</td></tr>';
   if (mob) mob.innerHTML = list.length ? list.map(u => '<div class="p-3.5 space-y-2"><div class="flex items-start justify-between gap-2"><div>' +
     '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase">' + E(u.rw) + '</span> ' + srcChip(u) +
+<<<<<<< HEAD
     '<h4 class="font-display font-bold text-sm text-slate-900 mt-1">' + E(u.name) + '</h4><p class="text-xs text-slate-500">' + E(u.owner) + ' • ' + E(u.category) + '</p>' + (u.username ? '<p class="text-[11px] font-semibold text-teal-700">@' + E(u.username) + '</p>' : '<p class="text-[11px] text-slate-400">tanpa akun</p>') + '</div>' +
     '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ' + (ok(u) ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800') + '">' + E(u.status) + '</span></div>' +
     '<div class="flex flex-wrap gap-1">' + legalChips(u) + '</div><div class="flex flex-wrap gap-1">' + needChips(u) + '</div>' +
     '<div class="flex items-center gap-1 pt-1">' + sipContactBtns(u, true) + '</div><div class="flex items-center gap-1">' + acts(u, true) + '</div></div>').join('')
+=======
+    '<h4 class="font-display font-bold text-sm text-slate-900 mt-1">' + E(u.name) + '</h4><p class="text-xs text-slate-500">' + E(u.owner) + ' • ' + E(u.category) + '</p></div>' +
+    '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ' + (ok(u) ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800') + '">' + E(u.status) + '</span></div>' +
+    '<div class="flex flex-wrap gap-1">' + legalChips(u) + '</div><div class="flex flex-wrap gap-1">' + needChips(u) + '</div>' +
+    '<div class="flex items-center gap-1 pt-1">' + acts(u, true) + '</div></div>').join('')
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
     : '<p class="p-6 text-center text-xs text-slate-400">Tidak ada data pada filter ini.</p>';
 }
 filterAdminDirectory = function () { renderAdminDirectory(); };
@@ -3005,7 +3110,10 @@ openDetailModal = function (id) {
   st.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-md ' + (u.status === 'Terverifikasi' ? 'bg-emerald-600' : 'bg-amber-500');
   const E = komEsc, row = (l, v) => '<div class="flex justify-between gap-3"><span class="text-slate-500">' + l + '</span><strong class="font-mono text-slate-800 text-right break-all">' + (v ? E(v) : '<span class="text-slate-300 font-sans font-normal">belum ada</span>') + '</strong></div>';
   sipEl('detailExtra').innerHTML =
+<<<<<<< HEAD
     '<div class="text-xs bg-teal-50/60 p-3 rounded-xl border border-teal-100 space-y-2"><div class="flex justify-between gap-3"><span class="text-slate-500">Akun Komunitas</span><strong class="text-teal-800">' + (u.username ? '@' + E(u.username) : '<span class="text-slate-400 font-normal">belum ada akun</span>') + '</strong></div><div class="flex gap-2">' + sipContactBtns(u, true) + '</div></div>' +
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
     '<div class="text-xs bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1">' + row('NIB', u.nib) + row('Sertifikat Halal', u.halal) + row('No. BPOM', u.bpom) + '</div>' +
     '<div class="text-xs bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1"><div class="font-semibold text-slate-700">Kebutuhan fasilitasi</div>' +
     ((u.needs || []).length ? u.needs.map(k => '<div class="flex justify-between"><span>' + E(NEEDS[k] ? NEEDS[k].label : k) + '</span><span class="font-bold ' + (needsFollowUp(u).includes(k) ? 'text-rose-600' : 'text-slate-400') + '">' + (needsFollowUp(u).includes(k) ? E(fuStatus(u, k)) : 'dokumen sudah ada') + '</span></div>').join('') : '<span class="text-slate-400">Tidak ada</span>') + '</div>' +
@@ -3089,14 +3197,23 @@ function setFormMode(mode, id) {
   sipEl('umkmRegistrationForm').reset();
   currentUploadedPhotoUrl = DEFAULT_PHOTO; sipEl('livePreviewImg').src = DEFAULT_PHOTO;
   document.querySelectorAll('.preset-btn').forEach(b => { b.classList.remove('border-teal-500', 'bg-teal-50/50', 'ring-2', 'ring-teal-400'); b.classList.add('border-slate-200', 'bg-white'); });
+<<<<<<< HEAD
   sipSetupAccBlock(mode);
   sipEl('formCloseBtn').classList.toggle('hidden', !staff); sipEl('formCloseBtn').classList.toggle('flex', staff);
   sipEl('formCancelBtn').classList.toggle('hidden', !staff); sipEl('formCancelBtn').classList.toggle('flex', staff);
+=======
+  sipEl('regAccountBlock').classList.toggle('hidden', staff);
+  sipEl('regUsername').required = !staff; sipEl('regPassword').required = !staff; sipEl('regUsername').disabled = staff; sipEl('regPassword').disabled = staff;
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
   sipEl('regStatusWrap').classList.toggle('hidden', !staff);
   sipEl('regFormError').classList.add('hidden');
   const rws = (staff && sipScope()) ? sipScope() : ALL_RW;
   sipEl('regRw').innerHTML = rws.map(r => '<option value="' + r + '">' + r + '</option>').join('');
+<<<<<<< HEAD
   const ban = sipEl('umkmFormBanner'), item = id ? (mode === 'self' ? sipMineRows : umkmList).find(x => x.id === id) : null;
+=======
+  const ban = sipEl('umkmFormBanner'), item = id ? umkmList.find(x => x.id === id) : null;
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
   ban.classList.toggle('hidden', !staff);
   ban.innerHTML = mode === 'add' ? '<span class="material-symbols-outlined text-indigo-600 text-base">support_agent</span><div><strong>Mode Pendampingan Petugas.</strong> Usaha akan ditandai <em>Pendampingan Petugas</em> di etalase. ' + (sipScope() ? 'Anda hanya dapat menambahkan UMKM di ' + sipScope().join(', ') + '.' : 'Superadmin dapat menambah di semua RW.') + '</div>'
     : mode === 'edit' ? '<span class="material-symbols-outlined text-indigo-600 text-base">edit</span><div><strong>Mengedit data usaha:</strong> ' + komEsc(item ? item.name : '') + ' (' + komEsc(id) + ')</div>' : '';
@@ -3197,6 +3314,7 @@ handleFormSubmit = async function (e) {
     return;
   }
 
+<<<<<<< HEAD
   if (umkmFormMode === 'self') {
     if (typeof komUser === 'undefined' || !komUser) return showErr('Silakan masuk ke Komunitas terlebih dahulu.');
     const idx = umkmList.findIndex(x => x.id === umkmEditId && x.username === komUser.username);
@@ -3208,11 +3326,14 @@ handleFormSubmit = async function (e) {
     return;
   }
 
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
   // mode petugas (tambah / edit)
   sipRevalidate();
   if (!sipAdmin) { openLoginModal(); return; }
   if (!sipCanManage({ rw: d.rw })) return showErr('RW ' + d.rw + ' di luar wilayah tugas Anda.');
   const status = sipVal('regStatus') || 'Terverifikasi';
+<<<<<<< HEAD
   let newAcc = null;
   if (umkmFormMode === 'add') {
     newAcc = sipStaffAccount(showErr); if (newAcc === false) return;
@@ -3223,6 +3344,10 @@ handleFormSubmit = async function (e) {
       if (!rg || !rg.success) return showErr((rg && rg.message) || 'Pembuatan akun gagal. Username mungkin sudah dipakai.');
     }
     const entry = Object.assign({}, d, { id: newUmkmId(d.rw), status, source: 'petugas', username: newAcc ? newAcc.username : '', addedBy: sipAdmin.username, addedByName: sipAdmin.name, followup: {}, createdAt: new Date().toISOString(), image: currentUploadedPhotoUrl || DEFAULT_PHOTO });
+=======
+  if (umkmFormMode === 'add') {
+    const entry = Object.assign({}, d, { id: newUmkmId(d.rw), status, source: 'petugas', addedBy: sipAdmin.username, addedByName: sipAdmin.name, followup: {}, createdAt: new Date().toISOString(), image: currentUploadedPhotoUrl || DEFAULT_PHOTO });
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
     umkmList.unshift(entry);
     if (!sipSave()) { umkmList.shift(); return; }
     showToast('UMKM binaan ditambahkan (' + entry.id + ').');
@@ -3235,7 +3360,10 @@ handleFormSubmit = async function (e) {
     showToast('Perubahan data disimpan.');
   }
   updateKpis(); setFormMode('mandiri'); navigateTo('admin'); switchAdminTab('dashboard');
+<<<<<<< HEAD
   if (newAcc) sipShowAccCreds(newAcc, d);
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 };
 
 // ---------------- panel admin & navigasi ----------------
@@ -3245,11 +3373,15 @@ switchAdminTab = function (tab) {
   ADMIN_PANELS.forEach(p => { const el = sipEl('adminPanel-' + p); if (el) el.classList.toggle('hidden', p !== tab); });
   document.querySelectorAll('.admin-tab-btn').forEach(b => { b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); b.classList.add('text-slate-600'); });
   const a = sipEl('adminTab-' + tab); if (a) { a.classList.add('bg-teal-600', 'text-white'); a.classList.remove('text-slate-600'); }
+<<<<<<< HEAD
   if (tab === 'analisis') rptMetaInit();
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
   if (tab === 'fasilitasi') renderFasilitasi();
   if (tab === 'petugas') renderStaffPanel();
   if (tab === 'peta' && typeof initGeospasialMap === 'function') setTimeout(function () { try { initGeospasialMap(); } catch (e) {} }, 100);
 };
+<<<<<<< HEAD
 // ---------------- ekspor CSV & laporan resmi (Ekspor & Analisis) ----------------
 const RPT_KEY = 'siplokal_laporan_meta';
 function rptMetaLoad() { try { return JSON.parse(localStorage.getItem(RPT_KEY) || '{}') || {}; } catch (e) { return {}; } }
@@ -3379,6 +3511,21 @@ function sipRenderAll() {
   renderHeroStats();
   if (typeof komUser !== 'undefined' && komUser) sipRenderKomRole();
   sipApplyNav();
+=======
+exportDataExcel = function () {
+  if (!sipAdmin) return;
+  const rows = sipScopedList(), q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const head = ['ID', 'Nama Usaha', 'Pemilik', 'RW', 'Kategori', 'Kawasan', 'Alamat', 'Omzet', 'WhatsApp', 'Latitude', 'Longitude', 'Status', 'Sumber', 'NIB', 'No. Sertifikat Halal', 'No. BPOM', 'Kebutuhan Fasilitasi', 'Tindak Lanjut'];
+  const lines = [head.map(q).join(',')].concat(rows.map(u => [u.id, u.name, u.owner, u.rw, u.category, u.area, u.address, u.omzet, u.phone, u.lat, u.lng, u.status,
+    u.source === 'petugas' ? 'Pendampingan Petugas' : 'Mandiri', u.nib, u.halal, u.bpom, (u.needs || []).map(k => NEEDS[k] ? NEEDS[k].label : k).join('; '),
+    needsFollowUp(u).map(k => k + ': ' + fuStatus(u, k)).join('; ')].map(q).join(',')));
+  const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Rekap_SIPLokal_Jatiasih' + (sipScope() ? '_' + sipScope().join('-').replace(/\s/g, '') : '_18RW') + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+};
+function sipRenderAll() {
+  renderHeroStats();
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
   if (sipAdmin) { renderAdminKpis(); renderRekapRw(); renderAnalisisKlaster(); syncDirFilters(); renderAdminDirectory(); renderFasilitasi(); if (sipIsSuper()) renderStaffPanel(); }
   else { const t = sipEl('adminTableBody'); if (t) t.innerHTML = ''; const m = sipEl('mobileDirectoryList'); if (m) m.innerHTML = ''; }
   renderEtalase();
@@ -3388,11 +3535,17 @@ updateKpis = function () { sipRenderAll(); };
 
 const sipPrevNavigate = navigateTo;
 navigateTo = function (pageId) {
+<<<<<<< HEAD
   if ((pageId === 'admin' || pageId === 'petugas') && sipOwnerOnly()) { showToast('Halaman petugas hanya untuk petugas kelurahan.', true); pageId = 'komunitas'; }
   if (pageId === 'admin') { sipRevalidate(); if (!sipAdmin) { sipPrevNavigate('home'); openLoginModal(); return; } }
   if (pageId === 'daftar' && !sipKeepFormMode && umkmFormMode !== 'mandiri') setFormMode('mandiri');
   sipPrevNavigate(pageId);
   sipPage = pageId; sipApplyAdminUi();
+=======
+  if (pageId === 'admin') { sipRevalidate(); if (!sipAdmin) { sipPrevNavigate('home'); openLoginModal(); return; } }
+  if (pageId === 'daftar' && !sipKeepFormMode && umkmFormMode !== 'mandiri') setFormMode('mandiri');
+  sipPrevNavigate(pageId);
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
   if (pageId === 'admin') sipRenderAll();
   if (pageId === 'petugas') sipInitStaffForm();
 };
@@ -3495,12 +3648,20 @@ function sipRenderKomRole() {
   role.classList.toggle('hidden', !ok);
   if (ok) role.textContent = 'Petugas • ' + staffPeran(r) + ' • ' + r.rwApproved.join(', ');
   dash.classList.toggle('hidden', !ok);
+<<<<<<< HEAD
   req.classList.toggle('hidden', (!!r && r.status !== 'rejected') || sipOwnerOnly());
   const prof = sipEl('komProfBtn'); if (prof) { const has = sipOwnerList().length > 0; prof.classList.toggle('hidden', !has); prof.classList.toggle('inline-flex', has); }
   req.textContent = r && r.status === 'rejected' ? 'Ajukan ulang petugas' : 'Ajukan jadi petugas';
 }
 const sipOrigKomShowApp = komShowApp;
 komShowApp = function () { sipOrigKomShowApp(); sipRenderKomRole(); sipApplyNav(); };
+=======
+  req.classList.toggle('hidden', !!r && r.status !== 'rejected');
+  req.textContent = r && r.status === 'rejected' ? 'Ajukan ulang petugas' : 'Ajukan jadi petugas';
+}
+const sipOrigKomShowApp = komShowApp;
+komShowApp = function () { sipOrigKomShowApp(); sipRenderKomRole(); };
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 (function () {
   const orig = komPostCard;
   komPostCard = function (p) {
@@ -3512,12 +3673,17 @@ komShowApp = function () { sipOrigKomShowApp(); sipRenderKomRole(); sipApplyNav(
 
 window.addEventListener('DOMContentLoaded', function () {
   try { sipAdmin = JSON.parse(localStorage.getItem(ADMIN_SESSION_KEY) || 'null'); } catch (e) { sipAdmin = null; }
+<<<<<<< HEAD
   if (sipAdmin && sipAdmin.role === 'petugas' && !SIP_REMOTE) { const r = staffGet(sipAdmin.username); sipAdmin = (r && r.status === 'approved') ? petugasSession(r) : null; }
+=======
+  if (sipAdmin && sipAdmin.role === 'petugas') { const r = staffGet(sipAdmin.username); sipAdmin = (r && r.status === 'approved') ? petugasSession(r) : null; }
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
   isAdminLoggedIn = !!sipAdmin; sipApplyAdminUi(); sipRenderAll();
   setFormMode('mandiri');
 });
 
 </script>
+<<<<<<< HEAD
 <script id="sipBackendScript">
 // ===================================================================
 // SIPLokal — sinkronisasi ke Google Spreadsheet via Apps Script (Code.gs)
@@ -3939,4 +4105,6 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 </script>
+=======
+>>>>>>> ff6fccffa7f12494629f4ec246e735a30604a526
 </body></html>
