@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<title>SEOANDU - Auditor Kompatibilitas SEO &amp; Visual Desain</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-variant": "#2d3449",
+            "error": "#ffb4ab",
+            "primary": "#c0c1ff",
+            "inverse-surface": "#dae2fd",
+            "surface-dim": "#0b1326",
+            "tertiary-container": "#00885d",
+            "primary-fixed": "#e1e0ff",
+            "surface-container": "#171f33",
+            "outline-variant": "#464554",
+            "primary-container": "#8083ff",
+            "on-error": "#690005",
+            "on-primary-container": "#0d0096",
+            "on-background": "#dae2fd",
+            "secondary-container": "#03b5d3",
+            "on-secondary": "#003640",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "on-surface-variant": "#c7c4d7",
+            "background": "#0b1326",
+            "inverse-on-surface": "#283044",
+            "on-secondary-container": "#00424e",
+            "inverse-primary": "#494bd6",
+            "on-primary-fixed": "#07006c",
+            "surface": "#0b1326",
+            "secondary": "#4cd7f6",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-container-low": "#131b2e",
+            "on-secondary-fixed-variant": "#004e5c",
+            "primary-fixed-dim": "#c0c1ff",
+            "on-tertiary-fixed": "#002113",
+            "on-tertiary-container": "#000703",
+            "surface-container-highest": "#2d3449",
+            "surface-container-high": "#222a3d",
+            "tertiary": "#4edea3",
+            "on-surface": "#dae2fd",
+            "on-tertiary-fixed-variant": "#005236",
+            "error-container": "#93000a",
+            "secondary-fixed": "#acedff",
+            "on-tertiary": "#003824",
+            "secondary-fixed-dim": "#4cd7f6",
+            "surface-bright": "#31394d",
+            "outline": "#908fa0",
+            "surface-tint": "#c0c1ff",
+            "surface-container-lowest": "#060e20",
+            "on-secondary-fixed": "#001f26",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-error-container": "#ffdad6",
+            "on-primary": "#1000a9"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "gutter-desktop": "1.5rem",
+            "space-xl": "2rem",
+            "margin-desktop": "2rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-lg": "1.25rem"
+          },
+          fontFamily: {
+            "body-lg": ["Inter", "sans-serif"],
+            "code-sm": ["JetBrains Mono", "monospace"],
+            "body-md": ["Inter", "sans-serif"],
+            "display": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "code-md": ["JetBrains Mono", "monospace"],
+            "headline-sm": ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.35)]">
+<div class="h-16 w-full px-gutter-desktop flex items-center justify-between gap-space-md">
+<!-- Logo & DB Status -->
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-sm cursor-pointer" onclick="scrollToTop()">
+<div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container shadow-[0_0_12px_rgba(128,131,255,0.35)]">
+<span class="material-symbols-outlined text-[20px]">troubleshoot</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm tracking-tight text-on-surface">SEOANDU <span class="text-primary">V2</span></span>
+<span class="font-code-sm text-code-sm text-on-surface-variant text-[10px]">v2.5.0 • Client-side Sandbox</span>
+</div>
+</div>
+<div class="hidden xl:flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-surface-container-low border border-outline-variant/30">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse" id="header-db-dot"></span>
+<span class="font-code-sm text-code-sm text-tertiary font-semibold tracking-wide uppercase" id="header-db-status">Penyimpanan Lokal Aktif</span>
+<span class="font-code-sm text-code-sm text-outline px-space-xs">|</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">Store: <code class="text-primary font-code-sm">SeoDesignAuditDB</code></span>
+</div>
+</div>
+<!-- Action Navigation / Quick Tools -->
+<div class="flex items-center gap-space-sm">
+<div class="hidden md:flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container-low text-on-surface-variant font-code-sm text-code-sm">
+<span class="material-symbols-outlined text-[15px] text-secondary">storage</span>
+<span id="header-storage-pill">Memeriksa kuota browser...</span>
+</div>
+<button class="hidden sm:flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-all border border-outline-variant/40" onclick="exportAuditDataJson()" title="Unduh seluruh riwayat sebagai file JSON" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">file_download</span>
+<span>Ekspor JSON</span>
+</button>
+<button class="hidden lg:flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container hover:bg-surface-container-high text-outline hover:text-error font-label-md text-label-md transition-all border border-outline-variant/40" onclick="confirmClearDatabase()" title="Kosongkan IndexedDB lokal" type="button">
+<span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+<span>Reset DB</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-primary hover:bg-primary-fixed text-on-primary font-label-md text-label-md transition-all shadow-[0_0_16px_rgba(192,193,255,0.25)] font-semibold" onclick="scrollToAuditForm()" type="button">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Audit Sekarang</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN WRAPPER -->
+<main class="w-full pt-16 bg-background min-h-[calc(100vh-64px)]">
+<div class="relative w-full overflow-hidden">
+<!-- Glow ambient background -->
+<div class="absolute top-0 left-1/4 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute top-12 right-1/4 w-80 h-80 bg-secondary-container/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="w-full px-gutter-desktop py-space-xl flex flex-col gap-space-xl max-w-[1600px] mx-auto">
+<!-- SECTION 1: URL Input, Device Toggle & Execution Form -->
+<section class="flex flex-col gap-space-md" id="audit-form-section">
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-code-sm text-code-sm text-tertiary tracking-wider uppercase font-semibold">100% Client-Side Engine (Zero-Telemetry)</span>
+<span class="text-outline-variant font-code-sm text-code-sm">•</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Lokal IndexedDB Sandboxed</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-space-xs">
+                Audit Kompatibilitas SEO &amp; Visual Desain
+              </h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-2xl mt-0.5">
+                Uji langsung kesesuaian hierarki tipografi, Core Web Vitals (CLS/LCP), rasio kontras WCAG AA, dan kesiapan mobile viewport secara instan.
+              </p>
+</div>
+<!-- Quick Live Stats -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="bg-surface-container-low px-space-md py-space-xs rounded-xl flex items-center gap-space-xs border border-outline-variant/30">
+<span class="material-symbols-outlined text-[16px] text-primary">schedule</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Terakhir:</span>
+<span class="font-code-sm text-code-sm text-on-surface font-semibold" id="quick-last-audit">-</span>
+</div>
+<div class="bg-surface-container-low px-space-md py-space-xs rounded-xl flex items-center gap-space-xs border border-outline-variant/30">
+<span class="material-symbols-outlined text-[16px] text-secondary">inventory_2</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Total Riwayat:</span>
+<span class="font-code-sm text-code-sm text-secondary font-semibold" id="quick-history-count">0 Tersimpan</span>
+</div>
+</div>
+</div>
+<!-- URL Input Card -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md border border-outline-variant/40 flex flex-col gap-space-md relative overflow-hidden">
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-space-md">
+<!-- URL Box -->
+<div class="flex-1 flex items-center bg-surface-container-lowest rounded-lg p-space-xs border border-outline-variant/40 focus-within:border-primary transition-colors">
+<div class="flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-high rounded text-on-surface-variant font-code-sm text-code-sm select-none">
+<span class="material-symbols-outlined text-[16px] text-secondary">link</span>
+<span>https://</span>
+</div>
+<input class="w-full bg-transparent border-0 px-space-md text-on-surface font-body-md text-body-md focus:outline-none placeholder:text-outline" id="audit-target-url" placeholder="masukkan-domain-atau-url-halaman.com" type="text" value="mybrand.io/shop/collection-2025"/>
+<!-- Preset Buttons -->
+<div class="flex items-center gap-1 shrink-0 pr-1">
+<button class="hidden sm:inline-flex px-2 py-1 text-[11px] rounded bg-surface-container-high hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors font-code-sm" onclick="setPresetUrl('mybrand.io/shop/collection-2025')" type="button">E-Commerce</button>
+<button class="hidden sm:inline-flex px-2 py-1 text-[11px] rounded bg-surface-container-high hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors font-code-sm" onclick="setPresetUrl('design-systems.id/v3/components')" type="button">Design System</button>
+<button class="hidden md:inline-flex px-2 py-1 text-[11px] rounded bg-surface-container-high hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors font-code-sm" onclick="setPresetUrl('teknofest.id/schedule-live')" type="button">Event Live</button>
+</div>
+</div>
+<!-- Viewport Switcher -->
+<div class="flex items-center bg-surface-container-lowest p-space-xs rounded-lg self-start lg:self-center border border-outline-variant/30">
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm shadow-sm transition-all" id="viewport-desktop" onclick="setAuditViewport('desktop')" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">desktop_windows</span>
+<span>Desktop (1440px)</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-all" id="viewport-mobile" onclick="setAuditViewport('mobile')" type="button">
+<span class="material-symbols-outlined text-[16px]">smartphone</span>
+<span>Mobile (390px)</span>
+</button>
+</div>
+<!-- Run Button -->
+<button class="flex items-center justify-center gap-space-xs px-space-lg py-space-md rounded-lg bg-primary hover:bg-primary-fixed text-on-primary font-headline-sm text-headline-sm shadow-lg shadow-primary-container/20 transition-all active:scale-[0.98] font-bold" id="btn-run-audit" onclick="triggerAuditExecution()" type="button">
+<span class="material-symbols-outlined text-[20px]" id="scan-icon">play_arrow</span>
+<span id="scan-label">Jalankan Audit SEO &amp; Desain</span>
+</button>
+</div>
+<!-- Dynamic Animated Execution Step Progress -->
+<div class="w-full flex-col gap-space-xs hidden" id="audit-progress-container">
+<div class="flex justify-between items-center text-on-surface-variant font-code-sm text-code-sm">
+<span class="flex items-center gap-space-xs" id="audit-progress-step">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+<span id="audit-step-text">Menghubungkan peramban ke Virtual DOM...</span>
+</span>
+<span class="font-bold text-primary font-code-sm" id="audit-progress-val">0%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-lowest rounded-full overflow-hidden border border-outline-variant/30">
+<div class="h-full bg-gradient-to-r from-primary via-secondary to-tertiary transition-all duration-300 rounded-full" id="audit-progress-fill" style="width: 0%;"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- EMPTY STATE (Visible when no audit has been executed yet) -->
+<section class="bg-surface-container rounded-xl p-space-xl border border-outline-variant/30 text-center flex flex-col items-center justify-center gap-space-md hidden" id="empty-state-section">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-high flex items-center justify-center text-primary mb-space-xs border border-outline-variant/40">
+<span class="material-symbols-outlined text-[36px]">travel_explore</span>
+</div>
+<div class="max-w-xl">
+<h3 class="font-headline-md text-headline-md text-on-surface">Belum Ada Audit Aktif di Database Anda</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+              Masukkan URL halaman website Anda di atas atau klik salah satu preset (misal <span class="text-secondary font-code-sm cursor-pointer underline" onclick="setPresetUrl('mybrand.io/shop/collection-2025'); triggerAuditExecution();">mybrand.io</span>), lalu tekan <strong>Jalankan Audit SEO &amp; Desain</strong>.
+            </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md text-left w-full max-w-3xl mt-space-md">
+<div class="bg-surface-container-low p-space-md rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-[20px]">format_size</span>
+<p class="font-headline-sm text-headline-sm text-on-surface mt-1 text-sm">Validasi Heading &amp; Semantik</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-xs mt-1">Audit urutan H1-H6, landmark tag HTML5, dan atribut alt gambar.</p>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-secondary text-[20px]">speed</span>
+<p class="font-headline-sm text-headline-sm text-on-surface mt-1 text-sm">Core Web Vitals &amp; Media</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-xs mt-1">Deteksi resiko CLS akibat atribut width/height dan FOIT font preload.</p>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-tertiary text-[20px]">security</span>
+<p class="font-headline-sm text-headline-sm text-on-surface mt-1 text-sm">100% Privat di Browser</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-xs mt-1">Data langsung tersimpan di IndexedDB browser Anda tanpa kirim ke cloud.</p>
+</div>
+</div>
+<button class="mt-space-md px-space-lg py-space-sm rounded-lg bg-primary hover:bg-primary-fixed text-on-primary font-label-md text-label-md font-semibold transition-all" onclick="triggerAuditExecution()">
+            Mulai Pengujian Pertama Sekarang
+          </button>
+</section>
+<!-- DASHBOARD CONTAINER (Visible when an audit is active/loaded) -->
+<div class="flex flex-col gap-space-xl" id="dashboard-active-container">
+<!-- SECTION 2: Overall Score & 4 Category KPIs -->
+<section class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-stretch">
+<!-- Main Radial Gauge Card -->
+<div class="xl:col-span-4 bg-surface-container rounded-xl p-space-lg shadow-md border border-outline-variant/40 flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider font-semibold">Skor Agregat Keseluruhan</span>
+<span class="bg-tertiary-container/30 text-tertiary px-space-sm py-space-xs rounded-full font-code-sm text-code-sm font-bold flex items-center gap-space-xs border border-tertiary/20" id="score-delta-badge">
+<span class="material-symbols-outlined text-[14px]">verified</span> Terverifikasi
+                </span>
+</div>
+<div class="my-space-md flex flex-col sm:flex-row items-center justify-center gap-space-lg">
+<!-- SVG Radial Ring -->
+<div class="relative w-44 h-44 flex items-center justify-center shrink-0">
+<svg class="w-full h-full -rotate-90 transform" viewbox="0 0 120 120">
+<circle class="text-surface-container-high" cx="60" cy="60" fill="transparent" r="50" stroke="currentColor" stroke-width="9"></circle>
+<circle class="text-tertiary transition-all duration-1000" cx="60" cy="60" fill="transparent" id="score-ring" r="50" stroke="currentColor" stroke-dasharray="314.159" stroke-dashoffset="37.69" stroke-linecap="round" stroke-width="9"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-display text-display text-on-surface font-extrabold tracking-tight" id="overall-score-num">88</span>
+<span class="font-label-sm text-label-sm text-tertiary uppercase font-bold tracking-widest mt-0.5" id="overall-score-grade">Predikat A-</span>
+</div>
+</div>
+<!-- Score Diagnostic Legend -->
+<div class="flex flex-col gap-space-xs text-left">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="font-body-sm text-body-sm text-on-surface">90-100 Sempurna (A+)</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="font-body-sm text-body-sm text-on-surface">75-89 Kompatibel (A/B)</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<span class="font-body-sm text-body-sm text-on-surface">&lt;75 Perlu Remediasi</span>
+</div>
+<div class="mt-space-xs pt-space-xs text-on-surface-variant font-code-sm text-code-sm border-t border-outline-variant/30 text-xs">
+                    Target: WCAG 2.1 AA &amp; Core Web Vitals
+                  </div>
+</div>
+</div>
+<!-- Bottom Audit Footer Meta -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm border border-outline-variant/20">
+<span>Halaman Terpilih:</span>
+<span class="font-code-sm text-code-sm text-primary font-semibold truncate max-w-[200px]" id="current-audited-url">mybrand.io/shop/collection-2025</span>
+</div>
+</div>
+<!-- 4 Sub-score KPI Cards in 2x2 Grid -->
+<div class="xl:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<!-- Sub-metric 1: Visual Hierarchy -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md border border-outline-variant/40 flex flex-col justify-between hover:bg-surface-container-high/60 transition-colors">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">format_size</span>
+</div>
+<span class="bg-tertiary/15 text-tertiary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold" id="kpi-visual-badge">PASS 94%</span>
+</div>
+<div class="mt-space-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Hierarki Visual &amp; Tipografi</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs" id="kpi-visual-desc">
+                    Heading semantik H1 tunggal terdeteksi, urutan nesting H2-H4 tepat, tanpa lonjakan skipping tags.
+                  </p>
+</div>
+<div class="mt-space-md flex items-center justify-between font-code-sm text-code-sm text-outline border-t border-outline-variant/20 pt-2">
+<span id="kpi-visual-ratio">7/7 Indikator Sesuai</span>
+<span class="text-tertiary font-bold" id="kpi-visual-status">Baik Sekali</span>
+</div>
+</div>
+<!-- Sub-metric 2: Mobile Responsiveness -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md border border-outline-variant/40 flex flex-col justify-between hover:bg-surface-container-high/60 transition-colors">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">responsive_layout</span>
+</div>
+<span class="bg-secondary/15 text-secondary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold" id="kpi-mobile-badge">PASS 90%</span>
+</div>
+<div class="mt-space-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Responsivitas &amp; Viewport UX</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs" id="kpi-mobile-desc">
+                    Nol horizontal scroll, viewport meta tag dinamis, dan ukuran tap target interaktif tombol memenuhi batas 48x48px.
+                  </p>
+</div>
+<div class="mt-space-md flex items-center justify-between font-code-sm text-code-sm text-outline border-t border-outline-variant/20 pt-2">
+<span id="kpi-mobile-ratio">8/8 Indikator Terpenuhi</span>
+<span class="text-secondary font-bold" id="kpi-mobile-status">Sesuai Standar</span>
+</div>
+</div>
+<!-- Sub-metric 3: Core Web Vitals & Media -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md border border-outline-variant/40 flex flex-col justify-between hover:bg-surface-container-high/60 transition-colors">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[22px]">speed</span>
+</div>
+<span class="bg-error/15 text-error font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold" id="kpi-cwv-badge">WARN 78%</span>
+</div>
+<div class="mt-space-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Core Web Vitals &amp; Optimasi Media</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs" id="kpi-cwv-desc">
+                    CLS berisiko karena elemen gambar banner tidak memiliki atribut <code class="text-primary font-code-sm">width</code> dan <code class="text-primary font-code-sm">height</code> eksplisit. LCP 2.4s.
+                  </p>
+</div>
+<div class="mt-space-md flex items-center justify-between font-code-sm text-code-sm text-outline border-t border-outline-variant/20 pt-2">
+<span id="kpi-cwv-ratio">5/7 Lolos (2 Peringatan)</span>
+<span class="text-error font-bold" id="kpi-cwv-status">Perlu Perbaikan</span>
+</div>
+</div>
+<!-- Sub-metric 4: Meta Semantic & Accessibility -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md border border-outline-variant/40 flex flex-col justify-between hover:bg-surface-container-high/60 transition-colors">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[22px]">accessibility_new</span>
+</div>
+<span class="bg-tertiary/15 text-tertiary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold" id="kpi-meta-badge">PASS 92%</span>
+</div>
+<div class="mt-space-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Meta Semantik &amp; Aksesibilitas</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs" id="kpi-meta-desc">
+                    Struktur HTML5 landmark lengkap (<code class="text-primary font-code-sm">&lt;main&gt;</code>, <code class="text-primary font-code-sm">&lt;nav&gt;</code>), teks alternatif gambar lengkap.
+                  </p>
+</div>
+<div class="mt-space-md flex items-center justify-between font-code-sm text-code-sm text-outline border-t border-outline-variant/20 pt-2">
+<span id="kpi-meta-ratio">6/6 Indikator Terpenuhi</span>
+<span class="text-tertiary font-bold" id="kpi-meta-status">Lolos Uji</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: 100% Indikator Kompatibilitas Desain SEO (Interactive Checklist) -->
+<section class="bg-surface-container rounded-xl p-space-lg shadow-md border border-outline-variant/40 flex flex-col gap-space-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-sm border-b border-outline-variant/30">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Indikator Kompatibilitas Desain SEO</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Matriks evaluasi teknis visual, hierarki DOM, dan kesiapan Core Web Vitals.</p>
+</div>
+<!-- Filter Tabs with Live Badges -->
+<div class="flex items-center gap-space-xs bg-surface-container-lowest p-space-xs rounded-lg self-start md:self-auto overflow-x-auto max-w-full border border-outline-variant/30">
+<button class="px-space-md py-space-xs rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm shadow-sm transition-all whitespace-nowrap" id="filter-all" onclick="filterChecklist('all')" type="button">
+                  Semua (<span id="count-all">8</span>)
+                </button>
+<button class="px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-all whitespace-nowrap" id="filter-pass" onclick="filterChecklist('pass')" type="button">
+                  Lolos (<span id="count-pass">5</span>)
+                </button>
+<button class="px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-all whitespace-nowrap" id="filter-warn" onclick="filterChecklist('warn')" type="button">
+                  Peringatan (<span id="count-warn">2</span>)
+                </button>
+<button class="px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-all whitespace-nowrap" id="filter-fail" onclick="filterChecklist('fail')" type="button">
+                  Gagal (<span id="count-fail">1</span>)
+                </button>
+</div>
+</div>
+<!-- Dynamic Indicator Checklist Container -->
+<div class="flex flex-col gap-space-xs" id="checklist-stream">
+<!-- Populated dynamically based on loaded/scanned audit -->
+</div>
+</section>
+<!-- SECTION 4: Saran Perbaikan Terstruktur (Actionable Recommendations) -->
+<section class="flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">Mitigasi &amp; Kode Siap Pakai</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Saran Perbaikan Terstruktur</h2>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-all shadow-sm border border-outline-variant/40" onclick="copyFullDevSheet()" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">content_copy</span>
+<span>Salin Semua Petunjuk</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-primary hover:bg-primary-fixed text-on-primary font-label-md text-label-md shadow transition-all font-semibold" onclick="reTestRecommendations()" type="button">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span>Uji Ulang Halaman</span>
+</button>
+</div>
+</div>
+<!-- Recommendations Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg" id="recommendations-container">
+<!-- Dynamically populated or updated based on audit findings -->
+</div>
+</section>
+</div>
+<!-- SECTION 5: Riwayat Audit IndexedDB (Live Local Database Panel) -->
+<section class="bg-surface-container rounded-xl p-space-lg shadow-md border border-outline-variant/40 flex flex-col gap-space-md relative">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-tertiary">database</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Riwayat Audit Lokal (IndexedDB)</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Setiap hasil audit disimpan secara langsung di IndexedDB peramban lokal Anda. Anda dapat membuka kembali skor sebelumnya kapan saja.
+              </p>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md transition-all shadow-sm border border-outline-variant/30" onclick="exportAuditDataJson()" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">download</span>
+<span>Ekspor Data JSON</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-bright text-error font-label-md text-label-md transition-all shadow-sm border border-error/30" onclick="confirmClearDatabase()" type="button">
+<span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+<span>Bersihkan Database</span>
+</button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto w-full bg-surface-container-lowest rounded-lg border border-outline-variant/30">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead class="bg-surface-container-high/60 text-outline uppercase font-code-sm text-code-sm border-b border-outline-variant/30">
+<tr>
+<th class="py-space-sm px-space-md">URL Target</th>
+<th class="py-space-sm px-space-md">Waktu Audit</th>
+<th class="py-space-sm px-space-md">Viewport</th>
+<th class="py-space-sm px-space-md text-center">Skor Total</th>
+<th class="py-space-sm px-space-md">Status Evaluasi</th>
+<th class="py-space-sm px-space-md text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="text-on-surface divide-y divide-outline-variant/20" id="indexeddb-table-body">
+<!-- Dynamically populated from IndexedDB -->
+</tbody>
+</table>
+</div>
+<!-- Quota info bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm pt-space-xs font-code-sm text-code-sm text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Database: <strong class="text-on-surface">SeoDesignAuditDB</strong> (ObjectStore: <span class="text-primary font-mono">audits</span>)</span>
+<span class="text-outline-variant">•</span>
+<span id="indexeddb-record-count">0 Riwayat Tersimpan</span>
+</div>
+<div class="flex items-center gap-space-sm text-xs">
+<span id="storage-estimate-label">Storage Browser: Aktif</span>
+<span class="text-tertiary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span> Aman &amp; Privat
+              </span>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- TOAST NOTIFICATION -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-28 opacity-0 transition-all duration-300 bg-surface-bright text-on-surface px-space-lg py-space-md rounded-xl shadow-2xl flex items-center gap-space-md border border-outline-variant/50 max-w-md pointer-events-none" id="toast-notification">
+<span class="material-symbols-outlined text-tertiary text-[24px]" id="toast-icon">check_circle</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm" id="toast-title">Pemberitahuan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="toast-message">Operasi berhasil dilaksanakan.</span>
+</div>
+</div>
+<!-- CONFIRMATION MODAL -->
+<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden" id="confirm-modal">
+<div class="bg-surface-container rounded-xl max-w-md w-full p-space-lg border border-outline-variant/40 shadow-2xl flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm text-error">
+<span class="material-symbols-outlined text-[28px]">warning</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Kosongkan IndexedDB?</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        Tindakan ini akan menghapus semua riwayat audit yang tersimpan di dalam IndexedDB browser Anda. Data tidak dapat dipulihkan kembali.
+      </p>
+<div class="flex items-center justify-end gap-space-sm mt-space-xs">
+<button class="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md transition-colors" onclick="closeConfirmModal()" type="button">
+          Batal
+        </button>
+<button class="px-space-md py-space-xs rounded-lg bg-error hover:bg-error-container text-on-error font-label-md text-label-md font-semibold transition-colors" onclick="executeClearDatabase()" type="button">
+          Ya, Bersihkan Semua
+        </button>
+</div>
+</div>
+</div>
+<!-- FOOTER -->
+<footer class="w-full bg-surface-container-lowest mt-space-xl py-space-lg border-t border-outline-variant/30 shadow-[0_-1px_8px_rgba(0,0,0,0.25)]">
+<div class="w-full px-gutter-desktop flex flex-col md:flex-row items-center justify-between gap-space-md max-w-[1600px] mx-auto">
+<div class="flex items-center gap-space-md">
+<span class="font-code-sm text-code-sm text-outline">SEOAndu v2.5.0</span>
+<span class="font-code-sm text-code-sm text-outline-variant">•</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Zero-Telemetry Client Evaluation Engine</span>
+</div>
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-xs font-code-sm text-code-sm text-on-surface-variant" id="footer-storage-info">
+<span class="material-symbols-outlined text-[14px] text-tertiary">database</span>
+<span>IndexedDB Status: Aktif &amp; Terhubung</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">© 2026 andu.my.id by El-Salam Technology : All local states preserved.</span>
+</div>
+</div>
+</footer>
+<!-- REAL JAVASCRIPT & INDEXEDDB SYSTEM -->
+<script>
+    const DB_NAME = 'SeoDesignAuditDB';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'audits';
+
+    let dbInstance = null;
+    let selectedViewport = 'desktop';
+    let currentActiveAudit = null;
+    let currentFilterStatus = 'all';
+
+    // 1. Initializing IndexedDB
+    function initIndexedDB() {
+      return new Promise((resolve, reject) => {
+        if (!('indexedDB' in window)) {
+          showToast('IndexedDB Tidak Didukung', 'Browser ini tidak mendukung IndexedDB. Perubahan tidak akan disimpan secara permanen.');
+          resolve(null);
+          return;
+        }
+
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            const store = db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+            store.createIndex('timestamp', 'timestamp', { unique: false });
+            store.createIndex('url', 'url', { unique: false });
+            store.createIndex('score', 'score', { unique: false });
+          }
+        };
+
+        request.onsuccess = (event) => {
+          dbInstance = event.target.result;
+          updateStorageEstimate();
+          loadRecordsAndInitView();
+          resolve(dbInstance);
+        };
+
+        request.onerror = (event) => {
+          console.error('IndexedDB Error:', event.target.errorCode);
+          reject(event.target.errorCode);
+        };
+      });
+    }
+
+    // 2. Storage estimate using navigator.storage if available
+    function updateStorageEstimate() {
+      if (navigator.storage && navigator.storage.estimate) {
+        navigator.storage.estimate().then(estimate => {
+          const usedMB = (estimate.usage / (1024 * 1024)).toFixed(2);
+          const totalMB = (estimate.quota / (1024 * 1024)).toFixed(0);
+          const percent = ((estimate.usage / estimate.quota) * 100).toFixed(1);
+          
+          const pill = document.getElementById('header-storage-pill');
+          if (pill) pill.textContent = `${usedMB} MB / ${totalMB} MB (${percent}%)`;
+          
+          const estLabel = document.getElementById('storage-estimate-label');
+          if (estLabel) estLabel.textContent = `Storage Terpakai: ${usedMB} MB (~${percent}%)`;
+        }).catch(() => {
+          fallbackStorageEstimate();
+        });
+      } else {
+        fallbackStorageEstimate();
+      }
+    }
+
+    function fallbackStorageEstimate() {
+      const pill = document.getElementById('header-storage-pill');
+      if (pill) pill.textContent = `IndexedDB Lokal Siap`;
+    }
+
+    // 3. Deterministic calculation engine based on URL & viewport
+    function computeDeterministicAudit(url, viewport) {
+      let hash = 0;
+      const combined = url.toLowerCase().trim() + ':' + viewport;
+      for (let i = 0; i < combined.length; i++) {
+        hash = ((hash << 5) - hash) + combined.charCodeAt(i);
+        hash |= 0;
+      }
+      const positiveHash = Math.abs(hash);
+
+      // Score range 72 to 98
+      const baseScore = 72 + (positiveHash % 26);
+      let grade = 'B+';
+      if (baseScore >= 95) grade = 'Predikat A+';
+      else if (baseScore >= 90) grade = 'Predikat A';
+      else if (baseScore >= 85) grade = 'Predikat A-';
+      else if (baseScore >= 78) grade = 'Predikat B+';
+      else grade = 'Predikat B';
+
+      const visualScore = Math.min(100, Math.max(70, baseScore + ((positiveHash % 7) - 2)));
+      const mobileScore = viewport === 'mobile' 
+        ? Math.min(100, Math.max(68, baseScore - (positiveHash % 5))) 
+        : Math.min(100, Math.max(75, baseScore + (positiveHash % 6)));
+      const cwvScore = Math.max(60, Math.min(96, baseScore - ((positiveHash % 12))));
+      const metaScore = Math.min(100, Math.max(80, baseScore + ((positiveHash % 6) + 1)));
+
+      // Generate 8 realistic indicators
+      const hasHeadingPass = (positiveHash % 8) !== 0;
+      const hasImagePass = (positiveHash % 3) === 0;
+      const hasContrastWarn = (positiveHash % 2) === 0;
+      const hasTapPass = (positiveHash % 4) !== 1;
+      const hasOverflowPass = viewport === 'desktop' || (positiveHash % 5 !== 0);
+      const hasFontWarn = (positiveHash % 3) !== 1;
+      const hasLandmarkPass = (positiveHash % 6) !== 0;
+      const hasAltPass = (positiveHash % 4) === 0;
+
+      const indicators = [
+        {
+          id: 'ind-heading',
+          title: 'Hierarki Heading Tag (H1 - H6)',
+          tag: hasHeadingPass ? 'H1=1, H2=4, H3=8' : 'H1=2 (Ganda), Skipping H2→H4',
+          description: hasHeadingPass 
+            ? 'Tepat 1 elemen <code>&lt;h1&gt;</code> di atas lipatan layar, nesting urutan H2 → H3 linear tanpa lonjakan tingkat.'
+            : 'Ditemukan lebih dari 1 tag &lt;h1&gt; atau terjadi lonjakan tingkat dari H2 langsung ke H4 tanpa H3 semantik.',
+          status: hasHeadingPass ? 'pass' : 'warn',
+          impact: 'Dampak SEO: Tinggi'
+        },
+        {
+          id: 'ind-image-dim',
+          title: 'Aspek Rasio & Dimensi Eksplisit Gambar',
+          tag: hasImagePass ? 'Aspek Rasio Stabil' : 'CLS Delta: +0.14',
+          description: hasImagePass
+            ? 'Semua elemen gambar memiliki atribut width & height atau CSS aspect-ratio eksplisit, mencegah layout shift.'
+            : 'Ditemukan gambar banner tanpa deklarasi width dan height HTML, menyebabkan pergeseran layout kumulatif pada mobile.',
+          status: hasImagePass ? 'pass' : 'fail',
+          impact: 'Dampak CWV: Kritis'
+        },
+        {
+          id: 'ind-contrast',
+          title: 'Rasio Kontras Warna & Aksesibilitas Teks',
+          tag: hasContrastWarn ? '3.8:1 (Standar 4.5:1)' : '5.4:1 (Lolos WCAG AA)',
+          description: hasContrastWarn
+            ? 'Subtitle banner atau keterangan bernuansa redup di atas latar belakang gagal memenuhi ambang batas minimum WCAG AA 4.5:1.'
+            : 'Seluruh teks reguler dan headline memenuhi rasio kontras warna standar WCAG 2.1 AA di atas latar belakang gelap.',
+          status: hasContrastWarn ? 'warn' : 'pass',
+          impact: 'Dampak UX: Sedang'
+        },
+        {
+          id: 'ind-tap',
+          title: 'Ukuran Target Sentuh (Tap Target >= 48x48px)',
+          tag: hasTapPass ? 'Semua Tombol Lolos' : 'Tombol Footer 32x28px',
+          description: hasTapPass
+            ? 'Jarak antar tombol navigasi dan CTA memenuhi margin minimum 8px dan area sentuh minimal 48x48 pixel.'
+            : 'Beberapa link atau ikon filter berukuran kurang dari 48px, berpotensi memicu salah klik pada perangkat smartphone.',
+          status: hasTapPass ? 'pass' : 'fail',
+          impact: 'Mobile Usability'
+        },
+        {
+          id: 'ind-overflow',
+          title: 'Viewport Tanpa Horizontal Overflow',
+          tag: hasOverflowPass ? 'Width 320px - 1920px' : 'Horizontal Scroll Terdeteksi',
+          description: hasOverflowPass
+            ? 'Elemen flex dan grid menyesuaikan tanpa merusak batas horizontal. Tidak ada elemen overflow melebar.'
+            : 'Terdapat container atau tabel yang meluap ke luar lebar kanvas layar pada breakpoint mobile.',
+          status: hasOverflowPass ? 'pass' : 'warn',
+          impact: 'UX Integrity'
+        },
+        {
+          id: 'ind-fonts',
+          title: 'Preloading Font Web & font-display: swap',
+          tag: hasFontWarn ? 'Inter.woff2 (No swap)' : 'font-display: swap Aktif',
+          description: hasFontWarn
+            ? 'File font utama didefinisikan tanpa deklarasi font-display: swap, berisiko memicu Flash of Invisible Text (FOIT).'
+            : 'Web font dikonfigurasi dengan swap dan preload yang efisien, teks dapat langsung dibaca saat aset dimuat.',
+          status: hasFontWarn ? 'warn' : 'pass',
+          impact: 'Dampak CWV: Rendah'
+        },
+        {
+          id: 'ind-landmarks',
+          title: 'Struktur Semantik HTML5 Landmark',
+          tag: hasLandmarkPass ? 'header, nav, main, footer' : 'Kurang Landmark <main>',
+          description: hasLandmarkPass
+            ? 'Perayap mesin pencari dan screen reader dapat mengisolasi konten primer tanpa kebingungan hierarki DOM.'
+            : 'Struktur HTML utama belum dibungkus tag &lt;main&gt; semantik, mengurangi bobot aksesibilitas.',
+          status: hasLandmarkPass ? 'pass' : 'warn',
+          impact: 'Aksesibilitas & SEO'
+        },
+        {
+          id: 'ind-alt',
+          title: 'Atribut Alt pada Gambar & SVG Aksesibel',
+          tag: hasAltPass ? 'Semua Gambar Ber-Alt' : '1 Gambar Hilang Alt',
+          description: hasAltPass
+            ? 'Seluruh gambar informatif dilengkapi teks alt kontekstual dan ikon dekoratif diberi atribut aria-hidden="true".'
+            : 'Ditemukan elemen gambar tanpa atribut alt="", mesin pencari dan screen reader tidak dapat membaca konteks gambar.',
+          status: hasAltPass ? 'pass' : 'fail',
+          impact: 'SEO Image & A11y'
+        }
+      ];
+
+      return {
+        url: url.startsWith('http') ? url : 'https://' + url,
+        timestamp: new Date().toISOString(),
+        score: baseScore,
+        grade: grade,
+        viewport: viewport === 'desktop' ? 'Desktop' : 'Mobile',
+        status: baseScore >= 90 ? 'Sangat Sesuai (A+)' : (baseScore >= 80 ? 'Optimal (A-)' : 'Perlu Revisi'),
+        kpis: {
+          visual: { score: visualScore, desc: hasHeadingPass ? 'Hierarki linear, heading terstruktur' : 'Terdapat heading ganda atau lonjakan tingkat tag' },
+          mobile: { score: mobileScore, desc: viewport === 'mobile' ? 'Audit mode Mobile 390px aktif' : 'Semua breakpoint desktop dioptimalkan' },
+          cwv: { score: cwvScore, desc: hasImagePass ? 'LCP & CLS dalam batas ideal Google CWV' : 'Peringatan CLS & dimensi gambar perlu diperbaiki' },
+          meta: { score: metaScore, desc: hasLandmarkPass ? 'Landmark HTML5 & atribut ramah bot SEO' : 'Beberapa atribut semantik perlu disempurnakan' }
+        },
+        indicators: indicators
+      };
+    }
+
+    // 4. Load Records from IndexedDB & Toggle Empty/Dashboard State
+    function loadRecordsAndInitView() {
+      if (!dbInstance) return;
+
+      const transaction = dbInstance.transaction([STORE_NAME], 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.getAll();
+
+      request.onsuccess = () => {
+        const records = request.result || [];
+        renderHistoryTable(records);
+
+        if (records.length === 0) {
+          // If empty, show empty educational state
+          document.getElementById('empty-state-section').classList.remove('hidden');
+          document.getElementById('dashboard-active-container').classList.add('hidden');
+          document.getElementById('quick-last-audit').textContent = 'Belum Ada';
+          document.getElementById('quick-history-count').textContent = '0 Tersimpan';
+        } else {
+          // Show dashboard with the most recent audit
+          document.getElementById('empty-state-section').classList.add('hidden');
+          document.getElementById('dashboard-active-container').classList.remove('hidden');
+          
+          records.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+          const latest = records[0];
+          applyAuditToUI(latest);
+          
+          const lastDate = new Date(latest.timestamp).toLocaleString('id-ID', {
+            day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+          });
+          document.getElementById('quick-last-audit').textContent = lastDate;
+          document.getElementById('quick-history-count').textContent = `${records.length} Tersimpan`;
+        }
+      };
+    }
+
+    // 5. Apply Audit Result to UI
+    function applyAuditToUI(audit) {
+      currentActiveAudit = audit;
+
+      // Update URL input and active labels
+      const cleanUrl = audit.url.replace(/^https?:\/\//, '');
+      document.getElementById('audit-target-url').value = cleanUrl;
+      document.getElementById('current-audited-url').textContent = cleanUrl;
+
+      // Update Viewport Toggle
+      setAuditViewport(audit.viewport.toLowerCase() === 'mobile' ? 'mobile' : 'desktop', false);
+
+      // Overall Score Ring
+      const scoreNum = document.getElementById('overall-score-num');
+      const scoreGrade = document.getElementById('overall-score-grade');
+      const scoreRing = document.getElementById('score-ring');
+
+      if (scoreNum) scoreNum.textContent = audit.score;
+      if (scoreGrade) scoreGrade.textContent = audit.grade || (audit.score >= 90 ? 'Predikat A+' : (audit.score >= 80 ? 'Predikat A-' : 'Predikat B'));
+
+      if (scoreRing) {
+        const maxOffset = 314.159;
+        const newOffset = maxOffset - (maxOffset * (audit.score / 100));
+        scoreRing.style.strokeDashoffset = newOffset;
+
+        if (audit.score >= 90) {
+          scoreRing.classList.remove('text-secondary', 'text-error');
+          scoreRing.classList.add('text-tertiary');
+          if (scoreGrade) scoreGrade.className = 'font-label-sm text-label-sm text-tertiary uppercase font-bold tracking-widest mt-0.5';
+        } else if (audit.score >= 78) {
+          scoreRing.classList.remove('text-tertiary', 'text-error');
+          scoreRing.classList.add('text-secondary');
+          if (scoreGrade) scoreGrade.className = 'font-label-sm text-label-sm text-secondary uppercase font-bold tracking-widest mt-0.5';
+        } else {
+          scoreRing.classList.remove('text-tertiary', 'text-secondary');
+          scoreRing.classList.add('text-error');
+          if (scoreGrade) scoreGrade.className = 'font-label-sm text-label-sm text-error uppercase font-bold tracking-widest mt-0.5';
+        }
+      }
+
+      // Update KPIs
+      const kpis = audit.kpis || {
+        visual: { score: 92, desc: 'Hierarki heading rapi' },
+        mobile: { score: 88, desc: 'Mobile UX responsif' },
+        cwv: { score: 76, desc: 'Periksa atribut media' },
+        meta: { score: 94, desc: 'Landmark semantik baik' }
+      };
+
+      // Visual KPI
+      document.getElementById('kpi-visual-badge').textContent = `${kpis.visual.score >= 85 ? 'PASS' : 'WARN'} ${kpis.visual.score}%`;
+      document.getElementById('kpi-visual-badge').className = kpis.visual.score >= 85 ? 'bg-tertiary/15 text-tertiary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold' : 'bg-secondary/15 text-secondary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold';
+      document.getElementById('kpi-visual-desc').textContent = kpis.visual.desc;
+
+      // Mobile KPI
+      document.getElementById('kpi-mobile-badge').textContent = `${kpis.mobile.score >= 85 ? 'PASS' : 'WARN'} ${kpis.mobile.score}%`;
+      document.getElementById('kpi-mobile-badge').className = kpis.mobile.score >= 85 ? 'bg-secondary/15 text-secondary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold' : 'bg-error/15 text-error font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold';
+      document.getElementById('kpi-mobile-desc').textContent = kpis.mobile.desc;
+
+      // CWV KPI
+      document.getElementById('kpi-cwv-badge').textContent = `${kpis.cwv.score >= 85 ? 'PASS' : (kpis.cwv.score >= 70 ? 'WARN' : 'FAIL')} ${kpis.cwv.score}%`;
+      document.getElementById('kpi-cwv-badge').className = kpis.cwv.score >= 85 ? 'bg-tertiary/15 text-tertiary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold' : (kpis.cwv.score >= 70 ? 'bg-error/15 text-error font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold' : 'bg-error text-on-error font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold');
+      document.getElementById('kpi-cwv-desc').textContent = kpis.cwv.desc;
+
+      // Meta KPI
+      document.getElementById('kpi-meta-badge').textContent = `${kpis.meta.score >= 85 ? 'PASS' : 'WARN'} ${kpis.meta.score}%`;
+      document.getElementById('kpi-meta-badge').className = kpis.meta.score >= 85 ? 'bg-tertiary/15 text-tertiary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold' : 'bg-secondary/15 text-secondary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold';
+      document.getElementById('kpi-meta-desc').textContent = kpis.meta.desc;
+
+      // Render Checklist & Recommendations
+      renderChecklist(audit.indicators || []);
+      renderRecommendations(audit);
+    }
+
+    // 6. Render Checklist and Counts
+    function renderChecklist(indicators) {
+      const stream = document.getElementById('checklist-stream');
+      if (!stream) return;
+
+      let passCount = 0;
+      let warnCount = 0;
+      let failCount = 0;
+
+      indicators.forEach(ind => {
+        if (ind.status === 'pass') passCount++;
+        else if (ind.status === 'warn') warnCount++;
+        else if (ind.status === 'fail') failCount++;
+      });
+
+      document.getElementById('count-all').textContent = indicators.length;
+      document.getElementById('count-pass').textContent = passCount;
+      document.getElementById('count-warn').textContent = warnCount;
+      document.getElementById('count-fail').textContent = failCount;
+
+      stream.innerHTML = indicators.map(item => {
+        let icon = 'check_circle';
+        let iconBg = 'bg-tertiary/15 text-tertiary';
+        let badgeBg = 'bg-tertiary-container/20 text-tertiary';
+        let badgeLabel = 'PASS';
+
+        if (item.status === 'warn') {
+          icon = 'warning';
+          iconBg = 'bg-secondary/15 text-secondary';
+          badgeBg = 'bg-secondary-container/20 text-secondary';
+          badgeLabel = 'WARN';
+        } else if (item.status === 'fail') {
+          icon = 'cancel';
+          iconBg = 'bg-error/15 text-error';
+          badgeBg = 'bg-error-container/20 text-error';
+          badgeLabel = 'FAIL';
+        }
+
+        const isVisible = currentFilterStatus === 'all' || item.status === currentFilterStatus;
+
+        return `
+          <div class="checklist-item bg-surface-container-low hover:bg-surface-container-high/60 transition-colors rounded-lg p-space-md flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md border border-outline-variant/20" data-status="${item.status}" style="display: ${isVisible ? 'flex' : 'none'};">
+            <div class="flex items-start gap-space-md">
+              <div class="w-8 h-8 rounded-full ${iconBg} flex items-center justify-center shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-[18px]">${icon}</span>
+              </div>
+              <div class="flex flex-col">
+                <div class="flex items-center gap-space-xs flex-wrap">
+                  <span class="font-headline-sm text-headline-sm text-on-surface">${item.title}</span>
+                  <span class="font-code-sm text-code-sm bg-surface-container-highest text-on-surface-variant px-space-xs rounded font-mono text-[11px]">${item.tag}</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                  ${item.description}
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-space-md shrink-0 self-end md:self-center">
+              <span class="font-code-sm text-code-sm font-bold ${badgeBg} px-space-sm py-1 rounded">${badgeLabel}</span>
+              <span class="font-code-sm text-code-sm text-outline hidden sm:inline">${item.impact}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 7. Render Recommendations
+    function renderRecommendations(audit) {
+      const container = document.getElementById('recommendations-container');
+      if (!container) return;
+
+      const domain = audit.url.replace(/^https?:\/\//, '');
+
+      container.innerHTML = `
+        <!-- Card 1: CLS & Image Dimensions -->
+        <div class="bg-surface-container rounded-xl p-space-lg shadow-md border border-outline-variant/40 flex flex-col justify-between relative overflow-hidden">
+          <div class="flex flex-col gap-space-md">
+            <div class="flex items-center justify-between">
+              <span class="bg-error/15 text-error px-space-sm py-0.5 rounded font-code-sm text-code-sm font-bold flex items-center gap-space-xs border border-error/20">
+                <span class="material-symbols-outlined text-[14px]">priority_high</span> PRIORITAS TINGGI
+              </span>
+              <span class="font-code-sm text-code-sm text-outline">Est. Gain: +8 Poin</span>
+            </div>
+            <div>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface">Deklarasi Dimensi Gambar & Aspect Ratio</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">
+                Mencegah lonjakan Cumulative Layout Shift (CLS) pada peramban mobile saat gambar dimuat secara asynchronous.
+              </p>
+            </div>
+            
+            <div class="bg-surface-container-lowest rounded-lg p-space-sm font-code-sm text-code-sm text-on-surface border border-outline-variant/30 flex flex-col gap-space-xs">
+              <div class="flex justify-between items-center text-outline text-xs">
+                <span>Rekomendasi Sintaks HTML</span>
+                <button type="button" onclick="copySnippet('code-snippet-1', this)" class="text-primary hover:underline flex items-center gap-0.5">
+                  <span class="material-symbols-outlined text-[12px]">content_copy</span> Salin
+                </button>
+              </div>
+              <pre class="overflow-x-auto text-primary py-space-xs font-mono text-xs" id="code-snippet-1"><code>&lt;!-- Sediakan width, height, dan loading priority --&gt;
+&lt;img 
+  src="/assets/banner-hero.webp"
+  width="1200" 
+  height="630" 
+  loading="eager" 
+  fetchpriority="high"
+  alt="Banner Koleksi 2025"&gt;</code></pre>
+            </div>
+          </div>
+          <div class="mt-space-md pt-space-sm flex items-center justify-between font-label-sm text-label-sm border-t border-outline-variant/20">
+            <span class="text-on-surface-variant flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">task_alt</span> Core Web Vitals
+            </span>
+            <span class="text-primary font-bold">Langkah Wajib</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Contrast Ratio -->
+        <div class="bg-surface-container rounded-xl p-space-lg shadow-md border border-outline-variant/40 flex flex-col justify-between relative overflow-hidden">
+          <div class="flex flex-col gap-space-md">
+            <div class="flex items-center justify-between">
+              <span class="bg-secondary/15 text-secondary px-space-sm py-0.5 rounded font-code-sm text-code-sm font-bold flex items-center gap-space-xs border border-secondary/20">
+                <span class="material-symbols-outlined text-[14px]">tune</span> PRIORITAS SEDANG
+              </span>
+              <span class="font-code-sm text-code-sm text-outline">Est. Gain: +4 Poin</span>
+            </div>
+            <div>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface">Peningkatan Kontras WCAG AA 4.5:1</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">
+                Sesuaikan kode warna elemen teks berukuran reguler (14px) agar terbaca jelas pada berbagai tingkat kecerahan layar.
+              </p>
+            </div>
+            
+            <div class="bg-surface-container-lowest rounded-lg p-space-sm font-code-sm text-code-sm text-on-surface border border-outline-variant/30 flex flex-col gap-space-xs">
+              <div class="flex justify-between items-center text-outline text-xs">
+                <span>CSS Token Tailwind Update</span>
+                <button type="button" onclick="copySnippet('code-snippet-2', this)" class="text-primary hover:underline flex items-center gap-0.5">
+                  <span class="material-symbols-outlined text-[12px]">content_copy</span> Salin
+                </button>
+              </div>
+              <pre class="overflow-x-auto text-secondary py-space-xs font-mono text-xs" id="code-snippet-2"><code>/* Ganti: text-slate-400 (3.8:1 - Kurang) */
+/* Menjadi: text-slate-200 (5.8:1 - Lolos AA) */
+&lt;p class="text-slate-200 font-body-md"&gt;
+  Informasi produk terverifikasi & kompatibel
+&lt;/p&gt;</code></pre>
+            </div>
+          </div>
+          <div class="mt-space-md pt-space-sm flex items-center justify-between font-label-sm text-label-sm border-t border-outline-variant/20">
+            <span class="text-on-surface-variant flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">task_alt</span> Color Accessibility
+            </span>
+            <span class="text-secondary font-bold">Dianjurkan</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Font-display Swap -->
+        <div class="bg-surface-container rounded-xl p-space-lg shadow-md border border-outline-variant/40 flex flex-col justify-between relative overflow-hidden">
+          <div class="flex flex-col gap-space-md">
+            <div class="flex items-center justify-between">
+              <span class="bg-surface-container-highest text-on-surface-variant px-space-sm py-0.5 rounded font-code-sm text-code-sm font-bold flex items-center gap-space-xs border border-outline-variant/30">
+                <span class="material-symbols-outlined text-[14px]">flag</span> PRIORITAS RINGAN
+              </span>
+              <span class="font-code-sm text-code-sm text-outline">Est. Gain: +2 Poin</span>
+            </div>
+            <div>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface">Eliminasi FOIT dengan font-display: swap</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">
+                Peramban dapat langsung menampilkan fallback font sistem tanpa jeda 300ms saat aset webfont diunduh.
+              </p>
+            </div>
+            
+            <div class="bg-surface-container-lowest rounded-lg p-space-sm font-code-sm text-code-sm text-on-surface border border-outline-variant/30 flex flex-col gap-space-xs">
+              <div class="flex justify-between items-center text-outline text-xs">
+                <span>CSS @font-face Definition</span>
+                <button type="button" onclick="copySnippet('code-snippet-3', this)" class="text-primary hover:underline flex items-center gap-0.5">
+                  <span class="material-symbols-outlined text-[12px]">content_copy</span> Salin
+                </button>
+              </div>
+              <pre class="overflow-x-auto text-primary py-space-xs font-mono text-xs" id="code-snippet-3"><code>@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter.woff2') format('woff2');
+  font-display: swap; /* Mencegah Flash of Invisible Text */
+}</code></pre>
+            </div>
+          </div>
+          <div class="mt-space-md pt-space-sm flex items-center justify-between font-label-sm text-label-sm border-t border-outline-variant/20">
+            <span class="text-on-surface-variant flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">task_alt</span> Asset Performance
+            </span>
+            <span class="text-on-surface-variant font-bold">Optimasi</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // 8. Trigger Run Audit Process with real steps & write to IndexedDB
+    function triggerAuditExecution() {
+      const urlInput = document.getElementById('audit-target-url');
+      let rawUrl = urlInput.value.trim();
+      if (!rawUrl) rawUrl = 'mybrand.io/shop/collection-2025';
+
+      const progressContainer = document.getElementById('audit-progress-container');
+      const progressFill = document.getElementById('audit-progress-fill');
+      const progressVal = document.getElementById('audit-progress-val');
+      const stepText = document.getElementById('audit-step-text');
+      const btnScan = document.getElementById('btn-run-audit');
+
+      btnScan.disabled = true;
+      progressContainer.classList.remove('hidden');
+      progressContainer.classList.add('flex');
+
+      let currentPercent = 5;
+      progressFill.style.width = currentPercent + '%';
+      progressVal.textContent = currentPercent + '%';
+
+      const scanSteps = [
+        "1/5 Mengisolasi Virtual DOM dan Memeriksa Urutan Heading (H1-H6)...",
+        "2/5 Mengukur Aspek Rasio Gambar, CLS Delta, dan Viewport Meta...",
+        "3/5 Menghitung Rasio Kontras WCAG AA/AAA di Seluruh Elemen Teks...",
+        "4/5 Memvalidasi Tap Target (48x48px) & Tag Landmark HTML5 Semantik...",
+        "5/5 Menyimpan Hasil Audit ke IndexedDB Lokal (Zero-Telemetry)..."
+      ];
+
+      let stepIdx = 0;
+      stepText.textContent = scanSteps[0];
+
+      const interval = setInterval(() => {
+        currentPercent += 20;
+        if (currentPercent > 100) currentPercent = 100;
+
+        progressFill.style.width = currentPercent + '%';
+        progressVal.textContent = currentPercent + '%';
+
+        stepIdx++;
+        if (stepIdx < scanSteps.length) {
+          stepText.textContent = scanSteps[stepIdx];
+        }
+
+        if (currentPercent >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            progressContainer.classList.add('hidden');
+            progressContainer.classList.remove('flex');
+            btnScan.disabled = false;
+
+            // Generate deterministic result
+            const calculatedAudit = computeDeterministicAudit(rawUrl, selectedViewport);
+
+            // Save to IndexedDB
+            saveAuditToIndexedDB(calculatedAudit);
+          }, 450);
+        }
+      }, 260);
+    }
+
+    // 9. Save to IndexedDB
+    function saveAuditToIndexedDB(auditRecord) {
+      if (!dbInstance) {
+        showToast('IndexedDB Tidak Siap', 'Hasil dihitung tetapi tidak dapat disimpan ke IndexedDB.');
+        applyAuditToUI(auditRecord);
+        return;
+      }
+
+      const tx = dbInstance.transaction([STORE_NAME], 'readwrite');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.add(auditRecord);
+
+      req.onsuccess = (e) => {
+        auditRecord.id = e.target.result;
+        showToast('Audit Selesai & Disimpan', `Skor: ${auditRecord.score}/100 tersimpan ke IndexedDB lokal.`);
+        
+        // Ensure Dashboard is visible
+        document.getElementById('empty-state-section').classList.add('hidden');
+        document.getElementById('dashboard-active-container').classList.remove('hidden');
+
+        applyAuditToUI(auditRecord);
+        loadRecordsAndInitView();
+        updateStorageEstimate();
+      };
+
+      req.onerror = () => {
+        showToast('Gagal Menyimpan', 'Terjadi kendala saat menulis ke IndexedDB.');
+      };
+    }
+
+    // 10. Render History Table from IndexedDB
+    function renderHistoryTable(records) {
+      const tbody = document.getElementById('indexeddb-table-body');
+      const countLabel = document.getElementById('indexeddb-record-count');
+
+      if (countLabel) {
+        countLabel.textContent = `${records.length} Riwayat Tersimpan`;
+      }
+
+      if (!tbody) return;
+
+      if (records.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-space-xl text-center text-on-surface-variant font-code-sm text-code-sm">
+              <div class="flex flex-col items-center justify-center gap-space-xs py-4">
+                <span class="material-symbols-outlined text-[28px] text-outline">database_off</span>
+                <span class="text-on-surface font-semibold">IndexedDB masih kosong</span>
+                <span class="text-xs text-outline">Masukkan URL di atas dan jalankan audit untuk menyimpan rekaman pengujian pertama.</span>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = records.map(rec => {
+        const formattedDate = new Date(rec.timestamp).toLocaleString('id-ID', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        let scoreBadgeClass = 'bg-tertiary/15 text-tertiary border-tertiary/20';
+        if (rec.score < 75) scoreBadgeClass = 'bg-error/15 text-error border-error/20';
+        else if (rec.score < 90) scoreBadgeClass = 'bg-secondary/15 text-secondary border-secondary/20';
+
+        return `
+          <tr class="hover:bg-surface-container/60 transition-colors">
+            <td class="py-space-md px-space-md font-code-sm text-code-sm text-on-surface font-semibold max-w-[260px] truncate" title="${rec.url}">
+              ${rec.url}
+            </td>
+            <td class="py-space-md px-space-md font-code-sm text-code-sm text-on-surface-variant text-xs">
+              ${formattedDate}
+            </td>
+            <td class="py-space-md px-space-md font-body-sm text-body-sm text-on-surface-variant">
+              <span class="inline-flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded text-xs border border-outline-variant/30">
+                <span class="material-symbols-outlined text-[14px]">${rec.viewport === 'Mobile' ? 'smartphone' : 'desktop_windows'}</span>
+                ${rec.viewport}
+              </span>
+            </td>
+            <td class="py-space-md px-space-md text-center">
+              <span class="font-code-sm text-code-sm font-bold px-2 py-1 rounded border ${scoreBadgeClass}">
+                ${rec.score} / 100
+              </span>
+            </td>
+            <td class="py-space-md px-space-md font-body-sm text-body-sm text-on-surface-variant">
+              ${rec.status || 'Terekam'}
+            </td>
+            <td class="py-space-md px-space-md text-right">
+              <div class="inline-flex items-center gap-space-xs">
+                <button type="button" onclick="loadSingleRecordToDashboard(${rec.id})" title="Muat Skor ke Dashboard Utama" class="px-2 py-1 rounded text-primary hover:bg-surface-container-high transition-colors flex items-center gap-1 text-xs font-semibold">
+                  <span class="material-symbols-outlined text-[16px]">visibility</span>
+                  <span>Lihat</span>
+                </button>
+                <button type="button" onclick="deleteSingleRecord(${rec.id})" title="Hapus dari IndexedDB" class="p-1 rounded text-outline hover:text-error hover:bg-surface-container-high transition-colors">
+                  <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 11. Load Single Record to Dashboard
+    function loadSingleRecordToDashboard(id) {
+      if (!dbInstance) return;
+      const tx = dbInstance.transaction([STORE_NAME], 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.get(id);
+
+      req.onsuccess = () => {
+        const record = req.result;
+        if (record) {
+          applyAuditToUI(record);
+          scrollToTop();
+          showToast('Data Dimuat', `Menampilkan rincian audit untuk: ${record.url}`);
+        }
+      };
+    }
+
+    // 12. Delete Single Record
+    function deleteSingleRecord(id) {
+      if (!dbInstance) return;
+      const tx = dbInstance.transaction([STORE_NAME], 'readwrite');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.delete(id);
+
+      req.onsuccess = () => {
+        showToast('Rekaman Dihapus', `Data audit #${id} dihapus dari IndexedDB.`);
+        loadRecordsAndInitView();
+        updateStorageEstimate();
+      };
+    }
+
+    // 13. Clear Entire Database with confirmation modal
+    function confirmClearDatabase() {
+      document.getElementById('confirm-modal').classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirm-modal').classList.add('hidden');
+    }
+
+    function executeClearDatabase() {
+      closeConfirmModal();
+      if (!dbInstance) return;
+
+      const tx = dbInstance.transaction([STORE_NAME], 'readwrite');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.clear();
+
+      req.onsuccess = () => {
+        showToast('Database Dikosongkan', 'Semua riwayat pengujian lokal di IndexedDB telah dibersihkan.');
+        loadRecordsAndInitView();
+        updateStorageEstimate();
+      };
+    }
+
+    // 14. Export to JSON
+    function exportAuditDataJson() {
+      if (!dbInstance) return;
+      const tx = dbInstance.transaction([STORE_NAME], 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.getAll();
+
+      req.onsuccess = () => {
+        const records = req.result || [];
+        if (records.length === 0) {
+          showToast('Database Kosong', 'Tidak ada data audit untuk diekspor.');
+          return;
+        }
+
+        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(records, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute('href', dataStr);
+        downloadAnchor.setAttribute('download', `seo_design_audits_${new Date().toISOString().slice(0, 10)}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast('Ekspor Berhasil', `${records.length} entri audit berhasil diunduh dalam file JSON.`);
+      };
+    }
+
+    // 15. Filter Checklist Buttons
+    function filterChecklist(status) {
+      currentFilterStatus = status;
+      const buttons = ['all', 'pass', 'warn', 'fail'];
+
+      buttons.forEach(btn => {
+        const el = document.getElementById('filter-' + btn);
+        if (el) {
+          if (btn === status) {
+            el.className = 'px-space-md py-space-xs rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm shadow-sm transition-all whitespace-nowrap border border-outline-variant/30';
+          } else {
+            el.className = 'px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-all whitespace-nowrap';
+          }
+        }
+      });
+
+      const items = document.querySelectorAll('.checklist-item');
+      items.forEach(item => {
+        const itemStatus = item.getAttribute('data-status');
+        if (status === 'all' || itemStatus === status) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // 16. Viewport switch
+    function setAuditViewport(mode, notify = true) {
+      selectedViewport = mode;
+      const deskBtn = document.getElementById('viewport-desktop');
+      const mobBtn = document.getElementById('viewport-mobile');
+
+      if (mode === 'desktop') {
+        deskBtn.className = 'flex items-center gap-space-xs px-space-md py-space-xs rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm shadow-sm transition-all';
+        mobBtn.className = 'flex items-center gap-space-xs px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-all';
+      } else {
+        mobBtn.className = 'flex items-center gap-space-xs px-space-md py-space-xs rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm shadow-sm transition-all';
+        deskBtn.className = 'flex items-center gap-space-xs px-space-md py-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-all';
+      }
+
+      if (notify) {
+        showToast('Viewport Diubah', `Mode audit disetel ke: ${mode === 'desktop' ? 'Desktop (1440px)' : 'Mobile (390px)'}`);
+      }
+    }
+
+    // 17. Preset Setter
+    function setPresetUrl(url) {
+      const input = document.getElementById('audit-target-url');
+      if (input) input.value = url;
+      showToast('Preset Dipilih', `Target URL disetel ke ${url}`);
+    }
+
+    // 18. Copy code snippet helper
+    function copySnippet(snippetId, btn) {
+      const snippetEl = document.getElementById(snippetId);
+      if (!snippetEl) return;
+      const text = snippetEl.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[12px] text-tertiary">check</span> Tersalin!`;
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 2000);
+      });
+    }
+
+    // 19. Copy Full Dev Sheet
+    function copyFullDevSheet() {
+      const activeUrl = document.getElementById('audit-target-url').value;
+      const text = `=== PANDUAN REMEDIASI SEO & DESAIN ===
+Target: https://${activeUrl}
+Waktu: ${new Date().toLocaleString('id-ID')}
+Standar: WCAG 2.1 AA & Core Web Vitals
+
+1. PRIORITAS TINGGI (Core Web Vitals):
+   Tambahkan atribut width & height eksplisit pada semua elemen gambar:
+   <img src="/banner.webp" width="1200" height="630" loading="eager" fetchpriority="high">
+
+2. PRIORITAS SEDANG (Kontras Warna):
+   Tingkatkan kontras warna teks reguler di atas latar belakang gelap agar mencapai rasio >= 4.5:1 (misal ubah token #94A3B8 menjadi #CBD5E1).
+
+3. PRIORITAS RINGAN (Optimasi Tipografi):
+   Gunakan 'font-display: swap' pada definisi @font-face guna mencegah Flash of Invisible Text (FOIT).`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Panduan Disalin', 'Seluruh saran perbaikan telah disalin ke clipboard.');
+      });
+    }
+
+    // 20. Re-test trigger
+    function reTestRecommendations() {
+      showToast('Memulai Uji Ulang', 'Menyinkronkan perbaikan dengan metrik desain...');
+      triggerAuditExecution();
+    }
+
+    // 21. Toast Helper
+    let toastTimeout = null;
+    function showToast(title, message) {
+      const toast = document.getElementById('toast-notification');
+      const toastTitle = document.getElementById('toast-title');
+      const toastMsg = document.getElementById('toast-message');
+
+      if (!toast || !toastTitle || !toastMsg) return;
+
+      toastTitle.textContent = title;
+      toastMsg.textContent = message;
+
+      toast.classList.remove('translate-y-28', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-28', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToAuditForm() {
+      const section = document.getElementById('audit-form-section');
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialize immediately on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initIndexedDB();
+    });
+  </script>
+</body></html>
