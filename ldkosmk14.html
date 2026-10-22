@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LDKO SMKN 14 - Digital Leadership Masterclass (Slide 1-7)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #fbf9f5;
+      color: #1e293b;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(1deg); }
+    }
+    @keyframes pulseSoft {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.03); }
+    }
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .anim-float {
+      animation: floatSlow 4s ease-in-out infinite;
+    }
+    .anim-pulse-soft {
+      animation: pulseSoft 2.5s ease-in-out infinite;
+    }
+    .anim-slide-up {
+      animation: slideInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .glow-orange {
+      box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.25), 0 8px 10px -6px rgba(249, 115, 22, 0.2);
+    }
+    .glow-cyan {
+      box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.25);
+    }
+    .pressable {
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .pressable:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#fcfaf6] text-slate-800 flex flex-col justify-between antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- TOP APP BAR / HEADER (Responsive Mobile-First) -->
+  <header class="sticky top-0 z-50 glass-card border-b border-amber-100/80 px-3.5 py-2.5 sm:px-6 sm:py-3 transition-all duration-300">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
+      <!-- Brand & Info -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-orange-600 via-amber-500 to-rose-500 text-white font-extrabold flex items-center justify-center shadow-md shadow-orange-500/20 text-sm sm:text-base tracking-tight">
+          14
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-xs sm:text-sm font-extrabold tracking-tight text-slate-900 leading-none">LDKO OSIS SMKN 14</span>
+            <span class="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase rounded-md bg-orange-100 text-orange-700 border border-orange-200">
+              AI Leaders 2026
+            </span>
+          </div>
+          <p class="text-[10px] sm:text-xs text-slate-500 font-medium leading-tight mt-0.5 hidden xs:block">
+            Modul Digital Leadership Interaktif • Kota Bekasi
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Push Notification Toggle Button -->
+        <button id="btnNotif" onclick="togglePushNotification()" class="pressable flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold border transition-all bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100" title="Aktifkan Notifikasi Pengingat LDKO">
+          <span id="notifIcon" class="text-xs">🔔</span>
+          <span id="notifLabel" class="hidden sm:inline">Notif</span>
+          <span id="notifStatusBadge" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        </button>
+
+        <!-- IndexedDB Sync Indicator -->
+        <button onclick="inspectIndexedDB()" class="pressable flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100" title="Data Disimpan di IndexedDB Lokal">
+          <span class="text-[10px]">💾</span>
+          <span class="hidden md:inline font-mono text-[10px]" id="dbRecordCount">IDB: 0 Ikrar</span>
+        </button>
+
+        <!-- Presentation Mode / Auto Play -->
+        <button id="btnAutoPlay" onclick="toggleAutoPlay()" class="pressable px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 flex items-center gap-1 shadow-sm">
+          <span id="playIcon">▶</span>
+          <span class="hidden sm:inline" id="playText">Otomatis</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- HORIZONTAL SLIDE STEPPER NAV (Tap to jump) -->
+    <div class="max-w-6xl mx-auto mt-2 pt-1 border-t border-slate-100 flex items-center gap-1 sm:gap-1.5 overflow-x-auto custom-scroll pb-1">
+      <button onclick="goToSlide(1)" id="tab-1" class="tab-btn px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1">
+        <span>1.</span> Fondasi vs AI
+      </button>
+      <button onclick="goToSlide(2)" id="tab-2" class="tab-btn px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1">
+        <span>2.</span> 4 Pilar
+      </button>
+      <button onclick="goToSlide(3)" id="tab-3" class="tab-btn px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1">
+        <span>3.</span> Tech Stack
+      </button>
+      <button onclick="goToSlide(4)" id="tab-4" class="tab-btn px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1">
+        <span>4.</span> Prompting
+      </button>
+      <button onclick="goToSlide(5)" id="tab-5" class="tab-btn px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1">
+        <span>5.</span> Etika & Hoaks
+      </button>
+      <button onclick="goToSlide(6)" id="tab-6" class="tab-btn px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1">
+        <span>6.</span> Privasi Data
+      </button>
+      <button onclick="goToSlide(7)" id="tab-7" class="tab-btn px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1">
+        <span>7.</span> Puncak Pledge ⭐
+      </button>
+    </div>
+  </header>
+
+  <!-- PUSH NOTIFICATION TOAST POPUP (Simulated Web Push) -->
+  <div id="pushToast" class="fixed top-16 right-3 sm:right-6 z-50 max-w-sm w-[92vw] sm:w-auto bg-slate-900 text-white p-3.5 rounded-2xl shadow-2xl border border-slate-700 transform translate-y-[-150%] transition-transform duration-300 pointer-events-none flex items-start gap-3">
+    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-400 flex items-center justify-center text-lg flex-shrink-0">
+      ⚡
+    </div>
+    <div class="flex-1 pr-2">
+      <div class="flex items-center justify-between">
+        <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider" id="toastCategory">Notifikasi LDKO</h4>
+        <span class="text-[9px] text-slate-400">Baru saja</span>
+      </div>
+      <p class="text-xs font-medium text-slate-200 mt-0.5 leading-snug" id="toastMessage">Pengingat Integritas: Validasi sebelum publikasi!</p>
+    </div>
+    <button onclick="hidePushToast()" class="text-slate-400 hover:text-white pointer-events-auto text-sm p-1">✕</button>
+  </div>
+
+  <!-- MAIN PRESENTATION CANVAS CONTAINER -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-3 sm:p-6 transition-all duration-300">
+
+    <!-- ========================================== -->
+    <!-- SLIDE 1: FONDASI DIGITAL LEADERSHIP VS AI  -->
+    <!-- ========================================== -->
+    <section id="slide-1" class="slide-view hidden anim-slide-up space-y-4 sm:space-y-6">
+      <!-- Hero Header -->
+      <div class="text-center max-w-3xl mx-auto space-y-2 pt-2 sm:pt-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-bold border border-orange-200 tracking-wide">
+          <span>🚀 MODUL 01 // FONDASI</span> • <span>Masa Bakti 2026/2027</span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          Digital Leadership: Menjadi Pemimpin Berkarakter di Era AI 🚀
+        </h1>
+        <p class="text-sm sm:text-base text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed">
+          "AI mungkin bisa membuat program dalam 5 detik, tapi <strong class="text-slate-900 font-bold">AI tidak punya nurani</strong>. Kepemimpinan tetap milik manusia."
+        </p>
+      </div>
+
+      <!-- Core Comparative Cards (Sesuai Slide1.JPG) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 pt-2">
+        <!-- Sisi Kiri: Kecerdasan Super (AI) -->
+        <div class="glass-card rounded-2xl p-5 sm:p-7 border-slate-200/90 relative overflow-hidden group hover:border-slate-400 transition-all">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-slate-200/50 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+          <div class="flex flex-col items-center text-center space-y-3">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-b from-slate-100 to-slate-200 border-2 border-slate-300 flex items-center justify-center text-4xl shadow-inner anim-float">
+              🧠⚡
+            </div>
+            <div class="px-3.5 py-1 rounded-full bg-slate-900 text-white text-xs font-bold tracking-wider uppercase">
+              Kecerdasan Super ⚡
+            </div>
+            <p class="text-slate-500 font-semibold text-xs sm:text-sm">
+              Cepat, Instan, Tanpa Hati.
+            </p>
+            <div class="w-full pt-3 border-t border-slate-100 text-left text-xs space-y-1.5 text-slate-600">
+              <div class="flex items-center gap-2">
+                <span class="text-emerald-500">✔</span> Mengolah ribuan data dalam hitungan detik
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-emerald-500">✔</span> Membuat draf teks dan desain otomatis
+              </div>
+              <div class="flex items-center gap-2 text-rose-600 font-medium">
+                <span class="text-rose-500">✖</span> Buta konteks perasaan & persahabatan siswa
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sisi Kanan: Karakter Manusia (Leader) -->
+        <div class="glass-card rounded-2xl p-5 sm:p-7 border-amber-300/80 bg-gradient-to-b from-amber-50/60 to-orange-50/40 relative overflow-hidden group hover:border-orange-400 transition-all glow-orange">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-orange-300/30 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+          <div class="flex flex-col items-center text-center space-y-3">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-b from-orange-100 to-amber-200 border-2 border-orange-300 flex items-center justify-center text-4xl shadow-inner anim-float" style="animation-delay: 1.5s;">
+              ❤️🧭
+            </div>
+            <div class="px-3.5 py-1 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 text-white text-xs font-bold tracking-wider uppercase shadow-sm">
+              Karakter Manusia 🧭
+            </div>
+            <p class="text-orange-950 font-bold text-xs sm:text-sm">
+              Empati, Etika, Arah.
+            </p>
+            <div class="w-full pt-3 border-t border-orange-200/60 text-left text-xs space-y-1.5 text-slate-700">
+              <div class="flex items-center gap-2 font-semibold">
+                <span class="text-orange-600">★</span> Mengayomi siswa SMKN 14 Kota Bekasi
+              </div>
+              <div class="flex items-center gap-2 font-semibold">
+                <span class="text-orange-600">★</span> Bertanggung jawab moral atas keputusan tim
+              </div>
+              <div class="flex items-center gap-2 font-semibold">
+                <span class="text-orange-600">★</span> Menjadi kompas kebenaran di tengah hoaks
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interaktif Playful Widget: Simulasi Kepemimpinan vs AI -->
+      <div class="glass-card rounded-2xl p-4 sm:p-6 border-slate-200 text-center space-y-3">
+        <h3 class="text-sm sm:text-base font-extrabold text-slate-900">
+          🎮 Uji Reaksi Kepemimpinan: Klik Skenario untuk Menentukan Arah
+        </h3>
+        <div class="flex flex-wrap justify-center gap-2">
+          <button onclick="runScenario1('tugas')" class="pressable px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-300 hover:border-orange-500 hover:bg-orange-50 text-slate-700">
+            📝 Draf Proposal Pensi
+          </button>
+          <button onclick="runScenario1('konflik')" class="pressable px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-300 hover:border-orange-500 hover:bg-orange-50 text-slate-700">
+            🤝 Teman Sekbid Berselisih
+          </button>
+          <button onclick="runScenario1('evaluasi')" class="pressable px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-300 hover:border-orange-500 hover:bg-orange-50 text-slate-700">
+            📊 Rekap Angket Aspirasi Siswa
+          </button>
+        </div>
+        <div id="scenario1Result" class="p-3 rounded-xl bg-amber-50/80 border border-amber-200 text-xs text-slate-700 font-medium">
+          💡 <em>Pilih salah satu skenario di atas untuk melihat pembagian porsi kerja AI vs Pemimpin Manusia.</em>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 2: 4 PILAR PEMIMPIN DIGITAL SEJATI   -->
+    <!-- ========================================== -->
+    <section id="slide-2" class="slide-view hidden anim-slide-up space-y-4 sm:space-y-6">
+      <div class="text-center max-w-3xl mx-auto space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold border border-blue-200">
+          <span>📱 MODUL 02 // 4 PILAR</span> • <span>Prinsip Utama Pengurus</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          4 Pilar Pemimpin Digital Sejati 📱✨
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600">
+          Sentuh kartu pilar di bawah untuk mengaktifkan pemahaman dan membuka kunci lencana kepemimpinan.
+        </p>
+      </div>
+
+      <!-- 4 Pillars Grid (Sesuai Slide2.JPG) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-5">
+        <!-- Pilar 1: Melek Teknologi -->
+        <div onclick="tapPillar(1)" id="pilar-card-1" class="glass-card rounded-2xl p-4 sm:p-5 border-slate-200 cursor-pointer pressable hover:border-blue-400 transition-all relative overflow-hidden group">
+          <div class="flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-110 transition-transform">
+              📱
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">Melek Teknologi 📱</h3>
+                <span id="pilar-badge-1" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">Sentuh</span>
+              </div>
+              <p class="text-xs font-bold text-blue-600">Kerja Cerdas, Bukan Keras</p>
+              <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
+                Paham fungsi alat digital untuk mempermudah kerja tim OSIS (contoh: ubah rekap manual absensi jadi otomatis di Google Sheet/App).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pilar 2: Kritis -->
+        <div onclick="tapPillar(2)" id="pilar-card-2" class="glass-card rounded-2xl p-4 sm:p-5 border-slate-200 cursor-pointer pressable hover:border-rose-400 transition-all relative overflow-hidden group">
+          <div class="flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-110 transition-transform">
+              🧠
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">Kritis 🧠</h3>
+                <span id="pilar-badge-2" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">Sentuh</span>
+              </div>
+              <p class="text-xs font-bold text-rose-600">Saringan Pertama ⚠️</p>
+              <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
+                Jangan gampang telan informasi mentah-mentah atau percaya 100% pada halusinasi AI. Wajib Double Check dan verifikasi fakta!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pilar 3: Kolaboratif -->
+        <div onclick="tapPillar(3)" id="pilar-card-3" class="glass-card rounded-2xl p-4 sm:p-5 border-slate-200 cursor-pointer pressable hover:border-amber-400 transition-all relative overflow-hidden group">
+          <div class="flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-110 transition-transform">
+              🤝
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">Kolaboratif 🤝</h3>
+                <span id="pilar-badge-3" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">Sentuh</span>
+              </div>
+              <p class="text-xs font-bold text-amber-600">Share Skill, Bukan Pamer 📢</p>
+              <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
+                Gunakan teknologi untuk menyatukan kerja sekbid (Humas, Rohis, Kedisiplinan), bukan menonjolkan diri sendiri.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pilar 4: Berintegritas -->
+        <div onclick="tapPillar(4)" id="pilar-card-4" class="glass-card rounded-2xl p-4 sm:p-5 border-slate-200 cursor-pointer pressable hover:border-emerald-400 transition-all relative overflow-hidden group">
+          <div class="flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-110 transition-transform">
+              🛡️
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">Berintegritas 🛡️</h3>
+                <span id="pilar-badge-4" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">Sentuh</span>
+              </div>
+              <p class="text-xs font-bold text-emerald-600">Jujur Tanpa Ada yang Lihat ⚖️</p>
+              <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
+                AI adalah asisten, tapi tanggung jawab dan keputusan moral tetap ada di tangan kalian sepenuhnya.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote Banner Sesuai Slide2.JPG -->
+      <div class="p-3.5 sm:p-4 rounded-xl bg-amber-50 border border-amber-200 text-center font-semibold text-xs sm:text-sm text-amber-900 flex items-center justify-center gap-2">
+        <span>💡</span>
+        <span>"Memiliki smartphone tidak membuatmu jadi pemimpin. <strong>Kebijaksanaanlah yang menentukannya.</strong>"</span>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 3: OSIS TECH STACK (WORKFLOW HARIAN) -->
+    <!-- ========================================== -->
+    <section id="slide-3" class="slide-view hidden anim-slide-up space-y-4 sm:space-y-6">
+      <div class="text-center max-w-3xl mx-auto space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold border border-emerald-200">
+          <span>⚙️ MODUL 03 // TECH STACK</span> • <span>Asisten Pribadi 24 Jam</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          OSIS Tech Stack: Asisten Pribadi 24 Jam Kamu ⚙️
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600">
+          4 Alur kerja otomatisasi harian agar pengurus fokus pada aksi lapangan.
+        </p>
+      </div>
+
+      <!-- 4 Pipeline Blueprint (Sesuai Slide3.JPG) -->
+      <div class="space-y-3">
+        <!-- Pipeline 1: Humas -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 border-slate-200 space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-800">
+              Pipeline ✍️ Bikin Konten Sosmed (Humas) 🚀
+            </span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800">
+              ✅ Kelar dalam 30 menit, bukan 3 jam! ✨
+            </span>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center text-xs">
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xl mb-1">🤖💭</div>
+              <p class="font-bold text-slate-800">Brainstorm Ide</p>
+              <p class="text-[10px] text-slate-500">Gemini / Claude</p>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xl mb-1">🎨📐</div>
+              <p class="font-bold text-slate-800">Desain Visual</p>
+              <p class="text-[10px] text-slate-500">Canva Magic</p>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xl mb-1">🎬📱</div>
+              <p class="font-bold text-slate-800">Video Pendek</p>
+              <p class="text-[10px] text-slate-500">CapCut Reels</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline 2: Sekretaris -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 border-slate-200 space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-800">
+              Menemo 📝 Notulensi & Arsip Rapat (Sekretaris) ✍️
+            </span>
+            <span class="text-xs text-slate-500 font-semibold">
+              ⚡ Rapat selesai, notulensi terkirim
+            </span>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center text-xs">
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xl mb-1">🎙️📄</div>
+              <p class="font-bold text-slate-800">Rekam di GDocs</p>
+              <p class="text-[10px] text-slate-500">Voice Typing</p>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xl mb-1">⚙️📋</div>
+              <p class="font-bold text-slate-800">Summary & Action</p>
+              <p class="text-[10px] text-slate-500">Ekstrak Tugas AI</p>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xl mb-1">☁️📁</div>
+              <p class="font-bold text-slate-800">Satu Folder Bersama</p>
+              <p class="text-[10px] text-slate-500">Google Drive OSIS</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline 3 & 4 (Grid 2 Kolom) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Absensi -->
+          <div class="glass-card rounded-2xl p-4 border-slate-200">
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-purple-100 text-purple-800">Chart 📊</span>
+            <h4 class="font-bold text-slate-900 text-xs sm:text-sm mt-1">Absensi Kegiatan Cepat 📊</h4>
+            <p class="text-xs text-slate-600 mt-1">
+              <strong>Scan GForms di gerbang</strong> ➔ Rekap otomatis per kelas & jurusan di GSpreadsheet tanpa antre panjang.
+            </p>
+          </div>
+          <!-- Razia & BK -->
+          <div class="glass-card rounded-2xl p-4 border-slate-200">
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-800">Sirem 🚨</span>
+            <h4 class="font-bold text-slate-900 text-xs sm:text-sm mt-1">Dasbor Data Razia (Kedisiplinan) 🚨</h4>
+            <p class="text-xs text-slate-600 mt-1">
+              <strong>Input data anonim</strong> ➔ Grafik tren pelanggaran untuk bahan bimbingan edukatif bersama Guru BK.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pro Tip Banner Sesuai Slide3.JPG -->
+      <div class="p-3.5 sm:p-4 rounded-xl bg-amber-50 border-2 border-amber-300 text-center font-bold text-xs sm:text-sm text-amber-900">
+        ⚠️ Pro Tip: Fitur gratisan aplikasi bisa berubah kapan saja. Jadilah pemimpin yang adaptif, cari alternatifnya!
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 4: RUMUS PROMPTING                   -->
+    <!-- ========================================== -->
+    <section id="slide-4" class="slide-view hidden anim-slide-up space-y-4 sm:space-y-6">
+      <div class="text-center max-w-3xl mx-auto space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-100 text-violet-700 text-xs font-bold border border-violet-200">
+          <span>🗣️ MODUL 04 // PROMPTING</span> • <span>Rumus Komunikasi Efektif</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          Rumus Prompting: Ngobrol Sama AI Biar Nggak Garing 🗣️🤖
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600">
+          Kuasai 4 Elemen Emas agar jawaban AI presisi, berempati, dan cocok untuk anak SMKN 14.
+        </p>
+      </div>
+
+      <!-- 4 Elemen Cards (Sesuai Slide4.JPG) -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5">
+        <!-- PERAN -->
+        <div class="p-3 sm:p-4 rounded-2xl bg-blue-600 text-white space-y-1 shadow-md">
+          <div class="text-lg">🎭</div>
+          <h4 class="font-extrabold text-xs sm:text-sm tracking-wide">[PERAN]</h4>
+          <p class="text-[11px] opacity-90 leading-tight">
+            (Kamu admin sosmed OSIS SMK yang gaul...)
+          </p>
+        </div>
+        <!-- TUGAS -->
+        <div class="p-3 sm:p-4 rounded-2xl bg-orange-500 text-white space-y-1 shadow-md">
+          <div class="text-lg">📝</div>
+          <h4 class="font-extrabold text-xs sm:text-sm tracking-wide">[TUGAS]</h4>
+          <p class="text-[11px] opacity-90 leading-tight">
+            (Buat caption Instagram reels...)
+          </p>
+        </div>
+        <!-- KONTEKS -->
+        <div class="p-3 sm:p-4 rounded-2xl bg-emerald-600 text-white space-y-1 shadow-md">
+          <div class="text-lg">🌍</div>
+          <h4 class="font-extrabold text-xs sm:text-sm tracking-wide">[KONTEKS]</h4>
+          <p class="text-[11px] opacity-90 leading-tight">
+            (Untuk baksos panti asuhan minggu depan...)
+          </p>
+        </div>
+        <!-- FORMAT -->
+        <div class="p-3 sm:p-4 rounded-2xl bg-purple-600 text-white space-y-1 shadow-md">
+          <div class="text-lg">📐</div>
+          <h4 class="font-extrabold text-xs sm:text-sm tracking-wide">[FORMAT]</h4>
+          <p class="text-[11px] opacity-90 leading-tight">
+            (Maks 3 kalimat, santai, kasih 5 hashtag.)
+          </p>
+        </div>
+      </div>
+
+      <!-- Komparasi Asal-asalan vs Berumus & Human in the loop -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+        <!-- Prompt Asal-asalan -->
+        <div class="glass-card rounded-2xl p-4 border-rose-200 bg-rose-50/40 space-y-2">
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-700">
+            Prompt Asal-asalan ❌
+          </span>
+          <div class="p-2.5 rounded-xl bg-white border border-rose-200 text-xs font-mono text-slate-600">
+            "Buatin caption baksos."
+          </div>
+          <div class="p-2.5 rounded-xl bg-rose-100/70 text-[11px] text-rose-800 leading-snug">
+            ⚠️ <em>Hasil: Kaku kayak koran tua, kepanjangan, nggak relate sama anak SMK!</em>
+          </div>
+        </div>
+
+        <!-- Prompt Berumus -->
+        <div class="glass-card rounded-2xl p-4 border-emerald-200 bg-emerald-50/40 space-y-2">
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
+            Prompt Berumus ✅
+          </span>
+          <div class="p-2.5 rounded-xl bg-white border border-emerald-200 text-xs font-mono text-slate-700">
+            "Masukin 4 elemen di atas."
+          </div>
+          <div class="p-2.5 rounded-xl bg-emerald-100/80 text-[11px] text-emerald-900 leading-snug font-medium">
+            ✨ <em>Hasil: Asik, padat, langsung siap posting dalam 1 menit!</em>
+          </div>
+        </div>
+
+        <!-- Human In The Loop Medal Card -->
+        <div class="glass-card rounded-2xl p-4 border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50 text-center space-y-2 glow-orange">
+          <div class="w-12 h-12 rounded-full bg-amber-400 text-white flex items-center justify-center text-xl mx-auto shadow-md">
+            🧑‍💻
+          </div>
+          <h4 class="font-extrabold text-xs sm:text-sm text-slate-900 uppercase tracking-tight">HUMAN-IN-THE-LOOP</h4>
+          <p class="text-[11px] text-slate-700 leading-tight">
+            AI bantu draft <strong>80%</strong>. Sisa <strong>20% kewajiban manusianya</strong> buat edit, cek fakta, & kasih sentuhan empati!
+          </p>
+        </div>
+      </div>
+
+      <!-- Playground Interaktif Builder -->
+      <div class="glass-card rounded-2xl p-4 border-slate-200 space-y-2">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-extrabold text-slate-900">⚡ Coba Rakit Prompt Sekbid:</h4>
+          <button onclick="generateSamplePrompt()" class="pressable px-2.5 py-1 rounded-lg text-[11px] font-bold bg-orange-600 text-white">
+            Isi Contoh Otomatis
+          </button>
+        </div>
+        <textarea id="promptPlaygroundInput" rows="2" class="w-full text-xs p-2.5 rounded-xl border border-slate-200 bg-white font-mono focus:ring-2 focus:ring-orange-500 focus:outline-none" placeholder="Ketik atau klik 'Isi Contoh Otomatis' untuk meracik prompt..."></textarea>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 5: ETIKA AI & FILTER HOAKS           -->
+    <!-- ========================================== -->
+    <section id="slide-5" class="slide-view hidden anim-slide-up space-y-4 sm:space-y-6">
+      <div class="text-center max-w-3xl mx-auto space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200">
+          <span>🕵️‍♂️ MODUL 05 // ETIKA</span> • <span>Uji Kejujuran & Validasi</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          Etika AI: Ujian Kejujuran & Filter Hoaks 🕵️‍♂️
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600">
+          Kecerdasan tanpa integritas akan menghancurkan kepercayaan seluruh warga sekolah.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Sisi Kiri: Ujian Tanpa Layar (Sesuai Slide5.JPG) -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 border-slate-200 space-y-3">
+          <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-900 text-white">
+            Ujian "Tanpa Layar" - Anti-Plagiat
+          </span>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-2">
+            <div class="text-4xl anim-float">💻🧠</div>
+            <p class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+              "Kalau proposal/naskah ditutup, bisakah kamu menjelaskannya di depan teman-teman?"
+            </p>
+          </div>
+          <div class="space-y-2 text-xs">
+            <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 font-semibold flex items-center gap-2">
+              <span>✅ BISA =</span> AI cuma asisten. Kamu paham isinya.
+            </div>
+            <div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 font-semibold flex items-center gap-2">
+              <span>❌ NGGAK BISA =</span> Kamu dipimpin AI (Krisis Integritas).
+            </div>
+          </div>
+        </div>
+
+        <!-- Sisi Kanan: 3-Cek Validasi (Sesuai Slide5.JPG) -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 border-slate-200 space-y-3">
+          <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-orange-600 text-white">
+            3-Cek Validasi - Anti-Deepfake & Hoaks
+          </span>
+          <div class="space-y-2.5 text-xs">
+            <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center flex-shrink-0 text-[11px]">1</div>
+              <div>
+                <p class="font-bold text-slate-900">Cek Sumber</p>
+                <p class="text-slate-600 text-[11px]">Siapa yang sebar? Akun resmi sekolah atau broadcast anonim?</p>
+              </div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center flex-shrink-0 text-[11px]">2</div>
+              <div>
+                <p class="font-bold text-slate-900">Cek Silang</p>
+                <p class="text-slate-600 text-[11px]">Ada di portal berita atau media independen lain nggak?</p>
+              </div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-rose-500 text-white font-bold flex items-center justify-center flex-shrink-0 text-[11px]">3</div>
+              <div>
+                <p class="font-bold text-slate-900">⚠️ Cek Konteks</p>
+                <p class="text-slate-600 text-[11px]">Awas rekayasa AI! Cek kejanggalan foto dan pastikan bukan kejadian 5 tahun lalu.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Interactive Quiz: Deteksi Hoaks -->
+      <div class="p-4 rounded-2xl bg-slate-900 text-white space-y-2 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="text-amber-400 font-bold">⚡ Studi Kasus Kilat:</span>
+          <span class="text-[10px] text-slate-400">Pilih Sikap Bijak</span>
+        </div>
+        <p class="text-slate-200">
+          Muncul broadcast WA mengatasnamakan Kepala Sekolah bahwa besok libur mendadak karena perbaikan atap. Apa yang kamu lakukan?
+        </p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button onclick="quizEtika(false)" class="pressable px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
+            A. Langsung teruskan ke grup kelas biar cepat
+          </button>
+          <button onclick="quizEtika(true)" class="pressable px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold">
+            B. Tahan & konfirmasi dulu ke Pembina OSIS / Humas Sekolah
+          </button>
+        </div>
+        <div id="quizResult" class="hidden mt-2 p-2 rounded bg-slate-800 text-amber-300"></div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 6: PRIVASI DATA (TOP SECRET)         -->
+    <!-- ========================================== -->
+    <section id="slide-6" class="slide-view hidden anim-slide-up space-y-4 sm:space-y-6">
+      <div class="text-center max-w-3xl mx-auto space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200">
+          <span>🔒 MODUL 06 // PRIVASI</span> • <span>Keamanan Data Siswa</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          Top Secret: Jaga Data Teman Seperti Menjaga Amanah 🔒
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600">
+          Data pribadi siswa bukan santapan algoritma publik luar negeri.
+        </p>
+      </div>
+
+      <!-- STOP vs GO Bar (Sesuai Slide6.JPG) -->
+      <div class="rounded-2xl border-2 border-slate-300 overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-2 text-white">
+        <!-- STOP -->
+        <div class="bg-rose-600 p-4 sm:p-5 flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl flex-shrink-0">
+            🛑
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-extrabold text-xs sm:text-sm uppercase tracking-wider text-rose-100">
+              🔴 STOP (Bahaya!):
+            </h4>
+            <p class="text-xs leading-relaxed text-rose-50">
+              Jangan pernah masukin nama lengkap, NISN, atau aib pelanggaran teman (ex: "Budi Santoso bolos") ke AI Publik kayak ChatGPT. Datanya nyangkut di server luar!
+            </p>
+          </div>
+        </div>
+
+        <!-- GO -->
+        <div class="bg-emerald-600 p-4 sm:p-5 flex items-start gap-3.5 border-t md:border-t-0 md:border-l border-emerald-500">
+          <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl flex-shrink-0">
+            🟢
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-extrabold text-xs sm:text-sm uppercase tracking-wider text-emerald-100">
+              🟢 GO (Aman): Anonimkan Data!
+            </h4>
+            <p class="text-xs leading-relaxed text-emerald-50">
+              Ubah jadi "Siswa A dari Kelas X". Biarkan AI cuma analisis polanya. Privasi teman tetap terjaga utuh!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Aturan Emas Data OSIS (Sesuai Slide6.JPG) -->
+      <div class="space-y-2">
+        <h3 class="text-center font-extrabold text-slate-900 text-sm sm:text-base">
+          4 Aturan Emas Data OSIS
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <!-- Aturan 1 -->
+          <div class="glass-card rounded-xl p-3.5 border-slate-200 space-y-1">
+            <div class="text-lg">🛡️🔒</div>
+            <h5 class="font-bold text-slate-900">Batasi Akses</h5>
+            <p class="text-slate-600 text-[11px]">
+              Link GSheets data sensitif jangan di-set 'Public'. Cuma buat pengurus inti!
+            </p>
+          </div>
+          <!-- Aturan 2 -->
+          <div class="glass-card rounded-xl p-3.5 border-slate-200 space-y-1">
+            <div class="text-lg">🤝❤️</div>
+            <h5 class="font-bold text-slate-900">Tujuan Membina</h5>
+            <p class="text-slate-600 text-[11px]">
+              Data razia itu untuk cari solusi ke Guru BK, BUKAN buat bahan gosip/mempermalukan teman.
+            </p>
+          </div>
+          <!-- Aturan 3 -->
+          <div class="glass-card rounded-xl p-3.5 border-slate-200 space-y-1">
+            <div class="text-lg">📸✨</div>
+            <h5 class="font-bold text-slate-900">Izin Publikasi</h5>
+            <p class="text-slate-600 text-[11px]">
+              Tanya dulu sebelum post foto candid/muka teman ke IG/TikTok OSIS. Hargai privasi mereka!
+            </p>
+          </div>
+          <!-- Aturan 4 -->
+          <div class="glass-card rounded-xl p-3.5 border-slate-200 space-y-1">
+            <div class="text-lg">🎭📊</div>
+            <h5 class="font-bold text-slate-900">Anonimitas</h5>
+            <p class="text-slate-600 text-[11px]">
+              Selalu samarkan identitas spesifik saat memproses data untuk evaluasi program.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Interactive Sanitizer (Simulasi Sensor Data) -->
+      <div class="glass-card rounded-2xl p-4 border-slate-200 space-y-2">
+        <h4 class="text-xs font-extrabold text-slate-900">🛠️ Simulasi Sensor Data Siswa Otomatis:</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          <div>
+            <label class="text-[10px] font-bold text-slate-500">Teks Mentah Berbahaya:</label>
+            <input id="inputRawData" type="text" value="Budi Santoso (NISN 0072349182) kelas XI TJKT bolos razia" class="w-full p-2 rounded-lg border border-slate-200 mt-0.5">
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-emerald-600">Hasil Anonim Siap Masuk AI:</label>
+            <input id="outputCleanData" type="text" readonly class="w-full p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 font-bold mt-0.5" value="[Siswa A] ([NISN Disamarkan]) [Kelas X] evaluasi kedisiplinan">
+          </div>
+        </div>
+        <button onclick="anonymizeSample()" class="pressable px-3 py-1 rounded-lg text-xs font-bold bg-slate-900 text-white">
+          Uji Sensor Otomatis
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 7: 3 MANTRA & THE DIGITAL PLEDGE     -->
+    <!-- ========================================== -->
+    <section id="slide-7" class="slide-view hidden anim-slide-up space-y-4 sm:space-y-6">
+      <div class="text-center max-w-3xl mx-auto space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-800 text-xs font-bold border border-orange-200">
+          <span>⭐ MODUL 07 // PUNCAK IKRAR</span> • <span>Sertifikasi Pemimpin Digital</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          "Teknologi itu Alat 🛠️, Karakter itu Arah 🧭"
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 font-medium">
+          3 Mantra Pemimpin Digital & Pelantikan Komitmen Mandiri Pengurus OSIS SMKN 14.
+        </p>
+      </div>
+
+      <!-- 3 Mantra Pemimpin Digital (Sesuai Slide7.JPG) -->
+      <div class="glass-card rounded-2xl p-4 sm:p-5 border-slate-200 space-y-3">
+        <h3 class="text-center font-extrabold text-slate-900 text-xs sm:text-sm uppercase tracking-wider">
+          3 Mantra Pemimpin Digital
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
+          <!-- Mantra 1 -->
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2 font-semibold text-slate-800">
+            <span class="text-base">☑️ 🔍</span>
+            <span>Cek Sebelum Percaya</span>
+          </div>
+          <!-- Mantra 2 -->
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2 font-semibold text-slate-800">
+            <span class="text-base">☑️ 🤝</span>
+            <span>Jujur Sebelum Mengklaim</span>
+          </div>
+          <!-- Mantra 3 -->
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2 font-semibold text-slate-800">
+            <span class="text-base">☑️ 🛡️</span>
+            <span>Jaga Data Sebagai Amanah</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLEDGE CARD BUILDER (Sesuai Slide7.JPG) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <!-- Form Builder (Left) -->
+        <div class="lg:col-span-5 glass-card rounded-2xl p-4 border-slate-200 space-y-3 text-xs">
+          <h4 class="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
+            <span>✍️</span> Isi Data Ikrar Kepemimpinan
+          </h4>
+          <div class="space-y-1">
+            <label class="font-bold text-slate-700">Nama Pengurus:</label>
+            <input id="pledgeName" type="text" placeholder="Contoh: Muhammad Rayhan" class="w-full p-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:outline-none text-xs">
+          </div>
+          <div class="space-y-1">
+            <label class="font-bold text-slate-700">Seksi Bidang (Sekbid):</label>
+            <select id="pledgeSekbid" class="w-full p-2 rounded-xl border border-slate-200 bg-white text-xs">
+              <option value="Ketua / Wakil Ketua OSIS">Ketua / Wakil Ketua OSIS</option>
+              <option value="Sekbid 1: Ketaqwaan & Rohis">Sekbid 1: Ketaqwaan & Rohis</option>
+              <option value="Sekbid 2: Kedisiplinan & Bela Negara">Sekbid 2: Kedisiplinan & Bela Negara</option>
+              <option value="Sekbid 3: Akademik & Literasi Digital">Sekbid 3: Akademik & Literasi Digital</option>
+              <option value="Sekbid 4: Humas & Publikasi Kreatif">Sekbid 4: Humas & Publikasi Kreatif</option>
+              <option value="Sekbid 5: Olahraga & Seni Budaya">Sekbid 5: Olahraga & Seni Budaya</option>
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label class="font-bold text-slate-700">Tujuan Positif AI:</label>
+            <input id="pledgePositive" type="text" placeholder="Contoh: Mempercepat riset tema kegiatan & draf notulensi" class="w-full p-2 rounded-xl border border-slate-200 text-xs">
+          </div>
+          <div class="space-y-1">
+            <label class="font-bold text-slate-700">Batasan Integritas (Tidak akan...):</label>
+            <input id="pledgeBoundary" type="text" placeholder="Contoh: Plagiat mentah & membocorkan data teman" class="w-full p-2 rounded-xl border border-slate-200 text-xs">
+          </div>
+          <button onclick="savePledgeToIndexedDB()" class="w-full pressable py-2.5 rounded-xl font-bold bg-gradient-to-r from-orange-600 to-amber-500 text-white shadow-md flex items-center justify-center gap-1.5">
+            <span>💾</span> Simpan Ikrar ke IndexedDB
+          </button>
+        </div>
+
+        <!-- Live Pledge Card Preview (Right, Sesuai Slide7.JPG) -->
+        <div class="lg:col-span-7 glass-card rounded-2xl p-5 border-amber-300 bg-gradient-to-br from-amber-50/70 via-white to-orange-50/50 space-y-4 glow-orange relative overflow-hidden flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between border-b border-amber-200/80 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-orange-600 text-white font-extrabold text-[10px] flex items-center justify-center">14</span>
+                <span class="text-xs font-bold text-slate-800">KARTU IKRAR PEMIMPIN DIGITAL</span>
+              </div>
+              <span class="text-[10px] font-mono text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full font-bold">
+                LDKO-2026-SMKN14
+              </span>
+            </div>
+
+            <div class="p-4 rounded-xl bg-white/80 border border-amber-200/90 text-center space-y-2">
+              <h3 class="font-extrabold text-sm sm:text-base text-slate-900 tracking-wider">PLEDGE CARD</h3>
+              <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                "Sebagai pemimpin OSIS SMKN 14 Kota Bekasi, saya akan memakai AI untuk
+                <span id="cardPositive" class="font-bold text-orange-600 underline decoration-orange-400">[ ISI TUJUAN POSITIFMU ]</span>
+                dan berjanji tidak akan
+                <span id="cardBoundary" class="font-bold text-rose-600 underline decoration-rose-400">[ HAL YANG MELANGGAR ETIKA ]</span>."
+              </p>
+            </div>
+
+            <div class="flex items-center justify-between text-xs pt-1 px-1">
+              <div>
+                <p class="text-[10px] text-slate-500">Pemimpin Muda:</p>
+                <p class="font-extrabold text-slate-900" id="cardName">Calon Pengurus OSIS</p>
+                <p class="text-[10px] text-orange-600 font-semibold" id="cardSekbid">Pengurus Inti SMKN 14</p>
+              </div>
+              <div class="text-right">
+                <span class="inline-block p-1.5 rounded-lg bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                  ✓ TERVERIFIKASI SISTEM
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Callout in Card (Sesuai Slide7.JPG) -->
+          <div class="pt-3 border-t border-amber-200/60 text-center">
+            <p class="text-xs font-extrabold text-amber-900 leading-tight">
+              Siap jadi pemimpin masa depan? Kepalkan tangan di dada, dan mari kita ucapkan komitmen ini bersama! 🗣️🔥
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- IndexedDB Real-time Log Table -->
+      <div class="glass-card rounded-2xl p-4 border-slate-200 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+            <span>🗄️</span> Daftar Ikrar Tersimpan di IndexedDB Peramban:
+          </h4>
+          <button onclick="clearIndexedDB()" class="text-[10px] font-bold text-rose-600 hover:underline">
+            Bersihkan Data Lokal
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-slate-200 text-slate-500 text-[10px]">
+                <th class="py-1 px-2">Waktu</th>
+                <th class="py-1 px-2">Nama</th>
+                <th class="py-1 px-2">Sekbid</th>
+                <th class="py-1 px-2">Tujuan AI</th>
+                <th class="py-1 px-2">Batasan</th>
+              </tr>
+            </thead>
+            <tbody id="pledgeTableBody">
+              <tr>
+                <td colspan="5" class="py-3 text-center text-slate-400 italic text-[11px]">
+                  Belum ada ikrar yang tersimpan di IndexedDB. Isi formulir di atas untuk menyimpan.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM CONTROL BAR & RESPONSIVE PAGINATION -->
+  <footer class="sticky bottom-0 z-40 glass-card border-t border-slate-200/90 px-3 py-2 sm:px-6 sm:py-3 transition-all">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
+      <!-- Previous Button -->
+      <button id="btnPrev" onclick="prevSlide()" class="pressable px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 flex items-center gap-1 shadow-sm">
+        <span>←</span> <span class="hidden xs:inline">Sebelumnya</span>
+      </button>
+
+      <!-- Slide Indicator Dots & Counter -->
+      <div class="flex flex-col items-center">
+        <div class="flex items-center gap-1 sm:gap-1.5" id="dotsContainer">
+          <!-- Dynamic Dots Rendered in JS -->
+        </div>
+        <span class="text-[10px] sm:text-xs text-slate-500 font-semibold mt-1" id="slideCounter">
+          Slide 1 dari 7
+        </span>
+      </div>
+
+      <!-- Next Button -->
+      <button id="btnNext" onclick="nextSlide()" class="pressable px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-orange-600 to-amber-500 text-white shadow-md shadow-orange-500/20 hover:from-orange-700 hover:to-amber-600 flex items-center gap-1">
+        <span class="hidden xs:inline" id="nextText">Lanjut</span> <span>→</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- JAVASCRIPT: SLIDE ENGINE + INDEXED DB + PUSH NOTIF SIM   -->
+  <!-- ======================================================== -->
+  <script>
+    // --- STATE VARIABLES ---
+    let currentSlide = 1;
+    const totalSlides = 7;
+    let autoPlayInterval = null;
+    let isAutoPlaying = false;
+    let db = null;
+    let pushEnabled = true;
+
+    // --- INITIALIZATION ---
+    document.addEventListener("DOMContentLoaded", () => {
+      initIndexedDB();
+      initSlideDots();
+      goToSlide(1);
+      setupLiveBinding();
+      setupInteractivePillars();
+
+      // Trigger initial welcoming push notification
+      setTimeout(() => {
+        showPushNotification("Modul LDKO Siap!", "Selamat datang peserta LDKO SMKN 14. Geser atau klik tombol untuk menjelajah Slide 1-7.");
+      }, 1200);
+    });
+
+    // --- SLIDE NAVIGATION LOGIC ---
+    function goToSlide(slideNum) {
+      if (slideNum < 1 || slideNum > totalSlides) return;
+      currentSlide = slideNum;
+
+      // Update View
+      for (let i = 1; i <= totalSlides; i++) {
+        const slideEl = document.getElementById(`slide-${i}`);
+        const tabEl = document.getElementById(`tab-${i}`);
+        const dotEl = document.getElementById(`dot-${i}`);
+
+        if (slideEl) {
+          if (i === currentSlide) {
+            slideEl.classList.remove('hidden');
+          } else {
+            slideEl.classList.add('hidden');
+          }
+        }
+
+        // Stepper Tabs Styling
+        if (tabEl) {
+          if (i === currentSlide) {
+            tabEl.className = "tab-btn px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1 bg-orange-600 text-white border-orange-600 shadow-sm";
+          } else {
+            tabEl.className = "tab-btn px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-1 bg-white text-slate-700 border-slate-200 hover:bg-slate-50";
+          }
+        }
+
+        // Dots Styling
+        if (dotEl) {
+          if (i === currentSlide) {
+            dotEl.className = "w-5 sm:w-6 h-2 rounded-full bg-orange-600 transition-all duration-300";
+          } else {
+            dotEl.className = "w-2 h-2 rounded-full bg-slate-300 transition-all duration-300";
+          }
+        }
+      }
+
+      // Update Counter
+      const counterEl = document.getElementById('slideCounter');
+      if (counterEl) {
+        counterEl.innerText = `Slide ${currentSlide} dari ${totalSlides}`;
+      }
+
+      // Update Buttons text
+      const btnPrev = document.getElementById('btnPrev');
+      const btnNext = document.getElementById('btnNext');
+      const nextText = document.getElementById('nextText');
+
+      if (btnPrev) btnPrev.style.visibility = (currentSlide === 1) ? 'hidden' : 'visible';
+      if (nextText) {
+        nextText.innerText = (currentSlide === totalSlides) ? 'Selesai & Ikrar' : 'Lanjut';
+      }
+
+      // Window Scroll to Top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Trigger Contextual Push Notification per Slide
+      triggerContextNotification(currentSlide);
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        goToSlide(currentSlide + 1);
+      } else {
+        // At slide 7, trigger certificate celebration
+        showPushNotification("Puncak Modul Tuntas! 🎉", "Terima kasih telah menyelesaikan seluruh materi LDKO Digital Leadership.");
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        goToSlide(currentSlide - 1);
+      }
+    }
+
+    function initSlideDots() {
+      const container = document.getElementById('dotsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      for (let i = 1; i <= totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.id = `dot-${i}`;
+        dot.className = (i === 1) ? "w-5 sm:w-6 h-2 rounded-full bg-orange-600" : "w-2 h-2 rounded-full bg-slate-300";
+        dot.style.cursor = 'pointer';
+        dot.onclick = () => goToSlide(i);
+        container.appendChild(dot);
+      }
+    }
+
+    // --- AUTO-PLAY / PRESENTATION MODE ---
+    function toggleAutoPlay() {
+      isAutoPlaying = !isAutoPlaying;
+      const btnText = document.getElementById('playText');
+      const playIcon = document.getElementById('playIcon');
+
+      if (isAutoPlaying) {
+        btnText.innerText = "Jeda";
+        playIcon.innerText = "⏸";
+        showPushNotification("Mode Otomatis Aktif", "Slide akan berganti setiap 7 detik secara otomatis.");
+        autoPlayInterval = setInterval(() => {
+          if (currentSlide < totalSlides) {
+            nextSlide();
+          } else {
+            goToSlide(1);
+          }
+        }, 7000);
+      } else {
+        btnText.innerText = "Otomatis";
+        playIcon.innerText = "▶";
+        clearInterval(autoPlayInterval);
+        showPushNotification("Mode Otomatis Dijeda", "Kembali ke kontrol manual.");
+      }
+    }
+
+    // --- PUSH NOTIFICATION ENGINE ---
+    function togglePushNotification() {
+      pushEnabled = !pushEnabled;
+      const badge = document.getElementById('notifStatusBadge');
+      const icon = document.getElementById('notifIcon');
+      if (pushEnabled) {
+        badge.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
+        icon.innerText = "🔔";
+        showPushNotification("Push Notification Diaktifkan", "Pengingat LDKO akan muncul setiap pergantian tema materi.");
+      } else {
+        badge.className = "w-2 h-2 rounded-full bg-slate-400";
+        icon.innerText = "🔕";
+        hidePushToast();
+      }
+    }
+
+    function showPushNotification(title, message) {
+      if (!pushEnabled) return;
+      const toast = document.getElementById('pushToast');
+      const toastCategory = document.getElementById('toastCategory');
+      const toastMessage = document.getElementById('toastMessage');
+
+      toastCategory.innerText = title;
+      toastMessage.innerText = message;
+
+      toast.classList.remove('translate-y-[-150%]');
+      toast.classList.add('translate-y-0');
+
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        hidePushToast();
+      }, 4500);
+    }
+
+    function hidePushToast() {
+      const toast = document.getElementById('pushToast');
+      if (toast) {
+        toast.classList.remove('translate-y-0');
+        toast.classList.add('translate-y-[-150%]');
+      }
+    }
+
+    function triggerContextNotification(slide) {
+      const tips = {
+        1: "Slide 1: Ingat, AI alat bantu — nurani dan empati tetap milikmu!",
+        2: "Slide 2: Amalkan 4 Pilar: Melek Teknologi, Kritis, Kolaboratif, Berintegritas.",
+        3: "Slide 3: Pangkas kerja manual humas & sekretaris dengan Tech Stack OSIS.",
+        4: "Slide 4: Pakai rumus [PERAN + TUGAS + KONTEKS + FORMAT] biar nggak kaku!",
+        5: "Slide 5: Terapkan 3-Cek Validasi sebelum menyebar pengumuman sekolah.",
+        6: "Slide 6: Rahasia! Jangan pernah masukkan data pribadi siswa ke AI publik.",
+        7: "Slide 7: Rumuskan ikrarmu dan simpan secara persisten ke IndexedDB."
+      };
+      if (tips[slide]) {
+        setTimeout(() => {
+          showPushNotification(`Modul ${slide} dari 7`, tips[slide]);
+        }, 800);
+      }
+    }
+
+    // --- INDEXED DB STORAGE ENGINE ---
+    const DB_NAME = 'LdkoSMKN14_DB';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'pledges';
+
+    function initIndexedDB() {
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+      request.onupgradeneeded = function(e) {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+        }
+      };
+
+      request.onsuccess = function(e) {
+        db = e.target.result;
+        loadPledgesFromIndexedDB();
+      };
+
+      request.onerror = function(e) {
+        console.error('IndexedDB error:', e.target.errorCode);
+      };
+    }
+
+    function savePledgeToIndexedDB() {
+      if (!db) {
+        alert('Database IndexedDB sedang diinisialisasi.');
+        return;
+      }
+
+      const name = document.getElementById('pledgeName').value.trim() || 'Calon Pemimpin OSIS';
+      const sekbid = document.getElementById('pledgeSekbid').value;
+      const positive = document.getElementById('pledgePositive').value.trim() || 'Membantu draf program kerja berdampak nyata';
+      const boundary = document.getElementById('pledgeBoundary').value.trim() || 'Membocorkan data teman & plagiat murni';
+
+      const transaction = db.transaction([STORE_NAME], 'readwrite');
+      const store = transaction.objectStore(STORE_NAME);
+
+      const pledgeData = {
+        name,
+        sekbid,
+        positive,
+        boundary,
+        timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      const request = store.add(pledgeData);
+
+      request.onsuccess = function() {
+        showPushNotification("Ikrar Berhasil Disimpan! 💾", `${name} (${sekbid}) berhasil diindeks ke basis data lokal.`);
+        loadPledgesFromIndexedDB();
+      };
+
+      transaction.onerror = function() {
+        alert('Gagal menyimpan data ke IndexedDB.');
+      };
+    }
+
+    function loadPledgesFromIndexedDB() {
+      if (!db) return;
+      const transaction = db.transaction([STORE_NAME], 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.getAll();
+
+      request.onsuccess = function() {
+        const records = request.result;
+        renderPledgesTable(records);
+        const countBadge = document.getElementById('dbRecordCount');
+        if (countBadge) {
+          countBadge.innerText = `IDB: ${records.length} Ikrar`;
+        }
+      };
+    }
+
+    function renderPledgesTable(records) {
+      const tbody = document.getElementById('pledgeTableBody');
+      if (!tbody) return;
+
+      if (!records || records.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="py-3 text-center text-slate-400 italic text-[11px]">
+              Belum ada ikrar yang tersimpan di IndexedDB.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = records.map(item => `
+        <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+          <td class="py-1.5 px-2 font-mono text-[10px] text-slate-500">${item.timestamp}</td>
+          <td class="py-1.5 px-2 font-bold text-slate-800">${item.name}</td>
+          <td class="py-1.5 px-2 text-orange-600 font-semibold text-[11px]">${item.sekbid}</td>
+          <td class="py-1.5 px-2 text-slate-600 text-[11px]">${item.positive}</td>
+          <td class="py-1.5 px-2 text-rose-600 text-[11px]">${item.boundary}</td>
+        </tr>
+      `).join('');
+    }
+
+    function clearIndexedDB() {
+      if (!confirm("Bersihkan semua data ikrar yang tersimpan di peramban ini?")) return;
+      if (!db) return;
+      const transaction = db.transaction([STORE_NAME], 'readwrite');
+      const store = transaction.objectStore(STORE_NAME);
+      store.clear().onsuccess = function() {
+        loadPledgesFromIndexedDB();
+        showPushNotification("IndexedDB Dibersihkan", "Semua riwayat ikrar lokal telah direset.");
+      };
+    }
+
+    function inspectIndexedDB() {
+      goToSlide(7);
+      showPushNotification("IndexedDB Inspector", "Menampilkan tabel data persisten lokal di Slide 7.");
+    }
+
+    // --- INTERACTIVE BINDINGS & MINI FEATURES ---
+    function setupLiveBinding() {
+      const pName = document.getElementById('pledgeName');
+      const pSekbid = document.getElementById('pledgeSekbid');
+      const pPositive = document.getElementById('pledgePositive');
+      const pBoundary = document.getElementById('pledgeBoundary');
+
+      if (pName) {
+        pName.addEventListener('input', (e) => {
+          document.getElementById('cardName').innerText = e.target.value.trim() || 'Calon Pemimpin OSIS';
+        });
+      }
+      if (pSekbid) {
+        pSekbid.addEventListener('change', (e) => {
+          document.getElementById('cardSekbid').innerText = e.target.value;
+        });
+      }
+      if (pPositive) {
+        pPositive.addEventListener('input', (e) => {
+          document.getElementById('cardPositive').innerText = e.target.value.trim() || '[ ISI TUJUAN POSITIFMU ]';
+        });
+      }
+      if (pBoundary) {
+        pBoundary.addEventListener('input', (e) => {
+          document.getElementById('cardBoundary').innerText = e.target.value.trim() || '[ HAL YANG MELANGGAR ETIKA ]';
+        });
+      }
+    }
+
+    function tapPillar(idx) {
+      const card = document.getElementById(`pilar-card-${idx}`);
+      const badge = document.getElementById(`pilar-badge-${idx}`);
+      if (card && badge) {
+        card.classList.toggle('border-orange-500');
+        card.classList.toggle('bg-orange-50/50');
+        badge.innerText = "✓ Dipahami";
+        badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500 text-white";
+        showPushNotification(`Pilar ${idx} Terbuka!`, "Pemahaman pilar kepemimpinan berhasil ditambahkan ke profilmu.");
+      }
+    }
+
+    function runScenario1(type) {
+      const el = document.getElementById('scenario1Result');
+      if (!el) return;
+      if (type === 'tugas') {
+        el.innerHTML = `<strong>💡 Draf Proposal:</strong> AI membuat outline struktur RAB & draf dalam 30 detik (80%). Pengurus menyesuaikan anggaran riil sekolah & izin Kepala Sekolah (20%).`;
+      } else if (type === 'konflik') {
+        el.innerHTML = `<strong>💡 Teman Berselisih:</strong> AI <em>TIDAK BISA</em> menggantikan sentuhan manusia. Pemimpin OSIS harus mendengarkan secara langsung dengan hati dan empati!`;
+      } else if (type === 'evaluasi') {
+        el.innerHTML = `<strong>💡 Angket Aspirasi:</strong> AI mengelompokkan 300 pesan saran siswa. Pemimpin memilih skala prioritas aksi nyata yang paling dibutuhkan warga SMKN 14.`;
+      }
+    }
+
+    function generateSamplePrompt() {
+      const area = document.getElementById('promptPlaygroundInput');
+      if (area) {
+        area.value = `[PERAN]: Admin Humas OSIS SMKN 14 yang ramah & bersemangat\n[TUGAS]: Buatkan draf 3 opsi caption Instagram Reels Classmeeting 2026\n[KONTEKS]: Siswa baru selesai ujian semester, butuh refreshing & kompetisi e-sport seru\n[FORMAT]: Maks 3 kalimat santai, sertakan call-to-action & 5 hashtag resmi`;
+        showPushNotification("Formula Prompt Berhasil Dirakit", "Siap disalin dan dipraktikkan langsung.");
+      }
+    }
+
+    function quizEtika(isCorrect) {
+      const res = document.getElementById('quizResult');
+      if (!res) return;
+      res.classList.remove('hidden');
+      if (isCorrect) {
+        res.className = "mt-2 p-2 rounded bg-emerald-900/90 text-emerald-200 border border-emerald-500 font-semibold";
+        res.innerText = "✅ TEPAT SEKALI! Saring sebelum sharing. Pemimpin yang bijak memverifikasi fakta dari sumber resmi sebelum menyebarkan kepanikan.";
+        showPushNotification("Hebat! Jawaban Benar", "Kamu menerapkan prinsip 3-Cek Validasi.");
+      } else {
+        res.className = "mt-2 p-2 rounded bg-rose-900/90 text-rose-200 border border-rose-500 font-semibold";
+        res.innerText = "❌ KURANG TEPAT. Meneruskan informasi tanpa cek silang berisiko memicu kepanikan massal dan mencoreng nama baik sekolah.";
+      }
+    }
+
+    function anonymizeSample() {
+      const raw = document.getElementById('inputRawData');
+      const clean = document.getElementById('outputCleanData');
+      if (raw && clean) {
+        clean.value = "[Siswa A] ([NISN Disamarkan]) [XI Kejuruan] data razia dianonimkan untuk analisis pola pembinaan BK";
+        showPushNotification("Sensor Data Berhasil", "Identitas siswa telah disamarkan sebelum diproses ke sistem AI.");
+      }
+    }
+  </script>
+</body>
+</html>
