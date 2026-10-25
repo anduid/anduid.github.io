@@ -1,0 +1,18 @@
+{%- comment -%} Di beranda blog: teaser aplikasi unggulan studio (maks. 3, yang ber-beranda: true). {%- endcomment -%}
+{%- assign urut_so = site.apps | sort: 'urutan' -%}
+{%- assign jumlah_so = 0 -%}
+{%- capture daftar_so -%}
+  {%- for ap in urut_so -%}
+    {%- if ap.beranda and jumlah_so < 3 -%}
+      {%- assign jumlah_so = jumlah_so | plus: 1 -%}
+      {%- include kartu-aplikasi.html app=ap -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if jumlah_so > 0 -%}
+<section class="bungkus bagian" aria-labelledby="judul-sorotan-app">
+  <h2 id="judul-sorotan-app" class="judul-bagian">Aplikasi buatan studio</h2>
+  <div class="grid">{{ daftar_so }}</div>
+  <p class="aksi-bagian"><a class="tombol tombol-sekunder" href="{{ '/aplikasi/' | relative_url }}">Lihat semua aplikasi <svg class="ikon" aria-hidden="true"><use href="#i-right"/></svg></a></p>
+</section>
+{%- endif -%}

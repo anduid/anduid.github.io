@@ -1,0 +1,3 @@
+{%- assign src = include.src -%}
+{%- unless src contains '://' -%}{%- assign src = src | relative_url -%}{%- endunless -%}
+<img src="{{ src }}" alt="{{ include.alt | escape }}" width="1200" height="630" loading="{{ include.muat | default: 'lazy' }}" decoding="async">

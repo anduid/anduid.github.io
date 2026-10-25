@@ -1,0 +1,29 @@
+{%- comment -%}
+  Di halaman aplikasi: tulisan blog yang berkaitan (maks. 4).
+  Cocok jika tulisan memuat  apps: [file-aplikasi]  atau berbagi tag dengan aplikasi.
+{%- endcomment -%}
+{%- assign jumlah_ta = 0 -%}
+{%- capture daftar_ta -%}
+  {%- for tp in site.posts -%}
+    {%- if jumlah_ta >= 4 -%}{%- break -%}{%- endif -%}
+    {%- assign cocok_ta = false -%}
+    {%- if tp.apps contains page.file -%}{%- assign cocok_ta = true -%}{%- endif -%}
+    {%- unless cocok_ta -%}
+      {%- for tg in page.tags -%}
+        {%- unless site.tag_abaikan contains tg -%}
+          {%- if tp.tags contains tg -%}{%- assign cocok_ta = true -%}{%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endunless -%}
+    {%- if cocok_ta -%}
+      {%- assign jumlah_ta = jumlah_ta | plus: 1 -%}
+      {%- include kartu-tulisan.html post=tp -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if jumlah_ta > 0 -%}
+<section class="terkait" aria-labelledby="judul-tulisan-app">
+  <h2 id="judul-tulisan-app" class="judul-bagian">Tulisan yang berkaitan</h2>
+  <div class="grid">{{ daftar_ta }}</div>
+</section>
+{%- endif -%}

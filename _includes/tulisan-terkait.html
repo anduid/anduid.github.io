@@ -1,0 +1,43 @@
+{%- comment -%}
+  Di halaman tulisan: "Baca juga" berdasarkan kesamaan tag (maks. 3).
+  Tahap 1: tulisan yang berbagi 2+ tag. Tahap 2: yang berbagi 1 tag. Tag umum (site.tag_abaikan) diabaikan.
+{%- endcomment -%}
+{%- assign jumlah_tt = 0 -%}
+{%- capture daftar_tt -%}
+  {%- for tp in site.posts -%}
+    {%- if jumlah_tt >= 3 -%}{%- break -%}{%- endif -%}
+    {%- if tp.url != page.url -%}
+      {%- assign skor_tt = 0 -%}
+      {%- for tg in page.tags -%}
+        {%- unless site.tag_abaikan contains tg -%}
+          {%- if tp.tags contains tg -%}{%- assign skor_tt = skor_tt | plus: 1 -%}{%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+      {%- if skor_tt >= 2 -%}
+        {%- assign jumlah_tt = jumlah_tt | plus: 1 -%}
+        <li><a href="{{ tp.url | relative_url }}">{{ tp.title }}</a></li>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- for tp in site.posts -%}
+    {%- if jumlah_tt >= 3 -%}{%- break -%}{%- endif -%}
+    {%- if tp.url != page.url -%}
+      {%- assign skor_tt = 0 -%}
+      {%- for tg in page.tags -%}
+        {%- unless site.tag_abaikan contains tg -%}
+          {%- if tp.tags contains tg -%}{%- assign skor_tt = skor_tt | plus: 1 -%}{%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+      {%- if skor_tt == 1 -%}
+        {%- assign jumlah_tt = jumlah_tt | plus: 1 -%}
+        <li><a href="{{ tp.url | relative_url }}">{{ tp.title }}</a></li>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if jumlah_tt > 0 -%}
+<aside class="terkait" aria-labelledby="judul-baca-juga">
+  <h2 id="judul-baca-juga" class="judul-bagian">Baca juga</h2>
+  <ul class="daftar-terkait">{{ daftar_tt }}</ul>
+</aside>
+{%- endif -%}

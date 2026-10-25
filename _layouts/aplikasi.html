@@ -1,0 +1,64 @@
+---
+layout: default
+---
+{%- assign url_app_buka = page.file | prepend: '/' | relative_url -%}
+<article class="bungkus bungkus-sempit tulisan halaman-app">
+  <nav class="remah" aria-label="Posisi halaman">
+    <a href="{{ '/' | relative_url }}">Beranda</a>
+    <span aria-hidden="true">/</span>
+    <a href="{{ '/aplikasi/' | relative_url }}">Aplikasi</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ page.title | escape }}</span>
+  </nav>
+
+  <header class="tulisan-kepala">
+    <p class="tag-daftar">
+      <a class="tag" href="{{ '/aplikasi/' | relative_url }}#{{ page.kategori | slugify }}">{{ page.kategori }}</a>
+    </p>
+    <h1 class="judul-halaman">{{ page.title | escape }}</h1>
+    {% if page.tagline %}<p class="tulisan-deskripsi">{{ page.tagline | escape }}</p>{% endif %}
+    <div class="hero-aksi">
+      <a class="tombol" href="{{ url_app_buka }}">Buka aplikasi <svg class="ikon" aria-hidden="true"><use href="#i-external"/></svg></a>
+      <a class="tombol tombol-sekunder" href="{{ '/#kontak' | relative_url }}">Butuh aplikasi serupa?</a>
+    </div>
+  </header>
+
+  <div class="isi-tulisan">
+    <p>{{ page.description | escape }}</p>
+    {{ content }}
+    {% if page.fitur.size > 0 %}
+    <h2>Fitur utama</h2>
+    <ul>
+      {% for f in page.fitur %}<li>{{ f | escape }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+
+  {% include tulisan-aplikasi.html %}
+
+  {%- assign jumlah_lain = 0 -%}
+  {%- capture daftar_lain -%}
+    {%- assign urut_lain = site.apps | sort: 'urutan' -%}
+    {%- for ap in urut_lain -%}
+      {%- if ap.kategori == page.kategori and ap.file != page.file and jumlah_lain < 3 -%}
+        {%- assign jumlah_lain = jumlah_lain | plus: 1 -%}
+        {%- include kartu-aplikasi.html app=ap -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {% if jumlah_lain > 0 %}
+  <section class="terkait" aria-labelledby="judul-app-lain">
+    <h2 id="judul-app-lain" class="judul-bagian">Aplikasi lain di kategori {{ page.kategori }}</h2>
+    <div class="grid">{{ daftar_lain }}</div>
+  </section>
+  {% endif %}
+
+  <aside class="penulis" aria-label="Tentang pembuat">
+    <img src="{{ '/assets/images/icon-192.png' | relative_url }}" width="56" height="56" alt="" loading="lazy" class="penulis-foto">
+    <div>
+      <p class="penulis-nama">{{ site.publisher }}</p>
+      <p class="penulis-bio">{{ site.description }}</p>
+      <a href="{{ '/#kontak' | relative_url }}">Diskusikan kebutuhan Anda</a>
+    </div>
+  </aside>
+</article>

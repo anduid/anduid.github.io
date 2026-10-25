@@ -1,0 +1,80 @@
+# Membangun dan menerbitkan andu.my.id (beranda + aplikasi + blog) ke GitHub Pages.
+# Berjalan otomatis setiap kali ada push ke branch main (tulisan baru, aplikasi baru, perubahan apa pun).
+# Pull request hanya dibangun dan diperiksa, TIDAK diterbitkan: cara aman untuk mencoba perubahan.
+name: Bangun dan terbitkan situs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bangun:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v4
+
+      - name: Siapkan Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pasang PyYAML
+        run: pip install pyyaml
+
+      # 1) Aplikasi HTML baru di root repo otomatis dibuatkan deskriptor _apps/NAMA.md
+      - name: Sinkronkan aplikasi (pra-build)
+        run: python3 tools/sinkron_app.py pra
+
+      - name: Atur GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      # 2) Jekyll membuat beranda, hub aplikasi, halaman aplikasi, blog, sitemap, feed
+      - name: Bangun dengan Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      # Aksi Jekyll berjalan di Docker (root); pastikan _site bisa ditulis oleh langkah berikutnya
+      - name: Perbaiki izin hasil build
+        run: sudo chown -R "$(id -u):$(id -g)" _site
+
+      # 3) Tag SEO (title, description, canonical, JSON-LD) ditanam ke berkas aplikasi di _site
+      - name: Perkaya HTML aplikasi (pasca-build)
+        run: python3 tools/sinkron_app.py pasca --situs _site
+
+      # 4) Pemeriksaan konsistensi. Hasilnya tampil sebagai anotasi; tidak menghentikan penerbitan.
+      - name: Periksa konsistensi situs
+        continue-on-error: true
+        run: python3 tools/cek_situs.py --situs _site
+
+      - name: Unggah hasil build
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  terbit:
+    if: github.event_name != 'pull_request'
+    needs: bangun
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Terbitkan ke GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

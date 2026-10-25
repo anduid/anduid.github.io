@@ -1,0 +1,27 @@
+---
+layout: null
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+{%- comment -%}
+  Peta situs seluruh andu.my.id (beranda, hub aplikasi, halaman aplikasi, berkas aplikasi, blog).
+  Dibuat sendiri (bukan plugin jekyll-sitemap) supaya:
+   1) alamat aplikasi di sini sama persis dengan tag canonical-nya (/progita, bukan /progita.html),
+   2) lastmod hanya muncul bila tanggalnya diketahui, bukan waktu build.
+  Kecualikan sebuah halaman dengan  sitemap: false  atau  noindex: true  di front matter-nya.
+{%- endcomment -%}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for hal in site.html_pages -%}
+  {%- if hal.sitemap == false or hal.noindex or hal.url == '/404.html' -%}{%- continue -%}{%- endif -%}
+  <url><loc>{{ hal.url | replace: 'index.html', '' | absolute_url }}</loc></url>
+{%- endfor -%}
+{%- for ap in site.apps -%}
+  {%- if ap.sitemap == false or ap.noindex -%}{%- continue -%}{%- endif -%}
+  <url><loc>{{ ap.url | absolute_url }}</loc>{% if ap.diperbarui %}<lastmod>{{ ap.diperbarui | date_to_xmlschema }}</lastmod>{% endif %}</url>
+  <url><loc>{{ ap.file | prepend: '/' | absolute_url }}</loc>{% if ap.diperbarui %}<lastmod>{{ ap.diperbarui | date_to_xmlschema }}</lastmod>{% endif %}</url>
+{%- endfor -%}
+{%- for tulisan in site.posts -%}
+  {%- if tulisan.sitemap == false or tulisan.noindex -%}{%- continue -%}{%- endif -%}
+  <url><loc>{{ tulisan.url | absolute_url }}</loc><lastmod>{{ tulisan.last_modified_at | default: tulisan.date | date_to_xmlschema }}</lastmod></url>
+{%- endfor -%}
+</urlset>

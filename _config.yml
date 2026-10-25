@@ -1,0 +1,111 @@
+# ============================================================
+#  andu.my.id: satu situs Jekyll untuk beranda studio, aplikasi, dan blog
+#  Repo: anduid/anduid.github.io  (diterbitkan lewat GitHub Actions)
+# ============================================================
+
+# ====== IDENTITAS SITUS (studio) ======
+title: andu.my.id
+tagline: Creative Engineering Studio
+description: andu.my.id merancang dan membangun aplikasi web, sistem digitalisasi, dan otomasi untuk UMKM, instansi, dan sektor publik, berbasis di Bekasi.
+lang: id
+locale: id_ID
+author: Andu
+author_bio: Pengembang dan pendiri andu.my.id, Creative Engineering Studio di Bekasi. Menulis tentang pengembangan aplikasi, digitalisasi, dan hal yang dipelajari di lapangan.
+publisher: andu.my.id
+email: andhuvatamourgana@gmail.com
+
+# Alamat situs. Tidak ada subfolder lagi: beranda di /, aplikasi di /aplikasi/, blog di /blog/.
+url: "https://andu.my.id"
+baseurl: ""
+
+# ====== IDENTITAS BLOG ======
+blog_title: Blog Andu
+blog_seo_title: "Blog Andu | Catatan, Cerita, dan Hal yang Saya Pelajari"   # judul tab beranda blog (ideal 50-60 karakter)
+blog_tagline: Catatan, cerita, dan hal yang saya pelajari
+blog_description: Blog pribadi Andu berisi tulisan, catatan harian, dan pengalaman seputar teknologi dan pengembangan aplikasi.   # ideal 120-160 karakter
+
+# Gambar bawaan untuk pratinjau media sosial (1200x630).
+default_image: /assets/images/og-default.png          # halaman blog
+default_image_studio: /assets/images/og-studio.png    # beranda, hub aplikasi, halaman aplikasi
+twitter_username: ""                   # tanpa @, kosongkan jika tidak ada
+
+# Tautan sosial (kosongkan jika tidak dipakai)
+github_username: anduid
+instagram_username: ""
+
+# Menu navigasi (dipakai di header dan footer semua halaman bertema)
+nav:
+  - { judul: Aplikasi, url: /aplikasi/ }
+  - { judul: Blog, url: /blog/ }
+  - { judul: Arsip, url: /blog/arsip/ }
+  - { judul: Topik, url: /blog/topik/ }
+  - { judul: Tentang, url: /blog/tentang/ }
+
+# Menu di footer
+nav_footer:
+  - { judul: Kontak, url: /blog/kontak/ }
+  - { judul: Kebijakan Privasi, url: /blog/privasi/ }
+
+# Tag yang terlalu umum untuk dipakai mencari "tulisan terkait" otomatis
+tag_abaikan: [tutorial, panduan, web]
+
+# Google AdSense (opsional). Biarkan client kosong jika belum disetujui: tidak ada skrip/iklan yang dimuat.
+adsense:
+  client: "1088097367723130"        # contoh: ca-pub-1234567890123456
+  slot_atas: ""     # ID unit iklan di bawah judul tulisan (angka)
+  slot_tengah: ""   # ID unit iklan di tengah tulisan (butuh minimal 2 subjudul ##)
+  slot_bawah: ""    # ID unit iklan di bawah tulisan
+
+# Komentar (opsional): isi lengkap dari https://giscus.app, jika kosong komentar tidak tampil
+giscus:
+  repo: ""
+  repo_id: ""
+  category: "Announcements"
+  category_id: ""
+
+# ====== TEKNIS ======
+markdown: kramdown
+excerpt_separator: "<!--more-->"
+timezone: Asia/Jakarta
+
+# URL tulisan sama persis dengan yang sudah ada (https://andu.my.id/blog/TAHUN/BULAN/TANGGAL/judul/)
+permalink: /blog/:year/:month/:day/:title/
+paginate: 6
+paginate_path: "/blog/halaman:num/"
+
+# Hanya plugin yang diizinkan GitHub Pages. Sitemap dibuat oleh sitemap.xml buatan sendiri (lihat file itu).
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+
+# Alamat RSS tetap sama seperti sebelumnya: /blog/feed.xml
+feed:
+  path: blog/feed.xml
+
+# Koleksi aplikasi: satu file kecil di _apps/ per aplikasi menghasilkan halaman /aplikasi/NAMA/
+collections:
+  apps:
+    output: true
+    permalink: /aplikasi/:name/
+
+defaults:
+  - scope: { path: "", type: "apps" }
+    values:
+      layout: aplikasi
+      kategori: Lainnya
+      urutan: 100
+      beranda: false
+      bahasa: id
+      schema_kategori: UtilitiesApplication
+      noads: true
+
+# Berkas yang tidak ikut diterbitkan
+exclude:
+  - README.md
+  - PANDUAN-MIGRASI.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+  - tools
+  - .github

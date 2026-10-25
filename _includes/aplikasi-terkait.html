@@ -1,0 +1,30 @@
+{%- comment -%}
+  Di halaman tulisan: tampilkan aplikasi yang berkaitan (maks. 3).
+  Cocok jika (a) front matter tulisan berisi  apps: [nama-file]  atau
+             (b) salah satu tag tulisan sama dengan tag aplikasi (kecuali tag umum di site.tag_abaikan).
+{%- endcomment -%}
+{%- assign jumlah_at = 0 -%}
+{%- capture daftar_at -%}
+  {%- for ap in site.apps -%}
+    {%- if jumlah_at >= 3 -%}{%- break -%}{%- endif -%}
+    {%- assign cocok_at = false -%}
+    {%- if page.apps contains ap.file -%}{%- assign cocok_at = true -%}{%- endif -%}
+    {%- unless cocok_at -%}
+      {%- for tg in page.tags -%}
+        {%- unless site.tag_abaikan contains tg -%}
+          {%- if ap.tags contains tg -%}{%- assign cocok_at = true -%}{%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endunless -%}
+    {%- if cocok_at -%}
+      {%- assign jumlah_at = jumlah_at | plus: 1 -%}
+      {%- include kartu-aplikasi.html app=ap -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if jumlah_at > 0 -%}
+<aside class="terkait" aria-labelledby="judul-app-terkait">
+  <h2 id="judul-app-terkait" class="judul-bagian">Aplikasi yang berkaitan</h2>
+  <div class="grid">{{ daftar_at }}</div>
+</aside>
+{%- endif -%}

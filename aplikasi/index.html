@@ -1,0 +1,36 @@
+---
+layout: default
+title: Aplikasi
+description: Kumpulan aplikasi web buatan andu.my.id untuk layanan publik, UMKM, komunitas, dan alat bantu, lengkap dengan penjelasan fitur dan tulisan terkait.
+permalink: /aplikasi/
+noads: true
+---
+{%- assign semua_app = site.apps | sort: 'urutan' -%}
+{%- assign grup_app = semua_app | group_by: 'kategori' -%}
+<section class="hero">
+  <div class="bungkus">
+    <h1>Aplikasi buatan studio</h1>
+    <p class="hero-sub">{{ semua_app.size }} aplikasi web yang bisa langsung dibuka di browser, dari layanan publik dan UMKM sampai alat bantu harian. Tiap aplikasi punya halaman penjelasan dan tulisan blog yang berkaitan.</p>
+    <div class="hero-aksi">
+      <a class="tombol" href="{{ '/#kontak' | relative_url }}">Konsultasi aplikasi serupa</a>
+      <a class="tombol tombol-sekunder" href="{{ '/blog/' | relative_url }}">Baca blog</a>
+    </div>
+  </div>
+</section>
+
+<div class="bungkus bagian">
+  {% if semua_app.size == 0 %}
+    <p class="kosong">Belum ada aplikasi terdaftar. Tambahkan file <code>_apps/nama.md</code> atau unggah file HTML aplikasi ke root repo.</p>
+  {% endif %}
+  <p class="tag-daftar" aria-label="Kategori">
+    {% for g in grup_app %}<a class="tag" href="#{{ g.name | slugify }}">{{ g.name }} ({{ g.items.size }})</a>{% endfor %}
+  </p>
+  {% for g in grup_app %}
+  <section aria-labelledby="{{ g.name | slugify }}">
+    <h2 id="{{ g.name | slugify }}" class="judul-bagian judul-bagian-lanjut">{{ g.name }}</h2>
+    <div class="grid">
+      {% for ap in g.items %}{% include kartu-aplikasi.html app=ap %}{% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</div>

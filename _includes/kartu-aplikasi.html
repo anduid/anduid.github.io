@@ -1,0 +1,11 @@
+{%- comment -%} Kartu satu aplikasi. Pakai: {% include kartu-aplikasi.html app=ap %} {%- endcomment -%}
+{%- assign app_k = include.app -%}
+<article class="kartu kartu-app">
+  <p class="tag-daftar"><span class="tag">{{ app_k.kategori }}</span></p>
+  <h3 class="kartu-judul"><a href="{{ app_k.url | relative_url }}">{{ app_k.title | escape }}</a></h3>
+  <p class="kartu-ringkas">{{ app_k.description | strip_html | truncate: 150 | escape }}</p>
+  <p class="kartu-aksi">
+    <a class="tombol tombol-kecil" href="{{ app_k.file | prepend: '/' | relative_url }}">Buka aplikasi <svg class="ikon" aria-hidden="true"><use href="#i-external"/></svg></a>
+    <a class="tautan-detail" href="{{ app_k.url | relative_url }}">Detail</a>
+  </p>
+</article>
