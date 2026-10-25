@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auto-Refresh Dashboard Viewer</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --panel:#ffffff; --text:#1a1a1a; --muted:#666;
+    --accent:#4f6df5; --border:#e2e4e8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#15161a; --panel:#1e2024; --text:#eee; --muted:#9aa0a6; --border:#303236; }
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:var(--bg); color:var(--text); min-height:100vh;
+  }
+  header{
+    padding:14px 20px; background:var(--panel); border-bottom:1px solid var(--border);
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+  }
+  input, select, button{
+    font-size:14px; padding:8px 10px; border-radius:8px; border:1px solid var(--border);
+    background:var(--bg); color:var(--text);
+  }
+  input[type="text"]{ flex:1; min-width:220px; }
+  button{
+    background:var(--accent); color:#fff; border:none; cursor:pointer; font-weight:600;
+  }
+  button.secondary{ background:transparent; color:var(--accent); border:1px solid var(--accent); }
+  button:disabled{ opacity:.5; cursor:not-allowed; }
+  #status{ font-size:13px; color:var(--muted); padding:0 20px; margin-top:8px; }
+  iframe{
+    width:100%; height:calc(100vh - 110px); border:none; background:#fff;
+  }
+</style>
+</head>
+<body>
+<header>
+  <input id="url" type="text" placeholder="https://contoh-dashboard.com">
+  <select id="interval">
+    <option value="10">10 detik</option>
+    <option value="30" selected>30 detik</option>
+    <option value="60">1 menit</option>
+    <option value="300">5 menit</option>
+    <option value="900">15 menit</option>
+  </select>
+  <button id="startBtn">Mulai</button>
+  <button id="stopBtn" class="secondary" disabled>Berhenti</button>
+  <button id="refreshNow" class="secondary">Refresh Sekarang</button>
+</header>
+<div id="status">Belum berjalan.</div>
+<iframe id="frame" title="dashboard"></iframe>
+
+<script>
+let timer = null;
+const frame = document.getElementById('frame');
+const status = document.getElementById('status');
+const urlInput = document.getElementById('url');
+const intervalSel = document.getElementById('interval');
+const startBtn = document.getElementById('startBtn');
+const stopBtn = document.getElementById('stopBtn');
+
+function normalizeUrl(v){
+  v = v.trim();
+  if(!v) return null;
+  if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
+  return v;
+}
+
+function loadFrame(){
+  const u = normalizeUrl(urlInput.value);
+  if(!u) return;
+  // cache-bust param supaya benar-benar reload, bukan dari cache
+  const sep = u.includes('?') ? '&' : '?';
+  frame.src = u + sep + '_t=' + Date.now();
+  status.textContent = 'Terakhir dimuat: ' + new Date().toLocaleTimeString();
+}
+
+function start(){
+  const u = normalizeUrl(urlInput.value);
+  if(!u){ alert('Masukkan URL dulu.'); return; }
+  loadFrame();
+  const sec = parseInt(intervalSel.value, 10);
+  timer = setInterval(loadFrame, sec * 1000);
+  startBtn.disabled = true;
+  stopBtn.disabled = false;
+  urlInput.disabled = true;
+  intervalSel.disabled = true;
+}
+
+function stop(){
+  clearInterval(timer);
+  timer = null;
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+  urlInput.disabled = false;
+  intervalSel.disabled = false;
+  status.textContent = 'Dihentikan.';
+}
+
+startBtn.addEventListener('click', start);
+stopBtn.addEventListener('click', stop);
+document.getElementById('refreshNow').addEventListener('click', loadFrame);
+</script>
+</body>
+</html>

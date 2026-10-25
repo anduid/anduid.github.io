@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PulseFeed - Interactive Social & RSS Stream</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              lime: '#D2F843',
+              purple: '#8B5CF6',
+              fuchsia: '#EC4899',
+              cyan: '#06B6D4',
+              surface: '#111827',
+              card: '#1F2937'
+            }
+          },
+          keyframes: {
+            bounceSlight: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-4px)' }
+            },
+            popIn: {
+              '0%': { transform: 'scale(0.92) translateY(12px)', opacity: '0' },
+              '100%': { transform: 'scale(1) translateY(0)', opacity: '1' }
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.6', filter: 'drop-shadow(0 0 10px rgba(210, 248, 67, 0.4))' },
+              '50%': { opacity: '1', filter: 'drop-shadow(0 0 18px rgba(210, 248, 67, 0.8))' }
+            },
+            floatWiggle: {
+              '0%, 100%': { transform: 'rotate(0deg) translateY(0px)' },
+              '25%': { transform: 'rotate(-2deg) translateY(-2px)' },
+              '75%': { transform: 'rotate(2deg) translateY(2px)' }
+            }
+          },
+          animation: {
+            pop: 'popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            slightBounce: 'bounceSlight 2.5s ease-in-out infinite',
+            glow: 'pulseGlow 3s infinite',
+            wiggle: 'floatWiggle 4s ease-in-out infinite'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbars and Glassmorphism */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 999px; }
+    .glass-nav {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .badge-gradient {
+      background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+    }
+    .neon-border {
+      box-shadow: 0 0 15px -3px rgba(210, 248, 67, 0.15);
+    }
+    .interactive-press:active {
+      transform: scale(0.96);
+    }
+    /* Notification Toast */
+    #notificationToast {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #notificationToast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #notificationToast.hide {
+      transform: translate(-50%, -120%);
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans bg-slate-950 selection:bg-brand-lime selection:text-black antialiased">
+
+  <!-- Push Notification Simulation Banner / Toast -->
+  <div id="notificationToast" class="hide fixed top-4 left-1/2 z-50 w-[92%] max-w-sm glass-nav border border-brand-lime/30 rounded-2xl p-3.5 shadow-2xl flex items-start gap-3">
+    <div class="w-9 h-9 rounded-xl bg-brand-lime text-slate-950 flex items-center justify-center font-bold text-lg flex-shrink-0 animate-bounce">
+      🔔
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center justify-between">
+        <span class="text-[11px] font-bold tracking-wider uppercase text-brand-lime" id="toastTag">Pulse Notification</span>
+        <span class="text-[10px] text-slate-400">Just now</span>
+      </div>
+      <p class="text-xs font-semibold text-white truncate mt-0.5" id="toastTitle">New Post Published</p>
+      <p class="text-[11px] text-slate-300 line-clamp-2 mt-0.5" id="toastDesc">Feed synced and cached in IndexedDB successfully!</p>
+    </div>
+    <button onclick="hideNotificationToast()" class="text-slate-400 hover:text-white p-1 text-xs">✕</button>
+  </div>
+
+  <!-- Mobile Container (Centered 430px container for natural mobile app feel) -->
+  <div class="mx-auto w-full max-w-md h-full flex flex-col relative bg-slate-900 shadow-2xl overflow-hidden border-x border-slate-800/80">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-30 glass-nav border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-brand-lime via-brand-cyan to-brand-fuchsia flex items-center justify-center shadow-lg shadow-brand-lime/20 animate-wiggle">
+          <span class="text-slate-950 font-display font-black text-xl">P⚡</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="font-display font-black text-xl tracking-tight text-white leading-none">PulseFeed</h1>
+            <span class="text-[9px] font-extrabold px-1.5 py-0.5 bg-brand-lime/20 text-brand-lime border border-brand-lime/30 rounded-md">PRO</span>
+          </div>
+          <p class="text-[10px] text-slate-400 font-medium" data-i18n="tagline">Auto RSS + Community Buzz</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Dual Language Toggle Pill -->
+        <button id="langToggleBtn" onclick="toggleLanguage()" class="interactive-press px-2.5 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700/80 flex items-center gap-1 transition">
+          <span class="text-sm">🌐</span>
+          <span id="langLabel" class="text-brand-lime font-black">EN</span>
+        </button>
+
+        <!-- Push Bell Permission Button -->
+        <button id="notifBellBtn" onclick="requestPushPermission()" class="interactive-press w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700/80 flex items-center justify-center relative transition" title="Enable Push Alerts">
+          <span class="text-base">🔔</span>
+          <span id="bellBadge" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-brand-lime animate-ping"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Filter Pills & Quick Actions -->
+    <section class="px-4 py-2.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
+      <div class="flex items-center gap-1.5 flex-nowrap">
+        <button onclick="setFilter('all')" id="filter-all" class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-brand-lime text-slate-950 shadow-md shadow-brand-lime/20 transition interactive-press" data-i18n="filterAll">All Posts</button>
+        <button onclick="setFilter('manual')" id="filter-manual" class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition interactive-press" data-i18n="filterManual">✍️ Manual</button>
+        <button onclick="setFilter('rss')" id="filter-rss" class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition interactive-press" data-i18n="filterRss">⚡ RSS Feed</button>
+      </div>
+      <button onclick="syncRSSFeeds(true)" class="interactive-press flex items-center gap-1 text-[11px] font-bold text-brand-cyan hover:text-cyan-300 px-2.5 py-1 rounded-lg bg-cyan-950/40 border border-cyan-500/20 whitespace-nowrap">
+        <span id="syncSpinner" class="inline-block transition-transform">🔄</span>
+        <span data-i18n="syncBtn">Fetch RSS</span>
+      </button>
+    </section>
+
+    <!-- Main Feed Scroll Area -->
+    <main class="flex-1 overflow-y-auto px-4 py-3 space-y-3.5 pb-24" id="feedContainer">
+      <!-- Loading Skeleton / Preloader -->
+      <div id="loadingIndicator" class="space-y-3 py-4 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 text-slate-400 text-xs font-semibold animate-pulse">
+          <span>⚡ Initializing IndexedDB stream...</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Floating Action Creator Bar -->
+    <div class="absolute bottom-4 inset-x-4 z-20">
+      <div class="glass-nav border border-slate-700/80 rounded-2xl p-2 shadow-2xl flex items-center justify-between gap-2">
+        <button onclick="openCreateModal()" class="flex-1 interactive-press flex items-center justify-center gap-2 bg-gradient-to-r from-brand-lime via-lime-400 to-brand-cyan text-slate-950 font-display font-extrabold text-sm py-2.5 px-4 rounded-xl shadow-lg shadow-brand-lime/25 transition">
+          <span class="text-base">✨</span>
+          <span data-i18n="btnNewPost">Drop a Vibe / Post</span>
+        </button>
+        <button onclick="triggerSimulatedRSS()" class="interactive-press w-11 h-11 rounded-xl bg-slate-800 hover:bg-slate-700 text-brand-lime border border-slate-700 flex items-center justify-center font-bold text-lg" title="Simulate incoming RSS entry">
+          📡
+        </button>
+      </div>
+    </div>
+
+    <!-- Create Manual Post Modal Sheet -->
+    <div id="createModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-end justify-center transition-all duration-300">
+      <div class="w-full max-w-md bg-slate-900 border-t border-slate-700 rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto animate-pop">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">✍️</span>
+            <h2 class="font-display font-black text-lg text-white" data-i18n="modalTitle">Create New Post</h2>
+          </div>
+          <button onclick="closeCreateModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-sm font-bold">✕</button>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" data-i18n="authorLabel">Your Name / Handle</label>
+          <input type="text" id="postAuthor" value="@alex_youth" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-brand-lime" placeholder="@username">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" data-i18n="tagSelectLabel">Category & Tag</label>
+          <div class="flex flex-wrap gap-1.5" id="categoryChips">
+            <button type="button" onclick="selectChip(this, 'Tech & AI')" class="chip-btn active px-2.5 py-1 text-xs rounded-lg font-bold bg-brand-lime text-slate-950">#Tech & AI</button>
+            <button type="button" onclick="selectChip(this, 'Design Vibes')" class="chip-btn px-2.5 py-1 text-xs rounded-lg font-bold bg-slate-800 text-slate-300">#Design Vibes</button>
+            <button type="button" onclick="selectChip(this, 'Startup Life')" class="chip-btn px-2.5 py-1 text-xs rounded-lg font-bold bg-slate-800 text-slate-300">#Startup Life</button>
+            <button type="button" onclick="selectChip(this, 'Gaming')" class="chip-btn px-2.5 py-1 text-xs rounded-lg font-bold bg-slate-800 text-slate-300">#Gaming</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" data-i18n="contentLabel">What's happening? (EN / ID)</label>
+          <textarea id="postContent" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-lime" placeholder="Share hot updates, questions or random shower thoughts..."></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" data-i18n="imageThemeLabel">Include Visual Accent</label>
+          <div class="grid grid-cols-4 gap-2 text-center text-xs font-medium">
+            <label class="cursor-pointer">
+              <input type="radio" name="postVisual" value="cyber" checked class="hidden peer">
+              <div class="p-2 rounded-xl bg-slate-800 peer-checked:bg-brand-lime/20 peer-checked:border-brand-lime border border-slate-700 text-slate-300 peer-checked:text-brand-lime">
+                🤖 Cyber
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="postVisual" value="gradient" class="hidden peer">
+              <div class="p-2 rounded-xl bg-slate-800 peer-checked:bg-brand-fuchsia/20 peer-checked:border-brand-fuchsia border border-slate-700 text-slate-300 peer-checked:text-brand-fuchsia">
+                🎨 Aura
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="postVisual" value="code" class="hidden peer">
+              <div class="p-2 rounded-xl bg-slate-800 peer-checked:bg-brand-cyan/20 peer-checked:border-brand-cyan border border-slate-700 text-slate-300 peer-checked:text-brand-cyan">
+                💻 Dev
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="postVisual" value="none" class="hidden peer">
+              <div class="p-2 rounded-xl bg-slate-800 peer-checked:bg-slate-700 peer-checked:border-slate-500 border border-slate-700 text-slate-300 peer-checked:text-white">
+                📝 None
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="submitManualPost()" class="w-full interactive-press py-3 rounded-xl bg-brand-lime hover:bg-lime-400 text-slate-950 font-display font-extrabold text-sm tracking-wide shadow-lg shadow-brand-lime/20 flex items-center justify-center gap-2">
+            <span>🚀</span>
+            <span data-i18n="btnPublish">Publish & Save to IndexedDB</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- IndexedDB & App Core Engine -->
+  <script>
+    // --- Dual Language Translations Dictionary ---
+    const i18nData = {
+      en: {
+        tagline: "Auto RSS + Community Buzz",
+        filterAll: "All Posts",
+        filterManual: "✍️ Manual",
+        filterRss: "⚡ RSS Feed",
+        syncBtn: "Fetch RSS",
+        btnNewPost: "Drop a Vibe / Post",
+        modalTitle: "Create New Post",
+        authorLabel: "Your Name / Handle",
+        tagSelectLabel: "Category & Tag",
+        contentLabel: "What's happening? (Bilingual Ready)",
+        imageThemeLabel: "Visual Vibe Style",
+        btnPublish: "Publish to IndexedDB",
+        pushAlertGranted: "🔔 Push alerts enabled! Live notifications will pop up.",
+        pushAlertDenied: "Push notification permission denied or dismissed.",
+        rssAutoBadge: "AUTOMATED RSS",
+        manualBadge: "COMMUNITY POST",
+        likeTxt: "Likes",
+        shareTxt: "Share",
+        commentTxt: "Replies",
+        toastNewRss: "New RSS Item Ingested!",
+        toastNewManual: "Post Saved to IndexedDB!"
+      },
+      id: {
+        tagline: "Otomatis RSS + Komunitas Seru",
+        filterAll: "Semua Post",
+        filterManual: "✍️ Manual",
+        filterRss: "⚡ RSS Feed",
+        syncBtn: "Tarik RSS",
+        btnNewPost: "Bagikan Cerita / Vibe",
+        modalTitle: "Tulis Post Baru",
+        authorLabel: "Nama / Username Kamu",
+        tagSelectLabel: "Kategori & Tagar",
+        contentLabel: "Apa yang lagi seru? (Bahasa Indonesia)",
+        imageThemeLabel: "Gaya Visual Aksen",
+        btnPublish: "Terbitkan ke IndexedDB",
+        pushAlertGranted: "🔔 Notifikasi push aktif! Pemberitahuan otomatis akan muncul.",
+        pushAlertDenied: "Izin notifikasi tidak diizinkan.",
+        rssAutoBadge: "RSS OTOMATIS",
+        manualBadge: "POST KOMUNITAS",
+        likeTxt: "Suka",
+        shareTxt: "Bagikan",
+        commentTxt: "Komentar",
+        toastNewRss: "Artikel RSS Baru Masuk!",
+        toastNewManual: "Post Sukses Disimpan ke IndexedDB!"
+      }
+    };
+
+    let currentLang = 'en';
+    let currentFilter = 'all';
+    let activeCategory = 'Tech & AI';
+    let db;
+
+    // --- IndexedDB Initializer ---
+    function initIndexedDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open('PulseFeedDB', 1);
+
+        request.onupgradeneeded = (event) => {
+          const database = event.target.result;
+          if (!database.objectStoreNames.contains('posts')) {
+            const store = database.createObjectStore('posts', { keyPath: 'id', autoIncrement: true });
+            store.createIndex('type', 'type', { unique: false });
+            store.createIndex('timestamp', 'timestamp', { unique: false });
+          }
+        };
+
+        request.onsuccess = (event) => {
+          db = event.target.result;
+          resolve(db);
+        };
+
+        request.onerror = (event) => {
+          console.error('IndexedDB Error:', event.target.error);
+          reject(event.target.error);
+        };
+      });
+    }
+
+    // Default Seed Data combining RSS and Community Manual Posts
+    const defaultInitialData = [
+      {
+        type: 'rss',
+        source: 'The Verge RSS',
+        author: 'Tech Radar Feed',
+        avatar: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80',
+        titleEn: 'Next-Gen AI Microchips Break Energy Efficiency Records',
+        titleId: 'Chip AI Generasi Baru Pecahkan Rekor Efisiensi Daya',
+        contentEn: 'Engineers unveiled an ultra-low power neural accelerator delivering 10x compute throughput on mobile edge devices. Read more on latest hardware leaps.',
+        contentId: 'Para insinyur memperkenalkan akselerator saraf ultra-hemat daya dengan throughput 10x di perangkat mobile edge. Lompatan besar teknologi komputasi.',
+        tag: 'Tech & AI',
+        visualType: 'cyber',
+        likes: 142,
+        comments: 19,
+        timestamp: Date.now() - 1000 * 60 * 12,
+        rssUrl: 'https://theverge.com/tech'
+      },
+      {
+        type: 'manual',
+        author: '@kenji_creatives',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+        contentEn: 'Just migrated our animation system to pure CSS spring-keyframes! The latency dropped to zero and battery usage is minimal. 🚀 Thoughts on CSS vs JS springs?',
+        contentId: 'Baru saja migrasikan sistem animasi ke CSS spring keyframes murni! Latensi jadi nol dan baterai tetap super irit. 🚀 Menurut kalian gimana?',
+        tag: 'Design Vibes',
+        visualType: 'gradient',
+        likes: 89,
+        comments: 24,
+        timestamp: Date.now() - 1000 * 60 * 45
+      },
+      {
+        type: 'rss',
+        source: 'Hacker News RSS',
+        author: 'Dev Dispatch',
+        avatar: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=100&auto=format&fit=crop&q=80',
+        titleEn: 'Why Modern Web Frameworks are Returning to Server Components',
+        titleId: 'Mengapa Framework Web Modern Kembali ke Server Components',
+        contentEn: 'Balancing client-side interactivity with lightweight bundle sizes has pushed teams to adopt hybrid rendering models with incredible gains in load speeds.',
+        contentId: 'Keseimbangan antara interaktivitas klien dan ukuran bundle ringan mendorong adopsi model hybrid dengan peningkatan kecepatan memuat yang dramatis.',
+        tag: 'Tech & AI',
+        visualType: 'code',
+        likes: 215,
+        comments: 53,
+        timestamp: Date.now() - 1000 * 60 * 95,
+        rssUrl: 'https://news.ycombinator.com'
+      },
+      {
+        type: 'manual',
+        author: '@siti_jakarta',
+        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80',
+        contentEn: 'Building this youth app with bilingual support (English + Bahasa Indonesia)! The youth tech scene in SE Asia is booming right now. ☕✨',
+        contentId: 'Bikin aplikasi anak muda dengan dukungan dwi-bahasa (Inggris + Bahasa Indonesia)! Ekosistem startup anak muda di Asia Tenggara lagi seru banget. ☕✨',
+        tag: 'Startup Life',
+        visualType: 'none',
+        likes: 126,
+        comments: 31,
+        timestamp: Date.now() - 1000 * 60 * 180
+      }
+    ];
+
+    // Seed database if empty
+    async function seedInitialDataIfEmpty() {
+      const allPosts = await getAllPostsFromDB();
+      if (allPosts.length === 0) {
+        const tx = db.transaction('posts', 'readwrite');
+        const store = tx.objectStore('posts');
+        for (const item of defaultInitialData) {
+          store.add(item);
+        }
+        return new Promise((resolve) => tx.oncomplete = resolve);
+      }
+    }
+
+    function getAllPostsFromDB() {
+      return new Promise((resolve) => {
+        const tx = db.transaction('posts', 'readonly');
+        const store = tx.objectStore('posts');
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result || []);
+      });
+    }
+
+    function addPostToDB(postData) {
+      return new Promise((resolve) => {
+        const tx = db.transaction('posts', 'readwrite');
+        const store = tx.objectStore('posts');
+        const request = store.add(postData);
+        request.onsuccess = () => resolve(request.result);
+      });
+    }
+
+    function updatePostInDB(postData) {
+      return new Promise((resolve) => {
+        const tx = db.transaction('posts', 'readwrite');
+        const store = tx.objectStore('posts');
+        const request = store.put(postData);
+        request.onsuccess = () => resolve();
+      });
+    }
+
+    // --- UI Render & Interactions ---
+    async function renderFeed() {
+      const container = document.getElementById('feedContainer');
+      const posts = await getAllPostsFromDB();
+
+      // Sort newest first
+      posts.sort((a, b) => b.timestamp - a.timestamp);
+
+      // Filter
+      const filtered = posts.filter(post => {
+        if (currentFilter === 'all') return true;
+        return post.type === currentFilter;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center">
+            <div class="text-4xl mb-2">📭</div>
+            <p class="text-sm font-semibold text-slate-400">No posts in this filter yet.</p>
+            <button onclick="setFilter('all')" class="mt-3 px-4 py-1.5 rounded-full bg-brand-lime text-slate-950 text-xs font-bold">Reset Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map((post, index) => {
+        const isRss = post.type === 'rss';
+        const formattedTime = timeAgo(post.timestamp);
+
+        // Language text fallback
+        let displayContent = '';
+        if (isRss) {
+          const title = currentLang === 'en' ? (post.titleEn || post.titleId) : (post.titleId || post.titleEn);
+          const body = currentLang === 'en' ? (post.contentEn || post.contentId) : (post.contentId || post.contentEn);
+          displayContent = `
+            <h3 class="font-display font-bold text-white text-sm mb-1.5 leading-snug hover:text-brand-lime transition">${escapeHtml(title)}</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">${escapeHtml(body)}</p>
+          `;
+        } else {
+          const body = currentLang === 'en' ? (post.contentEn || post.contentId) : (post.contentId || post.contentEn);
+          displayContent = `<p class="text-xs text-slate-200 leading-relaxed font-medium">${escapeHtml(body)}</p>`;
+        }
+
+        // Visual Accents based on visualType
+        let visualMarkup = '';
+        if (post.visualType === 'cyber') {
+          visualMarkup = `
+            <div class="relative overflow-hidden rounded-xl h-28 bg-gradient-to-br from-cyan-950 via-slate-900 to-emerald-950 border border-cyan-500/30 p-3 flex flex-col justify-between neon-border group">
+              <div class="flex items-center justify-between z-10">
+                <span class="text-[10px] font-mono font-black text-brand-cyan tracking-wider px-2 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/40">⚡ NEURAL SYNC v4.2</span>
+                <span class="text-xs">🛸</span>
+              </div>
+              <div class="font-display font-black text-xl text-brand-lime opacity-90 tracking-wide z-10 group-hover:scale-105 transition duration-300">
+                AI REVOLUTION
+              </div>
+              <div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-brand-cyan/20 blur-xl pointer-events-none"></div>
+            </div>
+          `;
+        } else if (post.visualType === 'gradient') {
+          visualMarkup = `
+            <div class="relative overflow-hidden rounded-xl h-28 bg-gradient-to-tr from-fuchsia-600 via-purple-700 to-brand-lime p-3 flex flex-col justify-between text-white shadow-lg">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-extrabold uppercase tracking-widest text-[10px] bg-black/40 px-2 py-0.5 rounded-full">✨ Creative Flow</span>
+                <span>🎨</span>
+              </div>
+              <p class="font-display font-extrabold text-lg leading-tight text-white drop-shadow-md">Inspiring Next-Gen Creators</p>
+            </div>
+          `;
+        } else if (post.visualType === 'code') {
+          visualMarkup = `
+            <div class="rounded-xl bg-slate-950 border border-slate-800 p-2.5 font-mono text-[11px] text-emerald-400 overflow-x-auto shadow-inner">
+              <div class="flex items-center gap-1.5 pb-1 mb-1 border-b border-slate-800 text-[10px] text-slate-500">
+                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span class="ml-1 text-slate-400">edge-server.ts</span>
+              </div>
+              <code>const stream = new ReadableStream({ start(c) { c.enqueue('200 OK'); } });</code>
+            </div>
+          `;
+        }
+
+        return `
+          <article class="animate-pop bg-slate-800/80 hover:bg-slate-800/95 border border-slate-700/60 rounded-2xl p-3.5 shadow-lg transition-all duration-200" style="animation-delay: ${index * 0.05}s">
+            <!-- Header info -->
+            <div class="flex items-start justify-between gap-2 mb-2.5">
+              <div class="flex items-center gap-2.5">
+                <img src="${post.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80'}" class="w-9 h-9 rounded-full object-cover ring-2 ${isRss ? 'ring-brand-cyan' : 'ring-brand-lime'}" alt="Avatar">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-bold text-xs text-white leading-none">${escapeHtml(post.author)}</span>
+                    <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${isRss ? 'bg-cyan-500/20 text-brand-cyan border border-cyan-500/30' : 'bg-brand-lime/20 text-brand-lime border border-brand-lime/30'}">
+                      ${isRss ? i18nData[currentLang].rssAutoBadge : i18nData[currentLang].manualBadge}
+                    </span>
+                  </div>
+                  <div class="flex items-center gap-1.5 text-[10px] text-slate-400 mt-0.5">
+                    <span>${formattedTime}</span>
+                    <span>•</span>
+                    <span class="text-brand-lime/90 font-medium">#${escapeHtml(post.tag || 'Trending')}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick action / Source pill -->
+              ${isRss ? `
+                <a href="${post.rssUrl || '#'}" target="_blank" class="interactive-press text-[10px] font-bold text-slate-400 hover:text-white px-2 py-1 bg-slate-900/80 rounded-lg border border-slate-700/80 flex items-center gap-1">
+                  <span>RSS</span>
+                  <span>↗</span>
+                </a>
+              ` : `
+                <button onclick="deletePost(${post.id})" class="text-slate-500 hover:text-rose-400 text-xs p-1" title="Delete post">🗑️</button>
+              `}
+            </div>
+
+            <!-- Body text -->
+            <div class="space-y-2.5">
+              ${displayContent}
+              ${visualMarkup}
+            </div>
+
+            <!-- Footer Interaction buttons -->
+            <div class="flex items-center justify-between pt-3 mt-3 border-t border-slate-700/60 text-xs text-slate-400">
+              <button onclick="likePost(${post.id}, this)" class="interactive-press flex items-center gap-1.5 hover:text-rose-400 transition font-medium group">
+                <span class="group-hover:scale-125 transition-transform text-sm">❤️</span>
+                <span class="text-[11px] font-bold text-slate-300" id="like-count-${post.id}">${post.likes || 0}</span>
+                <span class="text-[10px] hidden sm:inline">${i18nData[currentLang].likeTxt}</span>
+              </button>
+
+              <button onclick="triggerToast('💬 Interactive thread opened in preview mode')" class="interactive-press flex items-center gap-1.5 hover:text-brand-cyan transition font-medium">
+                <span class="text-sm">💬</span>
+                <span class="text-[11px] font-bold text-slate-300">${post.comments || 0}</span>
+                <span class="text-[10px] hidden sm:inline">${i18nData[currentLang].commentTxt}</span>
+              </button>
+
+              <button onclick="sharePost('${escapeHtml(post.author)}')" class="interactive-press flex items-center gap-1 hover:text-brand-lime transition font-medium">
+                <span class="text-sm">🚀</span>
+                <span class="text-[10px] font-bold">${i18nData[currentLang].shareTxt}</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // --- Like & Post Mutation in IndexedDB ---
+    async function likePost(id, btnElement) {
+      const posts = await getAllPostsFromDB();
+      const target = posts.find(p => p.id === id);
+      if (target) {
+        target.likes = (target.likes || 0) + 1;
+        await updatePostInDB(target);
+        const countSpan = document.getElementById(`like-count-${id}`);
+        if (countSpan) countSpan.textContent = target.likes;
+        
+        // Haptic feel animation
+        btnElement.classList.add('text-rose-500');
+        showPushNotificationToast("❤️ Liked!", `You liked ${target.author}'s post!`, "Pulse Engagement");
+      }
+    }
+
+    async function deletePost(id) {
+      const tx = db.transaction('posts', 'readwrite');
+      const store = tx.objectStore('posts');
+      store.delete(id);
+      tx.oncomplete = () => {
+        showPushNotificationToast("🗑️ Post Removed", "Post removed from local IndexedDB storage.", "Database Action");
+        renderFeed();
+      };
+    }
+
+    // --- Manual Post Submission ---
+    async function submitManualPost() {
+      const author = document.getElementById('postAuthor').value.trim() || '@vibes_creator';
+      const content = document.getElementById('postContent').value.trim();
+      const visualOption = document.querySelector('input[name="postVisual"]:checked')?.value || 'cyber';
+
+      if (!content) {
+        alert(currentLang === 'en' ? 'Please enter some text for your post!' : 'Silakan masukkan konten tulisan Anda!');
+        return;
+      }
+
+      const newPost = {
+        type: 'manual',
+        author: author,
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+        contentEn: content,
+        contentId: content,
+        tag: activeCategory,
+        visualType: visualOption,
+        likes: 1,
+        comments: 0,
+        timestamp: Date.now()
+      };
+
+      await addPostToDB(newPost);
+      closeCreateModal();
+      document.getElementById('postContent').value = '';
+
+      showPushNotificationToast(
+        i18nData[currentLang].toastNewManual,
+        `"${content.substring(0, 48)}..." is now live on the stream!`,
+        "Live Post"
+      );
+
+      await renderFeed();
+    }
+
+    // --- Automatic RSS Pull Simulation ---
+    async function syncRSSFeeds(manualTrigger = false) {
+      const spinner = document.getElementById('syncSpinner');
+      spinner.classList.add('animate-spin');
+
+      // Emulate high-speed RSS fetch parser
+      setTimeout(async () => {
+        spinner.classList.remove('animate-spin');
+
+        const simulatedFeeds = [
+          {
+            type: 'rss',
+            source: 'TechCrunch RSS',
+            author: 'TechCrunch Wire',
+            avatar: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=100&auto=format&fit=crop&q=80',
+            titleEn: 'Autonomous Creative Studio Raises $18M for Real-time 3D',
+            titleId: 'Studio Kreatif Otonom Raih $18 Juta untuk Render 3D Real-time',
+            contentEn: 'The startup will deploy neural rendering pipelines directly in browser web workers with zero latency.',
+            contentId: 'Startup ini akan mengimplementasikan pipeline rendering saraf langsung di peramban tanpa latensi.',
+            tag: 'Tech & AI',
+            visualType: 'cyber',
+            likes: 64,
+            comments: 11,
+            timestamp: Date.now(),
+            rssUrl: 'https://techcrunch.com'
+          },
+          {
+            type: 'rss',
+            source: 'WebDev Trends',
+            author: 'CSS & Motion Pulse',
+            avatar: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80',
+            titleEn: 'Fluid Typography & Micro-Interactions in 2025',
+            titleId: 'Tipografi Dinamis & Mikro-Interaksi Tren Desain 2025',
+            contentEn: 'How Gen Z design sensibilities are reshaping responsive mobile interfaces with playful color palettes.',
+            contentId: 'Bagaimana selera desain Gen Z merevolusi antarmuka seluler dengan palet warna cerah dan energik.',
+            tag: 'Design Vibes',
+            visualType: 'gradient',
+            likes: 92,
+            comments: 14,
+            timestamp: Date.now() - 1000 * 30,
+            rssUrl: 'https://codepen.io'
+          }
+        ];
+
+        // Pick one randomly or sequential
+        const randomFeed = simulatedFeeds[Math.floor(Math.random() * simulatedFeeds.length)];
+        await addPostToDB(randomFeed);
+
+        showPushNotificationToast(
+          i18nData[currentLang].toastNewRss,
+          randomFeed.titleEn,
+          "RSS Auto Ingestion"
+        );
+
+        renderFeed();
+      }, 700);
+    }
+
+    function triggerSimulatedRSS() {
+      syncRSSFeeds(true);
+    }
+
+    // --- Push Notifications Simulation & Web API ---
+    function requestPushPermission() {
+      if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            document.getElementById('bellBadge').classList.remove('animate-ping');
+            document.getElementById('bellBadge').classList.add('bg-emerald-400');
+            showPushNotificationToast("🔔 Push Notifications Active", i18nData[currentLang].pushAlertGranted, "Permission");
+          } else {
+            showPushNotificationToast("Notifications Disallowed", i18nData[currentLang].pushAlertDenied, "Status");
+          }
+        });
+      } else {
+        showPushNotificationToast("Web Alerts Active", "In-app push notifications are fully configured.", "PWA Ready");
+      }
+    }
+
+    let toastTimer = null;
+    function showPushNotificationToast(title, desc, tag = "Pulse Notification") {
+      const toast = document.getElementById('notificationToast');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastDesc').textContent = desc;
+      document.getElementById('toastTag').textContent = tag;
+
+      toast.classList.remove('hide');
+      toast.classList.add('show');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        hideNotificationToast();
+      }, 4500);
+
+      // Trigger system notification if allowed
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          new Notification(title, { body: desc, icon: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100' });
+        } catch (e) {
+          // mobile web fallback handles inside toast
+        }
+      }
+    }
+
+    function hideNotificationToast() {
+      const toast = document.getElementById('notificationToast');
+      toast.classList.remove('show');
+      toast.classList.add('hide');
+    }
+
+    function triggerToast(msg) {
+      showPushNotificationToast("Pulse Feed Note", msg, "Activity");
+    }
+
+    function sharePost(author) {
+      if (navigator.share) {
+        navigator.share({
+          title: `PulseFeed by ${author}`,
+          text: `Check out this post on PulseFeed!`,
+          url: window.location.href
+        }).catch(() => {});
+      } else {
+        showPushNotificationToast("Link Copied 🔗", `Share link for post by ${author} copied to clipboard.`, "Social Share");
+      }
+    }
+
+    // --- Dual Language Engine ---
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'id' : 'en';
+      document.getElementById('langLabel').textContent = currentLang.toUpperCase();
+
+      // Update static texts
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18nData[currentLang] && i18nData[currentLang][key]) {
+          el.textContent = i18nData[currentLang][key];
+        }
+      });
+
+      // Show toast
+      showPushNotificationToast(
+        currentLang === 'en' ? 'Language Switched' : 'Bahasa Diubah',
+        currentLang === 'en' ? 'Interface is now set to English.' : 'Antarmuka sekarang menggunakan Bahasa Indonesia.',
+        "Locale"
+      );
+
+      renderFeed();
+    }
+
+    // --- Filter Controls ---
+    function setFilter(filterType) {
+      currentFilter = filterType;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-lime', 'text-slate-950', 'shadow-md', 'shadow-brand-lime/20');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+
+      const activeBtn = document.getElementById(`filter-${filterType}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+        activeBtn.classList.add('bg-brand-lime', 'text-slate-950', 'shadow-md', 'shadow-brand-lime/20');
+      }
+
+      renderFeed();
+    }
+
+    // --- Modal Handling ---
+    function openCreateModal() {
+      const modal = document.getElementById('createModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeCreateModal() {
+      const modal = document.getElementById('createModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function selectChip(btn, category) {
+      activeCategory = category;
+      document.querySelectorAll('.chip-btn').forEach(c => {
+        c.classList.remove('bg-brand-lime', 'text-slate-950');
+        c.classList.add('bg-slate-800', 'text-slate-300');
+      });
+      btn.classList.remove('bg-slate-800', 'text-slate-300');
+      btn.classList.add('bg-brand-lime', 'text-slate-950');
+    }
+
+    // --- Helper Utilities ---
+    function timeAgo(ms) {
+      const diff = Date.now() - ms;
+      const mins = Math.floor(diff / (1000 * 60));
+      if (mins < 1) return currentLang === 'en' ? 'Just now' : 'Baru saja';
+      if (mins < 60) return `${mins}m ${currentLang === 'en' ? 'ago' : 'lalu'}`;
+      const hours = Math.floor(mins / 60);
+      return `${hours}h ${currentLang === 'en' ? 'ago' : 'lalu'}`;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // --- Lifecycle App Startup ---
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await initIndexedDB();
+        await seedInitialDataIfEmpty();
+        await renderFeed();
+
+        // Initial welcome push notification toast
+        setTimeout(() => {
+          showPushNotificationToast(
+            "⚡ PulseFeed Active",
+            "IndexedDB local storage & RSS engine ready. Tap 🌐 to switch English/Bahasa!",
+            "System Online"
+          );
+        }, 1200);
+
+        // Auto RSS poll demonstration every 35s
+        setInterval(() => {
+          syncRSSFeeds(false);
+        }, 35000);
+
+      } catch (err) {
+        console.error('Initialization error:', err);
+      }
+    });
+  </script>
+</body>
+</html>

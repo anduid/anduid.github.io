@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cek SEO Halaman</title>
+<style>
+:root{
+  --bg:#f4f5f7; --panel:#fff; --text:#1a1a1a; --muted:#666; --border:#e2e4e8;
+  --accent:#4f6df5; --good:#1a9e5c; --warn:#b8860b; --bad:#d64545;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15161a; --panel:#1e2024; --text:#eee; --muted:#9aa0a6; --border:#303236;
+    --accent:#7f98ff; --good:#3ecf86; --warn:#e0b84d; --bad:#ff6b6b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15161a; --panel:#1e2024; --text:#eee; --muted:#9aa0a6; --border:#303236;
+  --accent:#7f98ff; --good:#3ecf86; --warn:#e0b84d; --bad:#ff6b6b;
+  color-scheme: dark;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px 60px;}
+h1{font-size:22px;margin:0 0 4px;}
+p.sub{color:var(--muted);margin:0 0 20px;font-size:14px;}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px;}
+label{font-size:13px;font-weight:600;display:block;margin-bottom:6px;}
+input[type=text], textarea{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);font-family:inherit;font-size:14px;}
+textarea{min-height:160px;font-family:ui-monospace,monospace;font-size:12px;resize:vertical;}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 18px;
+  font-weight:600;cursor:pointer;font-size:14px;}
+button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent);}
+.hint{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5;}
+#result{display:none;}
+.score-box{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.score-circle{width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;border:6px solid var(--border);flex-shrink:0;}
+.score-circle span.n{font-size:30px;font-weight:800;}
+.score-circle span.l{font-size:11px;color:var(--muted);}
+.item{border-top:1px solid var(--border);padding:12px 0;display:flex;gap:10px;}
+.item:first-child{border-top:none;}
+.badge{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;}
+.badge.good{background:var(--good);} .badge.warn{background:var(--warn);} .badge.bad{background:var(--bad);}
+.item .t{font-weight:600;font-size:14px;}
+.item .d{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.5;}
+table{width:100%;overflow-x:auto;display:block;font-size:13px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🔍 Cek SEO Halaman</h1>
+  <p class="sub">Analisis on-page SEO dari kode HTML halaman kamu — skor 0–100 beserta saran perbaikan.</p>
+
+  <div class="panel">
+    <label for="url">URL halaman (opsional, untuk label laporan & cek HTTPS)</label>
+    <input type="text" id="url" placeholder="https://contohsitus.com/halaman">
+
+    <label for="html" style="margin-top:14px;">Kode sumber HTML halaman</label>
+    <textarea id="html" placeholder="Tempel di sini hasil 'View Page Source' (Ctrl+U / Cmd+Opt+U) dari halaman yang ingin dicek..."></textarea>
+    <div class="hint">Browser tidak mengizinkan membaca isi situs lain langsung dari halaman statis (batasan CORS), jadi tempelkan kode sumbernya secara manual: buka halaman target → klik kanan → "View Page Source" → salin semua → tempel di atas.</div>
+
+    <div class="row">
+      <button id="analyzeBtn">Analisa Sekarang</button>
+      <button class="ghost" id="clearBtn">Bersihkan</button>
+    </div>
+  </div>
+
+  <div class="panel" id="result">
+    <div class="score-box">
+      <div class="score-circle" id="scoreCircle">
+        <span class="n" id="scoreNum">0</span>
+        <span class="l">/ 100</span>
+      </div>
+      <div>
+        <div id="scoreLabel" style="font-weight:700;font-size:16px;"></div>
+        <div class="hint" id="scoreSummary" style="margin-top:4px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="detailsPanel" style="display:none;">
+    <div id="items"></div>
+  </div>
+</div>
+
+<script>
+const analyzeBtn = document.getElementById('analyzeBtn');
+const clearBtn = document.getElementById('clearBtn');
+
+function text(n){ return (n||'').trim(); }
+
+function check(html, url){
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const items = [];
+  let score = 0, maxScore = 0;
+
+  function add(title, status, desc, weight){
+    maxScore += weight;
+    if(status === 'good') score += weight;
+    else if(status === 'warn') score += weight * 0.5;
+    items.push({title, status, desc});
+  }
+
+  // Title
+  const title = doc.querySelector('title');
+  const tLen = title ? text(title.textContent).length : 0;
+  if(!title || tLen === 0) add('Title tag', 'bad', 'Tidak ada tag <title>. Tambahkan judul unik yang mendeskripsikan halaman.', 10);
+  else if(tLen < 30 || tLen > 65) add('Title tag', 'warn', `Panjang title ${tLen} karakter. Idealnya 30–65 karakter agar tidak terpotong di hasil pencarian.`, 10);
+  else add('Title tag', 'good', `Title ada dan panjangnya ${tLen} karakter (ideal).`, 10);
+
+  // Meta description
+  const desc = doc.querySelector('meta[name="description"]');
+  const dContent = desc ? text(desc.getAttribute('content')) : '';
+  if(!desc || dContent.length === 0) add('Meta description', 'bad', 'Tidak ada meta description. Tambahkan ringkasan 120–160 karakter yang menarik untuk klik.', 10);
+  else if(dContent.length < 70 || dContent.length > 170) add('Meta description', 'warn', `Panjang ${dContent.length} karakter. Idealnya 120–160 karakter.`, 10);
+  else add('Meta description', 'good', `Meta description ada, panjang ${dContent.length} karakter.`, 10);
+
+  // H1
+  const h1s = doc.querySelectorAll('h1');
+  if(h1s.length === 0) add('Heading H1', 'bad', 'Tidak ditemukan tag <h1>. Setiap halaman sebaiknya punya satu H1 yang jelas.', 8);
+  else if(h1s.length > 1) add('Heading H1', 'warn', `Ditemukan ${h1s.length} tag H1. Sebaiknya hanya satu H1 per halaman.`, 8);
+  else add('Heading H1', 'good', 'Tepat satu H1 ditemukan.', 8);
+
+  // Heading hierarchy
+  const headings = [...doc.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(h => +h.tagName[1]);
+  let skipped = false;
+  for(let i=1;i<headings.length;i++){ if(headings[i] - headings[i-1] > 1) skipped = true; }
+  if(headings.length === 0) add('Struktur heading', 'warn', 'Tidak ada heading sama sekali (h1–h6).', 5);
+  else if(skipped) add('Struktur heading', 'warn', 'Ada lompatan level heading (misal h2 langsung ke h4). Rapikan urutannya.', 5);
+  else add('Struktur heading', 'good', 'Urutan heading konsisten.', 5);
+
+  // Images alt
+  const imgs = [...doc.querySelectorAll('img')];
+  const missingAlt = imgs.filter(i => !i.hasAttribute('alt') || text(i.getAttribute('alt')) === '').length;
+  if(imgs.length === 0) add('Alt text gambar', 'good', 'Tidak ada gambar untuk dicek.', 7);
+  else if(missingAlt === 0) add('Alt text gambar', 'good', `Semua ${imgs.length} gambar punya alt text.`, 7);
+  else add('Alt text gambar', missingAlt === imgs.length ? 'bad' : 'warn', `${missingAlt} dari ${imgs.length} gambar tidak punya alt text. Tambahkan deskripsi singkat untuk aksesibilitas & SEO gambar.`, 7);
+
+  // Viewport
+  const vp = doc.querySelector('meta[name="viewport"]');
+  add('Meta viewport (mobile-friendly)', vp ? 'good' : 'bad', vp ? 'Meta viewport sudah ada, mendukung tampilan mobile.' : 'Tidak ada meta viewport. Tambahkan <meta name="viewport" content="width=device-width, initial-scale=1"> agar responsif di mobile.', 8);
+
+  // Canonical
+  const canonical = doc.querySelector('link[rel="canonical"]');
+  add('Canonical URL', canonical ? 'good' : 'warn', canonical ? `Canonical mengarah ke: ${canonical.getAttribute('href')}` : 'Tidak ada tag canonical. Tambahkan untuk menghindari masalah konten duplikat.', 6);
+
+  // Robots
+  const robots = doc.querySelector('meta[name="robots"]');
+  const robotsContent = robots ? text(robots.getAttribute('content')).toLowerCase() : '';
+  if(robotsContent.includes('noindex')) add('Meta robots', 'bad', 'Halaman ini diset "noindex" — tidak akan muncul di hasil pencarian Google. Hapus jika itu tidak disengaja.', 9);
+  else add('Meta robots', 'good', robots ? `Meta robots: ${robotsContent}` : 'Tidak ada pembatasan robots (default: index, follow).', 9);
+
+  // Open Graph
+  const ogTitle = doc.querySelector('meta[property="og:title"]');
+  const ogDesc = doc.querySelector('meta[property="og:description"]');
+  const ogImage = doc.querySelector('meta[property="og:image"]');
+  const ogCount = [ogTitle, ogDesc, ogImage].filter(Boolean).length;
+  add('Open Graph tags', ogCount === 3 ? 'good' : ogCount > 0 ? 'warn' : 'bad',
+    ogCount === 3 ? 'og:title, og:description, dan og:image lengkap — tampilan share ke medsos akan optimal.' :
+    `Hanya ${ogCount}/3 tag Open Graph utama ditemukan. Lengkapi og:title, og:description, og:image agar tampil rapi saat dibagikan di media sosial.`, 6);
+
+  // Twitter card
+  const twCard = doc.querySelector('meta[name="twitter:card"]');
+  add('Twitter Card', twCard ? 'good' : 'warn', twCard ? 'Twitter Card tag ditemukan.' : 'Tidak ada meta twitter:card. Opsional, tapi membantu tampilan share di X/Twitter.', 3);
+
+  // Lang attribute
+  const lang = doc.documentElement.getAttribute('lang');
+  add('Atribut lang', lang ? 'good' : 'warn', lang ? `Atribut lang="${lang}" ditemukan.` : 'Tag <html> tidak punya atribut lang. Tambahkan lang="id" (atau sesuai bahasa konten).', 4);
+
+  // HTTPS
+  if(url){
+    add('HTTPS', url.startsWith('https://') ? 'good' : 'bad', url.startsWith('https://') ? 'URL menggunakan HTTPS.' : 'URL tidak menggunakan HTTPS. Google memberi sinyal positif untuk situs yang aman (HTTPS).', 6);
+  }
+
+  // Structured data
+  const ld = doc.querySelector('script[type="application/ld+json"]');
+  add('Structured data (Schema.org)', ld ? 'good' : 'warn', ld ? 'Ditemukan data terstruktur JSON-LD — membantu rich results di Google.' : 'Tidak ada data terstruktur (JSON-LD). Pertimbangkan menambahkan schema yang relevan (Article, Product, FAQ, dll).', 5);
+
+  // Favicon
+  const favicon = doc.querySelector('link[rel~="icon"]');
+  add('Favicon', favicon ? 'good' : 'warn', favicon ? 'Favicon terpasang.' : 'Tidak ditemukan tag favicon (link rel="icon").', 2);
+
+  // Charset
+  const charset = doc.querySelector('meta[charset]');
+  add('Meta charset', charset ? 'good' : 'warn', charset ? 'Meta charset terdefinisi.' : 'Tidak ada <meta charset="UTF-8">. Sebaiknya ditambahkan di awal <head>.', 3);
+
+  // Word count
+  const bodyText = text(doc.body ? doc.body.textContent : '').replace(/\s+/g,' ');
+  const wordCount = bodyText ? bodyText.split(' ').length : 0;
+  if(wordCount < 150) add('Jumlah konten teks', 'warn', `Hanya sekitar ${wordCount} kata konten terdeteksi. Halaman dengan konten tipis cenderung sulit bersaing di pencarian; pertimbangkan menambah konten relevan.`, 5);
+  else add('Jumlah konten teks', 'good', `Sekitar ${wordCount} kata konten terdeteksi — cukup substansial.`, 5);
+
+  // Links
+  const links = doc.querySelectorAll('a[href]').length;
+  add('Tautan internal/eksternal', links > 0 ? 'good' : 'warn', links > 0 ? `${links} tautan ditemukan di halaman.` : 'Tidak ditemukan tautan sama sekali — pertimbangkan menambah internal link untuk navigasi & SEO.', 3);
+
+  const pct = Math.round((score / maxScore) * 100);
+  return { pct, items };
+}
+
+function render(result){
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('detailsPanel').style.display = 'block';
+  const circle = document.getElementById('scoreCircle');
+  const num = document.getElementById('scoreNum');
+  const label = document.getElementById('scoreLabel');
+  const summary = document.getElementById('scoreSummary');
+  num.textContent = result.pct;
+  let color, lbl;
+  if(result.pct >= 85){ color='var(--good)'; lbl='Sangat baik'; }
+  else if(result.pct >= 60){ color='var(--warn)'; lbl='Cukup, perlu perbaikan'; }
+  else { color='var(--bad)'; lbl='Perlu banyak perbaikan'; }
+  circle.style.borderColor = color;
+  num.style.color = color;
+  label.textContent = lbl;
+  const bad = result.items.filter(i=>i.status==='bad').length;
+  const warn = result.items.filter(i=>i.status==='warn').length;
+  summary.textContent = `${bad} masalah kritis, ${warn} perlu perhatian, dari ${result.items.length} indikator yang dicek.`;
+
+  const itemsEl = document.getElementById('items');
+  itemsEl.innerHTML = '';
+  const order = {bad:0, warn:1, good:2};
+  result.items.sort((a,b)=>order[a.status]-order[b.status]);
+  for(const it of result.items){
+    const badgeChar = it.status==='good' ? '✓' : it.status==='warn' ? '!' : '✕';
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `<div class="badge ${it.status}">${badgeChar}</div><div><div class="t">${it.title}</div><div class="d">${it.desc}</div></div>`;
+    itemsEl.appendChild(div);
+  }
+}
+
+analyzeBtn.addEventListener('click', () => {
+  const html = document.getElementById('html').value;
+  const url = document.getElementById('url').value.trim();
+  if(!html.trim()){ alert('Tempelkan kode HTML halaman terlebih dahulu.'); return; }
+  const result = check(html, url);
+  render(result);
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+});
+
+clearBtn.addEventListener('click', () => {
+  document.getElementById('html').value = '';
+  document.getElementById('url').value = '';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('detailsPanel').style.display = 'none';
+});
+</script>
+</body>
+</html>

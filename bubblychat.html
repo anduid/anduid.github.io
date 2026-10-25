@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>BubblyChat - Playful &amp; Vibrant Messenger</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Fredoka:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Phosphor Icons CDN -->
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Fredoka"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              yellow: '#FFDF00',
+              coral: '#FF6B6B',
+              purple: '#845EC2',
+              mint: '#00D2BA',
+              blue: '#4D8076',
+              sky: '#2C73D2',
+              pink: '#FF9671',
+              dark: '#1E1E2E',
+              darker: '#13131F',
+            }
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-6px) rotate(1.5deg)' },
+            },
+            popIn: {
+              '0%': { transform: 'scale(0.8) translateY(10px)', opacity: '0' },
+              '70%': { transform: 'scale(1.04) translateY(-2px)', opacity: '1' },
+              '100%': { transform: 'scale(1) translateY(0)', opacity: '1' },
+            },
+            bounceSlight: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-4px)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
+              '50%': { opacity: '1', transform: 'scale(1.08)' },
+            },
+            pulseWave: {
+              '0%, 100%': { height: '6px' },
+              '50%': { height: '24px' }
+            },
+            rotateBorder: {
+              '0%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg)' }
+            }
+          },
+          animation: {
+            'float': 'float 3.5s ease-in-out infinite',
+            'pop-in': 'popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+            'bounce-slight': 'bounceSlight 1.8s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+            'rotate-spin': 'rotateBorder 6s linear infinite',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FF6B6B33;
+      border-radius: 999px;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .chat-bubble-user {
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF9671 100%);
+      border-radius: 20px 20px 4px 20px;
+      box-shadow: 0 4px 15px -2px rgba(255, 107, 107, 0.35);
+    }
+    .chat-bubble-bot {
+      background: #FFFFFF;
+      border: 2px solid #F1F3F9;
+      border-radius: 20px 20px 20px 4px;
+      box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Touch response */
+    .press-bounce {
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
+    }
+    .press-bounce:active {
+      transform: scale(0.93);
+    }
+
+    /* Waveform animation bars */
+    .wave-bar {
+      animation: pulseWave 1s ease-in-out infinite;
+    }
+    .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.45s; }
+    .wave-bar:nth-child(5) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(6) { animation-delay: 0.35s; }
+    .wave-bar:nth-child(7) { animation-delay: 0.5s; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased select-none flex justify-center min-h-screen">
+<!-- Mobile App Frame Container -->
+<div class="w-full max-w-md bg-[#FAF9FE] min-h-screen flex flex-col relative shadow-2xl overflow-hidden" id="appContainer">
+<!-- Hidden native file input triggers for capturing & uploading -->
+<input accept="image/*" capture="environment" class="hidden" id="cameraPhotoInput" onchange="handleFileSelected(event, 'photo_captured')" type="file"/>
+<input accept="image/*" class="hidden" id="uploadPhotoInput" onchange="handleFileSelected(event, 'photo')" type="file"/>
+<input accept="video/*" capture="camcorder" class="hidden" id="cameraVideoInput" onchange="handleFileSelected(event, 'video_captured')" type="file"/>
+<input accept="video/*" class="hidden" id="uploadVideoInput" onchange="handleFileSelected(event, 'video')" type="file"/>
+<input accept=".pdf,.doc,.docx,.txt" class="hidden" id="uploadDocInput" onchange="handleFileSelected(event, 'document')" type="file"/>
+<input accept="audio/*" class="hidden" id="uploadAudioInput" onchange="handleFileSelected(event, 'audio')" type="file"/>
+<!-- Top Glow / Fun Decorative Blobs -->
+<div class="absolute -top-16 -right-12 w-48 h-48 bg-purple-300 rounded-full mix-blend-multiply filter blur-2xl opacity-40 pointer-events-none animate-pulse-glow"></div>
+<div class="absolute top-20 -left-16 w-44 h-44 bg-yellow-200 rounded-full mix-blend-multiply filter blur-2xl opacity-60 pointer-events-none animate-pulse-glow" style="animation-delay: 1.2s"></div>
+<div class="absolute -bottom-10 right-0 w-44 h-44 bg-pink-200 rounded-full mix-blend-multiply filter blur-2xl opacity-40 pointer-events-none"></div>
+<!-- Header Navigation -->
+<header class="relative z-30 px-4 pt-3 pb-3 bg-white/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between sticky top-0 shadow-sm transition-all duration-300">
+<!-- User / App Avatar & Info -->
+<div class="flex items-center gap-3">
+<div class="relative cursor-pointer press-bounce" onclick="showBotProfile()">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-coral to-brand-yellow flex items-center justify-center text-white text-xl font-bold shadow-md shadow-orange-200 animate-float">
+<i class="ph-duotone ph-sparkle text-2xl"></i>
+</div>
+<span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full ring-2 ring-emerald-100 animate-pulse"></span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-display font-bold text-lg text-slate-800 tracking-wide flex items-center gap-1">
+              Bubbly<span class="text-brand-coral">!</span>
+</h1>
+<span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-0.5">
+<i class="ph-bold ph-lightning text-[10px]"></i> AI
+            </span>
+</div>
+<p class="text-xs text-slate-500 font-medium flex items-center gap-1" id="botStatusText">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+<span data-i18n="onlineStatus">Always ready to chat!</span>
+</p>
+</div>
+</div>
+<!-- Quick Action Controls -->
+<div class="flex items-center gap-1.5">
+<!-- Language Switcher Button -->
+<button class="press-bounce flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition border border-slate-200/80 shadow-xs" id="langToggleBtn" onclick="toggleLanguage()" title="Switch Language / Ganti Bahasa">
+<span class="text-sm">🌐</span>
+<span id="currentLangLabel">EN</span>
+</button>
+<!-- Daily Reminder Modal Trigger -->
+<button class="press-bounce p-2 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-600 transition border border-amber-200/60 relative" onclick="openReminderModal()" title="Daily Auto Reminder">
+<i class="ph-duotone ph-bell-ringing text-lg"></i>
+<span class="hidden absolute top-1 right-1 w-2 h-2 bg-brand-coral rounded-full ring-2 ring-white animate-ping" id="reminderActiveDot"></span>
+</button>
+<!-- Notifications Permission Request Button -->
+<button class="press-bounce p-2 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-600 transition border border-purple-200/60" id="notifBellBtn" onclick="requestNotificationAccess()" title="Push Notification Settings">
+<i class="ph-duotone ph-chats-teardrop text-lg"></i>
+</button>
+<!-- Dropdown Menu / More Options -->
+<button class="press-bounce p-2 rounded-full bg-slate-50 hover:bg-slate-100 text-slate-600 transition" onclick="toggleMenuModal()">
+<i class="ph-bold ph-dots-three-vertical text-lg"></i>
+</button>
+</div>
+</header>
+<!-- Pinned Notification Banner -->
+<div class="relative z-20 px-4 py-2 bg-gradient-to-r from-amber-500/10 via-pink-500/10 to-purple-500/10 border-b border-amber-200/40 flex items-center justify-between text-xs text-slate-700" id="quickNoticeBanner">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-yellow/80 flex items-center justify-center text-amber-900 text-xs shadow-xs animate-bounce-slight">
+<i class="ph-fill ph-paperclip"></i>
+</span>
+<span class="truncate font-medium" data-i18n="bannerText" id="bannerText">IndexedDB active • Rich media &amp; recordings ready!</span>
+</div>
+<button class="text-slate-400 hover:text-slate-600 p-1" onclick="dismissBanner()">
+<i class="ph-bold ph-x text-xs"></i>
+</button>
+</div>
+<!-- Main Chat Feed (Scrollable area) -->
+<main class="flex-1 overflow-y-auto px-4 py-4 space-y-3.5 z-10 relative hide-scrollbar" id="chatMessagesContainer">
+<!-- Date Divider / Welcoming Badge -->
+<div class="flex items-center justify-center my-2">
+<div class="px-3 py-1 rounded-full bg-white/70 backdrop-blur-xs border border-slate-200/80 text-[11px] font-semibold text-slate-500 shadow-xs flex items-center gap-1.5">
+<i class="ph-fill ph-calendar-blank text-brand-coral"></i>
+<span id="chatDateStamp">Today</span>
+</div>
+</div>
+<!-- Welcome Interactive Card -->
+<div class="p-3.5 bg-gradient-to-br from-white via-white to-pink-50/60 rounded-2xl border border-pink-100/80 shadow-sm animate-pop-in">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-xl bg-pink-100 text-brand-coral flex items-center justify-center text-xl flex-shrink-0">
+<i class="ph-duotone ph-sparkle"></i>
+</div>
+<div class="flex-1">
+<h3 class="font-display font-bold text-slate-800 text-sm" data-i18n="welcomeTitle">Welcome to BubblyChat! ✨</h3>
+<p class="text-xs text-slate-600 mt-0.5 leading-relaxed" data-i18n="welcomeDesc">
+              A playful chat app with rich media attachments, voice &amp; circular video notes, live speech-to-text, and IndexedDB local storage.
+            </p>
+<div class="flex flex-wrap gap-1.5 mt-2.5">
+<button class="press-bounce text-[11px] font-semibold bg-white border border-pink-200 text-pink-600 px-2.5 py-1 rounded-full shadow-xs hover:bg-pink-50" onclick="sendQuickChip('greeting')">
+                👋 Say Halo / Hi
+              </button>
+<button class="press-bounce text-[11px] font-semibold bg-white border border-purple-200 text-purple-700 px-2.5 py-1 rounded-full shadow-xs hover:bg-purple-50" onclick="toggleAttachmentDrawer()">
+                📎 Media Attachments
+              </button>
+<button class="press-bounce text-[11px] font-semibold bg-white border border-amber-200 text-amber-700 px-2.5 py-1 rounded-full shadow-xs hover:bg-amber-50" onclick="openRecordingDock('voice')">
+                🎙️ Voice Note
+              </button>
+<button class="press-bounce text-[11px] font-semibold bg-white border border-teal-200 text-teal-700 px-2.5 py-1 rounded-full shadow-xs hover:bg-teal-50" onclick="openRecordingDock('video')">
+                ⭕ Video Note
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Dynamic Message Stream from IndexedDB -->
+<div class="space-y-3.5" id="messagesList">
+<!-- Messages injected dynamically -->
+</div>
+<!-- Typing Indicator -->
+<div class="hidden flex items-end gap-2 animate-pop-in" id="typingIndicator">
+<div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-coral to-brand-yellow flex items-center justify-center text-white text-xs font-bold shadow-xs">
+<i class="ph-bold ph-robot"></i>
+</div>
+<div class="bg-white border border-slate-200/80 px-4 py-3 rounded-2xl rounded-bl-xs shadow-xs flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-brand-coral animate-bounce" style="animation-delay: 0s"></span>
+<span class="w-2 h-2 rounded-full bg-brand-yellow animate-bounce" style="animation-delay: 0.2s"></span>
+<span class="w-2 h-2 rounded-full bg-brand-purple animate-bounce" style="animation-delay: 0.4s"></span>
+</div>
+</div>
+<!-- Anchor for auto scroll -->
+<div class="h-2" id="scrollAnchor"></div>
+</main>
+<!-- Recording Control Suite Docks (Voice Note / Video Note / Speech-to-Text) -->
+<!-- 1. Voice Note Recording Dock -->
+<div class="hidden relative z-40 bg-gradient-to-r from-rose-500 via-brand-coral to-amber-500 text-white p-3 border-t border-rose-300/40 shadow-xl animate-pop-in" id="voiceRecordingDock">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="relative flex h-3.5 w-3.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-white"></span>
+</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-display font-bold text-xs tracking-wider uppercase" data-i18n="voiceNoteLabel">Voice Note</span>
+<span class="font-mono font-bold text-xs bg-black/20 px-2 py-0.5 rounded-full" id="voiceTimerBadge">00:00</span>
+</div>
+<p class="text-[10px] text-white/80" data-i18n="recordingStatus">Recording audio...</p>
+</div>
+</div>
+<!-- Animated Waveform preview -->
+<div class="flex items-center gap-1 h-6 px-3 py-1 bg-white/20 rounded-full">
+<div class="w-1 bg-white rounded-full wave-bar"></div>
+<div class="w-1 bg-white rounded-full wave-bar"></div>
+<div class="w-1 bg-white rounded-full wave-bar"></div>
+<div class="w-1 bg-white rounded-full wave-bar"></div>
+<div class="w-1 bg-white rounded-full wave-bar"></div>
+<div class="w-1 bg-white rounded-full wave-bar"></div>
+<div class="w-1 bg-white rounded-full wave-bar"></div>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-1.5">
+<button class="press-bounce p-2 rounded-xl bg-white/20 hover:bg-white/30 text-white transition" onclick="cancelRecording('voice')" title="Cancel">
+<i class="ph-bold ph-x text-sm"></i>
+</button>
+<button class="press-bounce px-3 py-1.5 rounded-xl bg-white text-brand-coral font-bold text-xs shadow-md flex items-center gap-1" onclick="stopAndSendVoiceNote()">
+<i class="ph-bold ph-paper-plane-right text-sm"></i>
+<span data-i18n="stopAndSendBtn">Stop &amp; Send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 2. Circular Video Note Live Preview Overlay / Dock -->
+<div class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex flex-col items-center justify-center p-4 animate-pop-in" id="videoNoteDock">
+<!-- Circular camera lens frame -->
+<div class="relative w-56 h-56 rounded-full p-1.5 bg-gradient-to-tr from-brand-coral via-brand-yellow to-brand-mint shadow-2xl animate-rotate-spin">
+<div class="w-full h-full rounded-full overflow-hidden bg-slate-950 flex items-center justify-center relative shadow-inner">
+<!-- Video element for live stream / fallback simulation -->
+<video autoplay="" class="w-full h-full object-cover rounded-full" id="videoNoteLiveStream" muted="" playsinline=""></video>
+<!-- Simulated Camera View Overlay -->
+<div class="absolute inset-0 bg-gradient-to-b from-purple-900/60 via-slate-900/80 to-black flex flex-col items-center justify-center text-center p-3" id="videoNotePlaceholder">
+<div class="w-12 h-12 rounded-full bg-brand-coral/30 border border-brand-coral flex items-center justify-center text-brand-coral mb-2">
+<i class="ph-duotone ph-video-camera text-2xl animate-pulse"></i>
+</div>
+<span class="text-xs font-bold text-white tracking-wide" data-i18n="circularVideoHeader">Camera Preview</span>
+<span class="text-[10px] text-white/70" data-i18n="recordingVideoStatus">Recording circular clip</span>
+</div>
+</div>
+</div>
+<!-- Live Timer & Indicators -->
+<div class="mt-5 flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white font-mono font-bold text-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+<span id="videoNoteTimerBadge">00:00</span>
+</div>
+<!-- Circular Video Controls -->
+<div class="mt-6 flex items-center gap-4">
+<button class="press-bounce w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-lg border border-white/30" onclick="cancelRecording('video')" title="Cancel">
+<i class="ph-bold ph-x"></i>
+</button>
+<button class="press-bounce px-6 py-3 rounded-full bg-gradient-to-r from-brand-coral to-brand-pink text-white font-bold text-sm shadow-xl flex items-center gap-2" onclick="stopAndSendVideoNote()">
+<i class="ph-bold ph-paper-plane-right text-lg"></i>
+<span data-i18n="stopAndSendBtn">Stop &amp; Send</span>
+</button>
+</div>
+</div>
+<!-- 3. Speech-to-Text Dictation Dock -->
+<div class="hidden relative z-40 bg-gradient-to-r from-brand-purple via-indigo-600 to-brand-sky text-white p-3 border-t border-purple-300/40 shadow-xl animate-pop-in" id="sttRecordingDock">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2 overflow-hidden flex-1">
+<div class="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0 animate-pulse">
+<i class="ph-bold ph-microphone-stage text-sm"></i>
+</div>
+<div class="overflow-hidden flex-1">
+<div class="flex items-center gap-1.5">
+<span class="font-display font-bold text-xs uppercase" data-i18n="sttLabel">Speech to Text</span>
+<span class="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-full" data-i18n="listeningStatus">Listening...</span>
+</div>
+<p class="text-xs text-white/90 truncate font-medium mt-0.5 italic" id="sttLiveTranscript">
+              "..."
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<button class="press-bounce p-2 rounded-xl bg-white/20 hover:bg-white/30 text-white transition" onclick="cancelRecording('stt')" title="Cancel">
+<i class="ph-bold ph-x text-sm"></i>
+</button>
+<button class="press-bounce px-3 py-1.5 rounded-xl bg-white text-brand-purple font-bold text-xs shadow-md flex items-center gap-1" onclick="stopAndApplySpeechToText()">
+<i class="ph-bold ph-check text-sm"></i>
+<span data-i18n="insertTextBtn">Insert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick Emoji / Reaction Bar -->
+<div class="px-4 py-1.5 bg-white/60 backdrop-blur-xs border-t border-slate-100 flex items-center justify-between text-base z-20">
+<div class="flex items-center gap-2 overflow-x-auto hide-scrollbar py-0.5">
+<button class="press-bounce hover:scale-125 transition" onclick="addEmojiToInput('✨')">✨</button>
+<button class="press-bounce hover:scale-125 transition" onclick="addEmojiToInput('🚀')">🚀</button>
+<button class="press-bounce hover:scale-125 transition" onclick="addEmojiToInput('💖')">💖</button>
+<button class="press-bounce hover:scale-125 transition" onclick="addEmojiToInput('🔥')">🔥</button>
+<button class="press-bounce hover:scale-125 transition" onclick="addEmojiToInput('😂')">😂</button>
+<button class="press-bounce hover:scale-125 transition" onclick="addEmojiToInput('🌟')">🌟</button>
+<button class="press-bounce hover:scale-125 transition" onclick="addEmojiToInput('🎉')">🎉</button>
+</div>
+<button class="press-bounce flex items-center gap-1 text-[11px] font-bold text-brand-coral bg-pink-50 px-2 py-0.5 rounded-full border border-pink-200" onclick="triggerConfettiBurst()" title="Celebration Effect">
+<i class="ph-bold ph-confetti"></i> Party
+      </button>
+</div>
+<!-- Input Footer Bar with Media Attachment & Recording triggers -->
+<footer class="relative z-30 p-3 bg-white border-t border-slate-100">
+<form class="flex items-center gap-1.5" id="chatForm" onsubmit="handleUserSubmit(event)">
+<!-- Attachment Popover / Action Sheet Trigger Button -->
+<button class="press-bounce w-10 h-10 rounded-xl bg-purple-50 hover:bg-purple-100 text-brand-purple flex items-center justify-center flex-shrink-0 transition border border-purple-100 shadow-xs relative" id="attachmentTriggerBtn" onclick="toggleAttachmentDrawer()" title="Attach Media / Lampirkan Media" type="button">
+<i class="ph-bold ph-paperclip text-lg"></i>
+<span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-brand-coral rounded-full text-[9px] text-white font-bold flex items-center justify-center">+</span>
+</button>
+<!-- Quick Mic / Audio Suite Trigger -->
+<button class="press-bounce w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center flex-shrink-0 transition border border-slate-200/70" onclick="toggleRecordingMenuModal()" title="Recording Tools / Alat Perekam" type="button">
+<i class="ph-bold ph-microphone text-lg"></i>
+</button>
+<!-- Message Input -->
+<div class="flex-1 relative flex items-center">
+<input autocomplete="off" class="w-full pl-3 pr-9 py-2.5 rounded-2xl bg-slate-100/90 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-coral/40 focus:border-brand-coral text-sm transition placeholder:text-slate-400 font-medium" id="messageInput" placeholder="Type a message... / Ketik pesan..." type="text"/>
+<button class="absolute right-2.5 text-slate-400 hover:text-brand-coral press-bounce" onclick="toggleStickerPopup()" type="button">
+<i class="ph-duotone ph-sticker text-xl"></i>
+</button>
+</div>
+<!-- Send Button -->
+<button class="press-bounce w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-coral to-brand-pink text-white flex items-center justify-center shadow-md shadow-coral-200 flex-shrink-0 transition" id="sendBtn" type="submit">
+<i class="ph-bold ph-paper-plane-right text-lg"></i>
+</button>
+</form>
+<!-- Bottom System Status Indicators -->
+<div class="flex items-center justify-between text-[10px] text-slate-400 px-1 pt-2 font-medium">
+<span class="flex items-center gap-1">
+<i class="ph-fill ph-database text-brand-mint text-xs"></i>
+<span id="dbStatusLabel">IndexedDB: Ready</span>
+</span>
+<span class="flex items-center gap-1 cursor-pointer hover:text-slate-600" onclick="testNotificationAlert()">
+<i class="ph-fill ph-broadcast text-brand-sky text-xs"></i>
+<span id="notifStatusLabel">Push: Ready</span>
+</span>
+<span class="text-amber-600 font-semibold truncate max-w-[120px]" id="reminderTickerLabel">
+          ⏰ Reminder: 09:00 AM
+        </span>
+</div>
+</footer>
+<!-- ================= MODALS, DRAWERS & OVERLAYS ================= -->
+<!-- Interactive Attachment Drawer / Popover Action Sheet -->
+<div class="hidden absolute bottom-20 left-3 right-3 z-40 bg-white/95 backdrop-blur-md rounded-3xl p-4 border border-purple-100 shadow-2xl animate-pop-in" id="attachmentDrawer">
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-lg bg-brand-purple text-white flex items-center justify-center text-xs">
+<i class="ph-bold ph-paperclip"></i>
+</div>
+<span class="text-xs font-display font-bold text-slate-800" data-i18n="attachMediaTitle">Attach Media &amp; Content</span>
+</div>
+<button class="text-slate-400 hover:text-slate-600 p-1" onclick="toggleAttachmentDrawer()">
+<i class="ph-bold ph-x text-sm"></i>
+</button>
+</div>
+<!-- Categorized Action Grid -->
+<div class="grid grid-cols-4 gap-2.5 text-center">
+<!-- 1. Capture Photo -->
+<button class="press-bounce flex flex-col items-center justify-center p-2 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-100 transition group" onclick="triggerFileSelector('cameraPhotoInput')">
+<div class="w-10 h-10 rounded-xl bg-white shadow-xs flex items-center justify-center text-xl mb-1 group-hover:scale-110 transition">
+            📸
+          </div>
+<span class="text-[10px] font-bold leading-tight" data-i18n="capturePhoto">Capture Photo</span>
+</button>
+<!-- 2. Upload Photo -->
+<button class="press-bounce flex flex-col items-center justify-center p-2 rounded-2xl bg-pink-50 hover:bg-pink-100 text-pink-600 border border-pink-100 transition group" onclick="triggerFileSelector('uploadPhotoInput')">
+<div class="w-10 h-10 rounded-xl bg-white shadow-xs flex items-center justify-center text-xl mb-1 group-hover:scale-110 transition">
+            🖼️
+          </div>
+<span class="text-[10px] font-bold leading-tight" data-i18n="uploadPhoto">Upload Photo</span>
+</button>
+<!-- 3. Capture Video -->
+<button class="press-bounce flex flex-col items-center justify-center p-2 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-100 transition group" onclick="triggerFileSelector('cameraVideoInput')">
+<div class="w-10 h-10 rounded-xl bg-white shadow-xs flex items-center justify-center text-xl mb-1 group-hover:scale-110 transition">
+            📹
+          </div>
+<span class="text-[10px] font-bold leading-tight" data-i18n="captureVideo">Capture Video</span>
+</button>
+<!-- 4. Upload Video -->
+<button class="press-bounce flex flex-col items-center justify-center p-2 rounded-2xl bg-orange-50 hover:bg-orange-100 text-orange-600 border border-orange-100 transition group" onclick="triggerFileSelector('uploadVideoInput')">
+<div class="w-10 h-10 rounded-xl bg-white shadow-xs flex items-center justify-center text-xl mb-1 group-hover:scale-110 transition">
+            📁
+          </div>
+<span class="text-[10px] font-bold leading-tight" data-i18n="uploadVideo">Upload Video</span>
+</button>
+<!-- 5. Upload Document -->
+<button class="press-bounce flex flex-col items-center justify-center p-2 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-100 transition group" onclick="triggerFileSelector('uploadDocInput')">
+<div class="w-10 h-10 rounded-xl bg-white shadow-xs flex items-center justify-center text-xl mb-1 group-hover:scale-110 transition">
+            📄
+          </div>
+<span class="text-[10px] font-bold leading-tight" data-i18n="uploadDoc">Upload Document</span>
+</button>
+<!-- 6. Upload Audio -->
+<button class="press-bounce flex flex-col items-center justify-center p-2 rounded-2xl bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-100 transition group" onclick="triggerFileSelector('uploadAudioInput')">
+<div class="w-10 h-10 rounded-xl bg-white shadow-xs flex items-center justify-center text-xl mb-1 group-hover:scale-110 transition">
+            🎵
+          </div>
+<span class="text-[10px] font-bold leading-tight" data-i18n="uploadAudio">Upload Audio</span>
+</button>
+<!-- 7. Share Contact -->
+<button class="press-bounce flex flex-col items-center justify-center p-2 rounded-2xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-100 transition group" onclick="openContactSelectorModal()">
+<div class="w-10 h-10 rounded-xl bg-white shadow-xs flex items-center justify-center text-xl mb-1 group-hover:scale-110 transition">
+            👤
+          </div>
+<span class="text-[10px] font-bold leading-tight" data-i18n="shareContact">Share Contact</span>
+</button>
+<!-- 8. Circular Video Note -->
+<button class="press-bounce flex flex-col items-center justify-center p-2 rounded-2xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-100 transition group" onclick="openRecordingDock('video')">
+<div class="w-10 h-10 rounded-xl bg-white shadow-xs flex items-center justify-center text-xl mb-1 group-hover:scale-110 transition">
+            ⭕
+          </div>
+<span class="text-[10px] font-bold leading-tight" data-i18n="videoNoteOption">Video Note</span>
+</button>
+</div>
+</div>
+<!-- Recording Suite Tools Launcher Modal -->
+<div class="hidden absolute bottom-20 left-4 right-4 z-40 bg-white/95 backdrop-blur-md rounded-3xl p-4 border border-slate-200 shadow-2xl animate-pop-in" id="recordingToolsMenu">
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
+<span class="text-xs font-bold text-slate-700 font-display flex items-center gap-1.5">
+<i class="ph-duotone ph-broadcast text-brand-coral text-base"></i>
+<span data-i18n="recordingSuiteTitle">Audio &amp; Video Recording Suite</span>
+</span>
+<button class="text-slate-400 hover:text-slate-600 p-1" onclick="toggleRecordingMenuModal()">
+<i class="ph-bold ph-x text-xs"></i>
+</button>
+</div>
+<div class="space-y-2 mt-2">
+<!-- Voice Note Button -->
+<div class="flex items-center justify-between p-2.5 rounded-2xl bg-rose-50 border border-rose-100">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-rose-500 text-white flex items-center justify-center text-lg shadow-xs">
+<i class="ph-fill ph-microphone"></i>
+</div>
+<div>
+<p class="font-bold text-xs text-slate-800" data-i18n="voiceNoteTitle">Voice Note Message</p>
+<p class="text-[10px] text-slate-500" data-i18n="voiceNoteDesc">Record audio with live waveform</p>
+</div>
+</div>
+<button class="press-bounce px-3 py-1.5 rounded-xl bg-brand-coral hover:bg-rose-600 text-white font-bold text-xs shadow-xs" data-i18n="startRecordBtn" onclick="openRecordingDock('voice')">
+            Start Record
+          </button>
+</div>
+<!-- Circular Video Note Button -->
+<div class="flex items-center justify-between p-2.5 rounded-2xl bg-teal-50 border border-teal-100">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-teal-500 text-white flex items-center justify-center text-lg shadow-xs">
+<i class="ph-bold ph-circle-dashed"></i>
+</div>
+<div>
+<p class="font-bold text-xs text-slate-800" data-i18n="videoNoteTitle">Circular Video Note</p>
+<p class="text-[10px] text-slate-500" data-i18n="videoNoteDesc">Telegram-style circular video bubble</p>
+</div>
+</div>
+<button class="press-bounce px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-xs" data-i18n="startRecordBtn" onclick="openRecordingDock('video')">
+            Start Record
+          </button>
+</div>
+<!-- Speech-to-Text Button -->
+<div class="flex items-center justify-between p-2.5 rounded-2xl bg-purple-50 border border-purple-100">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-brand-purple text-white flex items-center justify-center text-lg shadow-xs">
+<i class="ph-bold ph-waveform"></i>
+</div>
+<div>
+<p class="font-bold text-xs text-slate-800" data-i18n="sttTitle">Speech-to-Text Dictation</p>
+<p class="text-[10px] text-slate-500" data-i18n="sttDesc">Live transcribes your speech to input</p>
+</div>
+</div>
+<button class="press-bounce px-3 py-1.5 rounded-xl bg-brand-purple hover:bg-purple-700 text-white font-bold text-xs shadow-xs" data-i18n="startRecordBtn" onclick="openRecordingDock('stt')">
+            Start Dictation
+          </button>
+</div>
+</div>
+</div>
+<!-- Contact Selector Modal -->
+<div class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4" id="contactModal">
+<div class="w-full max-w-xs bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 animate-pop-in relative">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="text-xl">👤</span>
+<h3 class="font-display font-bold text-base text-slate-800" data-i18n="selectContactTitle">Select Contact</h3>
+</div>
+<button class="text-slate-400 hover:text-slate-600 p-1" onclick="closeContactModal()">
+<i class="ph-bold ph-x text-base"></i>
+</button>
+</div>
+<p class="text-xs text-slate-500 mb-3" data-i18n="selectContactDesc">Choose a friend to share in the chat:</p>
+<div class="space-y-2 max-h-60 overflow-y-auto pr-1">
+<!-- Aura -->
+<div class="press-bounce flex items-center justify-between p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-100 cursor-pointer" onclick="shareSelectedContact('Aura ✨', '+62 812-3456-7890', 'Creative Designer 🎨', 'pink')">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-pink-200 text-pink-700 font-bold flex items-center justify-center text-sm">
+                A
+              </div>
+<div>
+<p class="font-bold text-xs text-slate-800">Aura ✨</p>
+<p class="text-[10px] text-slate-500">+62 812-3456-7890</p>
+</div>
+</div>
+<i class="ph-bold ph-paper-plane text-pink-600 text-sm"></i>
+</div>
+<!-- Rizky -->
+<div class="press-bounce flex items-center justify-between p-2.5 rounded-2xl bg-sky-50 hover:bg-sky-100 border border-sky-100 cursor-pointer" onclick="shareSelectedContact('Rizky 🚀', '+62 878-9012-3456', 'Frontend Wizard 💻', 'sky')">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-sky-200 text-sky-700 font-bold flex items-center justify-center text-sm">
+                R
+              </div>
+<div>
+<p class="font-bold text-xs text-slate-800">Rizky 🚀</p>
+<p class="text-[10px] text-slate-500">+62 878-9012-3456</p>
+</div>
+</div>
+<i class="ph-bold ph-paper-plane text-sky-600 text-sm"></i>
+</div>
+<!-- Siti -->
+<div class="press-bounce flex items-center justify-between p-2.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 cursor-pointer" onclick="shareSelectedContact('Siti 🌸', '+62 856-7890-1234', 'Community Champion 🌟', 'emerald')">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-emerald-200 text-emerald-700 font-bold flex items-center justify-center text-sm">
+                S
+              </div>
+<div>
+<p class="font-bold text-xs text-slate-800">Siti 🌸</p>
+<p class="text-[10px] text-slate-500">+62 856-7890-1234</p>
+</div>
+</div>
+<i class="ph-bold ph-paper-plane text-emerald-600 text-sm"></i>
+</div>
+</div>
+</div>
+</div>
+<!-- Daily Auto Reminder Modal -->
+<div class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4" id="reminderModal">
+<div class="w-full max-w-sm bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 animate-pop-in relative">
+<button class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1" onclick="closeReminderModal()">
+<i class="ph-bold ph-x text-lg"></i>
+</button>
+<div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl mb-3 shadow-xs">
+<i class="ph-duotone ph-alarm"></i>
+</div>
+<h3 class="font-display font-bold text-lg text-slate-800" data-i18n="reminderTitle">Daily Auto Reminder</h3>
+<p class="text-xs text-slate-500 mt-1" data-i18n="reminderSubtitle">
+          Stay motivated! Set a recurring daily reminder push notification and cheerful message.
+        </p>
+<div class="mt-4 space-y-3">
+<div>
+<label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="reminderTimeLabel">Reminder Time</label>
+<input class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-sm text-slate-800 focus:ring-2 focus:ring-amber-400 focus:outline-none" id="reminderTimeInput" type="time" value="09:00"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="reminderMessageLabel">Custom Affirmation / Note</label>
+<input class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs text-slate-800 focus:ring-2 focus:ring-amber-400 focus:outline-none" id="reminderMsgInput" type="text" value="Time to brighten someone's day with a smile! 🌟"/>
+</div>
+<!-- Active Toggle -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-amber-50/70 border border-amber-100">
+<div>
+<span class="text-xs font-bold text-amber-900 block" data-i18n="enableDailyReminder">Enable Daily Auto Reminder</span>
+<span class="text-[10px] text-amber-700" data-i18n="reminderHelper">Runs automatically in background &amp; chat</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="reminderToggleCheck" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+</label>
+</div>
+</div>
+<div class="mt-5 flex items-center gap-2">
+<button class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-md shadow-amber-200 transition press-bounce" data-i18n="saveBtn" onclick="saveReminderPreferences()">
+            Save Reminder
+          </button>
+<button class="px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition press-bounce" onclick="triggerImmediateReminderTest()" title="Test Alert Now">
+            ⚡ Test Now
+          </button>
+</div>
+</div>
+</div>
+<!-- More Menu / Settings Modal -->
+<div class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-end sm:items-center justify-center" id="settingsMenuModal">
+<div class="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl border border-slate-100 animate-pop-in">
+<div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4 sm:hidden"></div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-display font-bold text-lg text-slate-800 flex items-center gap-2">
+<i class="ph-duotone ph-gear-six text-brand-coral text-xl"></i>
+<span data-i18n="settingsTitle">App Preferences</span>
+</h3>
+<button class="text-slate-400 hover:text-slate-600 p-1" onclick="toggleMenuModal()">
+<i class="ph-bold ph-x text-lg"></i>
+</button>
+</div>
+<div class="space-y-3 text-xs">
+<!-- Language Option -->
+<div class="p-3 bg-slate-50 rounded-2xl flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="text-lg">🌐</span>
+<div>
+<p class="font-bold text-slate-800" data-i18n="languageSettingTitle">App Language</p>
+<p class="text-[11px] text-slate-500" data-i18n="languageSettingDesc">English / Bahasa Indonesia</p>
+</div>
+</div>
+<div class="flex bg-white rounded-xl p-0.5 border border-slate-200 font-bold">
+<button class="px-2.5 py-1 rounded-lg bg-brand-coral text-white transition" id="optLangEn" onclick="setLanguage('en')">EN</button>
+<button class="px-2.5 py-1 rounded-lg text-slate-600 transition" id="optLangId" onclick="setLanguage('id')">ID</button>
+</div>
+</div>
+<!-- Clear Database Storage -->
+<div class="p-3 bg-slate-50 rounded-2xl flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<i class="ph-duotone ph-trash text-lg text-rose-500"></i>
+<div>
+<p class="font-bold text-slate-800" data-i18n="clearChatTitle">Clear Chat History</p>
+<p class="text-[11px] text-slate-500" data-i18n="clearChatDesc">Wipe IndexedDB conversation store</p>
+</div>
+</div>
+<button class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold rounded-xl border border-rose-200 transition press-bounce" data-i18n="clearBtn" onclick="clearIndexedDBChat()">
+              Clear
+            </button>
+</div>
+<!-- Notification Test Trigger -->
+<div class="p-3 bg-slate-50 rounded-2xl flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<i class="ph-duotone ph-bell-simple-ringing text-lg text-purple-600"></i>
+<div>
+<p class="font-bold text-slate-800" data-i18n="testPushTitle">Test Push Notification</p>
+<p class="text-[11px] text-slate-500" data-i18n="testPushDesc">Triggers system or in-app push alert</p>
+</div>
+</div>
+<button class="px-3 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold rounded-xl border border-purple-200 transition press-bounce" data-i18n="sendTestBtn" onclick="testNotificationAlert()">
+              Ping!
+            </button>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 text-center">
+<p class="text-[11px] text-slate-400 font-medium">BubblyChat v2.5 • Media Attachments &amp; Voice/Video Notes</p>
+</div>
+</div>
+</div>
+<!-- Sticker / Reaction Picker Modal -->
+<div class="hidden absolute bottom-20 left-4 right-4 z-40 bg-white/95 backdrop-blur-md rounded-2xl p-3 border border-slate-200 shadow-xl animate-pop-in" id="stickerPopup">
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
+<span class="text-xs font-bold text-slate-700" data-i18n="funStickers">Fun Stickers &amp; Reactions</span>
+<button class="text-slate-400 hover:text-slate-600" onclick="toggleStickerPopup()">
+<i class="ph-bold ph-x text-xs"></i>
+</button>
+</div>
+<div class="grid grid-cols-5 gap-2 text-2xl text-center">
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('🎉')">🎉</button>
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('🥳')">🥳</button>
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('🦄')">🦄</button>
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('🍕')">🍕</button>
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('🎮')">🎮</button>
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('🚀')">🚀</button>
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('🌈')">🌈</button>
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('⚡')">⚡</button>
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('✨')">✨</button>
+<button class="p-2 hover:bg-slate-100 rounded-xl press-bounce" onclick="sendSticker('🐱')">🐱</button>
+</div>
+</div>
+<!-- Toast Notification Popup -->
+<div class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 max-w-xs w-full bg-slate-900/90 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl border border-slate-700/50 flex items-center gap-3 animate-pop-in" id="toastNotification">
+<div class="w-8 h-8 rounded-xl bg-brand-coral flex items-center justify-center text-white text-base flex-shrink-0" id="toastIcon">
+<i class="ph-fill ph-bell"></i>
+</div>
+<div class="flex-1 overflow-hidden">
+<h4 class="text-xs font-bold truncate" id="toastTitle">Notification</h4>
+<p class="text-[11px] text-slate-300 truncate" id="toastMessage">Alert message here</p>
+</div>
+<button class="text-slate-400 hover:text-white p-1" onclick="hideToast()">
+<i class="ph-bold ph-x text-xs"></i>
+</button>
+</div>
+</div>
+<!-- Confetti Canvas overlay -->
+<canvas class="fixed inset-0 pointer-events-none z-50" id="confettiCanvas"></canvas>
+<!-- ================= LOGIC & JAVASCRIPT ================= -->
+<script>
+    /**
+     * BUBBLY CHAT CORE ARCHITECTURE WITH MEDIA & RECORDING ENGINES
+     */
+
+    // --- Localization Dictionaries ---
+    const i18n = {
+      en: {
+        onlineStatus: "Always ready to chat!",
+        bannerText: "IndexedDB active • Rich media & recordings ready!",
+        welcomeTitle: "Welcome to BubblyChat! ✨",
+        welcomeDesc: "A playful chat app with rich media attachments, voice & circular video notes, live speech-to-text, and IndexedDB local storage.",
+        settingsTitle: "App Preferences",
+        languageSettingTitle: "App Language",
+        languageSettingDesc: "Switch between English and Bahasa",
+        clearChatTitle: "Clear Chat History",
+        clearChatDesc: "Wipe all messages in IndexedDB",
+        clearBtn: "Clear",
+        testPushTitle: "Test Push Notification",
+        testPushDesc: "Triggers system or in-app push alert",
+        sendTestBtn: "Ping!",
+        funStickers: "Fun Stickers & Reactions",
+        reminderTitle: "Daily Auto Reminder",
+        reminderSubtitle: "Stay motivated! Set a recurring daily reminder push notification and cheerful message.",
+        reminderTimeLabel: "Reminder Time",
+        reminderMessageLabel: "Daily Affirmation / Message",
+        enableDailyReminder: "Enable Daily Auto Reminder",
+        reminderHelper: "Sends alert automatically at your scheduled hour",
+        saveBtn: "Save Reminder",
+        inputPlaceholder: "Type a message... (Try 'photo', 'video', 'contact')",
+        today: "Today",
+        reminderActiveLabel: "⏰ Reminder: ",
+        botGreetingResponse: "Hello there! Super happy to chat with you today! How can I make your day brighter? ✨",
+        botReminderSetResponse: "Woohoo! Your daily reminder is set for {time}. I will keep you inspired every day! ⏰🔔",
+        botJokeResponse: "Why don't eggs tell jokes? Because they might crack up! 😂🍳",
+        botDefaultResponse: "That's wonderful! You can also record voice/video notes or attach photos with the paperclip button! 🎈",
+        audioSimulated: "🎵 [Voice Note Recorded: 0:08]",
+        reminderFiredTitle: "🔔 Daily Reminder Check-in!",
+        notifDeniedNotice: "Push notifications are disabled in browser. Showing in-app alerts instead!",
+        chatClearedNotice: "Chat history cleared from IndexedDB.",
+
+        // New Attachment & Recording Translations
+        attachMediaTitle: "Attach Media & Content",
+        capturePhoto: "Capture Photo",
+        uploadPhoto: "Upload Photo",
+        captureVideo: "Capture Video",
+        uploadVideo: "Upload Video",
+        uploadDoc: "Upload Document",
+        uploadAudio: "Upload Audio",
+        shareContact: "Share Contact",
+        videoNoteOption: "Video Note",
+        recordingSuiteTitle: "Audio & Video Recording Suite",
+        voiceNoteTitle: "Voice Note Message",
+        voiceNoteDesc: "Record audio with live waveform",
+        videoNoteTitle: "Circular Video Note",
+        videoNoteDesc: "Telegram-style circular video bubble",
+        sttTitle: "Speech-to-Text Dictation",
+        sttDesc: "Live transcribes your speech to input",
+        startRecordBtn: "Start Record",
+        stopAndSendBtn: "Stop & Send",
+        voiceNoteLabel: "Voice Note",
+        recordingStatus: "Recording audio...",
+        recordingVideoStatus: "Recording circular clip",
+        circularVideoHeader: "Camera Preview",
+        sttLabel: "Speech to Text",
+        listeningStatus: "Listening...",
+        insertTextBtn: "Insert & Send",
+        selectContactTitle: "Select Contact",
+        selectContactDesc: "Choose a friend to share in the chat:",
+        saveContactBtn: "Save Contact",
+        downloadDocBtn: "Download",
+        voiceNoteCardTitle: "Voice Note",
+        videoNoteCardTitle: "Video Note",
+        botPhotoAck: "What a cheerful photo! Thanks for sharing this sunny moment! 📸✨",
+        botVideoAck: "Awesome video clip! That brought so much energy to our chat! 🎥🌟",
+        botDocAck: "Document received and safely archived in local memory! 📑👌",
+        botAudioAck: "Loved this tune/audio! Music makes everything better! 🎶💫",
+        botContactAck: "Contact added to chat roster! Nice to meet new friends! 👥💖",
+        botVideoNoteAck: "Haha, love the circular video reaction! Super fun! ⭕🎉"
+      },
+      id: {
+        onlineStatus: "Selalu siap mengobrol!",
+        bannerText: "IndexedDB aktif • Lampiran media & rekaman siap!",
+        welcomeTitle: "Selamat Datang di BubblyChat! ✨",
+        welcomeDesc: "Aplikasi obrolan seru dengan lampiran media, catatan suara & video bundar, suara ke teks, dan penyimpanan lokal IndexedDB.",
+        settingsTitle: "Pengaturan Aplikasi",
+        languageSettingTitle: "Bahasa Aplikasi",
+        languageSettingDesc: "Ganti antara English dan Bahasa Indonesia",
+        clearChatTitle: "Hapus Riwayat Chat",
+        clearChatDesc: "Bersihkan semua pesan dari IndexedDB",
+        clearBtn: "Hapus",
+        testPushTitle: "Uji Notifikasi Push",
+        testPushDesc: "Munculkan notifikasi sistem atau in-app",
+        sendTestBtn: "Tes!",
+        funStickers: "Stiker & Reaksi Lucu",
+        reminderTitle: "Pengingat Harian Otomatis",
+        reminderSubtitle: "Tetap termotivasi! Atur pengingat harian otomatis dengan pesan yang ceria.",
+        reminderTimeLabel: "Waktu Pengingat",
+        reminderMessageLabel: "Afirmasi Harian / Catatan",
+        enableDailyReminder: "Aktifkan Pengingat Harian",
+        reminderHelper: "Notifikasi otomatis berbunyi pada jam yang ditentukan",
+        saveBtn: "Simpan Pengingat",
+        inputPlaceholder: "Ketik pesan... (Coba ketik 'foto', 'video', 'kontak')",
+        today: "Hari Ini",
+        reminderActiveLabel: "⏰ Pengingat: ",
+        botGreetingResponse: "Halo sahabat! Senang sekali bisa mengobrol denganmu hari ini! Ada yang bisa kubantu agar harimu lebih ceria? ✨",
+        botReminderSetResponse: "Mantap! Pengingat harianmu aktif untuk jam {time}. Aku akan mengingatkanmu setiap hari! ⏰🔔",
+        botJokeResponse: "Kenapa pohon mangga di pinggir jalan suka goyang? Karena lagi ditiup angin lah, masa lagi TikTokan! 🤣🥭",
+        botDefaultResponse: "Asyik banget! Kamu juga bisa merekam suara/video atau melampirkan file via tombol klip kertas! 🎈",
+        audioSimulated: "🎵 [Pesan Suara Terekam: 0:08]",
+        reminderFiredTitle: "🔔 Waktunya Pengingat Harianmu!",
+        notifDeniedNotice: "Notifikasi browser belum diizinkan. Menggunakan peringatan in-app!",
+        chatClearedNotice: "Riwayat obrolan telah dihapus dari IndexedDB.",
+
+        // New Attachment & Recording Translations
+        attachMediaTitle: "Lampirkan Media & Berkas",
+        capturePhoto: "Ambil Foto",
+        uploadPhoto: "Unggah Foto",
+        captureVideo: "Rekam Video",
+        uploadVideo: "Unggah Video",
+        uploadDoc: "Unggah Dokumen",
+        uploadAudio: "Unggah Audio",
+        shareContact: "Bagikan Kontak",
+        videoNoteOption: "Catatan Video",
+        recordingSuiteTitle: "Studio Rekaman Suara & Video",
+        voiceNoteTitle: "Pesan Suara (Voice Note)",
+        voiceNoteDesc: "Rekam audio dengan animasi gelombang suara",
+        videoNoteTitle: "Catatan Video Bundar",
+        videoNoteDesc: "Gelembung video bundar ala Telegram",
+        sttTitle: "Dikte Suara ke Teks",
+        sttDesc: "Transkripsi ucapan langsung menjadi teks",
+        startRecordBtn: "Mulai Rekam",
+        stopAndSendBtn: "Berhenti & Kirim",
+        voiceNoteLabel: "Pesan Suara",
+        recordingStatus: "Merekam suara...",
+        recordingVideoStatus: "Merekam klip bundar",
+        circularVideoHeader: "Pratinjau Kamera",
+        sttLabel: "Suara ke Teks",
+        listeningStatus: "Mendengarkan...",
+        insertTextBtn: "Sisipkan & Kirim",
+        selectContactTitle: "Pilih Kontak",
+        selectContactDesc: "Pilih teman yang ingin dibagikan:",
+        saveContactBtn: "Simpan Kontak",
+        downloadDocBtn: "Unduh",
+        voiceNoteCardTitle: "Pesan Suara",
+        videoNoteCardTitle: "Catatan Video",
+        botPhotoAck: "Fotonya cerah dan seru banget! Terima kasih sudah berbagi! 📸✨",
+        botVideoAck: "Klip videonya keren sekali! Bikin obrolan kita makin bersemangat! 🎥🌟",
+        botDocAck: "Dokumen berhasil diterima dan tersimpan aman di IndexedDB! 📑👌",
+        botAudioAck: "Audionya asyik banget didengar! Musik bikin suasana ceria! 🎶💫",
+        botContactAck: "Kontak baru berhasil disimpan ke daftar obrolan! Senang berkenalan! 👥💖",
+        botVideoNoteAck: "Keren banget catatan video bundarnya! Persis kayak di messenger hits! ⭕🎉"
+      }
+    };
+
+    let currentLang = 'en';
+    let dbInstance = null;
+    const DB_NAME = "BubblyChatDB";
+    const DB_VERSION = 2; // Incremented for media storage
+    let reminderTimerInterval = null;
+    let reminderConfig = {
+      enabled: true,
+      time: "09:00",
+      message: "Time to brighten someone's day with a smile! 🌟",
+      lastTriggeredDate: null
+    };
+
+    // Active Recording States
+    let activeRecordingType = null; // 'voice' | 'video' | 'stt'
+    let recordingTimerInterval = null;
+    let recordingSeconds = 0;
+    let speechRecognitionInstance = null;
+    let currentSpeechTranscript = "";
+    let liveVideoStreamObj = null;
+
+    // --- IndexedDB Handler ---
+    function initIndexedDB() {
+      return new Promise((resolve) => {
+        const request = window.indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains("messages")) {
+            const msgStore = db.createObjectStore("messages", { keyPath: "id", autoIncrement: true });
+            msgStore.createIndex("timestamp", "timestamp", { unique: false });
+          }
+          if (!db.objectStoreNames.contains("settings")) {
+            db.createObjectStore("settings", { keyPath: "key" });
+          }
+        };
+
+        request.onsuccess = (e) => {
+          dbInstance = e.target.result;
+          document.getElementById('dbStatusLabel').innerText = "IndexedDB: Ready";
+          loadSettingsFromDB();
+          loadMessagesFromDB();
+          resolve(dbInstance);
+        };
+
+        request.onerror = (e) => {
+          console.error("IndexedDB error:", e.target.error);
+          document.getElementById('dbStatusLabel').innerText = "IndexedDB: Fallback Mode";
+          resolve(null);
+        };
+      });
+    }
+
+    // Save message to IndexedDB
+    function saveMessageToDB(messageObj) {
+      if (!dbInstance) return Promise.resolve();
+      return new Promise((resolve, reject) => {
+        const tx = dbInstance.transaction(["messages"], "readwrite");
+        const store = tx.objectStore("messages");
+        const req = store.add(messageObj);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    // Load messages from IndexedDB
+    function loadMessagesFromDB() {
+      if (!dbInstance) return;
+      const tx = dbInstance.transaction(["messages"], "readonly");
+      const store = tx.objectStore("messages");
+      const req = store.getAll();
+
+      req.onsuccess = () => {
+        const list = req.result || [];
+        const container = document.getElementById('messagesList');
+        container.innerHTML = "";
+
+        if (list.length === 0) {
+          const initialBotMsg = {
+            sender: "bot",
+            text: currentLang === 'en' 
+              ? "Hi friend! 🌈 I'm Bubbly! Try tapping 📎 to send photos, videos, audio, or record voice & circular video notes!" 
+              : "Halo sahabat! 🌈 Aku Bubbly! Coba ketuk 📎 untuk kirim foto, video, berkas atau rekam pesan suara & video bundar!",
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            date: new Date().toISOString().slice(0, 10)
+          };
+          saveMessageToDB(initialBotMsg).then(() => renderMessageUI(initialBotMsg));
+        } else {
+          list.forEach(msg => renderMessageUI(msg));
+        }
+        scrollChatToBottom();
+      };
+    }
+
+    // Clear messages from IndexedDB
+    function clearIndexedDBChat() {
+      if (!dbInstance) return;
+      const tx = dbInstance.transaction(["messages"], "readwrite");
+      const store = tx.objectStore("messages");
+      store.clear().onsuccess = () => {
+        document.getElementById('messagesList').innerHTML = "";
+        toggleMenuModal();
+        showToast("🧹 IndexedDB", i18n[currentLang].chatClearedNotice, "bg-rose-500");
+        setTimeout(() => loadMessagesFromDB(), 300);
+      };
+    }
+
+    // Settings
+    function saveSettingToDB(key, val) {
+      if (!dbInstance) return;
+      const tx = dbInstance.transaction(["settings"], "readwrite");
+      const store = tx.objectStore("settings");
+      store.put({ key: key, value: val });
+    }
+
+    function loadSettingsFromDB() {
+      if (!dbInstance) return;
+      const tx = dbInstance.transaction(["settings"], "readonly");
+      const store = tx.objectStore("settings");
+      
+      store.get("language").onsuccess = (e) => {
+        if (e.target.result) {
+          setLanguage(e.target.result.value, false);
+        }
+      };
+
+      store.get("reminderConfig").onsuccess = (e) => {
+        if (e.target.result) {
+          reminderConfig = e.target.result.value;
+          applyReminderConfigToUI();
+        }
+      };
+    }
+
+    // --- Attachment UI & Handlers ---
+    function toggleAttachmentDrawer() {
+      const drawer = document.getElementById('attachmentDrawer');
+      drawer.classList.toggle('hidden');
+      // close recording menu if open
+      document.getElementById('recordingToolsMenu').classList.add('hidden');
+      document.getElementById('stickerPopup').classList.add('hidden');
+    }
+
+    function triggerFileSelector(inputId) {
+      toggleAttachmentDrawer();
+      const inputEl = document.getElementById(inputId);
+      if (inputEl) {
+        inputEl.click();
+      }
+    }
+
+    function handleFileSelected(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target.result;
+        const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        let mediaMessage = {
+          sender: 'user',
+          type: type, // 'photo', 'photo_captured', 'video', 'video_captured', 'document', 'audio'
+          fileName: file.name,
+          fileSize: formatBytes(file.size),
+          mediaUrl: dataUrl,
+          timestamp: timeStr,
+          date: new Date().toISOString().slice(0, 10)
+        };
+
+        saveMessageToDB(mediaMessage).then(() => {
+          renderMessageUI(mediaMessage);
+          scrollChatToBottom();
+          triggerConfettiBurst();
+
+          // Bot responds cheerfully to media
+          simulateBotMediaAck(type);
+        });
+
+        // reset file input
+        event.target.value = '';
+      };
+
+      if (file.type.startsWith('image/') || file.type.startsWith('video/') || file.type.startsWith('audio/')) {
+        reader.readAsDataURL(file);
+      } else {
+        // for documents
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function simulateBotMediaAck(type) {
+      showBotTyping(true);
+      setTimeout(() => {
+        showBotTyping(false);
+        let text = i18n[currentLang].botDefaultResponse;
+        if (type.includes('photo')) text = i18n[currentLang].botPhotoAck;
+        else if (type.includes('video')) text = i18n[currentLang].botVideoAck;
+        else if (type === 'document') text = i18n[currentLang].botDocAck;
+        else if (type === 'audio') text = i18n[currentLang].botAudioAck;
+
+        const botReply = {
+          sender: 'bot',
+          text: text,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          date: new Date().toISOString().slice(0, 10)
+        };
+        saveMessageToDB(botReply).then(() => {
+          renderMessageUI(botReply);
+          scrollChatToBottom();
+        });
+      }, 1000);
+    }
+
+    // --- Contact Selector Feature ---
+    function openContactSelectorModal() {
+      toggleAttachmentDrawer();
+      document.getElementById('contactModal').classList.remove('hidden');
+    }
+
+    function closeContactModal() {
+      document.getElementById('contactModal').classList.add('hidden');
+    }
+
+    function shareSelectedContact(name, phone, role, colorTheme) {
+      closeContactModal();
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const contactMsg = {
+        sender: 'user',
+        type: 'contact',
+        contactName: name,
+        contactPhone: phone,
+        contactRole: role,
+        colorTheme: colorTheme,
+        timestamp: timeStr,
+        date: new Date().toISOString().slice(0, 10)
+      };
+
+      saveMessageToDB(contactMsg).then(() => {
+        renderMessageUI(contactMsg);
+        scrollChatToBottom();
+        triggerConfettiBurst();
+
+        // Bot ACK
+        setTimeout(() => {
+          const botReply = {
+            sender: 'bot',
+            text: `${i18n[currentLang].botContactAck} (${name})`,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            date: new Date().toISOString().slice(0, 10)
+          };
+          saveMessageToDB(botReply).then(() => {
+            renderMessageUI(botReply);
+            scrollChatToBottom();
+          });
+        }, 800);
+      });
+    }
+
+    // --- Recording Tools Suite (Voice Note, Video Note, Speech-to-Text) ---
+    function toggleRecordingMenuModal() {
+      const menu = document.getElementById('recordingToolsMenu');
+      menu.classList.toggle('hidden');
+      document.getElementById('attachmentDrawer').classList.add('hidden');
+      document.getElementById('stickerPopup').classList.add('hidden');
+    }
+
+    function openRecordingDock(type) {
+      // Close menus
+      document.getElementById('recordingToolsMenu').classList.add('hidden');
+      document.getElementById('attachmentDrawer').classList.add('hidden');
+      activeRecordingType = type;
+      recordingSeconds = 0;
+
+      if (type === 'voice') {
+        document.getElementById('voiceRecordingDock').classList.remove('hidden');
+        document.getElementById('voiceTimerBadge').innerText = "00:00";
+        startRecordingTimer('voiceTimerBadge');
+      } else if (type === 'video') {
+        document.getElementById('videoNoteDock').classList.remove('hidden');
+        document.getElementById('videoNoteTimerBadge').innerText = "00:00";
+        startCameraStreamForVideoNote();
+        startRecordingTimer('videoNoteTimerBadge');
+      } else if (type === 'stt') {
+        document.getElementById('sttRecordingDock').classList.remove('hidden');
+        startSpeechRecognitionEngine();
+      }
+    }
+
+    function startRecordingTimer(badgeId) {
+      if (recordingTimerInterval) clearInterval(recordingTimerInterval);
+      recordingTimerInterval = setInterval(() => {
+        recordingSeconds++;
+        const mins = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
+        const secs = String(recordingSeconds % 60).padStart(2, '0');
+        const badge = document.getElementById(badgeId);
+        if (badge) badge.innerText = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function cancelRecording(type) {
+      if (recordingTimerInterval) clearInterval(recordingTimerInterval);
+      if (type === 'voice') {
+        document.getElementById('voiceRecordingDock').classList.add('hidden');
+      } else if (type === 'video') {
+        stopCameraStream();
+        document.getElementById('videoNoteDock').classList.add('hidden');
+      } else if (type === 'stt') {
+        stopSpeechRecognitionEngine();
+        document.getElementById('sttRecordingDock').classList.add('hidden');
+      }
+      activeRecordingType = null;
+    }
+
+    // 1. Voice Note Finish
+    function stopAndSendVoiceNote() {
+      if (recordingTimerInterval) clearInterval(recordingTimerInterval);
+      document.getElementById('voiceRecordingDock').classList.add('hidden');
+
+      const durationStr = document.getElementById('voiceTimerBadge').innerText;
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const voiceMsg = {
+        sender: 'user',
+        type: 'voice_note',
+        duration: durationStr === '00:00' ? '00:04' : durationStr,
+        timestamp: timeStr,
+        date: new Date().toISOString().slice(0, 10)
+      };
+
+      saveMessageToDB(voiceMsg).then(() => {
+        renderMessageUI(voiceMsg);
+        scrollChatToBottom();
+        triggerConfettiBurst();
+
+        // Cheerful bot audio reply
+        simulateBotMediaAck('audio');
+      });
+      activeRecordingType = null;
+    }
+
+    // 2. Video Note Finish (Circular Bubble)
+    function startCameraStreamForVideoNote() {
+      const videoEl = document.getElementById('videoNoteLiveStream');
+      const placeholder = document.getElementById('videoNotePlaceholder');
+
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
+          .then((stream) => {
+            liveVideoStreamObj = stream;
+            videoEl.srcObject = stream;
+            placeholder.classList.add('hidden');
+          })
+          .catch((err) => {
+            console.log("Camera access fallback mode:", err);
+            placeholder.classList.remove('hidden');
+          });
+      } else {
+        placeholder.classList.remove('hidden');
+      }
+    }
+
+    function stopCameraStream() {
+      if (liveVideoStreamObj) {
+        liveVideoStreamObj.getTracks().forEach(track => track.stop());
+        liveVideoStreamObj = null;
+      }
+    }
+
+    function stopAndSendVideoNote() {
+      if (recordingTimerInterval) clearInterval(recordingTimerInterval);
+      stopCameraStream();
+      document.getElementById('videoNoteDock').classList.add('hidden');
+
+      const durationStr = document.getElementById('videoNoteTimerBadge').innerText;
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const videoNoteMsg = {
+        sender: 'user',
+        type: 'video_note',
+        duration: durationStr === '00:00' ? '00:05' : durationStr,
+        timestamp: timeStr,
+        date: new Date().toISOString().slice(0, 10)
+      };
+
+      saveMessageToDB(videoNoteMsg).then(() => {
+        renderMessageUI(videoNoteMsg);
+        scrollChatToBottom();
+        triggerConfettiBurst();
+
+        // Cheerful bot response
+        showBotTyping(true);
+        setTimeout(() => {
+          showBotTyping(false);
+          const botReply = {
+            sender: 'bot',
+            text: i18n[currentLang].botVideoNoteAck,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            date: new Date().toISOString().slice(0, 10)
+          };
+          saveMessageToDB(botReply).then(() => {
+            renderMessageUI(botReply);
+            scrollChatToBottom();
+          });
+        }, 1100);
+      });
+      activeRecordingType = null;
+    }
+
+    // 3. Speech to Text Dictation
+    function startSpeechRecognitionEngine() {
+      const liveTranscript = document.getElementById('sttLiveTranscript');
+      liveTranscript.innerText = currentLang === 'en' ? "Listening... Speak into microphone" : "Mendengarkan... Silakan berbicara";
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        speechRecognitionInstance = new SpeechRecognition();
+        speechRecognitionInstance.continuous = true;
+        speechRecognitionInstance.interimResults = true;
+        speechRecognitionInstance.lang = currentLang === 'en' ? 'en-US' : 'id-ID';
+
+        speechRecognitionInstance.onresult = (event) => {
+          let transcript = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+          }
+          currentSpeechTranscript = transcript;
+          liveTranscript.innerText = `"${transcript}"`;
+          document.getElementById('messageInput').value = transcript;
+        };
+
+        speechRecognitionInstance.onerror = (e) => {
+          console.warn("Speech API error, falling back to simulated speech:", e);
+          fallbackSimulateSpeechDictation();
+        };
+
+        try {
+          speechRecognitionInstance.start();
+        } catch (e) {
+          fallbackSimulateSpeechDictation();
+        }
+      } else {
+        fallbackSimulateSpeechDictation();
+      }
+    }
+
+    function fallbackSimulateSpeechDictation() {
+      const liveTranscript = document.getElementById('sttLiveTranscript');
+      const phrases = currentLang === 'en' 
+        ? ["Today is a beautiful day for BubblyChat! ✨", "Don't forget the smile reminder at 9 AM! 🚀", "Let's make big things happen today! 🌟"]
+        : ["Hari ini hari yang cerah untuk ngobrol di BubblyChat! ✨", "Jangan lupa pengingat senyum jam 9 pagi! 🚀", "Semangat terus pantang menyerah! 🌟"];
+      
+      const chosen = phrases[Math.floor(Math.random() * phrases.length)];
+      currentSpeechTranscript = chosen;
+      let charIdx = 0;
+      liveTranscript.innerText = '"';
+      
+      if (recordingTimerInterval) clearInterval(recordingTimerInterval);
+      recordingTimerInterval = setInterval(() => {
+        if (charIdx < chosen.length) {
+          liveTranscript.innerText = `"${chosen.substring(0, charIdx + 1)}"`;
+          document.getElementById('messageInput').value = chosen.substring(0, charIdx + 1);
+          charIdx++;
+        } else {
+          clearInterval(recordingTimerInterval);
+        }
+      }, 70);
+    }
+
+    function stopSpeechRecognitionEngine() {
+      if (speechRecognitionInstance) {
+        try {
+          speechRecognitionInstance.stop();
+        } catch (e) {}
+        speechRecognitionInstance = null;
+      }
+    }
+
+    function stopAndApplySpeechToText() {
+      stopSpeechRecognitionEngine();
+      if (recordingTimerInterval) clearInterval(recordingTimerInterval);
+      document.getElementById('sttRecordingDock').classList.add('hidden');
+
+      if (currentSpeechTranscript.trim()) {
+        document.getElementById('messageInput').value = currentSpeechTranscript;
+        handleUserSubmit(new Event('submit'));
+      }
+      currentSpeechTranscript = "";
+      activeRecordingType = null;
+    }
+
+    // --- Message Rendering Engine (Text, Images, Videos, Audio Waveform, Contacts, Video Notes) ---
+    function renderMessageUI(msg) {
+      const list = document.getElementById('messagesList');
+      const isUser = msg.sender === 'user';
+      const isReminder = msg.isReminder;
+
+      const itemWrapper = document.createElement('div');
+      itemWrapper.className = `flex flex-col ${isUser ? 'items-end' : 'items-start'} animate-pop-in`;
+
+      let bubbleContent = '';
+
+      if (msg.type === 'photo' || msg.type === 'photo_captured') {
+        bubbleContent = `
+          <div class="chat-bubble-user p-2 rounded-2xl max-w-[240px] text-white overflow-hidden shadow-md">
+            <img src="${msg.mediaUrl}" alt="Photo attachment" class="w-full h-36 object-cover rounded-xl border border-white/20">
+            <div class="pt-2 px-1 flex items-center justify-between text-[11px] font-semibold">
+              <span class="truncate flex items-center gap-1">📸 ${escapeHtml(msg.fileName || 'Photo.jpg')}</span>
+              <span class="text-[10px] text-white/80">${msg.fileSize || '1.2 MB'}</span>
+            </div>
+          </div>
+        `;
+      } else if (msg.type === 'video' || msg.type === 'video_captured') {
+        bubbleContent = `
+          <div class="chat-bubble-user p-2 rounded-2xl max-w-[240px] text-white overflow-hidden shadow-md">
+            <video src="${msg.mediaUrl}" controls class="w-full h-36 object-cover rounded-xl bg-black border border-white/20"></video>
+            <div class="pt-2 px-1 flex items-center justify-between text-[11px] font-semibold">
+              <span class="truncate flex items-center gap-1">📹 ${escapeHtml(msg.fileName || 'Video.mp4')}</span>
+              <span class="text-[10px] text-white/80">${msg.fileSize || '3.5 MB'}</span>
+            </div>
+          </div>
+        `;
+      } else if (msg.type === 'document') {
+        bubbleContent = `
+          <div class="chat-bubble-user p-3 rounded-2xl max-w-[260px] text-white shadow-md">
+            <div class="flex items-center gap-2.5">
+              <div class="w-10 h-10 rounded-xl bg-white text-rose-500 flex items-center justify-center text-xl flex-shrink-0 shadow-xs font-bold">
+                📄
+              </div>
+              <div class="overflow-hidden flex-1">
+                <p class="font-bold text-xs truncate">${escapeHtml(msg.fileName || 'Document.pdf')}</p>
+                <p class="text-[10px] text-white/80">${msg.fileSize || '245 KB'} • PDF / Doc</p>
+              </div>
+            </div>
+            <div class="mt-2.5 pt-2 border-t border-white/20 flex items-center justify-between">
+              <span class="text-[10px] text-white/90">IndexedDB Storage</span>
+              <button onclick="downloadSimulatedFile('${msg.fileName}')" class="press-bounce px-2.5 py-1 rounded-lg bg-white/20 hover:bg-white/30 text-white font-bold text-[10px] flex items-center gap-1">
+                <i class="ph-bold ph-download-simple"></i>
+                <span data-i18n="downloadDocBtn">${i18n[currentLang].downloadDocBtn}</span>
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (msg.type === 'audio') {
+        bubbleContent = `
+          <div class="chat-bubble-user p-3 rounded-2xl max-w-[260px] text-white shadow-md">
+            <div class="flex items-center gap-2.5">
+              <button onclick="toggleAudioPlayback(this)" class="press-bounce w-9 h-9 rounded-full bg-white text-brand-coral flex items-center justify-center text-base flex-shrink-0 shadow-xs">
+                <i class="ph-fill ph-play"></i>
+              </button>
+              <div class="flex-1">
+                <p class="text-xs font-bold truncate">${escapeHtml(msg.fileName || 'Audio Track.mp3')}</p>
+                <!-- Animated waveform bars -->
+                <div class="flex items-center gap-1 h-3 mt-1.5 opacity-90">
+                  <span class="w-1 bg-white h-2 rounded-full"></span>
+                  <span class="w-1 bg-white h-3 rounded-full"></span>
+                  <span class="w-1 bg-white h-1.5 rounded-full"></span>
+                  <span class="w-1 bg-white h-3 rounded-full"></span>
+                  <span class="w-1 bg-white h-2.5 rounded-full"></span>
+                  <span class="w-1 bg-white h-2 rounded-full"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (msg.type === 'contact') {
+        bubbleContent = `
+          <div class="chat-bubble-user p-3.5 rounded-2xl max-w-[240px] text-white shadow-md">
+            <div class="flex items-center gap-2.5">
+              <div class="w-10 h-10 rounded-full bg-white/20 border border-white/40 flex items-center justify-center text-lg flex-shrink-0">
+                👤
+              </div>
+              <div class="overflow-hidden">
+                <h4 class="font-bold text-xs truncate">${escapeHtml(msg.contactName)}</h4>
+                <p class="text-[10px] text-white/80 font-mono">${escapeHtml(msg.contactPhone)}</p>
+                <p class="text-[9px] text-amber-200 truncate">${escapeHtml(msg.contactRole || 'Friend')}</p>
+              </div>
+            </div>
+            <button onclick="showToast('Contact', 'Saved ${msg.contactName} to contacts list! ✨', 'bg-emerald-500')" class="mt-2.5 w-full py-1.5 rounded-xl bg-white text-brand-coral font-bold text-[11px] text-center shadow-xs press-bounce" data-i18n="saveContactBtn">
+              ${i18n[currentLang].saveContactBtn}
+            </button>
+          </div>
+        `;
+      } else if (msg.type === 'voice_note') {
+        bubbleContent = `
+          <div class="chat-bubble-user p-3 rounded-2xl min-w-[210px] text-white shadow-md">
+            <div class="flex items-center gap-2.5">
+              <button onclick="toggleAudioPlayback(this)" class="press-bounce w-9 h-9 rounded-full bg-white text-brand-coral flex items-center justify-center text-sm flex-shrink-0 shadow-xs">
+                <i class="ph-fill ph-play"></i>
+              </button>
+              <div class="flex-1">
+                <div class="flex items-center justify-between text-[11px] font-bold">
+                  <span data-i18n="voiceNoteCardTitle">${i18n[currentLang].voiceNoteCardTitle}</span>
+                  <span class="font-mono text-[10px]">${msg.duration || '00:05'}</span>
+                </div>
+                <!-- Waveform decoration -->
+                <div class="flex items-center gap-1 h-3 mt-1.5">
+                  <span class="w-1 bg-white/90 h-2 rounded-full"></span>
+                  <span class="w-1 bg-white/90 h-3 rounded-full"></span>
+                  <span class="w-1 bg-white/90 h-1.5 rounded-full"></span>
+                  <span class="w-1 bg-white/90 h-3.5 rounded-full"></span>
+                  <span class="w-1 bg-white/90 h-2 rounded-full"></span>
+                  <span class="w-1 bg-white/90 h-1 rounded-full"></span>
+                  <span class="w-1 bg-white/90 h-2.5 rounded-full"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (msg.type === 'video_note') {
+        // Circular Telegram-style video note
+        bubbleContent = `
+          <div class="flex flex-col items-center">
+            <div class="relative w-36 h-36 rounded-full p-1 bg-gradient-to-tr from-brand-coral via-brand-yellow to-brand-mint shadow-lg group cursor-pointer" onclick="toggleCircularVideoPlay(this)">
+              <div class="w-full h-full rounded-full overflow-hidden bg-slate-900 flex items-center justify-center relative shadow-inner">
+                <div class="w-full h-full bg-gradient-to-tr from-purple-700 to-indigo-900 flex items-center justify-center text-white text-3xl">
+                  <i class="ph-fill ph-play"></i>
+                </div>
+                <div class="absolute bottom-2 px-2 py-0.5 rounded-full bg-black/40 text-[9px] text-white font-mono font-bold">
+                  ${msg.duration || '00:04'}
+                </div>
+              </div>
+            </div>
+            <span class="text-[10px] text-slate-400 font-semibold mt-1" data-i18n="videoNoteCardTitle">${i18n[currentLang].videoNoteCardTitle}</span>
+          </div>
+        `;
+      } else {
+        // Standard user text bubble
+        bubbleContent = `
+          <div class="flex items-end gap-1.5 max-w-[85%]">
+            <div class="chat-bubble-user text-white px-4 py-2.5 text-sm font-medium leading-relaxed break-words shadow-sm">
+              ${escapeHtml(msg.text)}
+            </div>
+          </div>
+        `;
+      }
+
+      if (isUser) {
+        itemWrapper.innerHTML = `
+          ${bubbleContent}
+          <span class="text-[10px] text-slate-400 font-semibold mt-1 mr-1 flex items-center gap-1">
+            ${msg.timestamp} <i class="ph-bold ph-checks text-brand-mint text-xs"></i>
+          </span>
+        `;
+      } else {
+        const specialBg = isReminder 
+          ? "border-amber-300 bg-amber-50/90 shadow-md shadow-amber-100" 
+          : "chat-bubble-bot";
+
+        itemWrapper.innerHTML = `
+          <div class="flex items-end gap-2 max-w-[88%]">
+            <div class="w-8 h-8 rounded-full ${isReminder ? 'bg-amber-500' : 'bg-gradient-to-tr from-brand-coral to-brand-yellow'} flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-xs">
+              <i class="${isReminder ? 'ph-bold ph-alarm' : 'ph-bold ph-sparkle'} text-sm"></i>
+            </div>
+            <div class="${specialBg} text-slate-800 px-4 py-2.5 text-sm leading-relaxed break-words">
+              ${formatBotMessage(msg.text)}
+            </div>
+          </div>
+          <span class="text-[10px] text-slate-400 font-semibold mt-1 ml-10">
+            ${msg.timestamp}
+          </span>
+        `;
+      }
+
+      list.appendChild(itemWrapper);
+    }
+
+    function toggleAudioPlayback(btn) {
+      const icon = btn.querySelector('i');
+      if (icon.classList.contains('ph-play')) {
+        icon.className = "ph-fill ph-pause";
+        showToast("Audio Player", "Playing simulated audio track 🎵", "bg-brand-coral");
+        setTimeout(() => {
+          icon.className = "ph-fill ph-play";
+        }, 3000);
+      } else {
+        icon.className = "ph-fill ph-play";
+      }
+    }
+
+    function toggleCircularVideoPlay(container) {
+      const icon = container.querySelector('i');
+      if (icon.classList.contains('ph-play')) {
+        icon.className = "ph-fill ph-pause text-amber-300";
+        showToast("Video Note", "Playing video note loop ⭕", "bg-teal-600");
+        setTimeout(() => {
+          icon.className = "ph-fill ph-play";
+        }, 4000);
+      } else {
+        icon.className = "ph-fill ph-play";
+      }
+    }
+
+    function downloadSimulatedFile(fileName) {
+      showToast("Download", `Simulated downloading ${fileName || 'Document.pdf'}! 📥`, "bg-brand-sky");
+    }
+
+    function formatBotMessage(text) {
+      if (!text) return '';
+      let formatted = escapeHtml(text);
+      formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>');
+      formatted = formatted.replace(/\n/g, '<br/>');
+      return formatted;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes || bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    function scrollChatToBottom() {
+      const anchor = document.getElementById('scrollAnchor');
+      if (anchor) {
+        anchor.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // --- Message Submission & Smart Bot Responses ---
+    function handleUserSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('messageInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const userMsg = {
+        sender: "user",
+        text: text,
+        timestamp: timeStr,
+        date: new Date().toISOString().slice(0, 10)
+      };
+
+      saveMessageToDB(userMsg).then(() => {
+        renderMessageUI(userMsg);
+        scrollChatToBottom();
+      });
+
+      showBotTyping(true);
+
+      setTimeout(() => {
+        showBotTyping(false);
+        const botReply = generateSmartBotResponse(text);
+        const botMsg = {
+          sender: "bot",
+          text: botReply,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          date: new Date().toISOString().slice(0, 10)
+        };
+
+        saveMessageToDB(botMsg).then(() => {
+          renderMessageUI(botMsg);
+          scrollChatToBottom();
+        });
+      }, 700 + Math.random() * 500);
+    }
+
+    function showBotTyping(show) {
+      const indicator = document.getElementById('typingIndicator');
+      if (show) {
+        indicator.classList.remove('hidden');
+        scrollChatToBottom();
+      } else {
+        indicator.classList.add('hidden');
+      }
+    }
+
+    function generateSmartBotResponse(prompt) {
+      const lower = prompt.toLowerCase();
+
+      if (lower.includes('halo') || lower.includes('hello') || lower.includes('hi') || lower.includes('hey') || lower.includes('hai')) {
+        return i18n[currentLang].botGreetingResponse;
+      }
+      if (lower.includes('joke') || lower.includes('lelucon') || lower.includes('lucu') || lower.includes('ketawa')) {
+        return i18n[currentLang].botJokeResponse;
+      }
+      if (lower.includes('reminder') || lower.includes('ingatkan') || lower.includes('jadwal') || lower.includes('alarm')) {
+        return currentLang === 'en'
+          ? "You can set your daily reminder anytime using the bell icon 🔔 on the header! What time would you like to be motivated? ⏰"
+          : "Kamu bisa mengatur pengingat harian kapan saja dengan ikon lonceng 🔔 di atas! Jam berapa kamu ingin diingatkan? ⏰";
+      }
+      if (lower.includes('foto') || lower.includes('photo') || lower.includes('camera')) {
+        return currentLang === 'en' 
+          ? "Tap the paperclip 📎 button to take or upload photos directly into our chat! 📸" 
+          : "Ketuk tombol klip kertas 📎 untuk memotret atau mengunggah foto ke chat! 📸";
+      }
+      if (lower.includes('video')) {
+        return currentLang === 'en'
+          ? "You can capture video clips or send circular video notes using the recording suite! 📹⭕"
+          : "Kamu bisa merekam klip video atau mengirim catatan video bundar dengan studio rekaman! 📹⭕";
+      }
+      if (lower.includes('kontak') || lower.includes('contact')) {
+        return currentLang === 'en'
+          ? "Open the attachment drawer 📎 and tap 'Share Contact' to send Aura, Rizky, or Siti's cards! 👤"
+          : "Buka menu lampiran 📎 lalu ketuk 'Bagikan Kontak' untuk membagikan kartu teman! 👤";
+      }
+
+      return i18n[currentLang].botDefaultResponse;
+    }
+
+    // --- Interactive Chips & Helpers ---
+    function sendQuickChip(type) {
+      const input = document.getElementById('messageInput');
+      if (type === 'greeting') {
+        input.value = currentLang === 'en' ? "Hello Bubbly! 👋" : "Halo Bubbly! 👋";
+      }
+      handleUserSubmit(new Event('submit'));
+    }
+
+    function addEmojiToInput(emoji) {
+      const input = document.getElementById('messageInput');
+      input.value += emoji;
+      input.focus();
+    }
+
+    function toggleStickerPopup() {
+      const popup = document.getElementById('stickerPopup');
+      popup.classList.toggle('hidden');
+      document.getElementById('attachmentDrawer').classList.add('hidden');
+      document.getElementById('recordingToolsMenu').classList.add('hidden');
+    }
+
+    function sendSticker(stickerEmoji) {
+      toggleStickerPopup();
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const userSticker = {
+        sender: "user",
+        text: stickerEmoji,
+        timestamp: timeStr,
+        date: new Date().toISOString().slice(0, 10)
+      };
+      saveMessageToDB(userSticker).then(() => {
+        renderMessageUI(userSticker);
+        scrollChatToBottom();
+      });
+      triggerConfettiBurst();
+    }
+
+    function toggleMenuModal() {
+      const modal = document.getElementById('settingsMenuModal');
+      modal.classList.toggle('hidden');
+    }
+
+    function dismissBanner() {
+      document.getElementById('quickNoticeBanner').classList.add('hidden');
+    }
+
+    function showBotProfile() {
+      showToast("Bubbly AI 🌟", currentLang === 'en' ? "Playful companion with media attachments & IndexedDB!" : "Teman ceria dengan lampiran media & IndexedDB!", "bg-brand-coral");
+      triggerConfettiBurst();
+    }
+
+    // --- Daily Auto Reminder Mechanism ---
+    function openReminderModal() {
+      document.getElementById('reminderTimeInput').value = reminderConfig.time || "09:00";
+      document.getElementById('reminderMsgInput').value = reminderConfig.message || "Time to brighten someone's day with a smile! 🌟";
+      document.getElementById('reminderToggleCheck').checked = reminderConfig.enabled !== false;
+      document.getElementById('reminderModal').classList.remove('hidden');
+    }
+
+    function closeReminderModal() {
+      document.getElementById('reminderModal').classList.add('hidden');
+    }
+
+    function saveReminderPreferences() {
+      const timeVal = document.getElementById('reminderTimeInput').value;
+      const msgVal = document.getElementById('reminderMsgInput').value;
+      const isEnabled = document.getElementById('reminderToggleCheck').checked;
+
+      reminderConfig = {
+        enabled: isEnabled,
+        time: timeVal,
+        message: msgVal,
+        lastTriggeredDate: reminderConfig.lastTriggeredDate || null
+      };
+
+      saveSettingToDB("reminderConfig", reminderConfig);
+      applyReminderConfigToUI();
+      closeReminderModal();
+
+      const successMsg = currentLang === 'en'
+        ? `Daily reminder scheduled for ${timeVal}!`
+        : `Pengingat harian berhasil diatur untuk ${timeVal}!`;
+      showToast("⏰ Saved", successMsg, "bg-amber-500");
+
+      const botConfirm = {
+        sender: "bot",
+        text: i18n[currentLang].botReminderSetResponse.replace("{time}", timeVal),
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        date: new Date().toISOString().slice(0, 10)
+      };
+      saveMessageToDB(botConfirm).then(() => renderMessageUI(botConfirm));
+      scrollChatToBottom();
+    }
+
+    function applyReminderConfigToUI() {
+      const dot = document.getElementById('reminderActiveDot');
+      const ticker = document.getElementById('reminderTickerLabel');
+
+      if (reminderConfig.enabled) {
+        dot.classList.remove('hidden');
+        ticker.innerText = `${i18n[currentLang].reminderActiveLabel}${reminderConfig.time}`;
+      } else {
+        dot.classList.add('hidden');
+        ticker.innerText = currentLang === 'en' ? "⏰ Reminder: Off" : "⏰ Pengingat: Mati";
+      }
+    }
+
+    function triggerImmediateReminderTest() {
+      closeReminderModal();
+      triggerReminderAlert(true);
+    }
+
+    function triggerReminderAlert(isTest = false) {
+      const title = isTest 
+        ? (currentLang === 'en' ? "⏰ [Test] Daily Reminder!" : "⏰ [Uji] Pengingat Harian!") 
+        : i18n[currentLang].reminderFiredTitle;
+      const body = reminderConfig.message || "Have a joyful and productive day ahead! 🚀";
+
+      sendPushOrInAppAlert(title, body);
+      triggerConfettiBurst();
+
+      const reminderMsg = {
+        sender: "bot",
+        isReminder: true,
+        text: `⏰ **${title}**\n\n${body}`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        date: new Date().toISOString().slice(0, 10)
+      };
+
+      saveMessageToDB(reminderMsg).then(() => {
+        renderMessageUI(reminderMsg);
+        scrollChatToBottom();
+      });
+    }
+
+    function startReminderScheduler() {
+      if (reminderTimerInterval) clearInterval(reminderTimerInterval);
+      reminderTimerInterval = setInterval(() => {
+        if (!reminderConfig.enabled) return;
+
+        const now = new Date();
+        const currentHours = String(now.getHours()).padStart(2, '0');
+        const currentMinutes = String(now.getMinutes()).padStart(2, '0');
+        const currentTimeStr = `${currentHours}:${currentMinutes}`;
+        const todayDateStr = now.toISOString().slice(0, 10);
+
+        if (currentTimeStr === reminderConfig.time && reminderConfig.lastTriggeredDate !== todayDateStr) {
+          reminderConfig.lastTriggeredDate = todayDateStr;
+          saveSettingToDB("reminderConfig", reminderConfig);
+          triggerReminderAlert(false);
+        }
+      }, 30000);
+    }
+
+    // --- Dual Language Engine (English & Bahasa) ---
+    function toggleLanguage() {
+      const nextLang = currentLang === 'en' ? 'id' : 'en';
+      setLanguage(nextLang, true);
+    }
+
+    function setLanguage(lang, save = true) {
+      currentLang = lang;
+      if (save) saveSettingToDB("language", lang);
+
+      document.getElementById('currentLangLabel').innerText = lang.toUpperCase();
+      const optEn = document.getElementById('optLangEn');
+      const optId = document.getElementById('optLangId');
+      if (lang === 'en') {
+        optEn.className = "px-2.5 py-1 rounded-lg bg-brand-coral text-white transition";
+        optId.className = "px-2.5 py-1 rounded-lg text-slate-600 transition";
+      } else {
+        optId.className = "px-2.5 py-1 rounded-lg bg-brand-coral text-white transition";
+        optEn.className = "px-2.5 py-1 rounded-lg text-slate-600 transition";
+      }
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[lang][key]) {
+          el.innerText = i18n[lang][key];
+        }
+      });
+
+      document.getElementById('messageInput').placeholder = i18n[lang].inputPlaceholder;
+      document.getElementById('chatDateStamp').innerText = i18n[lang].today;
+      applyReminderConfigToUI();
+
+      showToast(lang === 'en' ? "Language Changed" : "Bahasa Diubah", 
+                lang === 'en' ? "Switched to English 🇺🇸" : "Beralih ke Bahasa Indonesia 🇮🇩", 
+                "bg-brand-sky");
+    }
+
+    // --- Push Notifications Engine ---
+    function requestNotificationAccess() {
+      if (!("Notification" in window)) {
+        showToast("Notification", "Notification API not supported. Using in-app alerts!", "bg-amber-500");
+        return;
+      }
+
+      Notification.requestPermission().then((permission) => {
+        const notifStatusLabel = document.getElementById('notifStatusLabel');
+        if (permission === "granted") {
+          notifStatusLabel.innerText = "Push: Allowed";
+          showToast("🔔 Push Notifications", "Notifications enabled! You're all set.", "bg-emerald-500");
+          triggerConfettiBurst();
+        } else {
+          notifStatusLabel.innerText = "Push: Off";
+          showToast("⚠️ Notice", i18n[currentLang].notifDeniedNotice, "bg-amber-500");
+        }
+      });
+    }
+
+    function sendPushOrInAppAlert(title, body) {
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          new Notification(title, { body: body });
+        } catch (e) {
+          showToast(title, body, "bg-brand-coral");
+        }
+      } else {
+        showToast(title, body, "bg-brand-coral");
+      }
+    }
+
+    function testNotificationAlert() {
+      sendPushOrInAppAlert("BubblyChat Ping! 🎈", currentLang === 'en' 
+        ? "Push notifications & media are active!" 
+        : "Notifikasi push & media berfungsi dengan baik!");
+    }
+
+    // Toast Alert Helper
+    let toastTimeout = null;
+    function showToast(title, message, bgClass = "bg-brand-coral") {
+      const toast = document.getElementById('toastNotification');
+      const toastTitle = document.getElementById('toastTitle');
+      const toastMsg = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+
+      toastTitle.innerText = title;
+      toastMsg.innerText = message;
+      toastIcon.className = `w-8 h-8 rounded-xl ${bgClass} flex items-center justify-center text-white text-base flex-shrink-0`;
+
+      toast.classList.remove('hidden');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => hideToast(), 3500);
+    }
+
+    function hideToast() {
+      document.getElementById('toastNotification').classList.add('hidden');
+    }
+
+    // --- Confetti Animation Canvas ---
+    function triggerConfettiBurst() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#FF6B6B', '#FFDF00', '#845EC2', '#00D2BA', '#FF9671', '#2C73D2'];
+
+      for (let i = 0; i < 45; i++) {
+        particles.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 80,
+          y: canvas.height / 3,
+          r: Math.random() * 5 + 3,
+          dx: (Math.random() - 0.5) * 9,
+          dy: (Math.random() - 1.5) * 8,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+        particles.forEach(p => {
+          if (p.alpha > 0.02) {
+            active = true;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.alpha;
+            ctx.fill();
+
+            p.x += p.dx;
+            p.y += p.dy;
+            p.dy += 0.22;
+            p.alpha -= 0.018;
+          }
+        });
+
+        if (active) {
+          requestAnimationFrame(draw);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    // --- App Lifecycle Initialization ---
+    window.addEventListener('DOMContentLoaded', async () => {
+      await initIndexedDB();
+      startReminderScheduler();
+      applyReminderConfigToUI();
+    });
+  </script>
+</body></html>

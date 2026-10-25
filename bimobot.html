@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Bimo • Daily Auto Reminder</title>
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Plus Jakarta Sans & Fredoka -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons CDN -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Canvas Confetti for celebratory task completion -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            fun: ['"Fredoka"', 'cursive', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              peach: '#FF7A59',
+              coral: '#FF5470',
+              purple: '#7952EC',
+              lilac: '#A78BFA',
+              mint: '#10B981',
+              sun: '#FBBF24',
+              softBg: '#F7F5FF',
+              cardBg: '#FFFFFF',
+              dark: '#1E1435',
+            },
+            twilight: {
+              bg: '#0B0E1B',
+              surface: '#12162B',
+              card: '#181E38',
+              cardBorder: '#293258',
+              violet: '#A855F7',
+              cyan: '#38BDF8',
+              pink: '#F43F5E',
+              glow: 'rgba(168, 85, 247, 0.35)',
+            }
+          },
+          boxShadow: {
+            'pop': '0 8px 24px -4px rgba(121, 82, 236, 0.18), 0 4px 10px -2px rgba(255, 84, 112, 0.12)',
+            'card': '0 10px 30px -5px rgba(30, 20, 53, 0.06)',
+            'bubble': '0 4px 14px 0 rgba(121, 82, 236, 0.12)',
+            'neon-purple': '0 0 16px -2px rgba(168, 85, 247, 0.5), 0 0 6px rgba(168, 85, 247, 0.3)',
+            'neon-cyan': '0 0 16px -2px rgba(56, 189, 248, 0.45), 0 0 6px rgba(56, 189, 248, 0.3)',
+            'neon-pink': '0 0 16px -2px rgba(244, 63, 94, 0.45)',
+          },
+          keyframes: {
+            wiggle: {
+              '0%, 100%': { transform: 'rotate(-4deg)' },
+              '50%': { transform: 'rotate(4deg)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
+            },
+            popIn: {
+              '0%': { opacity: '0', transform: 'scale(0.85) translateY(10px)' },
+              '100%': { opacity: '1', transform: 'scale(1) translateY(0)' },
+            },
+            pulseSubtle: {
+              '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+              '50%': { transform: 'scale(1.08)', opacity: '0.85' },
+            }
+          },
+          animation: {
+            wiggle: 'wiggle 2s ease-in-out infinite',
+            float: 'float 3.5s ease-in-out infinite',
+            popIn: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+            pulseSubtle: 'pulseSubtle 2s infinite ease-in-out',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(167, 139, 250, 0.4);
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: rgba(168, 85, 247, 0.5);
+    }
+    /* Dynamic active tab transition */
+    .tab-btn.active {
+      background: linear-gradient(135deg, #7952EC 0%, #FF5470 100%);
+      color: white !important;
+      box-shadow: 0 4px 15px rgba(121, 82, 236, 0.35);
+    }
+    .dark .tab-btn.active {
+      background: linear-gradient(135deg, #9333ea 0%, #f43f5e 100%);
+      color: white !important;
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.45);
+    }
+    .neon-border-pulse {
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.15);
+    }
+    .theme-transition {
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.25s ease, box-shadow 0.3s ease;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 dark:bg-[#060810] font-sans antialiased text-slate-800 dark:text-slate-100 flex justify-center items-center min-h-screen p-0 sm:p-4 select-none theme-transition">
+<!-- Mobile Frame Container (Max 430px for realistic iPhone/Pixel frame) -->
+<div class="relative w-full max-w-[430px] h-screen sm:h-[880px] bg-gradient-to-b from-[#FAF7FF] via-[#F4F1FD] to-[#FDF8F5] dark:from-[#0B0E1B] dark:via-[#12162B] dark:to-[#0F1326] sm:rounded-[44px] sm:shadow-[0_25px_70px_rgba(0,0,0,0.5)] dark:sm:shadow-[0_25px_70px_rgba(0,0,0,0.8),0_0_35px_rgba(168,85,247,0.18)] flex flex-col overflow-hidden sm:border-[8px] sm:border-slate-800 dark:sm:border-slate-800/90 theme-transition" id="app-container">
+<!-- Top Hardware Notch Simulation for Mobile Vibe -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-5 bg-slate-800 dark:bg-slate-900 rounded-b-2xl z-50 hidden sm:flex items-center justify-center space-x-2">
+<div class="w-2.5 h-2.5 rounded-full bg-slate-950"></div>
+<div class="w-10 h-1.5 rounded-full bg-slate-700/60"></div>
+</div>
+<!-- APP HEADER -->
+<header class="pt-6 sm:pt-7 px-4 sm:px-5 pb-3 bg-white/80 dark:bg-[#12162B]/85 backdrop-blur-md border-b border-purple-100/60 dark:border-purple-900/40 sticky top-0 z-40 flex items-center justify-between theme-transition">
+<div class="flex items-center space-x-2.5 sm:space-x-3">
+<!-- Playful Animated Mascot Avatar -->
+<div class="relative cursor-pointer group" onclick="mascotGreet()">
+<div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-brand-purple via-brand-coral to-brand-sun dark:from-purple-500 dark:via-fuchsia-500 dark:to-cyan-400 p-0.5 shadow-pop dark:shadow-neon-purple animate-float">
+<div class="w-full h-full bg-white dark:bg-[#181E38] rounded-[14px] flex items-center justify-center overflow-hidden">
+<span class="text-2xl transform group-hover:scale-125 transition-transform duration-200" id="mascot-emoji">🤖</span>
+</div>
+</div>
+<span class="absolute -bottom-1 -right-1 flex h-4 w-4">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white dark:border-[#12162B]"></span>
+</span>
+</div>
+<div>
+<div class="flex items-center space-x-1.5">
+<h1 class="font-fun text-xl font-bold bg-gradient-to-r from-brand-purple to-brand-coral dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">Bimo Bot</h1>
+<span class="px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-extrabold bg-purple-100 text-brand-purple dark:bg-purple-900/50 dark:text-purple-300 dark:border dark:border-purple-500/30 rounded-full tracking-wider uppercase">Auto AI</span>
+</div>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1" id="sub-status">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:shadow-[0_0_6px_#10B981]"></span> <span data-i18n="activeAssistant">Always awake • Daily Reminders</span>
+</p>
+</div>
+</div>
+<!-- Quick Actions Header (Theme Toggle, Language Toggle, Notification Bell) -->
+<div class="flex items-center space-x-1.5">
+<!-- Neon Twilight / Light Mode Toggle Button -->
+<button class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-purple-50 hover:bg-purple-100 text-brand-purple dark:bg-[#1A213D] dark:hover:bg-[#252E54] dark:text-cyan-300 border border-purple-200 dark:border-purple-500/30 shadow-sm flex items-center justify-center transition-all active:scale-90" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Neon Twilight Theme">
+<i class="w-4 h-4" data-lucide="moon" id="header-theme-icon"></i>
+</button>
+<!-- Dual Language Toggle Pill -->
+<button class="px-2 sm:px-2.5 py-1 rounded-full text-xs font-bold bg-purple-50 hover:bg-purple-100 text-brand-purple dark:bg-[#1A213D] dark:hover:bg-[#252E54] dark:text-purple-300 border border-purple-200 dark:border-purple-500/30 transition-all active:scale-95 flex items-center space-x-1 shadow-sm" id="lang-toggle-btn" onclick="toggleLanguage()" title="Toggle Language">
+<i class="w-3.5 h-3.5" data-lucide="languages"></i>
+<span id="lang-indicator">EN</span>
+</button>
+<!-- Push Notification Toggle / Simulator -->
+<button class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-rose-50 text-slate-600 hover:text-brand-coral dark:bg-[#1A213D] dark:text-slate-300 dark:hover:text-pink-400 border border-purple-100 dark:border-purple-500/30 shadow-sm flex items-center justify-center transition-transform active:scale-90 relative" id="notif-toggle-btn" onclick="togglePushNotificationPermission()" title="Notification Alerts">
+<i class="w-4 h-4" data-lucide="bell" id="bell-icon"></i>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-brand-coral dark:bg-pink-500 dark:shadow-[0_0_6px_#f43f5e]" id="bell-badge"></span>
+</button>
+</div>
+</header>
+<!-- IN-APP NOTIFICATION BANNER / ALERT TOAST (For Web Push demo) -->
+<div class="hidden absolute top-20 left-4 right-4 z-50 bg-slate-900/95 dark:bg-[#161B33]/95 text-white p-3.5 rounded-2xl shadow-2xl dark:shadow-[0_0_25px_rgba(168,85,247,0.3)] backdrop-blur-md border border-purple-400/30 dark:border-purple-500/50 flex items-start space-x-3 transform transition-all duration-300 -translate-y-10 opacity-0" id="push-toast">
+<div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-coral to-brand-sun dark:from-pink-500 dark:to-amber-400 flex items-center justify-center text-lg shrink-0 shadow-sm">
+        🔔
+      </div>
+<div class="flex-1 pr-1">
+<div class="flex items-center justify-between">
+<h4 class="text-xs font-bold text-brand-sun dark:text-amber-300" id="toast-title">Auto Reminder Alert!</h4>
+<span class="text-[10px] text-slate-400 dark:text-slate-300" id="toast-time">Just now</span>
+</div>
+<p class="text-xs text-slate-200 dark:text-slate-100 mt-0.5" id="toast-body">Time to drink a warm glass of water 💧</p>
+</div>
+<button class="text-slate-400 hover:text-white text-sm p-1" onclick="dismissToast()">✕</button>
+</div>
+<!-- MAIN TABBED VIEWPORTS -->
+<!-- VIEW 1: CHAT INTERACTION (Default) -->
+<section class="flex-1 flex flex-col overflow-hidden relative" id="view-chat">
+<!-- Quick Reminder Suggestion Chips (Youthful & Playful) -->
+<div class="px-4 py-2 bg-gradient-to-r from-purple-50/70 to-pink-50/70 dark:from-[#151A33] dark:to-[#181938] border-b border-purple-100/60 dark:border-purple-900/40 overflow-x-auto no-scrollbar flex items-center space-x-2 shrink-0">
+<span class="text-[10px] uppercase font-bold text-slate-400 dark:text-purple-300 shrink-0 flex items-center gap-1">
+<i class="w-3 h-3 text-brand-coral dark:text-pink-400" data-lucide="sparkles"></i> <span data-i18n="quickPicks">Auto:</span>
+</span>
+<button class="shrink-0 text-xs font-semibold px-3 py-1 bg-white hover:bg-purple-100 text-slate-700 dark:bg-[#1A213D] dark:hover:bg-[#252E54] dark:text-slate-200 rounded-full border border-purple-100 dark:border-purple-500/30 shadow-sm active:scale-95 transition-all flex items-center gap-1" onclick="quickPrompt('water')">
+          💧 <span data-i18n="chipWater">Water (2h)</span>
+</button>
+<button class="shrink-0 text-xs font-semibold px-3 py-1 bg-white hover:bg-purple-100 text-slate-700 dark:bg-[#1A213D] dark:hover:bg-[#252E54] dark:text-slate-200 rounded-full border border-purple-100 dark:border-purple-500/30 shadow-sm active:scale-95 transition-all flex items-center gap-1" onclick="quickPrompt('stretch')">
+          🧘 <span data-i18n="chipStretch">Stretch (4h)</span>
+</button>
+<button class="shrink-0 text-xs font-semibold px-3 py-1 bg-white hover:bg-purple-100 text-slate-700 dark:bg-[#1A213D] dark:hover:bg-[#252E54] dark:text-slate-200 rounded-full border border-purple-100 dark:border-purple-500/30 shadow-sm active:scale-95 transition-all flex items-center gap-1" onclick="quickPrompt('study')">
+          📚 <span data-i18n="chipStudy">Study (20:00)</span>
+</button>
+<button class="shrink-0 text-xs font-semibold px-3 py-1 bg-white hover:bg-purple-100 text-slate-700 dark:bg-[#1A213D] dark:hover:bg-[#252E54] dark:text-slate-200 rounded-full border border-purple-100 dark:border-purple-500/30 shadow-sm active:scale-95 transition-all flex items-center gap-1" onclick="quickPrompt('meds')">
+          💊 <span data-i18n="chipMeds">Vitamin (Daily)</span>
+</button>
+</div>
+<!-- Chat Messages Scroll Container -->
+<div class="flex-1 overflow-y-auto p-4 space-y-3.5 relative" id="chat-messages">
+<!-- Dynamic Chat items loaded from IndexedDB -->
+</div>
+<!-- Quick Auto-Reminder Smart Modal / Preset Trigger -->
+<div class="hidden px-5 py-1.5 text-xs text-brand-purple dark:text-purple-300 flex items-center space-x-2 font-medium" id="typing-indicator">
+<div class="flex space-x-1">
+<span class="w-2 h-2 bg-brand-purple dark:bg-purple-400 rounded-full animate-bounce"></span>
+<span class="w-2 h-2 bg-brand-coral dark:bg-pink-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+<span class="w-2 h-2 bg-brand-sun dark:bg-cyan-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+</div>
+<span data-i18n="botTyping">Bimo is scheduling...</span>
+</div>
+<!-- Floating Reminder Drawer Trigger -->
+<div class="px-4 pb-2">
+<div class="bg-gradient-to-r from-purple-100/90 via-pink-50/80 to-amber-50/80 dark:from-[#1A1F3D] dark:via-[#211B3D] dark:to-[#17253D] p-2.5 rounded-2xl border border-purple-200/60 dark:border-purple-500/30 shadow-sm dark:shadow-[0_0_12px_rgba(168,85,247,0.15)] flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-base">⚡</span>
+<div>
+<p class="text-[11px] font-bold text-slate-800 dark:text-slate-200" data-i18n="quickAddTitle">Need a scheduled auto ping?</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="quickAddSub">Type e.g. "Remind me to drink at 14:00" or tap preset</p>
+</div>
+</div>
+<button class="px-3 py-1.5 bg-gradient-to-r from-brand-purple to-brand-coral dark:from-purple-600 dark:to-pink-500 text-white font-fun font-bold text-xs rounded-xl shadow-md dark:shadow-neon-pink active:scale-95 transition-transform flex items-center space-x-1" onclick="openAddModal()">
+<i class="w-3.5 h-3.5" data-lucide="plus"></i>
+<span data-i18n="newReminderBtn">Set</span>
+</button>
+</div>
+</div>
+<!-- Bottom Chat Input Bar -->
+<div class="p-3 bg-white/90 dark:bg-[#12162B]/90 backdrop-blur-md border-t border-purple-100 dark:border-purple-900/40 shrink-0 theme-transition">
+<form class="flex items-center space-x-2" id="chat-form" onsubmit="handleChatSubmit(event)">
+<button class="w-10 h-10 rounded-2xl bg-purple-50 hover:bg-purple-100 text-brand-purple dark:bg-[#1A213D] dark:hover:bg-[#252E54] dark:text-purple-300 border border-purple-200 dark:border-purple-500/30 flex items-center justify-center shrink-0 active:scale-90 transition-transform" onclick="triggerMagicReminder()" title="Random surprise daily tip" type="button">
+<i class="w-4 h-4" data-lucide="wand-2"></i>
+</button>
+<div class="relative flex-1">
+<input autocomplete="off" class="w-full pl-4 pr-10 py-3 bg-purple-50/60 focus:bg-white dark:bg-[#181E38] dark:focus:bg-[#1F274A] text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm font-medium rounded-2xl border border-purple-200 dark:border-purple-500/30 focus:border-brand-purple dark:focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-brand-purple/20 dark:focus:ring-cyan-400/20 transition-all" data-i18n-placeholder="inputPlaceholder" id="chat-input" placeholder="Tell Bimo what to remind you..." type="text"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-coral dark:text-slate-400 dark:hover:text-cyan-400 transition-colors" onclick="voiceSimulation()" title="Mic" type="button">
+<i class="w-4 h-4" data-lucide="mic"></i>
+</button>
+</div>
+<button class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-purple to-brand-coral dark:from-purple-600 dark:to-pink-500 text-white shadow-pop dark:shadow-neon-purple hover:shadow-lg flex items-center justify-center shrink-0 active:scale-90 transition-transform" type="submit">
+<i class="w-4 h-4" data-lucide="send"></i>
+</button>
+</form>
+</div>
+</section>
+<!-- VIEW 2: ACTIVE REMINDERS (IndexedDB powered list) -->
+<section class="flex-1 flex-col overflow-hidden hidden bg-[#F8F6FE] dark:bg-[#0B0E1B] theme-transition" id="view-reminders">
+<div class="p-4 border-b border-purple-100 dark:border-purple-900/40 bg-white dark:bg-[#12162B] flex items-center justify-between">
+<div>
+<h2 class="font-fun text-lg font-bold text-slate-800 dark:text-slate-100" data-i18n="myScheduleTitle">Active Auto Reminders</h2>
+<p class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="myScheduleSub">Stored safely in local IndexedDB</p>
+</div>
+<button class="px-2.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 dark:bg-amber-950/60 dark:hover:bg-amber-900/70 dark:text-amber-300 dark:border dark:border-amber-500/30 rounded-xl text-xs font-bold active:scale-95 transition-all flex items-center gap-1 shadow-sm" onclick="testTriggerNow()">
+<i class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" data-lucide="zap"></i>
+<span data-i18n="testAlertBtn">Test Alarm</span>
+</button>
+</div>
+<!-- Filter pills -->
+<div class="px-4 py-2.5 flex space-x-2 bg-purple-50/50 dark:bg-[#151933]">
+<button class="px-3 py-1 rounded-full text-xs font-bold bg-brand-purple dark:bg-purple-600 text-white shadow-sm" id="filter-all" onclick="filterReminders('all')">All (<span id="count-all">0</span>)</button>
+<button class="px-3 py-1 rounded-full text-xs font-bold bg-white dark:bg-[#181E38] text-slate-600 dark:text-slate-300 border border-purple-100 dark:border-purple-500/30 hover:bg-purple-100 dark:hover:bg-[#232B4F]" id="filter-pending" onclick="filterReminders('pending')">Pending</button>
+<button class="px-3 py-1 rounded-full text-xs font-bold bg-white dark:bg-[#181E38] text-slate-600 dark:text-slate-300 border border-purple-100 dark:border-purple-500/30 hover:bg-purple-100 dark:hover:bg-[#232B4F]" id="filter-completed" onclick="filterReminders('completed')">Done</button>
+</div>
+<!-- Reminder list container -->
+<div class="flex-1 overflow-y-auto p-4 space-y-3" id="reminders-list">
+<!-- Populated via IndexedDB -->
+</div>
+</section>
+<!-- VIEW 3: SETTINGS & PREFERENCES -->
+<section class="flex-1 flex-col overflow-y-auto p-4 hidden space-y-4 bg-[#F8F6FE] dark:bg-[#0B0E1B] theme-transition" id="view-settings">
+<div class="bg-white dark:bg-[#12162B] p-4 rounded-3xl shadow-card dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] border border-purple-100/80 dark:border-purple-900/50">
+<div class="flex items-center space-x-3 mb-3">
+<div class="w-10 h-10 rounded-2xl bg-purple-100 dark:bg-[#1C2344] text-brand-purple dark:text-purple-300 flex items-center justify-center font-bold text-lg">
+            ⚙️
+          </div>
+<div>
+<h3 class="font-fun text-base font-bold text-slate-800 dark:text-slate-100" data-i18n="prefTitle">App Preferences</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="prefSub">Customize language &amp; notifications</p>
+</div>
+</div>
+<div class="space-y-3 divide-y divide-purple-50 dark:divide-purple-900/40 text-sm">
+<!-- Neon Twilight / Dark Mode Switch in Settings -->
+<div class="pt-2 flex items-center justify-between">
+<div>
+<p class="font-medium text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
+<span class="text-xs">🔮</span>
+<span data-i18n="themeSettingLabel">Neon Twilight Dark Mode</span>
+</p>
+<p class="text-[11px] text-slate-400 dark:text-slate-400" data-i18n="themeSettingDesc">Electric violet &amp; midnight theme</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" id="setting-theme-check" onchange="toggleTheme()" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-cyan-400"></div>
+</label>
+</div>
+<!-- Language selector -->
+<div class="pt-3 flex items-center justify-between">
+<span class="font-medium text-slate-700 dark:text-slate-200" data-i18n="langLabel">Application Language</span>
+<select class="text-xs font-bold px-3 py-1.5 rounded-xl border border-purple-200 dark:border-purple-500/30 bg-purple-50 dark:bg-[#181E38] text-brand-purple dark:text-purple-300 focus:outline-none" id="setting-lang-select" onchange="switchLanguage(this.value)">
+<option value="en">English (US)</option>
+<option value="id">Bahasa Indonesia</option>
+</select>
+</div>
+<!-- Web Push Toggle -->
+<div class="pt-3 flex items-center justify-between">
+<div>
+<p class="font-medium text-slate-700 dark:text-slate-200" data-i18n="pushLabel">Push Notifications</p>
+<p class="text-[11px] text-slate-400 dark:text-slate-400" data-i18n="pushDesc">Browser notification permissions</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="setting-push-check" onchange="togglePushNotificationPermission()" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-brand-purple peer-checked:to-brand-coral"></div>
+</label>
+</div>
+<!-- Sound Effects -->
+<div class="pt-3 flex items-center justify-between">
+<div>
+<p class="font-medium text-slate-700 dark:text-slate-200" data-i18n="soundLabel">Playful Audio Effects</p>
+<p class="text-[11px] text-slate-400 dark:text-slate-400" data-i18n="soundDesc">Chime on reminders and sent chats</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="setting-sound-check" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+</label>
+</div>
+<!-- IndexedDB Database reset -->
+<div class="pt-3 flex items-center justify-between">
+<div>
+<p class="font-medium text-rose-600 dark:text-rose-400" data-i18n="clearDataLabel">Reset IndexedDB</p>
+<p class="text-[11px] text-slate-400 dark:text-slate-400" data-i18n="clearDataDesc">Wipe all stored chats and reminders</p>
+</div>
+<button class="px-3 py-1.5 text-xs font-bold text-rose-600 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/50 rounded-xl border border-rose-200 dark:border-rose-800/40 transition-all" onclick="clearAllData()">
+<span data-i18n="wipeBtn">Clear</span>
+</button>
+</div>
+</div>
+</div>
+<!-- IndexedDB Live Diagnostic Card -->
+<div class="bg-white dark:bg-[#12162B] p-4 rounded-3xl shadow-card dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] border border-purple-100/80 dark:border-purple-900/50">
+<h4 class="font-fun text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-2">
+<i class="w-4 h-4 text-brand-purple dark:text-cyan-400" data-lucide="database"></i>
+<span data-i18n="storageStatusTitle">IndexedDB Live Diagnostics</span>
+</h4>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<div class="bg-purple-50 dark:bg-[#181E38] p-2.5 rounded-2xl border border-transparent dark:border-purple-500/20">
+<span class="text-slate-500 dark:text-slate-400 text-[10px] uppercase font-bold" data-i18n="statDatabase">Database</span>
+<p class="font-bold text-brand-purple dark:text-purple-300 font-mono">BimoRemindersDB</p>
+</div>
+<div class="bg-pink-50 dark:bg-[#181E38] p-2.5 rounded-2xl border border-transparent dark:border-pink-500/20">
+<span class="text-slate-500 dark:text-slate-400 text-[10px] uppercase font-bold" data-i18n="statVersion">Version</span>
+<p class="font-bold text-brand-coral dark:text-pink-400 font-mono">v1.0 (Ready)</p>
+</div>
+<div class="bg-emerald-50 dark:bg-[#181E38] p-2.5 rounded-2xl border border-transparent dark:border-emerald-500/20">
+<span class="text-slate-500 dark:text-slate-400 text-[10px] uppercase font-bold" data-i18n="statTotalReminders">Total Tasks</span>
+<p class="font-bold text-emerald-600 dark:text-emerald-400 font-mono" id="diag-tasks">0</p>
+</div>
+<div class="bg-amber-50 dark:bg-[#181E38] p-2.5 rounded-2xl border border-transparent dark:border-amber-500/20">
+<span class="text-slate-500 dark:text-slate-400 text-[10px] uppercase font-bold" data-i18n="statTotalChats">Messages</span>
+<p class="font-bold text-amber-600 dark:text-amber-400 font-mono" id="diag-chats">0</p>
+</div>
+</div>
+</div>
+<!-- About Youthful Companion -->
+<div class="text-center py-4 text-xs text-slate-400 dark:text-slate-500">
+<p class="font-bold text-brand-purple dark:text-purple-400 font-fun text-sm">Bimo Auto Reminder v2.5</p>
+<p class="mt-1">Crafted with Pure HTML5, Tailwind, Web Audio &amp; IndexedDB</p>
+</div>
+</section>
+<!-- BOTTOM APP NAVIGATION BAR (Mobile Style) -->
+<nav class="h-16 bg-white/95 dark:bg-[#12162B]/95 backdrop-blur-lg border-t border-purple-100 dark:border-purple-900/40 flex items-center justify-around px-4 z-40 shrink-0 theme-transition">
+<!-- Tab 1: Chat -->
+<button class="tab-btn active flex-1 py-1.5 mx-1 rounded-2xl flex flex-col items-center justify-center transition-all duration-200" id="tab-chat" onclick="switchTab('chat')">
+<i class="w-5 h-5" data-lucide="message-circle"></i>
+<span class="text-[10px] font-bold mt-0.5" data-i18n="tabChat">Chat</span>
+</button>
+<!-- Tab 2: Reminders Schedule -->
+<button class="tab-btn text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 flex-1 py-1.5 mx-1 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 relative" id="tab-reminders" onclick="switchTab('reminders')">
+<i class="w-5 h-5" data-lucide="calendar-check-2"></i>
+<span class="text-[10px] font-bold mt-0.5" data-i18n="tabReminders">Reminders</span>
+<span class="hidden absolute top-1 right-3 w-4 h-4 bg-brand-coral dark:bg-pink-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center dark:shadow-[0_0_8px_#f43f5e]" id="tab-badge">2</span>
+</button>
+<!-- Tab 3: Settings -->
+<button class="tab-btn text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 flex-1 py-1.5 mx-1 rounded-2xl flex flex-col items-center justify-center transition-all duration-200" id="tab-settings" onclick="switchTab('settings')">
+<i class="w-5 h-5" data-lucide="settings"></i>
+<span class="text-[10px] font-bold mt-0.5" data-i18n="tabSettings">Settings</span>
+</button>
+</nav>
+<!-- MODAL: MANUAL / PRESET REMINDER CREATOR (Sliding Drawer) -->
+<div class="fixed inset-0 z-50 bg-slate-900/50 dark:bg-black/70 backdrop-blur-xs flex items-end justify-center hidden opacity-0 transition-opacity duration-300" id="add-modal">
+<div class="w-full max-w-[430px] bg-white dark:bg-[#12162B] border-t dark:border-purple-500/40 rounded-t-[36px] p-6 shadow-2xl dark:shadow-[0_-8px_30px_rgba(168,85,247,0.25)] transform translate-y-full transition-transform duration-300 theme-transition" id="modal-panel">
+<div class="w-12 h-1 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-fun text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+<span class="text-xl">⏰</span>
+<span data-i18n="modalTitle">Create Daily Reminder</span>
+</h3>
+<button class="w-8 h-8 rounded-full bg-slate-100 dark:bg-[#1A213D] hover:bg-slate-200 dark:hover:bg-[#252E54] flex items-center justify-center text-slate-500 dark:text-slate-300 font-bold" onclick="closeAddModal()">✕</button>
+</div>
+<form class="space-y-4" id="modal-reminder-form" onsubmit="handleModalAdd(event)">
+<div>
+<label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="modalTaskLabel">Reminder Title</label>
+<input class="w-full px-4 py-2.5 rounded-xl bg-purple-50/70 dark:bg-[#181E38] border border-purple-200 dark:border-purple-500/30 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-brand-purple/20 dark:focus:ring-cyan-400/30" id="modal-title-input" placeholder="e.g., Drink water, Walk puppy, Read books" required="" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="modalTimeLabel">Time</label>
+<input class="w-full px-4 py-2.5 rounded-xl bg-purple-50/70 dark:bg-[#181E38] border border-purple-200 dark:border-purple-500/30 text-slate-800 dark:text-slate-100 text-sm focus:outline-none font-mono" id="modal-time-input" required="" type="time"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="modalRepeatLabel">Frequency</label>
+<select class="w-full px-3 py-2.5 rounded-xl bg-purple-50/70 dark:bg-[#181E38] border border-purple-200 dark:border-purple-500/30 text-slate-800 dark:text-slate-100 text-xs font-semibold focus:outline-none" id="modal-repeat-input">
+<option data-i18n="freqDaily" value="daily">Every Day (Harian)</option>
+<option data-i18n="freqWeekdays" value="weekdays">Weekdays (Hari Kerja)</option>
+<option data-i18n="freqOnce" value="once">Just Once (Sekali)</option>
+</select>
+</div>
+</div>
+<!-- Category Pill Selector -->
+<div>
+<label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5" data-i18n="modalCategoryLabel">Category Tag</label>
+<div class="flex flex-wrap gap-2" id="modal-category-group">
+<button class="tag-btn px-3 py-1 bg-brand-purple dark:bg-purple-600 text-white text-xs font-bold rounded-full border border-brand-purple dark:border-purple-500" onclick="selectCategoryTag(this, '💧 Hydration')" type="button">💧 Hydration</button>
+<button class="tag-btn px-3 py-1 bg-purple-50 dark:bg-[#181E38] text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full border border-purple-200 dark:border-purple-500/30" onclick="selectCategoryTag(this, '💊 Health')" type="button">💊 Health</button>
+<button class="tag-btn px-3 py-1 bg-purple-50 dark:bg-[#181E38] text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full border border-purple-200 dark:border-purple-500/30" onclick="selectCategoryTag(this, '🎯 Focus')" type="button">🎯 Focus</button>
+<button class="tag-btn px-3 py-1 bg-purple-50 dark:bg-[#181E38] text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full border border-purple-200 dark:border-purple-500/30" onclick="selectCategoryTag(this, '✨ Self-Care')" type="button">✨ Self-Care</button>
+</div>
+</div>
+<button class="w-full py-3 bg-gradient-to-r from-brand-purple to-brand-coral dark:from-purple-600 dark:to-pink-500 text-white font-fun font-bold rounded-2xl shadow-pop dark:shadow-neon-pink active:scale-98 transition-transform flex items-center justify-center space-x-2" type="submit">
+<i class="w-4 h-4" data-lucide="check"></i>
+<span data-i18n="saveReminderBtn">Save to IndexedDB</span>
+</button>
+</form>
+</div>
+</div>
+</div>
+<!-- APPLICATION JAVASCRIPT: THEME ENGINE, INDEXEDDB, TRANSLATIONS, AUDIO SYNTHESIS, CHAT LOGIC -->
+<script>
+    /* ========================================================
+       1. BILINGUAL DICTIONARY (ENGLISH & BAHASA INDONESIA)
+       ======================================================== */
+    const I18N = {
+      en: {
+        activeAssistant: "Always awake • Daily Reminders",
+        quickPicks: "Auto:",
+        chipWater: "Water (2h)",
+        chipStretch: "Stretch (4h)",
+        chipStudy: "Study (20:00)",
+        chipMeds: "Vitamin (Daily)",
+        quickAddTitle: "Need a scheduled auto ping?",
+        quickAddSub: "Type e.g. 'Remind me to drink at 14:00' or tap preset",
+        newReminderBtn: "Set",
+        inputPlaceholder: "Tell Bimo what to remind you...",
+        botTyping: "Bimo is scheduling...",
+        tabChat: "Chat",
+        tabReminders: "Reminders",
+        tabSettings: "Settings",
+        myScheduleTitle: "Active Auto Reminders",
+        myScheduleSub: "Stored safely in local IndexedDB",
+        testAlertBtn: "Test Alarm",
+        prefTitle: "App Preferences",
+        prefSub: "Customize language & notifications",
+        themeSettingLabel: "Neon Twilight Dark Mode",
+        themeSettingDesc: "Electric violet & midnight theme",
+        langLabel: "Application Language",
+        pushLabel: "Push Notifications",
+        pushDesc: "Simulate web alerts when reminders fire",
+        soundLabel: "Playful Audio Effects",
+        soundDesc: "Chime on reminders and sent chats",
+        clearDataLabel: "Reset IndexedDB",
+        clearDataDesc: "Wipe all stored chats and reminders",
+        wipeBtn: "Clear",
+        storageStatusTitle: "IndexedDB Live Diagnostics",
+        statDatabase: "Database",
+        statVersion: "Version",
+        statTotalReminders: "Total Tasks",
+        statTotalChats: "Messages",
+        modalTitle: "Create Daily Reminder",
+        modalTaskLabel: "Reminder Title",
+        modalTimeLabel: "Scheduled Time",
+        modalRepeatLabel: "Frequency",
+        freqDaily: "Every Day",
+        freqWeekdays: "Weekdays Only",
+        freqOnce: "Just Once",
+        modalCategoryLabel: "Category Tag",
+        saveReminderBtn: "Save to IndexedDB",
+        welcomeChat: "Halo! I'm Bimo 🤖 your vibrant Daily Auto Reminder buddy! Tell me what habits, study slots, or pills you want me to keep track of! (Try typing: 'Drink water at 14:00')",
+        reminderCreatedBot: "Yay! ✨ I saved your reminder for: **{title}** at **{time}** ({repeat}). I will ping you automatically!",
+        reminderCompletedCelebration: "Awesome job! You knocked out: {title}! 🎉",
+        noRemindersYet: "No active reminders yet! Start a chat with Bimo or tap '+ Set' above to add your first.",
+        confirmWipe: "Are you sure you want to reset the IndexedDB? All local chats and reminders will be erased.",
+        webPushGranted: "🔔 Web Notifications are active!",
+        webPushBlocked: "🔕 Notification alerts turned off.",
+        dueNow: "Due Now!",
+        markDone: "Mark Done",
+        dailyRepeatBadge: "Daily",
+      },
+      id: {
+        activeAssistant: "Selalu aktif • Pengingat Harian",
+        quickPicks: "Otomatis:",
+        chipWater: "Air (2j)",
+        chipStretch: "Peregangan (4j)",
+        chipStudy: "Belajar (20:00)",
+        chipMeds: "Vitamin (Harian)",
+        quickAddTitle: "Butuh pengingat otomatis?",
+        quickAddSub: "Ketik 'Ingatkan minum jam 14:00' atau pilih preset",
+        newReminderBtn: "Pasang",
+        inputPlaceholder: "Ketik apa yang mau diingatkan Bimo...",
+        botTyping: "Bimo sedang menjadwalkan...",
+        tabChat: "Obrolan",
+        tabReminders: "Jadwal",
+        tabSettings: "Pengaturan",
+        myScheduleTitle: "Daftar Pengingat Aktif",
+        myScheduleSub: "Tersimpan aman di IndexedDB lokal",
+        testAlertBtn: "Tes Alarm",
+        prefTitle: "Pengaturan Aplikasi",
+        prefSub: "Sesuaikan bahasa & notifikasi",
+        themeSettingLabel: "Mode Gelap Neon Twilight",
+        themeSettingDesc: "Tema ungu elektrik & midnight",
+        langLabel: "Bahasa Aplikasi",
+        pushLabel: "Notifikasi Push",
+        pushDesc: "Simulasi peringatan web saat waktu tiba",
+        soundLabel: "Efek Suara Ceria",
+        soundDesc: "Dentang lucu saat kirim pesan & alarm",
+        clearDataLabel: "Reset IndexedDB",
+        clearDataDesc: "Hapus semua chat dan daftar pengingat",
+        wipeBtn: "Hapus",
+        storageStatusTitle: "Diagnostik Live IndexedDB",
+        statDatabase: "Database",
+        statVersion: "Versi",
+        statTotalReminders: "Total Tugas",
+        statTotalChats: "Pesan",
+        modalTitle: "Buat Pengingat Baru",
+        modalTaskLabel: "Judul Pengingat",
+        modalTimeLabel: "Waktu Pengingat",
+        modalRepeatLabel: "Frekuensi",
+        freqDaily: "Setiap Hari",
+        freqWeekdays: "Hari Kerja Saja",
+        freqOnce: "Sekali Saja",
+        modalCategoryLabel: "Kategori",
+        saveReminderBtn: "Simpan ke IndexedDB",
+        welcomeChat: "Halo kawan! Aku Bimo 🤖 asisten pengingat harianmu! Mau diingatkan apa hari ini? Minum air, belajar, olahraga, atau minum obat? (Coba ketik: 'Ingatkan minum jam 14:00')",
+        reminderCreatedBot: "Beres! ✨ Aku sudah catat pengingat: **{title}** pada jam **{time}** ({repeat}). Aku akan beri notifikasi otomatis ya!",
+        reminderCompletedCelebration: "Keren banget! Kamu telah menyelesaikan: {title}! 🎉",
+        noRemindersYet: "Belum ada pengingat! Obrol bareng Bimo atau klik '+ Pasang' di atas yuk.",
+        confirmWipe: "Yakin ingin menghapus database IndexedDB? Semua chat dan jadwal pengingat akan direset.",
+        webPushGranted: "🔔 Notifikasi Web telah aktif!",
+        webPushBlocked: "🔕 Notifikasi dimatikan.",
+        dueNow: "Waktunya Sekarang!",
+        markDone: "Selesai",
+        dailyRepeatBadge: "Harian",
+      }
+    };
+
+    let currentLang = 'en';
+    let selectedCategory = '💧 Hydration';
+    let soundEnabled = true;
+    let pushEnabled = true;
+    let isDarkMode = false;
+
+    /* ========================================================
+       2. NEON TWILIGHT / DARK THEME ENGINE
+       ======================================================== */
+    function initTheme() {
+      const savedTheme = localStorage.getItem('bimo_theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        setTheme(true, false);
+      } else {
+        setTheme(false, false);
+      }
+    }
+
+    function setTheme(dark, withChime = true) {
+      isDarkMode = dark;
+      const htmlEl = document.documentElement;
+      const toggleIcon = document.getElementById('header-theme-icon');
+      const settingToggle = document.getElementById('setting-theme-check');
+
+      if (isDarkMode) {
+        htmlEl.classList.add('dark');
+        localStorage.setItem('bimo_theme', 'dark');
+        if (toggleIcon) toggleIcon.setAttribute('data-lucide', 'sun');
+        if (settingToggle) settingToggle.checked = true;
+      } else {
+        htmlEl.classList.remove('dark');
+        localStorage.setItem('bimo_theme', 'light');
+        if (toggleIcon) toggleIcon.setAttribute('data-lucide', 'moon');
+        if (settingToggle) settingToggle.checked = false;
+      }
+
+      lucide.createIcons();
+      if (withChime) playChime('bubble');
+    }
+
+    function toggleTheme() {
+      setTheme(!isDarkMode, true);
+    }
+
+    /* ========================================================
+       3. INDEXEDDB SETUP & ORM WRAPPER
+       ======================================================== */
+    const DB_NAME = 'BimoRemindersDB';
+    const DB_VERSION = 1;
+    let dbInstance = null;
+
+    function initIndexedDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          // Store 1: Reminders
+          if (!db.objectStoreNames.contains('reminders')) {
+            const reminderStore = db.createObjectStore('reminders', { keyPath: 'id', autoIncrement: true });
+            reminderStore.createIndex('time', 'time', { unique: false });
+            reminderStore.createIndex('status', 'status', { unique: false });
+          }
+          // Store 2: Chat Messages
+          if (!db.objectStoreNames.contains('chats')) {
+            const chatStore = db.createObjectStore('chats', { keyPath: 'id', autoIncrement: true });
+            chatStore.createIndex('timestamp', 'timestamp', { unique: false });
+          }
+        };
+
+        request.onsuccess = (event) => {
+          dbInstance = event.target.result;
+          resolve(dbInstance);
+        };
+
+        request.onerror = (event) => {
+          console.error("IndexedDB error:", event.target.errorCode);
+          reject(event.target.errorCode);
+        };
+      });
+    }
+
+    // Generic DB Helpers
+    function dbAdd(storeName, data) {
+      return new Promise((resolve, reject) => {
+        const tx = dbInstance.transaction([storeName], 'readwrite');
+        const store = tx.objectStore(storeName);
+        const req = store.add(data);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function dbGetAll(storeName) {
+      return new Promise((resolve, reject) => {
+        const tx = dbInstance.transaction([storeName], 'readonly');
+        const store = tx.objectStore(storeName);
+        const req = store.getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function dbUpdate(storeName, data) {
+      return new Promise((resolve, reject) => {
+        const tx = dbInstance.transaction([storeName], 'readwrite');
+        const store = tx.objectStore(storeName);
+        const req = store.put(data);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function dbDelete(storeName, id) {
+      return new Promise((resolve, reject) => {
+        const tx = dbInstance.transaction([storeName], 'readwrite');
+        const store = tx.objectStore(storeName);
+        const req = store.delete(id);
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function dbClear(storeName) {
+      return new Promise((resolve, reject) => {
+        const tx = dbInstance.transaction([storeName], 'readwrite');
+        const store = tx.objectStore(storeName);
+        const req = store.clear();
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    /* ========================================================
+       4. WEB AUDIO PLAYFUL CHIMES & SOUND SYNTHESIZER
+       ======================================================== */
+    let audioCtx = null;
+    function playChime(type = 'bubble') {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const now = audioCtx.currentTime;
+
+        if (type === 'bubble') {
+          // Playful ascending blip
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.13);
+        } else if (type === 'alarm') {
+          // Joyful two-tone reminder melody
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.08);
+            gain.gain.setValueAtTime(0.25, now + i * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + (i + 1) * 0.08 + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + i * 0.08);
+            osc.stop(now + (i + 1) * 0.08 + 0.12);
+          });
+        }
+      } catch (e) {
+        console.log("Audio not allowed yet without user interaction");
+      }
+    }
+
+    /* ========================================================
+       5. LANGUAGE & TRANSLATION ENGINE
+       ======================================================== */
+    function applyTranslations() {
+      const texts = I18N[currentLang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (texts[key]) el.textContent = texts[key];
+      });
+
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (texts[key]) el.setAttribute('placeholder', texts[key]);
+      });
+
+      document.getElementById('lang-indicator').textContent = currentLang.toUpperCase();
+      document.getElementById('setting-lang-select').value = currentLang;
+    }
+
+    function toggleLanguage() {
+      currentLang = (currentLang === 'en') ? 'id' : 'en';
+      applyTranslations();
+      playChime('bubble');
+    }
+
+    function switchLanguage(lang) {
+      currentLang = lang;
+      applyTranslations();
+      playChime('bubble');
+    }
+
+    /* ========================================================
+       6. NOTIFICATIONS & WEB PUSH SIMULATION
+       ======================================================== */
+    function togglePushNotificationPermission() {
+      if ("Notification" in window) {
+        if (Notification.permission !== 'granted') {
+          Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+              pushEnabled = true;
+              showToast("🔔 Notification Permission", "Push notifications are now enabled!");
+              new Notification("Bimo Daily Reminder", {
+                body: "Ready to keep you energized every day! 🤖✨",
+                icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>"
+              });
+            } else {
+              pushEnabled = false;
+            }
+            updateBellUI();
+          });
+        } else {
+          // Toggle simulation
+          pushEnabled = !pushEnabled;
+          updateBellUI();
+          showToast("Notification Setting", pushEnabled ? I18N[currentLang].webPushGranted : I18N[currentLang].webPushBlocked);
+        }
+      } else {
+        // Fallback for environment
+        pushEnabled = !pushEnabled;
+        updateBellUI();
+        showToast("Notification System", pushEnabled ? I18N[currentLang].webPushGranted : I18N[currentLang].webPushBlocked);
+      }
+      playChime('bubble');
+    }
+
+    function updateBellUI() {
+      const badge = document.getElementById('bell-badge');
+      const check = document.getElementById('setting-push-check');
+      if (pushEnabled) {
+        badge.classList.remove('hidden');
+        if (check) check.checked = true;
+      } else {
+        badge.classList.add('hidden');
+        if (check) check.checked = false;
+      }
+    }
+
+    function showToast(title, body) {
+      const toast = document.getElementById('push-toast');
+      document.getElementById('toast-title').textContent = title;
+      document.getElementById('toast-body').textContent = body;
+      document.getElementById('toast-time').textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.remove('opacity-0', '-translate-y-10');
+      }, 10);
+
+      playChime('alarm');
+
+      // Auto hide
+      setTimeout(() => {
+        dismissToast();
+      }, 4500);
+    }
+
+    function dismissToast() {
+      const toast = document.getElementById('push-toast');
+      toast.classList.add('opacity-0', '-translate-y-10');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 300);
+    }
+
+    /* ========================================================
+       7. CHAT RENDERING & PERSISTENCE
+       ======================================================== */
+    async function loadChats() {
+      const chats = await dbGetAll('chats');
+      const chatContainer = document.getElementById('chat-messages');
+      chatContainer.innerHTML = '';
+
+      if (chats.length === 0) {
+        // Initial welcome message from Bimo
+        const welcome = {
+          sender: 'bot',
+          text: I18N[currentLang].welcomeChat,
+          timestamp: new Date().toISOString()
+        };
+        await dbAdd('chats', welcome);
+        renderChatMessage(welcome);
+      } else {
+        chats.forEach(c => renderChatMessage(c));
+      }
+      scrollChatBottom();
+      updateDiagnostics();
+    }
+
+    function renderChatMessage(msg) {
+      const chatContainer = document.getElementById('chat-messages');
+      const isBot = msg.sender === 'bot';
+      const timeFormatted = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const bubbleWrapper = document.createElement('div');
+      bubbleWrapper.className = `flex items-end space-x-2 ${isBot ? 'justify-start' : 'justify-end'} animate-popIn`;
+
+      if (isBot) {
+        bubbleWrapper.innerHTML = `
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-coral dark:from-purple-600 dark:to-cyan-400 flex items-center justify-center text-sm shadow-sm shrink-0">
+            🤖
+          </div>
+          <div class="max-w-[78%] bg-white dark:bg-[#181E38] rounded-2xl rounded-bl-sm p-3.5 shadow-bubble dark:shadow-[0_0_15px_rgba(168,85,247,0.12)] border border-purple-100/70 dark:border-purple-500/30 text-slate-800 dark:text-slate-100 text-xs sm:text-sm">
+            <p class="leading-relaxed">${formatBotText(msg.text)}</p>
+            <span class="text-[9px] text-slate-400 dark:text-slate-400 mt-1 block text-right">${timeFormatted}</span>
+          </div>
+        `;
+      } else {
+        bubbleWrapper.innerHTML = `
+          <div class="max-w-[78%] bg-gradient-to-r from-brand-purple to-brand-coral dark:from-purple-600 dark:to-pink-500 text-white rounded-2xl rounded-br-sm p-3.5 shadow-pop dark:shadow-neon-pink text-xs sm:text-sm">
+            <p class="leading-relaxed font-medium">${escapeHTML(msg.text)}</p>
+            <span class="text-[9px] text-purple-200 dark:text-pink-200 mt-1 block text-right">${timeFormatted}</span>
+          </div>
+          <div class="w-8 h-8 rounded-xl bg-purple-200/60 dark:bg-[#1C2344] text-brand-purple dark:text-cyan-300 border border-transparent dark:border-cyan-400/30 flex items-center justify-center text-xs font-bold shrink-0">
+            You
+          </div>
+        `;
+      }
+
+      chatContainer.appendChild(bubbleWrapper);
+    }
+
+    function formatBotText(str) {
+      return escapeHTML(str)
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-brand-purple dark:text-cyan-300 font-bold">$1</strong>');
+    }
+
+    function escapeHTML(str) {
+      const p = document.createElement('p');
+      p.textContent = str;
+      return p.innerHTML;
+    }
+
+    function scrollChatBottom() {
+      const container = document.getElementById('chat-messages');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    /* ========================================================
+       8. NATURAL LANGUAGE REMINDER PARSER & CHAT HANDLER
+       ======================================================== */
+    async function handleChatSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const query = input.value.trim();
+      if (!query) return;
+
+      input.value = '';
+      playChime('bubble');
+
+      // 1. Save and render user message
+      const userMsg = {
+        sender: 'user',
+        text: query,
+        timestamp: new Date().toISOString()
+      };
+      await dbAdd('chats', userMsg);
+      renderChatMessage(userMsg);
+      scrollChatBottom();
+
+      // 2. Show typing indicator
+      const typing = document.getElementById('typing-indicator');
+      typing.classList.remove('hidden');
+      scrollChatBottom();
+
+      setTimeout(async () => {
+        typing.classList.add('hidden');
+        const parsed = parseReminderIntent(query);
+
+        let botReplyText = "";
+        if (parsed.isReminder) {
+          // Save new reminder to IndexedDB
+          const newReminder = {
+            title: parsed.title,
+            time: parsed.time,
+            category: parsed.category,
+            repeat: parsed.repeat,
+            status: 'pending',
+            createdAt: new Date().toISOString()
+          };
+          await dbAdd('reminders', newReminder);
+          await loadReminders();
+
+          const template = I18N[currentLang].reminderCreatedBot;
+          botReplyText = template
+            .replace('{title}', parsed.title)
+            .replace('{time}', parsed.time)
+            .replace('{repeat}', parsed.repeat);
+
+          // Confetti celebratory burst
+          confetti({
+            particleCount: 40,
+            spread: 60,
+            origin: { y: 0.85 }
+          });
+        } else {
+          // General friendly conversational responses
+          if (currentLang === 'id') {
+            botReplyText = `Sip! Mau aku pasang pengingat untuk "${query}"? Beritahu jamnya ya, contoh: "Ingatkan olahraga jam 16:30" 🌟`;
+          } else {
+            botReplyText = `Got it! Should I schedule a reminder for "${query}"? Just specify a time, like: "Remind me at 16:30"! 🚀`;
+          }
+        }
+
+        const botMsg = {
+          sender: 'bot',
+          text: botReplyText,
+          timestamp: new Date().toISOString()
+        };
+        await dbAdd('chats', botMsg);
+        renderChatMessage(botMsg);
+        scrollChatBottom();
+        updateDiagnostics();
+        playChime('bubble');
+      }, 750);
+    }
+
+    function parseReminderIntent(text) {
+      const lower = text.toLowerCase();
+      // Time matching: e.g. 14:00, 2:30pm, at 8:00
+      const timeRegex = /([0-1]?[0-9]|2[0-3]):[0-5][0-9]/;
+      const match = lower.match(timeRegex);
+
+      let targetTime = "09:00";
+      let isReminder = false;
+
+      if (match) {
+        targetTime = match[0];
+        isReminder = true;
+      } else if (lower.includes('water') || lower.includes('minum') || lower.includes('obat') || lower.includes('remind') || lower.includes('ingat')) {
+        // Set default 1 hour from now
+        const d = new Date();
+        d.setHours(d.getHours() + 1);
+        targetTime = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+        isReminder = true;
+      }
+
+      // Title cleanup
+      let cleanTitle = text
+        .replace(/remind me to/i, '')
+        .replace(/remind me/i, '')
+        .replace(/ingatkan saya untuk/i, '')
+        .replace(/ingatkan/i, '')
+        .replace(/at [0-2]?[0-9]:[0-5][0-9]/i, '')
+        .replace(/jam [0-2]?[0-9]:[0-5][0-9]/i, '')
+        .trim();
+
+      if (!cleanTitle) cleanTitle = currentLang === 'id' ? "Aktivitas Harian" : "Daily Activity";
+
+      // Category detection
+      let cat = "✨ Self-Care";
+      if (lower.includes('water') || lower.includes('minum') || lower.includes('hidrasi')) cat = "💧 Hydration";
+      else if (lower.includes('vitamin') || lower.includes('obat') || lower.includes('med')) cat = "💊 Health";
+      else if (lower.includes('study') || lower.includes('belajar') || lower.includes('read') || lower.includes('baca')) cat = "🎯 Focus";
+
+      return {
+        isReminder,
+        title: cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1),
+        time: targetTime,
+        category: cat,
+        repeat: "daily"
+      };
+    }
+
+    /* ========================================================
+       9. REMINDER SCHEDULE MANAGER (INDEXEDDB LIST VIEW)
+       ======================================================== */
+    let currentFilter = 'all';
+
+    async function loadReminders() {
+      const list = await dbGetAll('reminders');
+      const container = document.getElementById('reminders-list');
+      const countAll = document.getElementById('count-all');
+      const tabBadge = document.getElementById('tab-badge');
+
+      if (countAll) countAll.textContent = list.length;
+
+      // Pending count for tab badge
+      const pendingCount = list.filter(r => r.status === 'pending').length;
+      if (pendingCount > 0) {
+        tabBadge.textContent = pendingCount;
+        tabBadge.classList.remove('hidden');
+      } else {
+        tabBadge.classList.add('hidden');
+      }
+
+      container.innerHTML = '';
+
+      const filtered = list.filter(item => {
+        if (currentFilter === 'pending') return item.status === 'pending';
+        if (currentFilter === 'completed') return item.status === 'completed';
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 px-4">
+            <div class="w-16 h-16 rounded-3xl bg-purple-100 dark:bg-[#181E38] text-brand-purple dark:text-cyan-400 flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner dark:border dark:border-purple-500/20">
+              🏖️
+            </div>
+            <p class="font-fun text-sm font-bold text-slate-700 dark:text-slate-300">${I18N[currentLang].noRemindersYet}</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(r => {
+        const isDone = r.status === 'completed';
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-3xl transition-all flex items-center justify-between space-x-3 ${
+          isDone 
+            ? 'border border-emerald-200 dark:border-emerald-800/40 bg-emerald-50/40 dark:bg-[#0E201B]/50 opacity-75' 
+            : 'bg-white dark:bg-[#181E38] border border-purple-100 dark:border-purple-500/30 hover:border-brand-purple/40 dark:hover:border-cyan-400/50 shadow-card dark:shadow-[0_0_15px_rgba(168,85,247,0.1)]'
+        }`;
+
+        card.innerHTML = `
+          <div class="flex items-center space-x-3 flex-1 min-w-0">
+            <button onclick="toggleReminderStatus(${r.id})" class="w-8 h-8 rounded-full flex items-center justify-center transition-all ${isDone ? 'bg-emerald-500 text-white shadow-sm' : 'border-2 border-purple-300 dark:border-purple-400/40 hover:border-brand-coral bg-purple-50/50 dark:bg-[#12162B]'}">
+              ${isDone ? '<i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>' : ''}
+            </button>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center space-x-2">
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate ${isDone ? 'line-through text-slate-400 dark:text-slate-500' : ''}">${escapeHTML(r.title)}</h4>
+                <span class="px-2 py-0.5 text-[9px] font-extrabold rounded-full bg-purple-100 dark:bg-purple-900/60 text-brand-purple dark:text-purple-300 border border-transparent dark:border-purple-500/30 shrink-0">${escapeHTML(r.category || '✨')}</span>
+              </div>
+              <div class="flex items-center space-x-3 text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <span class="font-mono font-bold text-brand-coral dark:text-cyan-400 flex items-center gap-1">
+                  <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${r.time}
+                </span>
+                <span class="text-[10px] text-slate-400 dark:text-slate-500">• ${r.repeat === 'daily' ? I18N[currentLang].dailyRepeatBadge : r.repeat}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <button onclick="deleteReminder(${r.id})" class="w-7 h-7 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-300 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 flex items-center justify-center transition-colors">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      lucide.createIcons();
+      updateDiagnostics();
+    }
+
+    async function toggleReminderStatus(id) {
+      const list = await dbGetAll('reminders');
+      const item = list.find(r => r.id === id);
+      if (!item) return;
+
+      item.status = item.status === 'completed' ? 'pending' : 'completed';
+      await dbUpdate('reminders', item);
+      await loadReminders();
+
+      if (item.status === 'completed') {
+        confetti({
+          particleCount: 50,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+        showToast("Completed!", I18N[currentLang].reminderCompletedCelebration.replace('{title}', item.title));
+      }
+      playChime('bubble');
+    }
+
+    async function deleteReminder(id) {
+      await dbDelete('reminders', id);
+      await loadReminders();
+      playChime('bubble');
+    }
+
+    function filterReminders(type) {
+      currentFilter = type;
+      ['all', 'pending', 'completed'].forEach(t => {
+        const btn = document.getElementById(`filter-${t}`);
+        if (t === type) {
+          btn.className = 'px-3 py-1 rounded-full text-xs font-bold bg-brand-purple dark:bg-purple-600 text-white shadow-sm';
+        } else {
+          btn.className = 'px-3 py-1 rounded-full text-xs font-bold bg-white dark:bg-[#181E38] text-slate-600 dark:text-slate-300 border border-purple-100 dark:border-purple-500/30 hover:bg-purple-100 dark:hover:bg-[#232B4F]';
+        }
+      });
+      loadReminders();
+    }
+
+    /* ========================================================
+       10. LIVE AUTO-REMINDER INTERVAL CHECKER
+       ======================================================== */
+    setInterval(async () => {
+      if (!dbInstance) return;
+      const now = new Date();
+      const currentHoursMin = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+      const reminders = await dbGetAll('reminders');
+      reminders.forEach(r => {
+        if (r.status === 'pending' && r.time === currentHoursMin && !r.hasFiredToday) {
+          r.hasFiredToday = true;
+          dbUpdate('reminders', r);
+          showToast(I18N[currentLang].dueNow, `${r.category} : ${r.title}`);
+          if (Notification.permission === 'granted') {
+            new Notification(`Bimo Reminder: ${r.title}`, {
+              body: `Time for: ${r.title}! Keep up your momentum! ✨`,
+              icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏰</text></svg>"
+            });
+          }
+        }
+      });
+    }, 15000); // Checks every 15s
+
+    function testTriggerNow() {
+      showToast(
+        I18N[currentLang].dueNow, 
+        currentLang === 'id' ? "Saatnya minum 500ml air & istirahat mata sejenak! 💧" : "Time for 500ml of fresh water & a brief eye rest! 💧"
+      );
+    }
+
+    /* ========================================================
+       11. PRESETS & MODAL CREATOR
+       ======================================================== */
+    function openAddModal() {
+      const modal = document.getElementById('add-modal');
+      const panel = document.getElementById('modal-panel');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        panel.classList.remove('translate-y-full');
+      }, 10);
+
+      // Default time to current + 30 mins
+      const d = new Date();
+      d.setMinutes(d.getMinutes() + 30);
+      document.getElementById('modal-time-input').value = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+      playChime('bubble');
+    }
+
+    function closeAddModal() {
+      const modal = document.getElementById('add-modal');
+      const panel = document.getElementById('modal-panel');
+      modal.classList.add('opacity-0');
+      panel.classList.add('translate-y-full');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    function selectCategoryTag(btn, cat) {
+      selectedCategory = cat;
+      document.querySelectorAll('#modal-category-group .tag-btn').forEach(b => {
+        b.className = 'tag-btn px-3 py-1 bg-purple-50 dark:bg-[#181E38] text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full border border-purple-200 dark:border-purple-500/30';
+      });
+      btn.className = 'tag-btn px-3 py-1 bg-brand-purple dark:bg-purple-600 text-white text-xs font-bold rounded-full border border-brand-purple dark:border-purple-500';
+      playChime('bubble');
+    }
+
+    async function handleModalAdd(e) {
+      e.preventDefault();
+      const title = document.getElementById('modal-title-input').value.trim();
+      const time = document.getElementById('modal-time-input').value;
+      const repeat = document.getElementById('modal-repeat-input').value;
+
+      if (!title || !time) return;
+
+      const newReminder = {
+        title,
+        time,
+        repeat,
+        category: selectedCategory,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+
+      await dbAdd('reminders', newReminder);
+      document.getElementById('modal-title-input').value = '';
+      closeAddModal();
+      await loadReminders();
+
+      // Announce in chat as well
+      const botMsg = {
+        sender: 'bot',
+        text: I18N[currentLang].reminderCreatedBot
+          .replace('{title}', title)
+          .replace('{time}', time)
+          .replace('{repeat}', repeat),
+        timestamp: new Date().toISOString()
+      };
+      await dbAdd('chats', botMsg);
+      renderChatMessage(botMsg);
+      scrollChatBottom();
+
+      confetti({
+        particleCount: 40,
+        spread: 50,
+        origin: { y: 0.7 }
+      });
+      playChime('alarm');
+    }
+
+    function quickPrompt(type) {
+      const input = document.getElementById('chat-input');
+      if (currentLang === 'id') {
+        if (type === 'water') input.value = "Ingatkan minum air setiap 2 jam";
+        if (type === 'stretch') input.value = "Ingatkan peregangan badan jam 15:00";
+        if (type === 'study') input.value = "Ingatkan belajar buku jam 20:00";
+        if (type === 'meds') input.value = "Ingatkan minum vitamin harian jam 08:00";
+      } else {
+        if (type === 'water') input.value = "Remind me to drink water every 2 hours";
+        if (type === 'stretch') input.value = "Remind me to stretch at 15:00";
+        if (type === 'study') input.value = "Remind me to study at 20:00";
+        if (type === 'meds') input.value = "Remind me to take daily vitamin at 08:00";
+      }
+      handleChatSubmit();
+    }
+
+    function triggerMagicReminder() {
+      const magicIdeas = currentLang === 'id' ? [
+        "Ingatkan senyum dan tarik napas dalam jam 11:00 ✨",
+        "Ingatkan jalan santai 10 menit jam 17:00 🚶",
+        "Ingatkan rapikan meja kerja jam 18:00 🧹",
+        "Ingatkan tidur tepat waktu jam 22:30 🌙"
+      ] : [
+        "Remind me to take a deep breath at 11:00 ✨",
+        "Remind me to do a 10 min walk at 17:00 🚶",
+        "Remind me to declutter desk at 18:00 🧹",
+        "Remind me to sleep early at 22:30 🌙"
+      ];
+      const randomIdea = magicIdeas[Math.floor(Math.random() * magicIdeas.length)];
+      document.getElementById('chat-input').value = randomIdea;
+      handleChatSubmit();
+    }
+
+    function voiceSimulation() {
+      const promptText = currentLang === 'id' ? "Mendengarkan suara... 'Ingatkan minum jam 14:00'" : "Simulated Voice: 'Remind me to drink at 14:00'";
+      showToast("🎙️ Voice Input", promptText);
+      document.getElementById('chat-input').value = currentLang === 'id' ? "Ingatkan minum jam 14:00" : "Remind me to drink at 14:00";
+    }
+
+    function mascotGreet() {
+      const emojis = ['🤖', '🥳', '✨', '🚀', '💖', '⭐', '🎈'];
+      const current = document.getElementById('mascot-emoji');
+      current.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      playChime('alarm');
+    }
+
+    /* ========================================================
+       12. NAVIGATION & TABS
+       ======================================================== */
+    function switchTab(tabId) {
+      ['chat', 'reminders', 'settings'].forEach(t => {
+        const view = document.getElementById(`view-${t}`);
+        const btn = document.getElementById(`tab-${t}`);
+        if (t === tabId) {
+          view.classList.remove('hidden');
+          view.classList.add('flex');
+          btn.classList.add('active');
+          btn.classList.remove('text-slate-400', 'dark:text-slate-400');
+        } else {
+          view.classList.add('hidden');
+          view.classList.remove('flex');
+          btn.classList.remove('active');
+          btn.classList.add('text-slate-400', 'dark:text-slate-400');
+        }
+      });
+      playChime('bubble');
+    }
+
+    /* ========================================================
+       13. DIAGNOSTICS & RESET
+       ======================================================== */
+    async function updateDiagnostics() {
+      if (!dbInstance) return;
+      const tasks = await dbGetAll('reminders');
+      const chats = await dbGetAll('chats');
+      const dTasks = document.getElementById('diag-tasks');
+      const dChats = document.getElementById('diag-chats');
+      if (dTasks) dTasks.textContent = tasks.length;
+      if (dChats) dChats.textContent = chats.length;
+    }
+
+    async function clearAllData() {
+      if (!confirm(I18N[currentLang].confirmWipe)) return;
+      await dbClear('reminders');
+      await dbClear('chats');
+      await loadChats();
+      await loadReminders();
+      showToast("Reset Completed", "IndexedDB database cleared.");
+      playChime('bubble');
+    }
+
+    /* ========================================================
+       14. INITIALIZATION
+       ======================================================== */
+    window.addEventListener('DOMContentLoaded', async () => {
+      initTheme();
+      lucide.createIcons();
+      applyTranslations();
+      await initIndexedDB();
+
+      // Seed initial sample reminders if empty
+      const existingReminders = await dbGetAll('reminders');
+      if (existingReminders.length === 0) {
+        await dbAdd('reminders', {
+          title: 'Morning Hydration 500ml',
+          time: '08:30',
+          category: '💧 Hydration',
+          repeat: 'daily',
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        });
+        await dbAdd('reminders', {
+          title: 'Daily Vitamin C & Zinc',
+          time: '12:45',
+          category: '💊 Health',
+          repeat: 'daily',
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      await loadChats();
+      await loadReminders();
+    });
+  </script>
+</body></html>
