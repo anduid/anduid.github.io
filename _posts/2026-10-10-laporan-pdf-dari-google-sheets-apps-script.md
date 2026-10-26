@@ -41,7 +41,7 @@ Pakai awalan dan akhiran yang sama untuk semua penanda agar mudah diganti. Salin
 
 ## Langkah 2: menyiapkan data di Sheets
 
-Siapkan sheet dengan kolom yang sesuai penanda, misalnya `nomor`, `nama`, `tanggal`, `jumlah`, dan satu kolom `tautan_pdf` untuk hasilnya. Prinsip penyusunan tabel yang baik dibahas di tulisan [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
+Siapkan sheet dengan kolom yang sesuai penanda, misalnya `nomor`, `nama`, `tanggal`, `jumlah`, dan satu kolom `tautan_pdf` untuk hasilnya. Prinsip penyusunan tabel yang baik dibahas di tulisan [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/blog/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
 
 <!-- TAMBAHKAN: contoh struktur sheet dari proyek Anda (generik, tanpa data nyata). -->
 
@@ -156,4 +156,4 @@ Sekarang pengguna cukup memilih baris, lalu klik menu **Laporan > Buat PDF baris
 
 Dengan template Docs, `replaceText`, dan konversi ke PDF, Anda bisa mengubah baris data di Sheets menjadi dokumen resmi hanya dengan satu klik. Mulailah dari satu jenis dokumen sederhana, uji dengan data contoh, lalu perluas ke dokumen lain dan proses massal.
 
-Jika Anda ingin laporan dibuat dari halaman web, hubungkan dengan API dari tulisan [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/).
+Jika Anda ingin laporan dibuat dari halaman web, hubungkan dengan API dari tulisan [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/).

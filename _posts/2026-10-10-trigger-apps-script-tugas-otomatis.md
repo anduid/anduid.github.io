@@ -91,7 +91,7 @@ function hapusCadanganLama_(folder, hariSimpan) {
 }
 ```
 
-Kode ini membuat satu salinan per hari dan membuang salinan yang lebih lama dari 30 hari, supaya Drive tidak penuh. Ini sejalan dengan prinsip cadangan yang dibahas di [Panduan Digitalisasi Arsip untuk Kantor Kecil]({{ site.baseurl }}/2026/10/09/panduan-digitalisasi-arsip-kantor-kecil/).
+Kode ini membuat satu salinan per hari dan membuang salinan yang lebih lama dari 30 hari, supaya Drive tidak penuh. Ini sejalan dengan prinsip cadangan yang dibahas di [Panduan Digitalisasi Arsip untuk Kantor Kecil]({{ site.baseurl }}/blog/2026/10/10/panduan-digitalisasi-arsip-kantor-kecil/).
 
 <!-- TAMBAHKAN: bagaimana Anda menjadwalkan cadangan atau rekap di proyek Anda, dan kendala yang ditemui. -->
 
@@ -134,4 +134,4 @@ Angka-angkanya dapat berubah, jadi lihat [dokumentasi kuota resmi](https://devel
 
 Trigger mengubah skrip Apps Script dari alat yang harus dijalankan manual menjadi mesin otomatisasi: cadangan harian, rekap, dan pemrosesan data berjalan sendiri. Pasang trigger dengan hati-hati, hindari duplikasi, perhatikan kuota, dan catat galat. Mulailah dari satu tugas terjadwal sederhana seperti cadangan harian.
 
-Jika Anda menyiapkan laporan dokumen otomatis, baca juga [Membuat Laporan PDF Otomatis dari Google Sheets]({{ site.baseurl }}/2026/10/10/laporan-pdf-dari-google-sheets-apps-script/).
+Jika Anda menyiapkan laporan dokumen otomatis, baca juga [Membuat Laporan PDF Otomatis dari Google Sheets]({{ site.baseurl }}/blog/2026/10/10/laporan-pdf-dari-google-sheets-apps-script/).

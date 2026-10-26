@@ -182,7 +182,7 @@ const [profil, statistik] = await Promise.all([
 ]);
 ```
 
-`Promise.all` gagal jika salah satu gagal. Gunakan `Promise.allSettled` bila Anda ingin hasil setiap permintaan apa pun statusnya. Penerapan nyata pola `fetch` dan CORS ada di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/).
+`Promise.all` gagal jika salah satu gagal. Gunakan `Promise.allSettled` bila Anda ingin hasil setiap permintaan apa pun statusnya. Penerapan nyata pola `fetch` dan CORS ada di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/).
 
 <!-- TAMBAHKAN: satu contoh dari proyek Anda (misalnya mengambil data dari API) dan kendala yang ditemui. -->
 
@@ -193,12 +193,12 @@ const [profil, statistik] = await Promise.all([
 - **Mengubah array atau objek asli** secara tidak sengaja. Salin dulu dengan spread.
 - **`sort()` tanpa pembanding** pada angka. Hasilnya diurutkan sebagai teks: `[10, 9, 1].sort()` menjadi `[1, 10, 9]`. Pakai `sort((a, b) => a - b)`.
 - **Menelan galat** dengan `catch` kosong.
-- **Memakai `innerHTML` dengan data pengguna** sehingga membuka celah XSS, seperti dibahas di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
+- **Memakai `innerHTML` dengan data pengguna** sehingga membuka celah XSS, seperti dibahas di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
 
 ## Cara belajar yang efektif
 
 - Ketik dan jalankan contoh sendiri di Console, jangan hanya membaca.
-- Bangun proyek kecil, misalnya daftar tugas atau [aplikasi catatan keuangan]({{ site.baseurl }}/2026/10/10/aplikasi-catatan-keuangan-google-sheets-html/).
+- Bangun proyek kecil, misalnya daftar tugas atau [aplikasi catatan keuangan]({{ site.baseurl }}/blog/2026/10/10/aplikasi-catatan-keuangan-google-sheets-html/).
 - Baca dokumentasi resmi di MDN Web Docs untuk detail dan kompatibilitas peramban.
 - Pakai alat pemeriksa gaya seperti ESLint agar kebiasaan buruk cepat terdeteksi.
 

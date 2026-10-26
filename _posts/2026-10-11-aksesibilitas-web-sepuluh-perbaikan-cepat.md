@@ -42,7 +42,7 @@ Setiap gambar yang bermakna butuh teks alternatif yang menjelaskan isi atau fung
 <img src="garis-hias.png" alt="">
 ```
 
-Penjelasan lebih lengkap ada di [Optimasi Gambar untuk Blog]({{ site.baseurl }}/2026/10/10/optimasi-gambar-blog-format-ukuran-lazy-loading/).
+Penjelasan lebih lengkap ada di [Optimasi Gambar untuk Blog]({{ site.baseurl }}/blog/2026/10/10/optimasi-gambar-blog-format-ukuran-lazy-loading/).
 
 ## 4. Jaga kontras warna
 
@@ -117,7 +117,7 @@ Tautan "Lompat ke konten" di awal halaman membantu pengguna keyboard melewati me
 - **Pembaca layar.** Coba dengan pembaca layar bawaan perangkat, misalnya TalkBack di Android atau VoiceOver di perangkat Apple.
 - **Alat otomatis.** Gunakan Lighthouse atau ekstensi pemeriksa aksesibilitas untuk menangkap masalah umum. Alat otomatis hanya menemukan sebagian masalah, jadi pengujian manual tetap perlu.
 - **Perbesar teks.** Perbesar tampilan hingga 200 persen dan pastikan tata letak tidak rusak.
-- **Mode kontras dan tema gelap.** Pastikan tetap terbaca, seperti yang dibahas di [Dark Mode di Jetpack Compose]({{ site.baseurl }}/2026/10/09/dark-mode-jetpack-compose-android/) untuk sisi Android.
+- **Mode kontras dan tema gelap.** Pastikan tetap terbaca, seperti yang dibahas di [Dark Mode di Jetpack Compose]({{ site.baseurl }}/blog/2026/10/09/dark-mode-jetpack-compose-android/) untuk sisi Android.
 
 ## Kesalahan yang sering terjadi
 

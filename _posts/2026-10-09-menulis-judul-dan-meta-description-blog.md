@@ -117,4 +117,4 @@ Setelah mengubah, beri waktu agar Google memperbarui tampilannya. Perubahan tida
 
 Judul dan meta description adalah "etalase" tulisan Anda. Tulis keduanya khusus untuk setiap halaman, jaga panjangnya, buat jujur dan jelas, lalu periksa kinerjanya di Search Console dan perbaiki yang kurang diklik. Investasi beberapa menit per tulisan ini sering memberi dampak yang besar.
 
-Untuk membangun blog yang sudah menyiapkan tag-tag ini otomatis, baca [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).
+Untuk membangun blog yang sudah menyiapkan tag-tag ini otomatis, baca [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/blog/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).

@@ -65,7 +65,7 @@ Gambar mempercepat pemahaman, tetapi hanya jika digunakan dengan baik:
 - Ambil tangkapan layar dari **versi aplikasi terbaru**.
 - **Tandai bagian yang penting** dengan kotak atau panah, dan potong bagian yang tidak perlu.
 - **Gunakan data contoh.** Jangan menampilkan nama, nomor telepon, atau data pribadi pengguna sungguhan.
-- Beri **teks alternatif** pada gambar agar bisa dipahami pembaca layar. Teknik gambar yang ringan dibahas di [Optimasi Gambar untuk Blog]({{ site.baseurl }}/2026/10/10/optimasi-gambar-blog-format-ukuran-lazy-loading/).
+- Beri **teks alternatif** pada gambar agar bisa dipahami pembaca layar. Teknik gambar yang ringan dibahas di [Optimasi Gambar untuk Blog]({{ site.baseurl }}/blog/2026/10/10/optimasi-gambar-blog-format-ukuran-lazy-loading/).
 - Jangan bergantung pada gambar saja. Langkah harus tetap bisa dipahami lewat teks.
 
 Untuk alur yang rumit, rekaman layar singkat (30-60 detik) sering lebih efektif daripada banyak gambar.
@@ -85,7 +85,7 @@ Tuliskan juga cara menghubungi dukungan dan informasi apa yang perlu disertakan 
 
 ## FAQ dari pertanyaan nyata
 
-Bagian tanya jawab paling berguna jika berasal dari pertanyaan yang sungguh diajukan pengguna. Catat pertanyaan yang masuk lewat pesan atau saat pelatihan, lalu ubah menjadi FAQ. Tulis jawaban singkat dan langsung. Jika jumlahnya banyak, pertimbangkan membuat asisten FAQ otomatis seperti di [Chatbot FAQ Sederhana dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/11/chatbot-faq-sederhana-apps-script-sheets/).
+Bagian tanya jawab paling berguna jika berasal dari pertanyaan yang sungguh diajukan pengguna. Catat pertanyaan yang masuk lewat pesan atau saat pelatihan, lalu ubah menjadi FAQ. Tulis jawaban singkat dan langsung. Jika jumlahnya banyak, pertimbangkan membuat asisten FAQ otomatis seperti di [Chatbot FAQ Sederhana dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/11/chatbot-faq-sederhana-apps-script-sheets/).
 
 ## Bahasa yang jelas
 
@@ -123,10 +123,10 @@ Lima menit mengamati satu orang sering lebih berharga daripada berjam-jam menuli
 Panduan yang usang lebih buruk daripada tidak ada panduan:
 
 - **Beri tanggal dan nomor versi** pada panduan.
-- **Perbarui bersamaan dengan rilis fitur.** Jadikan "perbarui panduan" bagian dari daftar periksa rilis, seperti di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
+- **Perbarui bersamaan dengan rilis fitur.** Jadikan "perbarui panduan" bagian dari daftar periksa rilis, seperti di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/blog/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
 - **Simpan panduan dalam sistem versi** (misalnya di repositori), dan tulis ringkas perubahan penting.
 - **Tinjau berkala** apakah tangkapan layar dan nama tombol masih sesuai.
-- Panduan teknis untuk pengembang berbeda dengan panduan pengguna. Untuk itu lihat [Cara Menulis README Proyek yang Baik di GitHub]({{ site.baseurl }}/2026/10/11/menulis-readme-proyek-yang-baik/).
+- Panduan teknis untuk pengembang berbeda dengan panduan pengguna. Untuk itu lihat [Cara Menulis README Proyek yang Baik di GitHub]({{ site.baseurl }}/blog/2026/10/11/menulis-readme-proyek-yang-baik/).
 
 ## Kesalahan yang sering terjadi
 

@@ -20,7 +20,7 @@ Tulisan ini membandingkan beberapa pilihan populer dan membantu Anda memutuskan 
 
 ## Apa itu situs statis
 
-Situs statis terdiri dari berkas HTML, CSS, JavaScript, dan gambar yang disajikan apa adanya, tanpa kode server yang berjalan di belakang. Blog Jekyll, dokumentasi, portofolio, dan halaman pemasaran umumnya statis. Fungsi dinamis, seperti menyimpan data, biasanya ditangani layanan lain, misalnya API atau Google Apps Script seperti di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/).
+Situs statis terdiri dari berkas HTML, CSS, JavaScript, dan gambar yang disajikan apa adanya, tanpa kode server yang berjalan di belakang. Blog Jekyll, dokumentasi, portofolio, dan halaman pemasaran umumnya statis. Fungsi dinamis, seperti menyimpan data, biasanya ditangani layanan lain, misalnya API atau Google Apps Script seperti di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/).
 
 ## Pilihan yang populer
 
@@ -79,14 +79,14 @@ Sebelum memilih, jawab pertanyaan berikut:
 
 ## Domain sendiri dan HTTPS
 
-Semua layanan di atas mendukung domain sendiri dan menyediakan sertifikat HTTPS. Langkah umumnya sama: tambahkan domain di dasbor layanan, atur catatan DNS di penyedia domain sesuai petunjuk, tunggu verifikasi, lalu aktifkan HTTPS. Pemeriksaan DNS bisa memakan waktu. Contoh pengalaman memasang blog di subfolder domain ada di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).
+Semua layanan di atas mendukung domain sendiri dan menyediakan sertifikat HTTPS. Langkah umumnya sama: tambahkan domain di dasbor layanan, atur catatan DNS di penyedia domain sesuai petunjuk, tunggu verifikasi, lalu aktifkan HTTPS. Pemeriksaan DNS bisa memakan waktu. Contoh pengalaman memasang blog di subfolder domain ada di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/blog/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).
 
 ## Batas yang perlu diwaspadai
 
 - **Kuota bandwidth dan build.** Lonjakan kunjungan bisa menyentuh batas gratis.
 - **Kebijakan penggunaan.** Layanan gratis umumnya melarang penyalahgunaan, termasuk pemakaian sebagai penyimpanan berkas besar.
 - **Perubahan syarat.** Paket gratis bisa berubah. Simpan salinan proyek Anda dan jangan mengandalkan satu layanan tanpa cadangan.
-- **Keamanan.** Hosting statis aman dari sisi server, tetapi API dan kunci yang Anda hubungkan tetap perlu dijaga, seperti di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
+- **Keamanan.** Hosting statis aman dari sisi server, tetapi API dan kunci yang Anda hubungkan tetap perlu dijaga, seperti di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
 
 ## Kapan hosting gratis tidak cukup
 

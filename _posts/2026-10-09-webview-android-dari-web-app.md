@@ -88,7 +88,7 @@ Perhatikan bahwa akses file dimatikan secara eksplisit. Halaman Anda sekarang di
 
 ## Masalah CORS dan jembatan native
 
-Karena halaman Anda dimuat dari asal `appassets.androidplatform.net`, setiap permintaan ke server lain adalah permintaan lintas asal. Banyak API tidak mengizinkannya, dan peramban memblokir hasilnya (CORS). Solusi pertama selalu dicoba: pastikan API mengirim header CORS yang benar atau gunakan permintaan sederhana. Contoh pendekatan untuk backend Apps Script ada di tulisan [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/).
+Karena halaman Anda dimuat dari asal `appassets.androidplatform.net`, setiap permintaan ke server lain adalah permintaan lintas asal. Banyak API tidak mengizinkannya, dan peramban memblokir hasilnya (CORS). Solusi pertama selalu dicoba: pastikan API mengirim header CORS yang benar atau gunakan permintaan sederhana. Contoh pendekatan untuk backend Apps Script ada di tulisan [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/).
 
 Jika itu tidak memungkinkan, gunakan **jembatan native**: JavaScript meminta Kotlin untuk melakukan permintaan jaringan, karena permintaan dari kode native tidak terkena aturan CORS peramban. Hasilnya dikirim kembali ke halaman.
 
@@ -192,4 +192,4 @@ Sebelum rilis:
 
 WebView memungkinkan Anda mengubah web app menjadi aplikasi Android dengan cepat. Kuncinya adalah memuat aset lewat `WebViewAssetLoader`, mengatasi CORS dengan benar, membatasi jembatan native, dan menyiapkan hal-hal kecil seperti tombol kembali dan unduhan. Mulailah dari versi paling sederhana, uji di perangkat sungguhan, lalu tambahkan fitur native hanya jika memang dibutuhkan.
 
-Anda juga mungkin tertarik membaca [Panduan Digitalisasi Arsip untuk Kantor Kecil]({{ site.baseurl }}/2026/10/09/panduan-digitalisasi-arsip-kantor-kecil/).
+Anda juga mungkin tertarik membaca [Panduan Digitalisasi Arsip untuk Kantor Kecil]({{ site.baseurl }}/blog/2026/10/10/panduan-digitalisasi-arsip-kantor-kecil/).

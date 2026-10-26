@@ -73,7 +73,7 @@ Baris kedua dengan awalan `=` sengaja dimasukkan untuk menguji pengamanannya.
 
 Jika sebuah sel diawali `=`, `+`, `-`, atau `@`, Excel dan Google Sheets dapat menganggapnya sebagai **rumus** saat berkas dibuka. Penyerang bisa mengisi kolom nama dengan rumus berbahaya, dan rumus itu berjalan di komputer petugas yang membuka hasil ekspor. Menambahkan tanda petik tunggal di depan nilai membuatnya diperlakukan sebagai teks. Fungsi di atas melakukannya, termasuk untuk sel yang diawali karakter tab atau pemisah baris.
 
-Satu catatan: tanda petik di depan nilai ikut terlihat di sebagian aplikasi. Itu harga yang wajar demi keamanan, terutama jika data berasal dari pengguna. Pertimbangan serupa untuk menulis ke Sheets ada di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
+Satu catatan: tanda petik di depan nilai ikut terlihat di sebagian aplikasi. Itu harga yang wajar demi keamanan, terutama jika data berasal dari pengguna. Pertimbangan serupa untuk menulis ke Sheets ada di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/blog/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
 
 <!-- TAMBAHKAN: bagaimana Anda menangani data dari pengguna sebelum diekspor. -->
 
@@ -126,7 +126,7 @@ Hasil ekspor sering berisi nomor telepon, alamat, atau data lain milik warga. Ka
 - Ingatkan pengguna agar menyimpan berkas dengan aman dan menghapusnya setelah selesai.
 - Jangan mengekspor data pribadi ke tempat yang tidak aman.
 
-Kebiasaan lain ada di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
+Kebiasaan lain ada di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
 
 ## Kesalahan yang sering terjadi
 
@@ -153,4 +153,4 @@ Kebiasaan lain ada di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/202
 
 CSV terlihat sederhana, tetapi detailnya menentukan apakah hasil ekspor rapi dan aman: kutip yang benar, BOM untuk Excel, pemisah yang sesuai, dan perlindungan dari rumus. Dengan satu fungsi kecil yang menangani semuanya, fitur ekspor Anda akan jauh lebih andal. Selalu uji dengan data yang sengaja dibuat "nakal".
 
-Untuk kebutuhan laporan berformat resmi, lihat [Membuat Laporan PDF Otomatis dari Google Sheets]({{ site.baseurl }}/2026/10/10/laporan-pdf-dari-google-sheets-apps-script/).
+Untuk kebutuhan laporan berformat resmi, lihat [Membuat Laporan PDF Otomatis dari Google Sheets]({{ site.baseurl }}/blog/2026/10/10/laporan-pdf-dari-google-sheets-apps-script/).

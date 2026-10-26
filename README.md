@@ -62,6 +62,14 @@ tags: [seo, blog]
 apps: [seopc, seoandu]      # nama berkas aplikasi tanpa .html
 ```
 
+**Aturan tautan antar-tulisan:** alamat tulisan sekarang berawalan `/blog/`. Tulis tautan seperti ini:
+
+```markdown
+[Judul tulisan lain]({{ site.baseurl }}/blog/2026/10/10/slug-tulisan/)
+```
+Menulis `{{ site.baseurl }}/2026/10/10/slug-tulisan/` (tanpa `/blog`) menghasilkan tautan patah. Pemeriksaan di tab
+Actions akan menandainya sebagai "Tautan patah".
+
 Tanpa baris `apps:` pun, tulisan otomatis menaut ke aplikasi yang **tag-nya sama** (tag umum `tutorial`,
 `panduan`, `web` diabaikan; ubah di `_config.yml` > `tag_abaikan`). Tulisan juga otomatis mendapat "Baca juga"
 dari tulisan lain yang berbagi tag.

@@ -31,7 +31,7 @@ Pilih yang sesuai dengan kemampuan Anda mengakses DNS. Untuk blog di subfolder, 
 
 Sitemap adalah daftar alamat halaman yang Anda ingin Google ketahui. Jika blog Anda memakai plugin `jekyll-sitemap`, alamatnya biasanya `/blog/sitemap.xml`. Di Search Console, buka menu **Sitemap**, masukkan alamatnya, lalu kirim. Statusnya akan berubah menjadi berhasil setelah Google membacanya.
 
-Mengirim sitemap tidak menjamin semua halaman diindeks, tetapi membantu Google menemukan halaman Anda lebih cepat. Panduan menyiapkan blog beserta sitemap-nya ada di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).
+Mengirim sitemap tidak menjamin semua halaman diindeks, tetapi membantu Google menemukan halaman Anda lebih cepat. Panduan menyiapkan blog beserta sitemap-nya ada di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/blog/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).
 
 ## Laporan kinerja: empat angka yang perlu dipahami
 
@@ -54,7 +54,7 @@ Beberapa cara membaca laporan yang berguna:
 
 - **Lihat kueri.** Tab **Kueri** menunjukkan kata yang dipakai orang saat menemukan Anda. Dari sana Anda tahu topik yang cocok untuk tulisan berikutnya.
 - **Lihat halaman.** Tab **Halaman** menunjukkan tulisan yang paling sering tampil.
-- **Cari peluang CTR.** Halaman dengan tayangan tinggi tetapi klik rendah mungkin punya judul atau deskripsi yang kurang menarik. Panduan memperbaikinya ada di [Cara Menulis Judul dan Meta Description yang Baik untuk Blog]({{ site.baseurl }}/2026/10/09/menulis-judul-dan-meta-description-blog/).
+- **Cari peluang CTR.** Halaman dengan tayangan tinggi tetapi klik rendah mungkin punya judul atau deskripsi yang kurang menarik. Panduan memperbaikinya ada di [Cara Menulis Judul dan Meta Description yang Baik untuk Blog]({{ site.baseurl }}/blog/2026/10/09/menulis-judul-dan-meta-description-blog/).
 - **Cari kueri di posisi 8-20.** Halaman yang sudah dekat halaman pertama bisa naik dengan perbaikan isi atau tautan internal.
 - **Bandingkan periode.** Gunakan filter tanggal untuk membandingkan dua rentang waktu.
 

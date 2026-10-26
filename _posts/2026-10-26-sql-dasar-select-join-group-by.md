@@ -51,7 +51,7 @@ INSERT INTO omzet (id_usaha, bulan, jumlah) VALUES
   (3, '2026-10',  8000000);
 ```
 
-Tanda `PRIMARY KEY` memberi identitas unik tiap baris, dan `REFERENCES` menyatakan hubungan antartabel. Ini sama dengan prinsip ID unik yang dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
+Tanda `PRIMARY KEY` memberi identitas unik tiap baris, dan `REFERENCES` menyatakan hubungan antartabel. Ini sama dengan prinsip ID unik yang dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/blog/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
 
 ## SELECT, WHERE, dan ORDER BY
 
@@ -190,7 +190,7 @@ for baris in db.execute('SELECT nama FROM usaha WHERE kategori = ?', (kategori,)
 # db.execute("SELECT nama FROM usaha WHERE kategori = '" + kategori + "'")
 ```
 
-Hampir semua pustaka basis data punya fitur serupa (`?` atau `:nama`, `@nama`). Prinsip lain yang selaras ada di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/): jangan percaya masukan dari pengguna.
+Hampir semua pustaka basis data punya fitur serupa (`?` atau `:nama`, `@nama`). Prinsip lain yang selaras ada di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/): jangan percaya masukan dari pengguna.
 
 ## Indeks: mempercepat pencarian
 
@@ -200,7 +200,7 @@ Jika Anda sering mencari berdasarkan kolom tertentu pada tabel besar, buat indek
 CREATE INDEX idx_omzet_usaha ON omzet (id_usaha);
 ```
 
-Indeks mempercepat pencarian dan `JOIN`, tetapi sedikit memperlambat penulisan dan memakai ruang. Buat indeks untuk kolom yang memang sering dipakai di `WHERE` dan `JOIN`, bukan semuanya. Konsep ini berkaitan dengan Big-O: pencarian dengan indeks tumbuh jauh lebih lambat daripada penelusuran seluruh tabel, seperti di [Big-O dan Struktur Data Dasar]({{ site.baseurl }}/2026/10/26/big-o-struktur-data-array-set-map-javascript/).
+Indeks mempercepat pencarian dan `JOIN`, tetapi sedikit memperlambat penulisan dan memakai ruang. Buat indeks untuk kolom yang memang sering dipakai di `WHERE` dan `JOIN`, bukan semuanya. Konsep ini berkaitan dengan Big-O: pencarian dengan indeks tumbuh jauh lebih lambat daripada penelusuran seluruh tabel, seperti di [Big-O dan Struktur Data Dasar]({{ site.baseurl }}/blog/2026/10/26/big-o-struktur-data-array-set-map-javascript/).
 
 ## Kesalahan yang sering terjadi
 

@@ -68,7 +68,7 @@ function json_(obj) {
 }
 ```
 
-Isi kunci lewat **Project Settings > Script properties** di editor Apps Script, bukan lewat kode. Cara memanggil proxy dari halaman web dibahas di tulisan [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/).
+Isi kunci lewat **Project Settings > Script properties** di editor Apps Script, bukan lewat kode. Cara memanggil proxy dari halaman web dibahas di tulisan [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/).
 
 <!-- TAMBAHKAN: arsitektur proxy yang Anda pakai di proyek nyata, tanpa membuka kunci atau alamat internal. -->
 

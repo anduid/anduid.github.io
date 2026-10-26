@@ -56,7 +56,7 @@ Tulisan ini merangkum dua puluh hal yang layak diperiksa, dikelompokkan menjadi 
 
 ## D. SEO teknis
 
-**15. Judul dan meta description unik.** Setiap halaman punya keduanya. Panduannya ada di [Cara Menulis Judul dan Meta Description yang Baik untuk Blog]({{ site.baseurl }}/2026/10/09/menulis-judul-dan-meta-description-blog/).
+**15. Judul dan meta description unik.** Setiap halaman punya keduanya. Panduannya ada di [Cara Menulis Judul dan Meta Description yang Baik untuk Blog]({{ site.baseurl }}/blog/2026/10/09/menulis-judul-dan-meta-description-blog/).
 
 **16. Struktur judul yang rapi.** Satu H1 per halaman dengan H2 dan H3 yang teratur.
 

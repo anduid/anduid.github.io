@@ -118,7 +118,7 @@ Dan sekali lagi: jangan membuat algoritma enkripsi sendiri.
 Klien perlu menyimpan token agar tidak login ulang di setiap halaman. Beberapa catatan:
 
 - Token berumur pendek dan bisa dicabut di server.
-- Simpan di `sessionStorage` bila cukup, atau `localStorage` jika perlu bertahan, dengan sadar bahwa skrip di halaman bisa membacanya jika ada celah XSS. Lihat [localStorage di Aplikasi Web: Kapan Aman, Kapan Tidak]({{ site.baseurl }}/2026/10/17/localstorage-aplikasi-web-kapan-aman/).
+- Simpan di `sessionStorage` bila cukup, atau `localStorage` jika perlu bertahan, dengan sadar bahwa skrip di halaman bisa membacanya jika ada celah XSS. Lihat [localStorage di Aplikasi Web: Kapan Aman, Kapan Tidak]({{ site.baseurl }}/blog/2026/10/17/localstorage-aplikasi-web-kapan-aman/).
 - Jangan menaruh peran atau status admin sebagai kebenaran di klien. Peran hanya untuk menampilkan atau menyembunyikan menu, sedangkan izin sebenarnya diperiksa server.
 - Sediakan tombol keluar yang menghapus token dan mencabut sesinya di server.
 
@@ -145,4 +145,4 @@ Klien perlu menyimpan token agar tidak login ulang di setiap halaman. Beberapa c
 
 ## Kesimpulan
 
-Keamanan login tidak bisa dibangun di sisi klien. Pindahkan pemeriksaan kredensial dan hak akses ke server, simpan kata sandi dengan benar atau hindari menyimpannya sama sekali, beri sesi masa berlaku, dan batasi percobaan. Pola ini juga selaras dengan kebiasaan lain di [8 Kebiasaan Keamanan Aplikasi Web yang Wajib Dimiliki Pemula]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/) dan pembahasan kunci rahasia di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).
+Keamanan login tidak bisa dibangun di sisi klien. Pindahkan pemeriksaan kredensial dan hak akses ke server, simpan kata sandi dengan benar atau hindari menyimpannya sama sekali, beri sesi masa berlaku, dan batasi percobaan. Pola ini juga selaras dengan kebiasaan lain di [8 Kebiasaan Keamanan Aplikasi Web yang Wajib Dimiliki Pemula]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/) dan pembahasan kunci rahasia di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/blog/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).

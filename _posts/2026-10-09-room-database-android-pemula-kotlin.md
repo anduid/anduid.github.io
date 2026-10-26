@@ -157,4 +157,4 @@ Jangan tergoda memakai `fallbackToDestructiveMigration()` pada aplikasi yang sud
 
 Room membuat penyimpanan data lokal di Android jauh lebih rapi: Entity untuk bentuk data, DAO untuk operasi, Database sebagai pintu masuk, dan ViewModel dengan `Flow` untuk menjaga tampilan selalu segar. Mulailah dengan satu tabel sederhana, biasakan menulis migrasi sejak awal, dan baca dokumentasi resmi saat Anda membutuhkan relasi antartabel.
 
-Jika aplikasi Anda berbasis web, baca juga [Mengubah Web App Menjadi Aplikasi Android dengan WebView]({{ site.baseurl }}/2026/10/09/webview-android-dari-web-app/).
+Jika aplikasi Anda berbasis web, baca juga [Mengubah Web App Menjadi Aplikasi Android dengan WebView]({{ site.baseurl }}/blog/2026/10/09/webview-android-dari-web-app/).

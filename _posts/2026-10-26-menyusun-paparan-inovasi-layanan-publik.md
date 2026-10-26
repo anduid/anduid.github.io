@@ -64,7 +64,7 @@ Terangkan solusi dalam bahasa yang dipahami orang awam:
 - Hindari istilah teknis yang tidak perlu. Jika harus, jelaskan dalam satu kalimat.
 - Gunakan diagram alur kecil daripada paragraf panjang.
 
-Contoh pendekatan digitalisasi dasar ada di [Panduan Digitalisasi Arsip untuk Kantor Kecil]({{ site.baseurl }}/2026/10/09/panduan-digitalisasi-arsip-kantor-kecil/).
+Contoh pendekatan digitalisasi dasar ada di [Panduan Digitalisasi Arsip untuk Kantor Kecil]({{ site.baseurl }}/blog/2026/10/10/panduan-digitalisasi-arsip-kantor-kecil/).
 
 ## Tunjukkan bukti, bukan janji
 
@@ -82,7 +82,7 @@ Jangan melebih-lebihkan. Angka yang jujur dan sederhana lebih meyakinkan daripad
 Pengambil keputusan hampir selalu bertanya tiga hal ini, jadi jawab sebelum ditanya:
 
 - **Dampak**: untuk siapa, seberapa besar, dan bagaimana diukur.
-- **Biaya**: kebutuhan anggaran, tenaga, dan perangkat. Bedakan biaya awal dan biaya rutin. Pendekatan merinci biaya ada di [Cara Menghitung Estimasi Biaya Proyek Aplikasi dengan Wajar]({{ site.baseurl }}/2026/10/11/menghitung-estimasi-biaya-proyek-aplikasi/).
+- **Biaya**: kebutuhan anggaran, tenaga, dan perangkat. Bedakan biaya awal dan biaya rutin. Pendekatan merinci biaya ada di [Cara Menghitung Estimasi Biaya Proyek Aplikasi dengan Wajar]({{ site.baseurl }}/blog/2026/10/11/menghitung-estimasi-biaya-proyek-aplikasi/).
 - **Keberlanjutan**: siapa yang merawat, bagaimana jika pembuatnya tidak lagi terlibat, dan bagaimana data dilindungi.
 
 Sampaikan juga risiko dan cara mengatasinya. Paparan yang jujur soal risiko justru terasa lebih dapat dipercaya.
@@ -96,7 +96,7 @@ Sampaikan juga risiko dan cara mengatasinya. Paparan yang jujur soal risiko just
 - **Konsisten.** Satu jenis huruf, satu palet warna, tata letak yang berulang.
 - **Jangan menyalin paragraf** ke slide lalu membacakannya.
 
-Prinsip keterbacaan ini sejalan dengan [Aksesibilitas Web: 10 Perbaikan Cepat]({{ site.baseurl }}/2026/10/11/aksesibilitas-web-sepuluh-perbaikan-cepat/), terutama soal kontras dan ukuran teks.
+Prinsip keterbacaan ini sejalan dengan [Aksesibilitas Web: 10 Perbaikan Cepat]({{ site.baseurl }}/blog/2026/10/11/aksesibilitas-web-sepuluh-perbaikan-cepat/), terutama soal kontras dan ukuran teks.
 
 ## Latihan dan waktu
 
@@ -118,7 +118,7 @@ Sesi tanya jawab sering menentukan kesan akhir:
 - **Bersikap terbuka pada kritik.** Anggap sebagai masukan untuk memperbaiki inovasi.
 - **Tutup dengan ulangan permintaan Anda** dan langkah berikutnya.
 
-Pertanyaan umum bisa dihimpun menjadi FAQ yang juga berguna setelah acara. Lihat pendekatannya di [Chatbot FAQ Sederhana dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/11/chatbot-faq-sederhana-apps-script-sheets/).
+Pertanyaan umum bisa dihimpun menjadi FAQ yang juga berguna setelah acara. Lihat pendekatannya di [Chatbot FAQ Sederhana dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/11/chatbot-faq-sederhana-apps-script-sheets/).
 
 ## Setelah paparan
 

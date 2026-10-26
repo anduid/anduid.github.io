@@ -166,7 +166,7 @@ async function ambilCatatan() {
 }
 ```
 
-Jika halaman dan server berada di asal berbeda, peramban menerapkan aturan **CORS**, sehingga server harus mengirim header `Access-Control-Allow-Origin` yang sesuai. Pembahasan galat dan cara memeriksanya di panel Network ada di [Chrome DevTools untuk Debugging Aplikasi Web]({{ site.baseurl }}/2026/10/17/chrome-devtools-debugging-aplikasi-web/), dan dasar `fetch` serta `async/await` di [JavaScript Modern untuk Pemula]({{ site.baseurl }}/2026/10/26/javascript-modern-dasar-es6-async-await/).
+Jika halaman dan server berada di asal berbeda, peramban menerapkan aturan **CORS**, sehingga server harus mengirim header `Access-Control-Allow-Origin` yang sesuai. Pembahasan galat dan cara memeriksanya di panel Network ada di [Chrome DevTools untuk Debugging Aplikasi Web]({{ site.baseurl }}/blog/2026/10/17/chrome-devtools-debugging-aplikasi-web/), dan dasar `fetch` serta `async/await` di [JavaScript Modern untuk Pemula]({{ site.baseurl }}/blog/2026/10/26/javascript-modern-dasar-es6-async-await/).
 
 ## Praktik baik merancang API
 
@@ -176,7 +176,7 @@ Jika halaman dan server berada di asal berbeda, peramban menerapkan aturan **COR
 - **Paginasi** untuk daftar besar: `GET /catatan?halaman=2&batas=20`.
 - **Versi API** di alamat jika kelak berubah: `/v1/catatan`.
 - **Validasi semua masukan di server.** Jangan percaya klien.
-- **Otentikasi dan otorisasi di server**, dengan token pada header `Authorization`, bukan kata sandi di kode klien. Lihat [Login yang Aman di Aplikasi Web Statis]({{ site.baseurl }}/2026/10/17/login-aman-aplikasi-web-statis/).
+- **Otentikasi dan otorisasi di server**, dengan token pada header `Authorization`, bukan kata sandi di kode klien. Lihat [Login yang Aman di Aplikasi Web Statis]({{ site.baseurl }}/blog/2026/10/17/login-aman-aplikasi-web-statis/).
 - **Batasi laju permintaan** untuk mencegah penyalahgunaan.
 - **Dokumentasikan** setiap rute: metode, alamat, parameter, contoh permintaan dan respons.
 
@@ -187,7 +187,7 @@ Jika halaman dan server berada di asal berbeda, peramban menerapkan aturan **COR
 - **Tidak memvalidasi masukan**, sehingga data rusak atau celah keamanan masuk.
 - **Membocorkan pesan galat internal** ke klien.
 - **Lupa header `Content-Type`** sehingga server atau klien gagal membaca JSON.
-- **Menyimpan data hanya di memori** pada server nyata. Data hilang saat server restart. Pakai basis data, seperti pada [SQL Dasar untuk Pemula]({{ site.baseurl }}/2026/10/26/sql-dasar-select-join-group-by/).
+- **Menyimpan data hanya di memori** pada server nyata. Data hilang saat server restart. Pakai basis data, seperti pada [SQL Dasar untuk Pemula]({{ site.baseurl }}/blog/2026/10/26/sql-dasar-select-join-group-by/).
 
 ## Kesimpulan
 

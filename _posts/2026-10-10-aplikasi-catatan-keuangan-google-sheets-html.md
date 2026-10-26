@@ -27,11 +27,11 @@ Fitur yang akan kita bangun sengaja minimal:
 - menghitung saldo,
 - menghapus transaksi dengan cara hapus lunak.
 
-Arsitekturnya sama dengan yang dibahas di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/): halaman HTML memanggil Apps Script, dan Apps Script membaca serta menulis ke Sheets.
+Arsitekturnya sama dengan yang dibahas di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/): halaman HTML memanggil Apps Script, dan Apps Script membaca serta menulis ke Sheets.
 
 ## Langkah 1: menyiapkan tabel
 
-Buat spreadsheet baru dengan satu sheet bernama `Transaksi`. Isi baris pertama dengan nama kolom berikut, sesuai prinsip di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/):
+Buat spreadsheet baru dengan satu sheet bernama `Transaksi`. Isi baris pertama dengan nama kolom berikut, sesuai prinsip di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/blog/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/):
 
 | Kolom | Isi |
 |-------|-----|
@@ -204,13 +204,13 @@ Buat berkas `index.html` berikut. Ganti `ID_DEPLOYMENT_ANDA` dengan URL dari lan
 </html>
 ```
 
-Perhatikan bahwa teks transaksi dimasukkan dengan `textContent`, bukan `innerHTML`, sehingga isi dari pengguna tidak dijalankan sebagai HTML. Kebiasaan ini dibahas di [8 Kebiasaan Keamanan Aplikasi Web yang Wajib Dimiliki Pemula]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
+Perhatikan bahwa teks transaksi dimasukkan dengan `textContent`, bukan `innerHTML`, sehingga isi dari pengguna tidak dijalankan sebagai HTML. Kebiasaan ini dibahas di [8 Kebiasaan Keamanan Aplikasi Web yang Wajib Dimiliki Pemula]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
 
 <!-- TAMBAHKAN: tangkapan layar halaman jadi, dan kendala yang Anda temui saat menjalankannya. -->
 
 ## Langkah 4: menghosting di GitHub Pages
 
-Unggah `index.html` ke repo GitHub, lalu aktifkan Pages di **Settings > Pages** (branch `main`, folder root). Alamat halaman akan muncul beberapa menit kemudian. Langkah lengkapnya ada di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/2026/10/09/blog-github-pages-jekyll-domain-sendiri/), dan prinsipnya sama untuk halaman biasa.
+Unggah `index.html` ke repo GitHub, lalu aktifkan Pages di **Settings > Pages** (branch `main`, folder root). Alamat halaman akan muncul beberapa menit kemudian. Langkah lengkapnya ada di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/blog/2026/10/09/blog-github-pages-jekyll-domain-sendiri/), dan prinsipnya sama untuk halaman biasa.
 
 ## Pengembangan lanjutan
 
@@ -220,7 +220,7 @@ Setelah versi dasar berjalan, Anda bisa menambahkan:
 - **Filter bulan** dan total per bulan.
 - **Login sederhana** supaya hanya Anda yang bisa melihat data.
 - **Grafik** pengeluaran dengan pustaka grafik di peramban.
-- **Cadangan otomatis** memakai trigger seperti di [Trigger Apps Script]({{ site.baseurl }}/2026/10/10/trigger-apps-script-tugas-otomatis/).
+- **Cadangan otomatis** memakai trigger seperti di [Trigger Apps Script]({{ site.baseurl }}/blog/2026/10/10/trigger-apps-script-tugas-otomatis/).
 
 ## Peringatan keamanan
 

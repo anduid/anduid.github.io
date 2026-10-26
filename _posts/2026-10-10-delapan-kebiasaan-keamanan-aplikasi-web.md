@@ -51,7 +51,7 @@ Prinsip *least privilege*: setiap pengguna, skrip, dan layanan hanya mendapat ak
 
 ## 5. Simpan rahasia di tempat yang benar
 
-Kunci API, kata sandi basis data, dan token tidak boleh ditulis di kode klien atau repositori publik. Simpan di pengaturan rahasia platform atau variabel lingkungan di server. Jika rahasia pernah bocor, anggap sudah terkompromi: cabut dan ganti. Pembahasan lengkapnya ada di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).
+Kunci API, kata sandi basis data, dan token tidak boleh ditulis di kode klien atau repositori publik. Simpan di pengaturan rahasia platform atau variabel lingkungan di server. Jika rahasia pernah bocor, anggap sudah terkompromi: cabut dan ganti. Pembahasan lengkapnya ada di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/blog/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).
 
 ## 6. Simpan kata sandi dengan benar
 
@@ -72,7 +72,7 @@ Pustaka yang Anda pakai bisa memiliki celah yang sudah diketahui. Perbarui secar
 
 Tidak ada sistem yang kebal. Yang membedakan adalah seberapa cepat Anda pulih dan seberapa jelas Anda melihat apa yang terjadi:
 
-- Buat cadangan terjadwal dan uji pemulihannya. Contoh otomatisasi cadangan ada di [Trigger Apps Script]({{ site.baseurl }}/2026/10/10/trigger-apps-script-tugas-otomatis/).
+- Buat cadangan terjadwal dan uji pemulihannya. Contoh otomatisasi cadangan ada di [Trigger Apps Script]({{ site.baseurl }}/blog/2026/10/10/trigger-apps-script-tugas-otomatis/).
 - Catat aktivitas penting seperti login, perubahan data, dan penghapusan.
 - Pantau pola yang tidak biasa, misalnya lonjakan permintaan.
 

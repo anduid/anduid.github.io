@@ -71,7 +71,7 @@ Harganya: waktu pengembangan, pengujian, keamanan, dan pemeliharaan. Aplikasi ya
 
 Sebelum membangun aplikasi penuh, coba perluas Forms dengan Apps Script. Trigger `onFormSubmit` memungkinkan Anda memproses jawaban begitu masuk: mengirim email konfirmasi, mengisi kolom turunan di Sheets, membuat PDF otomatis, atau memberi nomor registrasi.
 
-Pendekatan ini sering menutup 80 persen kebutuhan dengan sebagian kecil usaha. Anda tetap memakai Forms untuk antarmuka dan Sheets untuk data, sambil menambahkan otomatisasi. Tulisan [Trigger Apps Script: Menjadwalkan Tugas Otomatis]({{ site.baseurl }}/2026/10/10/trigger-apps-script-tugas-otomatis/) dan [Membuat Laporan PDF Otomatis dari Google Sheets]({{ site.baseurl }}/2026/10/10/laporan-pdf-dari-google-sheets-apps-script/) menunjukkan caranya.
+Pendekatan ini sering menutup 80 persen kebutuhan dengan sebagian kecil usaha. Anda tetap memakai Forms untuk antarmuka dan Sheets untuk data, sambil menambahkan otomatisasi. Tulisan [Trigger Apps Script: Menjadwalkan Tugas Otomatis]({{ site.baseurl }}/blog/2026/10/10/trigger-apps-script-tugas-otomatis/) dan [Membuat Laporan PDF Otomatis dari Google Sheets]({{ site.baseurl }}/blog/2026/10/10/laporan-pdf-dari-google-sheets-apps-script/) menunjukkan caranya.
 
 <!-- TAMBAHKAN: contoh proyek Anda yang awalnya Forms lalu berkembang, atau yang langsung dibangun sebagai aplikasi, beserta alasannya. -->
 
@@ -94,7 +94,7 @@ Jika Anda memutuskan berpindah:
 1. **Pertahankan Sheets sebagai database** pada tahap awal supaya data lama tetap terpakai.
 2. **Bangun alur terpenting lebih dulu**, jangan menyalin semua fitur sekaligus.
 3. **Jalankan paralel** dalam waktu singkat: pengguna boleh memakai aplikasi baru sementara Forms lama tetap hidup sebagai cadangan.
-4. **Rapikan struktur data** sebelum bermigrasi, dengan ID unik dan kolom yang konsisten, seperti dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
+4. **Rapikan struktur data** sebelum bermigrasi, dengan ID unik dan kolom yang konsisten, seperti dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/blog/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
 5. **Tutup Forms lama** setelah semua pengguna berpindah.
 
 ## Daftar pertanyaan keputusan

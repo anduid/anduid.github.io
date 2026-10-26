@@ -124,4 +124,4 @@ Untuk domain sendiri, atur DNS di penyedia domain sesuai [dokumentasi GitHub Pag
 
 Blog di GitHub Pages cukup dibangun dengan empat hal: repo yang benar, `_config.yml` dengan `url` dan `baseurl` yang tepat, template yang rapi, dan kebiasaan menulis dalam Markdown. Jebakan terbesarnya ada pada pengaturan alamat dan paginasi, jadi periksa dua hal itu lebih dulu saat ada yang tidak beres.
 
-Jika Anda ingin membangun fitur di atasnya, baca juga [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/).
+Jika Anda ingin membangun fitur di atasnya, baca juga [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/).

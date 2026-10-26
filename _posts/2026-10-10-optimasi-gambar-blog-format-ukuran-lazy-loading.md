@@ -109,11 +109,11 @@ Contoh kurang baik: `alt="gambar1"`. Contoh lebih baik: `alt="Diagram alur data 
 
 ## Nama berkas dan lokasi
 
-Beri nama berkas yang deskriptif dan memakai huruf kecil dengan tanda hubung, misalnya `diagram-alur-apps-script.webp`, bukan `IMG_20261010_0042.jpg`. Simpan semua gambar blog di satu folder seperti `assets/images/`, dan di Jekyll panggil dengan `relative_url` supaya alamatnya benar saat blog berada di subfolder, seperti dibahas di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).
+Beri nama berkas yang deskriptif dan memakai huruf kecil dengan tanda hubung, misalnya `diagram-alur-apps-script.webp`, bukan `IMG_20261010_0042.jpg`. Simpan semua gambar blog di satu folder seperti `assets/images/`, dan di Jekyll panggil dengan `relative_url` supaya alamatnya benar saat blog berada di subfolder, seperti dibahas di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/blog/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).
 
 ## Gambar untuk pratinjau media sosial
 
-Gambar sampul yang Anda tentukan dengan `image:` di front matter juga dipakai sebagai pratinjau saat tautan dibagikan. Gunakan ukuran sekitar 1200 x 630 piksel dan pastikan teks pada gambar tetap terbaca saat dikecilkan. Detail tag Open Graph ada di [Cara Menulis Judul dan Meta Description yang Baik untuk Blog]({{ site.baseurl }}/2026/10/09/menulis-judul-dan-meta-description-blog/).
+Gambar sampul yang Anda tentukan dengan `image:` di front matter juga dipakai sebagai pratinjau saat tautan dibagikan. Gunakan ukuran sekitar 1200 x 630 piksel dan pastikan teks pada gambar tetap terbaca saat dikecilkan. Detail tag Open Graph ada di [Cara Menulis Judul dan Meta Description yang Baik untuk Blog]({{ site.baseurl }}/blog/2026/10/09/menulis-judul-dan-meta-description-blog/).
 
 ## Memeriksa hasilnya
 

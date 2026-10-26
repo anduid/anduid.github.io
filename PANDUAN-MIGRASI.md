@@ -20,6 +20,12 @@ Cara paling aman: pakai **branch** terpisah supaya bisa diuji sebelum tayang.
 5. Tunggu workflow "Bangun dan terbitkan situs" selesai di PR (centang hijau). Pada PR, situs hanya dibangun dan
    diperiksa, **belum diterbitkan**. Buka run-nya untuk membaca anotasi kuning/merah bila ada.
 
+### Penting: bawa SEMUA tulisan terbaru
+Folder `_posts/` di ZIP ini berisi 45 tulisan (37 dari salinan awal ditambah 8 tulisan 26 Oktober). Jika sejak itu Anda menambah
+tulisan lain di repo `blog`, **salin juga ke `_posts/`** sebelum merge, dan ganti tautan `{{ site.baseurl }}/20...` di dalamnya menjadi
+`{{ site.baseurl }}/blog/20...`. Ke depannya, setiap tulisan baru cukup diunggah ke `_posts/` di repo ini; sitemap, beranda,
+dan tulisan terkait diperbarui otomatis.
+
 ## 2. Ubah sumber GitHub Pages
 Repo `anduid.github.io` > **Settings > Pages > Build and deployment > Source: GitHub Actions**.
 Kolom *Custom domain* tetap `andu.my.id` dan *Enforce HTTPS* tetap aktif.
@@ -52,6 +58,10 @@ menutupi `/blog/` milik situs baru. Setelah itu buka https://andu.my.id/blog/ da
 - Berkas aplikasi di repo: **tidak diubah sama sekali**. Tag SEO ditanam hanya pada salinan di hasil build.
 - `blog/privasi.md`: front matter-nya tidak valid YAML (tanda `:` tanpa kutip di `description`), sehingga halaman
   Kebijakan Privasi kemungkinan tampil rusak. Sudah diperbaiki. Penting untuk persetujuan AdSense.
+- **CV baru di `/profil/`** (`profil/index.html`, dari `profile.html` Anda): ditambah tag SEO, data terstruktur Person, tautan ke Blog/Aplikasi,
+  dan teks cadangan untuk pengunjung tanpa JavaScript. Beranda memuat bagian "Di balik andu.my.id" dan menu Profil; kotak penulis di tiap tulisan menaut ke sana.
+- **Tautan antar-tulisan diperbaiki** di 42 dari 45 tulisan: `{{ site.baseurl }}/2026/...` menjadi `{{ site.baseurl }}/blog/2026/...` (106 tautan). Tiga tautan
+  yang menunjuk tanggal salah (`10/09/panduan-digitalisasi...`, seharusnya `10/10`) juga dibetulkan. Satu bug kode pada tulisan Python (`rekap_aman`) dan satu salah ketik diperbaiki.
 - Tiga tulisan diberi `apps:` (arsip, peta UMKM, localStorage). Tulisan lain tidak diubah.
 
 ## Keputusan yang bisa Anda balik

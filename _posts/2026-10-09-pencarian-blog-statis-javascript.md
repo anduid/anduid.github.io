@@ -185,4 +185,4 @@ Hal-hal kecil ini membuat pencarian nyaman dipakai semua orang:
 
 Pencarian di blog statis tidak butuh server. Jekyll membuat indeks saat build, JavaScript menyaringnya di peramban, dan beberapa penyempurnaan seperti peringkat judul, debounce, dan pemuatan malas membuatnya terasa cepat. Mulailah dari versi sederhana ini, lalu pindah ke pustaka khusus hanya jika blog Anda tumbuh sangat besar.
 
-Untuk membangun blog dari awal, baca [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).
+Untuk membangun blog dari awal, baca [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/blog/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).

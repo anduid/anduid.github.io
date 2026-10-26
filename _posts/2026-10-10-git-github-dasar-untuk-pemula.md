@@ -153,7 +153,7 @@ local.properties
 _site/
 ```
 
-Jangan pernah meng-commit kunci API, kata sandi, atau keystore ke repo, terutama repo publik. Jika terlanjur, anggap rahasia itu bocor dan ganti. Penjelasan lebih lengkap ada di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).
+Jangan pernah meng-commit kunci API, kata sandi, atau keystore ke repo, terutama repo publik. Jika terlanjur, anggap rahasia itu bocor dan ganti. Penjelasan lebih lengkap ada di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/blog/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).
 
 ## Membatalkan dan memulihkan
 
@@ -177,4 +177,4 @@ Hati-hati dengan perintah yang menulis ulang riwayat, seperti `git reset --hard`
 
 ## Kesimpulan
 
-Git terasa rumit di awal, tetapi alur dasarnya sederhana: `add`, `commit`, `push`, ditambah branch dan pull request saat bekerja lebih serius. Kuasai alur itu, biasakan `.gitignore` dan pesan commit yang jelas, dan Anda sudah menghindari sebagian besar masalah umum. Git juga menjadi dasar untuk menghosting situs di GitHub Pages, seperti di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).
+Git terasa rumit di awal, tetapi alur dasarnya sederhana: `add`, `commit`, `push`, ditambah branch dan pull request saat bekerja lebih serius. Kuasai alur itu, biasakan `.gitignore` dan pesan commit yang jelas, dan Anda sudah menghindari sebagian besar masalah umum. Git juga menjadi dasar untuk menghosting situs di GitHub Pages, seperti di [Membuat Blog di GitHub Pages dengan Jekyll dan Domain Sendiri]({{ site.baseurl }}/blog/2026/10/09/blog-github-pages-jekyll-domain-sendiri/).

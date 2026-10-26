@@ -129,7 +129,7 @@ Pastikan hal hukum dan kontrak ditinjau oleh orang yang berkompeten, terutama un
 
 ## Belajar dari setiap proyek
 
-Catat jam kerja nyata untuk setiap tugas, lalu bandingkan dengan estimasi. Selisihnya adalah data berharga untuk menyetel buffer dan tarif di proyek berikutnya. Seiring waktu, estimasi Anda semakin akurat. Pendekatan standardisasi untuk mempercepat pengerjaan dibahas di [Membuat Banyak Aplikasi Android Lebih Cepat dengan Template Proyek]({{ site.baseurl }}/2026/10/10/template-proyek-android-banyak-aplikasi/), dan daftar persiapan rilis ada di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
+Catat jam kerja nyata untuk setiap tugas, lalu bandingkan dengan estimasi. Selisihnya adalah data berharga untuk menyetel buffer dan tarif di proyek berikutnya. Seiring waktu, estimasi Anda semakin akurat. Pendekatan standardisasi untuk mempercepat pengerjaan dibahas di [Membuat Banyak Aplikasi Android Lebih Cepat dengan Template Proyek]({{ site.baseurl }}/blog/2026/10/10/template-proyek-android-banyak-aplikasi/), dan daftar persiapan rilis ada di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/blog/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
 
 ## Kesimpulan
 

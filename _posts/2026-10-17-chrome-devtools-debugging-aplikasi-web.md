@@ -63,7 +63,7 @@ Yang perlu diperhatikan:
 - Pastikan data yang dikirim sesuai harapan. Banyak galat ternyata berasal dari data kosong atau salah format.
 - Kolom **Time** menunjukkan permintaan yang lambat.
 
-Untuk aplikasi dengan backend Apps Script, lihat di tab Response apakah balasan berupa JSON yang Anda harapkan atau halaman galat HTML. Pola API-nya dibahas di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/).
+Untuk aplikasi dengan backend Apps Script, lihat di tab Response apakah balasan berupa JSON yang Anda harapkan atau halaman galat HTML. Pola API-nya dibahas di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/).
 
 <!-- TAMBAHKAN: kasus masalah API atau CORS yang Anda temukan lewat panel Network dan cara memperbaikinya. -->
 
@@ -81,9 +81,9 @@ Perbaikan CORS selalu ada di sisi server atau cara permintaan dikirim, bukan di 
 
 Panel **Application** menunjukkan data yang disimpan peramban:
 
-- **Local storage** dan **Session storage**: lihat, ubah, dan hapus kunci. Berguna untuk mengecek apakah data benar tersimpan. Lihat [localStorage di Aplikasi Web: Kapan Aman, Kapan Tidak]({{ site.baseurl }}/2026/10/17/localstorage-aplikasi-web-kapan-aman/).
+- **Local storage** dan **Session storage**: lihat, ubah, dan hapus kunci. Berguna untuk mengecek apakah data benar tersimpan. Lihat [localStorage di Aplikasi Web: Kapan Aman, Kapan Tidak]({{ site.baseurl }}/blog/2026/10/17/localstorage-aplikasi-web-kapan-aman/).
 - **Cookies**: periksa nilai dan masa berlakunya.
-- **Service workers**: lihat apakah terdaftar, matikan, atau paksa pembaruan. Centang **Update on reload** saat mengembangkan PWA supaya cache lama tidak menjebak Anda. Dasarnya ada di [Membuat PWA Sederhana]({{ site.baseurl }}/2026/10/11/pwa-sederhana-web-app-dipasang-di-ponsel/).
+- **Service workers**: lihat apakah terdaftar, matikan, atau paksa pembaruan. Centang **Update on reload** saat mengembangkan PWA supaya cache lama tidak menjebak Anda. Dasarnya ada di [Membuat PWA Sederhana]({{ site.baseurl }}/blog/2026/10/11/pwa-sederhana-web-app-dipasang-di-ponsel/).
 - **Storage > Clear site data**: menghapus semua data situs sekaligus untuk memulai dari kondisi bersih.
 
 ## Elements: memeriksa HTML dan CSS
@@ -96,7 +96,7 @@ Panel **Elements** menampilkan struktur halaman *setelah* diproses JavaScript. K
 
 Perubahan di sini bersifat sementara. Salin yang berhasil ke berkas kode Anda.
 
-Untuk menguji tampilan ponsel, aktifkan **Toggle device toolbar** (**Ctrl+Shift+M**) dan pilih ukuran layar. Tetap uji juga di perangkat nyata. Dasar tata letaknya ada di [CSS Grid dan Flexbox]({{ site.baseurl }}/2026/10/17/css-grid-flexbox-tata-letak-responsif/).
+Untuk menguji tampilan ponsel, aktifkan **Toggle device toolbar** (**Ctrl+Shift+M**) dan pilih ukuran layar. Tetap uji juga di perangkat nyata. Dasar tata letaknya ada di [CSS Grid dan Flexbox]({{ site.baseurl }}/blog/2026/10/17/css-grid-flexbox-tata-letak-responsif/).
 
 ## Sources: breakpoint untuk menelusuri kode
 

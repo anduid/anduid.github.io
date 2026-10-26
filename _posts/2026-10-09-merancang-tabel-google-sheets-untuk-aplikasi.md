@@ -137,4 +137,4 @@ Sheets cocok untuk data ribuan baris dan pengguna yang tidak banyak. Tanda-tanda
 
 Desain tabel yang baik membuat aplikasi berbasis Sheets jauh lebih tahan banting: satu sheet satu tabel, ID unik, kolom standar, relasi lewat ID, hapus lunak, dan pembacaan data sekaligus. Mulailah dengan aturan sederhana ini sebelum menulis kode, karena memperbaiki desain setelah data banyak jauh lebih sulit.
 
-Untuk membangun API di atas tabel ini, baca [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/).
+Untuk membangun API di atas tabel ini, baca [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/).

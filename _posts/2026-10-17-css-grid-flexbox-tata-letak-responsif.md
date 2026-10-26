@@ -122,7 +122,7 @@ Tulis gaya dasar untuk layar kecil, lalu tambahkan `@media (min-width: ...)` unt
 <meta name="viewport" content="width=device-width, initial-scale=1">
 ```
 
-Jangan mengunci zoom (`user-scalable=no`), karena itu menghalangi pengguna yang butuh memperbesar tampilan. Hal ini juga dibahas di [Aksesibilitas Web: 10 Perbaikan Cepat]({{ site.baseurl }}/2026/10/11/aksesibilitas-web-sepuluh-perbaikan-cepat/).
+Jangan mengunci zoom (`user-scalable=no`), karena itu menghalangi pengguna yang butuh memperbesar tampilan. Hal ini juga dibahas di [Aksesibilitas Web: 10 Perbaikan Cepat]({{ site.baseurl }}/blog/2026/10/11/aksesibilitas-web-sepuluh-perbaikan-cepat/).
 
 ## Gambar dan konten yang tidak melebar
 
@@ -136,7 +136,7 @@ img { max-width: 100%; height: auto; }
 pre { overflow-x: auto; }
 ```
 
-Teknik pemuatan gambar yang lebih hemat dibahas di [Optimasi Gambar untuk Blog]({{ site.baseurl }}/2026/10/10/optimasi-gambar-blog-format-ukuran-lazy-loading/).
+Teknik pemuatan gambar yang lebih hemat dibahas di [Optimasi Gambar untuk Blog]({{ site.baseurl }}/blog/2026/10/10/optimasi-gambar-blog-format-ukuran-lazy-loading/).
 
 ## Satuan yang ramah responsif
 

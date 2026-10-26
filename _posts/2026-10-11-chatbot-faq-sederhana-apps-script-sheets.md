@@ -45,7 +45,7 @@ Contoh baris (data karangan):
 | Jam layanan | jam, buka, layanan, tutup | Layanan buka Senin sampai Jumat pukul 08.00-15.00. |
 | Syarat pendaftaran | syarat, daftar, pendaftaran | Siapkan fotokopi identitas dan formulir yang sudah diisi. |
 
-Buat juga sheet kedua bernama `BelumTerjawab` dengan kolom `waktu` dan `pertanyaan`. Prinsip penataan tabel yang baik dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
+Buat juga sheet kedua bernama `BelumTerjawab` dengan kolom `waktu` dan `pertanyaan`. Prinsip penataan tabel yang baik dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/blog/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
 
 <!-- TAMBAHKAN: contoh pertanyaan umum yang Anda temui di lapangan (tanpa data pribadi) beserta kata kuncinya. -->
 
@@ -104,9 +104,9 @@ function json_(obj) {
 }
 ```
 
-Cara kerjanya: setiap baris FAQ diberi skor sesuai jumlah kata kunci yang muncul sebagai kata utuh dalam pertanyaan, dan baris dengan skor tertinggi menjadi jawabannya. Pertanyaan yang tidak cocok sama sekali dicatat di `BelumTerjawab`. Deploy sebagai web app (lihat [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/)) dan salin URL berakhiran `/exec`.
+Cara kerjanya: setiap baris FAQ diberi skor sesuai jumlah kata kunci yang muncul sebagai kata utuh dalam pertanyaan, dan baris dengan skor tertinggi menjadi jawabannya. Pertanyaan yang tidak cocok sama sekali dicatat di `BelumTerjawab`. Deploy sebagai web app (lihat [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/)) dan salin URL berakhiran `/exec`.
 
-Satu catatan keamanan: skrip ini membaca teks dari pengguna dan menuliskannya ke Sheets. Panjangnya dibatasi, dan jika Anda khawatir tentang rumus yang disisipkan, awali teks dengan tanda petik seperti pada contoh [Membuat Aplikasi Catatan Keuangan Sederhana]({{ site.baseurl }}/2026/10/10/aplikasi-catatan-keuangan-google-sheets-html/).
+Satu catatan keamanan: skrip ini membaca teks dari pengguna dan menuliskannya ke Sheets. Panjangnya dibatasi, dan jika Anda khawatir tentang rumus yang disisipkan, awali teks dengan tanda petik seperti pada contoh [Membuat Aplikasi Catatan Keuangan Sederhana]({{ site.baseurl }}/blog/2026/10/10/aplikasi-catatan-keuangan-google-sheets-html/).
 
 ## Langkah 3: halaman obrolan
 
@@ -148,7 +148,7 @@ Buat halaman HTML sederhana. Jawaban dimasukkan dengan `textContent` supaya aman
 </script>
 ```
 
-Atribut `aria-live` membuat pembaca layar mengumumkan jawaban baru. Beberapa kebiasaan baik untuk antarmuka seperti ini dibahas di [Aksesibilitas Web: 10 Perbaikan Cepat]({{ site.baseurl }}/2026/10/11/aksesibilitas-web-sepuluh-perbaikan-cepat/).
+Atribut `aria-live` membuat pembaca layar mengumumkan jawaban baru. Beberapa kebiasaan baik untuk antarmuka seperti ini dibahas di [Aksesibilitas Web: 10 Perbaikan Cepat]({{ site.baseurl }}/blog/2026/10/11/aksesibilitas-web-sepuluh-perbaikan-cepat/).
 
 ## Memperbaiki chatbot dari waktu ke waktu
 
@@ -162,7 +162,7 @@ Kekuatan pendekatan ini ada pada perawatannya yang mudah:
 
 ## Batasan yang perlu diakui
 
-Ini pencocokan kata kunci, bukan pemahaman bahasa. Ia tidak mengerti konteks, salah ketik, atau kalimat yang rumit. Untuk pertanyaan yang sangat beragam, Anda bisa menambahkan AI, tetapi itu membawa pertimbangan biaya, akurasi, dan keamanan kunci, seperti dibahas di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).
+Ini pencocokan kata kunci, bukan pemahaman bahasa. Ia tidak mengerti konteks, salah ketik, atau kalimat yang rumit. Untuk pertanyaan yang sangat beragam, Anda bisa menambahkan AI, tetapi itu membawa pertimbangan biaya, akurasi, dan keamanan kunci, seperti dibahas di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/blog/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).
 
 Beberapa batasan lain:
 

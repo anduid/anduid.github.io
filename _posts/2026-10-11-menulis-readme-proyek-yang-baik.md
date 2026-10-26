@@ -114,7 +114,7 @@ Instruksi yang tidak pernah diuji adalah sumber keluhan terbesar.
 
 ## Gunakan gambar dengan bijak
 
-Tangkapan layar, GIF singkat, atau diagram membuat proyek mudah dipahami. Simpan di folder seperti `docs/` dan beri teks alternatif. Pastikan tidak ada data pribadi, kunci, atau informasi sensitif yang terlihat di dalamnya. Tips ukuran dan format ada di [Optimasi Gambar untuk Blog]({{ site.baseurl }}/2026/10/10/optimasi-gambar-blog-format-ukuran-lazy-loading/).
+Tangkapan layar, GIF singkat, atau diagram membuat proyek mudah dipahami. Simpan di folder seperti `docs/` dan beri teks alternatif. Pastikan tidak ada data pribadi, kunci, atau informasi sensitif yang terlihat di dalamnya. Tips ukuran dan format ada di [Optimasi Gambar untuk Blog]({{ site.baseurl }}/blog/2026/10/10/optimasi-gambar-blog-format-ukuran-lazy-loading/).
 
 ## Jangan lupakan lisensi
 
@@ -122,7 +122,7 @@ Tanpa lisensi, orang lain pada dasarnya tidak punya izin memakai kode Anda. Pili
 
 ## Hal yang jangan ada di README
 
-- **Rahasia.** Kunci API, kata sandi, dan token tidak boleh muncul, bahkan sebagai contoh yang mirip asli. Lihat [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
+- **Rahasia.** Kunci API, kata sandi, dan token tidak boleh muncul, bahkan sebagai contoh yang mirip asli. Lihat [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
 - **Informasi pribadi atau data internal.**
 - **Klaim yang tidak bisa dibuktikan.**
 - **Instruksi yang sudah usang.**
@@ -136,7 +136,7 @@ README adalah dokumentasi hidup:
 - Beri catatan versi atau tanggal pembaruan untuk proyek yang berubah cepat.
 - Gunakan berkas `CHANGELOG.md` untuk riwayat perubahan penting.
 
-Saat membuat repo dari template, siapkan README bawaan yang berisi daftar yang harus diisi. Pendekatan ini dibahas di [Membuat Banyak Aplikasi Android Lebih Cepat dengan Template Proyek]({{ site.baseurl }}/2026/10/10/template-proyek-android-banyak-aplikasi/).
+Saat membuat repo dari template, siapkan README bawaan yang berisi daftar yang harus diisi. Pendekatan ini dibahas di [Membuat Banyak Aplikasi Android Lebih Cepat dengan Template Proyek]({{ site.baseurl }}/blog/2026/10/10/template-proyek-android-banyak-aplikasi/).
 
 ## Kesalahan yang sering terjadi
 

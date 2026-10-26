@@ -171,11 +171,11 @@ duplikatCepat(dataBesar);
 console.timeEnd('proses');
 ```
 
-Gunakan tab **Performance** di Chrome DevTools untuk menemukan fungsi yang paling memakan waktu. Panduan alatnya ada di [Chrome DevTools untuk Debugging Aplikasi Web]({{ site.baseurl }}/2026/10/17/chrome-devtools-debugging-aplikasi-web/). Optimasi yang paling berharga hampir selalu berupa perubahan algoritma (misalnya dari O(n²) ke O(n)), bukan trik kecil.
+Gunakan tab **Performance** di Chrome DevTools untuk menemukan fungsi yang paling memakan waktu. Panduan alatnya ada di [Chrome DevTools untuk Debugging Aplikasi Web]({{ site.baseurl }}/blog/2026/10/17/chrome-devtools-debugging-aplikasi-web/). Optimasi yang paling berharga hampir selalu berupa perubahan algoritma (misalnya dari O(n²) ke O(n)), bukan trik kecil.
 
 ## Bukan hanya soal waktu: memori juga
 
-Struktur seperti `Set` dan `Map` menukar sedikit memori tambahan dengan kecepatan. Pada data sangat besar, perhatikan keduanya. Untuk penyimpanan di peramban, ingat batas kapasitas yang dibahas di [localStorage di Aplikasi Web]({{ site.baseurl }}/2026/10/17/localstorage-aplikasi-web-kapan-aman/).
+Struktur seperti `Set` dan `Map` menukar sedikit memori tambahan dengan kecepatan. Pada data sangat besar, perhatikan keduanya. Untuk penyimpanan di peramban, ingat batas kapasitas yang dibahas di [localStorage di Aplikasi Web]({{ site.baseurl }}/blog/2026/10/17/localstorage-aplikasi-web-kapan-aman/).
 
 ## Kesalahan yang sering terjadi
 
@@ -188,4 +188,4 @@ Struktur seperti `Set` dan `Map` menukar sedikit memori tambahan dengan kecepata
 
 ## Kesimpulan
 
-Big-O membantu Anda memprediksi bagaimana kode berperilaku saat data tumbuh. Kenali bentuk-bentuk dasarnya (O(1), O(log n), O(n), O(n log n), O(n²)), hindari perulangan bersarang yang tidak perlu, pakai `Set` dan `Map` untuk pencarian cepat, dan selalu ukur sebelum mengoptimasi. Fondasi ini berlaku di bahasa apa pun, termasuk Kotlin yang dibahas di [Kotlin untuk Pemula Android]({{ site.baseurl }}/2026/10/26/kotlin-dasar-null-safety-data-class/).
+Big-O membantu Anda memprediksi bagaimana kode berperilaku saat data tumbuh. Kenali bentuk-bentuk dasarnya (O(1), O(log n), O(n), O(n log n), O(n²)), hindari perulangan bersarang yang tidak perlu, pakai `Set` dan `Map` untuk pencarian cepat, dan selalu ukur sebelum mengoptimasi. Fondasi ini berlaku di bahasa apa pun, termasuk Kotlin yang dibahas di [Kotlin untuk Pemula Android]({{ site.baseurl }}/blog/2026/10/26/kotlin-dasar-null-safety-data-class/).

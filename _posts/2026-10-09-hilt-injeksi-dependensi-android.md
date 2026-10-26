@@ -180,4 +180,4 @@ Gunakan cakupan sempit sebisa mungkin. Objek yang lama hidup memakan memori, dan
 
 Hilt memangkas kode pembuatan objek yang berulang dan membuat aplikasi lebih mudah diuji. Pasang plugin, tandai `Application` dan aktivitas, sediakan objek lewat Module, lalu ambil ViewModel dengan `hiltViewModel()`. Mulailah dari database dan satu ViewModel, baru tambah repository setelah Anda nyaman.
 
-Jika Anda belum menyiapkan database lokal, baca dulu [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/2026/10/09/room-database-android-pemula-kotlin/).
+Jika Anda belum menyiapkan database lokal, baca dulu [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/blog/2026/10/09/room-database-android-pemula-kotlin/).

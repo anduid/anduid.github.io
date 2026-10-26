@@ -25,7 +25,7 @@ Tulisan ini menunjukkan alur lengkapnya: membaca berkas di peramban, mengirimnya
 3. Apps Script memeriksa tipe dan ukuran, mengubahnya kembali menjadi berkas, dan menyimpannya di folder Drive.
 4. Apps Script mencatat ID berkas ke Sheets dan membalas dengan hasilnya.
 
-Apps Script web app tidak menerima unggahan berkas biasa (`multipart/form-data`) dengan mudah, jadi pola base64 lewat JSON adalah cara yang paling sederhana. Dasar membuat API Apps Script dibahas di tulisan [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/).
+Apps Script web app tidak menerima unggahan berkas biasa (`multipart/form-data`) dengan mudah, jadi pola base64 lewat JSON adalah cara yang paling sederhana. Dasar membuat API Apps Script dibahas di tulisan [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/).
 
 ## Sisi halaman web
 
@@ -151,4 +151,4 @@ Angka batas dapat berubah, jadi cek [dokumentasi kuota Apps Script](https://deve
 
 Mengunggah berkas ke Google Drive lewat Apps Script bisa dilakukan hanya dengan base64, `DriveApp`, dan sedikit validasi. Yang terpenting adalah memeriksa tipe dan ukuran di server, memberi nama berkas yang aman, mencatat ID di Sheets, dan membatasi akses. Mulailah dari fitur sederhana, lalu tambahkan kompresi gambar dan login saat dibutuhkan.
 
-Jika Anda ingin membungkus aplikasi ini menjadi aplikasi Android, baca [Mengubah Web App Menjadi Aplikasi Android dengan WebView]({{ site.baseurl }}/2026/10/09/webview-android-dari-web-app/).
+Jika Anda ingin membungkus aplikasi ini menjadi aplikasi Android, baca [Mengubah Web App Menjadi Aplikasi Android dengan WebView]({{ site.baseurl }}/blog/2026/10/09/webview-android-dari-web-app/).

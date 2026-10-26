@@ -51,7 +51,7 @@ app/src/main/java/com/contoh/aplikasi/
   util/        # fungsi bantu
 ```
 
-Pola ini selaras dengan pembahasan di [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/2026/10/09/room-database-android-pemula-kotlin/), [Hilt di Android: Injeksi Dependensi Tanpa Pusing]({{ site.baseurl }}/2026/10/09/hilt-injeksi-dependensi-android/), dan [Dark Mode di Jetpack Compose]({{ site.baseurl }}/2026/10/09/dark-mode-jetpack-compose-android/).
+Pola ini selaras dengan pembahasan di [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/blog/2026/10/09/room-database-android-pemula-kotlin/), [Hilt di Android: Injeksi Dependensi Tanpa Pusing]({{ site.baseurl }}/blog/2026/10/09/hilt-injeksi-dependensi-android/), dan [Dark Mode di Jetpack Compose]({{ site.baseurl }}/blog/2026/10/09/dark-mode-jetpack-compose-android/).
 
 <!-- TAMBAHKAN: struktur template yang sebenarnya Anda pakai (generik) dan alasan Anda memilihnya. -->
 
@@ -78,7 +78,7 @@ Siapkan daftar periksa ini di dalam template:
 - ☐ Keystore dan pengaturan penandatanganan yang baru
 - ☐ Kebijakan privasi dan halaman toko
 
-Kunci dan keystore tidak boleh dibagi atau disalin antar aplikasi tanpa pertimbangan. Simpan secara aman dan terpisah, sesuai prinsip di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
+Kunci dan keystore tidak boleh dibagi atau disalin antar aplikasi tanpa pertimbangan. Simpan secara aman dan terpisah, sesuai prinsip di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/blog/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
 
 ## Menjaga template tetap sehat
 

@@ -131,7 +131,7 @@ dao.semua()
     .map { daftar -> daftar.filter { it.judul.isNotBlank() } }
 ```
 
-Room mendukung Flow secara langsung. DAO yang mengembalikan `Flow<List<Catatan>>` otomatis mengeluarkan daftar baru setiap isi tabel berubah, seperti dibahas di [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/2026/10/09/room-database-android-pemula-kotlin/).
+Room mendukung Flow secara langsung. DAO yang mengembalikan `Flow<List<Catatan>>` otomatis mengeluarkan daftar baru setiap isi tabel berubah, seperti dibahas di [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/blog/2026/10/09/room-database-android-pemula-kotlin/).
 
 ## StateFlow untuk state tampilan
 
@@ -168,4 +168,4 @@ val daftar by viewModel.daftar.collectAsStateWithLifecycle()
 
 ## Kesimpulan
 
-Coroutines membuat kode asinkron terasa seperti kode biasa: tulis `suspend`, jalankan di `viewModelScope`, pindah dispatcher dengan `withContext`, dan gunakan Flow untuk data yang berubah. Mulailah dari satu fungsi `suspend` dan satu `StateFlow` di ViewModel, lalu tambahkan `async` dan operator Flow sesuai kebutuhan. Jika Anda memakai injeksi dependensi, baca juga [Hilt di Android: Injeksi Dependensi Tanpa Pusing]({{ site.baseurl }}/2026/10/09/hilt-injeksi-dependensi-android/).
+Coroutines membuat kode asinkron terasa seperti kode biasa: tulis `suspend`, jalankan di `viewModelScope`, pindah dispatcher dengan `withContext`, dan gunakan Flow untuk data yang berubah. Mulailah dari satu fungsi `suspend` dan satu `StateFlow` di ViewModel, lalu tambahkan `async` dan operator Flow sesuai kebutuhan. Jika Anda memakai injeksi dependensi, baca juga [Hilt di Android: Injeksi Dependensi Tanpa Pusing]({{ site.baseurl }}/blog/2026/10/09/hilt-injeksi-dependensi-android/).

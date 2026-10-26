@@ -27,7 +27,7 @@ PWA adalah web app yang memakai beberapa teknologi peramban agar terasa seperti 
 - **Bisa berjalan offline** atau di koneksi buruk dengan bantuan cache.
 - **Tetap berupa web**: diperbarui dengan mengunggah berkas baru, tanpa menunggu peninjauan toko.
 
-PWA cocok untuk aplikasi berbasis formulir dan daftar. Untuk fitur perangkat yang dalam atau performa grafis tinggi, aplikasi native atau [WebView]({{ site.baseurl }}/2026/10/09/webview-android-dari-web-app/) bisa lebih tepat. Dukungan fitur PWA berbeda antarperangkat dan peramban, jadi uji di perangkat yang akan dipakai.
+PWA cocok untuk aplikasi berbasis formulir dan daftar. Untuk fitur perangkat yang dalam atau performa grafis tinggi, aplikasi native atau [WebView]({{ site.baseurl }}/blog/2026/10/09/webview-android-dari-web-app/) bisa lebih tepat. Dukungan fitur PWA berbeda antarperangkat dan peramban, jadi uji di perangkat yang akan dipakai.
 
 ## Persyaratan dasar
 
@@ -160,8 +160,8 @@ Karena berkas disimpan di cache, perubahan tidak langsung muncul. Setiap kali An
 
 ## Kapan memilih PWA
 
-Pilih PWA jika aplikasi Anda sudah berbasis web, tidak butuh fitur perangkat yang dalam, dan Anda ingin distribusi mudah tanpa toko. Jika Anda butuh kehadiran di Google Play, pertimbangkan membungkusnya, seperti dibahas di [Mengubah Web App Menjadi Aplikasi Android dengan WebView]({{ site.baseurl }}/2026/10/09/webview-android-dari-web-app/).
+Pilih PWA jika aplikasi Anda sudah berbasis web, tidak butuh fitur perangkat yang dalam, dan Anda ingin distribusi mudah tanpa toko. Jika Anda butuh kehadiran di Google Play, pertimbangkan membungkusnya, seperti dibahas di [Mengubah Web App Menjadi Aplikasi Android dengan WebView]({{ site.baseurl }}/blog/2026/10/09/webview-android-dari-web-app/).
 
 ## Kesimpulan
 
-Mengubah web app menjadi PWA hanya membutuhkan manifest, service worker, dan HTTPS. Mulailah dari cache untuk berkas statis, naikkan versi cache setiap ada perubahan, uji di perangkat sungguhan, dan hati-hati dengan data sensitif. Hasilnya, aplikasi web Anda terasa lebih dekat dengan aplikasi biasa tanpa proses toko aplikasi. Contoh aplikasi yang bisa dijadikan PWA ada di [Membuat Aplikasi Catatan Keuangan Sederhana dengan Google Sheets dan HTML]({{ site.baseurl }}/2026/10/10/aplikasi-catatan-keuangan-google-sheets-html/).
+Mengubah web app menjadi PWA hanya membutuhkan manifest, service worker, dan HTTPS. Mulailah dari cache untuk berkas statis, naikkan versi cache setiap ada perubahan, uji di perangkat sungguhan, dan hati-hati dengan data sensitif. Hasilnya, aplikasi web Anda terasa lebih dekat dengan aplikasi biasa tanpa proses toko aplikasi. Contoh aplikasi yang bisa dijadikan PWA ada di [Membuat Aplikasi Catatan Keuangan Sederhana dengan Google Sheets dan HTML]({{ site.baseurl }}/blog/2026/10/10/aplikasi-catatan-keuangan-google-sheets-html/).

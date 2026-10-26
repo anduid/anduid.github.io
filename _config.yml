@@ -39,10 +39,11 @@ nav:
   - { judul: Blog, url: /blog/ }
   - { judul: Arsip, url: /blog/arsip/ }
   - { judul: Topik, url: /blog/topik/ }
-  - { judul: Tentang, url: /blog/tentang/ }
+  - { judul: Profil, url: /profil/ }
 
 # Menu di footer
 nav_footer:
+  - { judul: Tentang Blog, url: /blog/tentang/ }
   - { judul: Kontak, url: /blog/kontak/ }
   - { judul: Kebijakan Privasi, url: /blog/privasi/ }
 

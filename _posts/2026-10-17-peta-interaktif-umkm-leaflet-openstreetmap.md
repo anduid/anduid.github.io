@@ -63,7 +63,7 @@ const umkm = [
 ];
 ```
 
-Pada aplikasi nyata, data ini berasal dari server atau Google Sheets. Penataan tabelnya dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/). Pastikan lintang dan bujur disimpan sebagai angka, bukan teks.
+Pada aplikasi nyata, data ini berasal dari server atau Google Sheets. Penataan tabelnya dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/blog/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/). Pastikan lintang dan bujur disimpan sebagai angka, bukan teks.
 
 ## Menambahkan marker dan popup yang aman
 
@@ -91,7 +91,7 @@ function gambarMarker(daftar) {
 gambarMarker(umkm);
 ```
 
-Pemeriksaan `isFinite` mencegah satu data rusak menghentikan seluruh peta. Kebiasaan keamanan lain ada di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
+Pemeriksaan `isFinite` mencegah satu data rusak menghentikan seluruh peta. Kebiasaan keamanan lain ada di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
 
 <!-- TAMBAHKAN: kendala yang Anda temui, misalnya koordinat terbalik atau peta tidak muncul karena tinggi elemen. -->
 
@@ -198,4 +198,4 @@ Koordinat bisa sangat sensitif, terutama jika menunjuk ke rumah warga:
 
 Dengan Leaflet dan OpenStreetMap, peta interaktif bisa dibuat dalam puluhan baris kode: peta dasar, marker, popup yang di-escape, filter, dan lokasi pengguna. Yang sering luput adalah sisi non-teknis: atribusi, kebijakan penggunaan tile, dan privasi data lokasi. Mulailah dari data contoh, pastikan semuanya aman, baru sambungkan ke data sungguhan.
 
-Jika data peta Anda disimpan di perangkat pengguna, baca dulu [localStorage di Aplikasi Web: Kapan Aman, Kapan Tidak]({{ site.baseurl }}/2026/10/17/localstorage-aplikasi-web-kapan-aman/).
+Jika data peta Anda disimpan di perangkat pengguna, baca dulu [localStorage di Aplikasi Web: Kapan Aman, Kapan Tidak]({{ site.baseurl }}/blog/2026/10/17/localstorage-aplikasi-web-kapan-aman/).

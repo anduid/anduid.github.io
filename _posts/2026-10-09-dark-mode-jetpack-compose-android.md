@@ -171,4 +171,4 @@ Uji juga di perangkat nyata dengan mengganti pengaturan tema sistem saat aplikas
 
 Dengan `ColorScheme`, `isSystemInDarkTheme()`, dan satu fungsi tema, dark mode di Jetpack Compose bisa dibuat rapi dan konsisten. Tambahkan pilihan manual yang tersimpan dengan DataStore, ikuti aturan kontras, dan uji kedua mode. Hasilnya aplikasi yang nyaman dipakai kapan pun.
 
-Jika Anda ingin menyimpan data pengguna di aplikasi, baca juga [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/2026/10/09/room-database-android-pemula-kotlin/).
+Jika Anda ingin menyimpan data pengguna di aplikasi, baca juga [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/blog/2026/10/09/room-database-android-pemula-kotlin/).

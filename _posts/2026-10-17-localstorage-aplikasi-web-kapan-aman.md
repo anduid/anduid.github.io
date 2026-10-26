@@ -87,7 +87,7 @@ Jangan memakainya sebagai satu-satunya tempat menyimpan:
 
 Semua yang ada di `localStorage` bisa dibaca oleh JavaScript yang berjalan di halaman. Artinya:
 
-- **XSS membocorkan isinya.** Jika ada celah *cross-site scripting*, penyerang dapat membaca seluruh isi `localStorage`. Karena itu, jangan menyimpan token sensitif di sana, dan ikuti kebiasaan di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
+- **XSS membocorkan isinya.** Jika ada celah *cross-site scripting*, penyerang dapat membaca seluruh isi `localStorage`. Karena itu, jangan menyimpan token sensitif di sana, dan ikuti kebiasaan di [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
 - **Pemiliknya bisa mengubahnya.** Pengguna bisa membuka konsol dan menyunting nilai apa pun. Jangan pernah menganggap data di `localStorage` sebagai bukti, misalnya bahwa seseorang adalah admin atau sudah membayar.
 - **Skrip pihak ketiga ikut membacanya.** Pustaka atau iklan yang Anda muat memiliki akses yang sama dengan kode Anda.
 
@@ -121,7 +121,7 @@ Tambahkan juga fitur pemulihan yang memvalidasi berkas sebelum menimpa data: per
 - Data mulai besar atau mendekati batas kapasitas.
 - Anda butuh laporan gabungan dari banyak pengguna.
 
-Jalur yang ringan untuk aplikasi kecil adalah Google Sheets dan Apps Script, seperti di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/2026/10/09/backend-gratis-google-apps-script-sheets/). Rancang tabelnya dengan baik lewat [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
+Jalur yang ringan untuk aplikasi kecil adalah Google Sheets dan Apps Script, seperti di [Backend Gratis dengan Google Apps Script dan Sheets]({{ site.baseurl }}/blog/2026/10/09/backend-gratis-google-apps-script-sheets/). Rancang tabelnya dengan baik lewat [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/blog/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
 
 ## Pola campuran yang sehat
 
@@ -140,4 +140,4 @@ Banyak aplikasi baik memakai keduanya: server sebagai sumber kebenaran, `localSt
 
 `localStorage` adalah alat yang bagus untuk preferensi dan cache, tetapi bukan basis data. Pakai untuk data kecil dan tidak kritis, jangan simpan rahasia, jangan percaya isinya, dan sediakan cadangan jika terpaksa. Begitu data perlu dibagi atau tidak boleh hilang, pindahkan ke server.
 
-Untuk aplikasi yang sudah berjalan lewat PWA, baca juga [Membuat PWA Sederhana]({{ site.baseurl }}/2026/10/11/pwa-sederhana-web-app-dipasang-di-ponsel/).
+Untuk aplikasi yang sudah berjalan lewat PWA, baca juga [Membuat PWA Sederhana]({{ site.baseurl }}/blog/2026/10/11/pwa-sederhana-web-app-dipasang-di-ponsel/).

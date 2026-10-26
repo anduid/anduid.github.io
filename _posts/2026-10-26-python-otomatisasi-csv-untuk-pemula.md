@@ -120,13 +120,16 @@ def rekap_aman(baris):
     dilewati = []
     for nomor, b in enumerate(baris, start=2):   # baris 1 adalah judul kolom
         try:
-            total[b['kategori'].strip()] += int(b['omzet'])
+            kategori = b['kategori'].strip()
+            jumlah = int(b['omzet'])             # ubah dulu, baru dijumlahkan
         except (KeyError, ValueError, AttributeError):
             dilewati.append(nomor)
+            continue
+        total[kategori] += jumlah
     return dict(total), dilewati
 ```
 
-Cetak `dilewati` agar Anda tahu baris mana yang bermasalah, jangan diam-diam membuangnya. Pemeriksaan semacam ini juga penting pada data dari pengguna, seperti dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
+Perhatikan urutannya: nilai diubah dengan `int()` **sebelum** dijumlahkan. Jika ditulis `total[kategori] += int(...)`, `defaultdict` sudah telanjur membuat entri kategori bernilai 0 sebelum `int()` gagal, sehingga baris rusak meninggalkan kategori hantu di hasil. Cetak `dilewati` agar Anda tahu baris mana yang bermasalah, jangan diam-diam membuangnya. Pemeriksaan semacam ini juga penting pada data dari pengguna, seperti dibahas di [Merancang Tabel Google Sheets untuk Aplikasi Web]({{ site.baseurl }}/blog/2026/10/09/merancang-tabel-google-sheets-untuk-aplikasi/).
 
 ## Memproses banyak berkas sekaligus
 
@@ -158,7 +161,7 @@ Pasang dengan `pip install pandas` di dalam virtual environment. Pahami dulu car
 
 ## Keamanan dan privasi
 
-- Berkas CSV dari orang lain bisa memuat sel yang diawali `=`, `+`, `-`, atau `@`. Saat menulis hasil untuk dibuka di Excel, amankan sel seperti itu, sebagaimana dibahas di [Ekspor CSV dari Aplikasi Web]({{ site.baseurl }}/2026/10/17/ekspor-csv-excel-dari-aplikasi-web/).
+- Berkas CSV dari orang lain bisa memuat sel yang diawali `=`, `+`, `-`, atau `@`. Saat menulis hasil untuk dibuka di Excel, amankan sel seperti itu, sebagaimana dibahas di [Ekspor CSV dari Aplikasi Web]({{ site.baseurl }}/blog/2026/10/17/ekspor-csv-excel-dari-aplikasi-web/).
 - Jangan menaruh data pribadi di repositori publik. Masukkan berkas data ke `.gitignore`.
 - Jangan menyimpan kata sandi atau kunci API di dalam skrip.
 
@@ -166,7 +169,7 @@ Pasang dengan `pip install pandas` di dalam virtual environment. Pahami dulu car
 
 - **Memecah baris CSV dengan `split(',')`**, yang rusak jika data memuat koma.
 - **Lupa `newline=''`** sehingga muncul baris kosong ekstra di Windows.
-- **Tidak menentukan `encoding`**, sehingga huruf berakses rusak.
+- **Tidak menentukan `encoding`**, sehingga huruf beraksen rusak.
 - **Menjumlahkan teks, bukan angka.** Nilai dari CSV selalu berupa teks. Ubah dengan `int()` atau `float()`.
 - **Menimpa berkas asli** secara tidak sengaja. Tulis hasil ke berkas baru.
 - **Tidak memeriksa baris yang gagal diproses.**

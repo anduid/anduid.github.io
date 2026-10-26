@@ -87,7 +87,7 @@ println(c1)                                 // Catatan(id=0, judul=Belanja, isi=
 val (id, judul, _) = c1                     // destructuring
 ```
 
-Data class cocok untuk model data, termasuk Entity pada Room yang dibahas di [Room Database di Android]({{ site.baseurl }}/2026/10/09/room-database-android-pemula-kotlin/).
+Data class cocok untuk model data, termasuk Entity pada Room yang dibahas di [Room Database di Android]({{ site.baseurl }}/blog/2026/10/09/room-database-android-pemula-kotlin/).
 
 ## when: pengganti switch yang lebih kuat
 
@@ -192,7 +192,7 @@ Karena `KeadaanLayar` tertutup, `when` wajib mencakup semua kemungkinan dan komp
 
 ## Langkah belajar berikutnya
 
-Setelah dasar ini, lanjutkan ke coroutines dan Flow di [Kotlin Coroutines dan Flow untuk Pemula Android]({{ site.baseurl }}/2026/10/10/kotlin-coroutines-flow-pemula-android/), injeksi dependensi di [Hilt di Android]({{ site.baseurl }}/2026/10/09/hilt-injeksi-dependensi-android/), dan antarmuka dengan Jetpack Compose seperti di [Dark Mode di Jetpack Compose]({{ site.baseurl }}/2026/10/09/dark-mode-jetpack-compose-android/).
+Setelah dasar ini, lanjutkan ke coroutines dan Flow di [Kotlin Coroutines dan Flow untuk Pemula Android]({{ site.baseurl }}/blog/2026/10/10/kotlin-coroutines-flow-pemula-android/), injeksi dependensi di [Hilt di Android]({{ site.baseurl }}/blog/2026/10/09/hilt-injeksi-dependensi-android/), dan antarmuka dengan Jetpack Compose seperti di [Dark Mode di Jetpack Compose]({{ site.baseurl }}/blog/2026/10/09/dark-mode-jetpack-compose-android/).
 
 ## Kesimpulan
 

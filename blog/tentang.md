@@ -13,6 +13,7 @@ Saya mengembangkan aplikasi web dan Android untuk UMKM, instansi, dan inisiatif 
 
 ## Hubungi saya
 
+- Profil dan CV lengkap: [Abdul Salam Yunus (Andu)]({{ '/profil/' | relative_url }})
 - Situs: [andu.my.id](https://andu.my.id/)
 - GitHub: [@anduid](https://github.com/anduid)
 

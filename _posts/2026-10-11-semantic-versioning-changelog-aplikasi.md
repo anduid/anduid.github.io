@@ -38,7 +38,7 @@ SemVer awalnya dirancang untuk pustaka, tetapi pola pikirnya berguna untuk aplik
 - **MINOR**: fitur baru atau perbaikan yang terlihat oleh pengguna.
 - **MAJOR**: perubahan besar pada alur, desain ulang menyeluruh, atau perubahan yang mengubah cara data disimpan.
 
-Untuk aplikasi yang menyimpan data lokal, ingat bahwa perubahan skema database yang tidak kompatibel membutuhkan migrasi, seperti dibahas di [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/2026/10/09/room-database-android-pemula-kotlin/).
+Untuk aplikasi yang menyimpan data lokal, ingat bahwa perubahan skema database yang tidak kompatibel membutuhkan migrasi, seperti dibahas di [Room Database di Android: Panduan Pemula dengan Kotlin]({{ site.baseurl }}/blog/2026/10/09/room-database-android-pemula-kotlin/).
 
 ## Versi pra-rilis
 
@@ -75,7 +75,7 @@ val patch = 2
 val kodeVersi = major * 10000 + minor * 100 + patch // 10302
 ```
 
-Dengan rumus ini, `1.3.2` menjadi `10302`, dan urutannya selalu naik saat versi naik. Cara ini praktis, tetapi pastikan batasnya cukup (misalnya MINOR dan PATCH di bawah 100) dan Anda konsisten. Persiapan rilis ke toko dibahas di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
+Dengan rumus ini, `1.3.2` menjadi `10302`, dan urutannya selalu naik saat versi naik. Cara ini praktis, tetapi pastikan batasnya cukup (misalnya MINOR dan PATCH di bawah 100) dan Anda konsisten. Persiapan rilis ke toko dibahas di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/blog/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
 
 <!-- TAMBAHKAN: cara Anda menetapkan versionCode dan versionName di aplikasi Anda, dan kesalahan yang pernah terjadi. -->
 
@@ -88,7 +88,7 @@ git tag -a v1.3.2 -m "Rilis 1.3.2"
 git push origin v1.3.2
 ```
 
-Tag menunjuk ke commit tepat pada saat rilis. Jika ada laporan galat dari versi `1.3.2`, Anda bisa langsung membuka kode yang persis sama. Dasar-dasar Git dibahas di [Git dan GitHub untuk Pemula]({{ site.baseurl }}/2026/10/10/git-github-dasar-untuk-pemula/).
+Tag menunjuk ke commit tepat pada saat rilis. Jika ada laporan galat dari versi `1.3.2`, Anda bisa langsung membuka kode yang persis sama. Dasar-dasar Git dibahas di [Git dan GitHub untuk Pemula]({{ site.baseurl }}/blog/2026/10/10/git-github-dasar-untuk-pemula/).
 
 ## Menulis changelog
 
