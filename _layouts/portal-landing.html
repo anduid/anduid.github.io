@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+<head>
+
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+
+
+
+
+
+<meta content="ANDU – Android Native Development Unit" property="og:title">
+<meta content="Next-Gen Android Hub, SaaS licenses, offline IndexedDB vault, and interactive coding academy." property="og:description">
+<meta content="website" property="og:type">
+<meta content="#080c18" name="theme-color">
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233DDC84'%3E%3Cpath d='M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v6c0 .83.67 1.5 1.5 1.5S5 16.33 5 15.5v-6C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-6c0-.83-.67-1.5-1.5-1.5zm-4.97-4.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.72 2.24 12.88 2 12 2c-.88 0-1.72.24-2.64.63L7.88.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.3 1.3C6.67 3.23 5.4 4.98 5.08 7.09h13.84c-.32-2.11-1.59-3.86-3.39-4.93zM9 5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm6 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z'/%3E%3C/svg%3E" rel="icon">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            andu: {
+              bg: '#080c18',
+              card: '#0f172a',
+              green: '#3DDC84',
+              cyan: '#38bdf8',
+              purple: '#c084fc',
+              amber: '#fbbf24',
+              rose: '#f43f5e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    :root { color-scheme: dark; --pri: #3DDC84; --sec: #38bdf8; --ter: #c084fc; }
+    body { background-color: #080c18; color: #e2e8f0; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+    .glass { background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .glass-card:hover { transform: translateY(-3px); border-color: rgba(61, 220, 132, 0.35); box-shadow: 0 16px 36px -10px rgba(61, 220, 132, 0.16); }
+    .glass-input { background: rgba(4, 7, 15, 0.65); border: 1px solid rgba(255, 255, 255, 0.14); color: #fff; outline: none; transition: .2s; }
+    .glass-input:focus { border-color: var(--pri); box-shadow: 0 0 0 3px rgba(61, 220, 132, 0.2); }
+    .grad { background: linear-gradient(120deg, #3DDC84, #38bdf8 50%, #c084fc); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200%; animation: sh 6s linear infinite; }
+    @keyframes sh { to { background-position: 200%; } }
+    
+    @keyframes fl {
+      0% { transform: translateY(0px) rotate(0deg) scale(1); }
+      33% { transform: translateY(-18px) translateX(14px) rotate(4deg) scale(1.06); }
+      66% { transform: translateY(12px) translateX(-10px) rotate(-3deg) scale(0.97); }
+      100% { transform: translateY(0px) rotate(0deg) scale(1); }
+    }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border-radius: .75rem; font-weight: 800; font-size: .8rem; cursor: pointer; transition: .25s; text-align: center; }
+    .btn:active { transform: scale(.96); }
+    .btn-p { background: linear-gradient(135deg, #3DDC84, #10b981); color: #041009; }
+    .btn-p:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(61, 220, 132, .4); }
+    .btn-o { border: 1px solid rgba(255, 255, 255, .14); background: rgba(255, 255, 255, .04); color: #e2e8f0; }
+    .btn-o:hover { border-color: var(--pri); color: var(--pri); background: rgba(61, 220, 132, .08); }
+    .cur::after { content: "▍"; animation: bk 1s steps(2) infinite; color: var(--pri); }
+    @keyframes bk { 50% { opacity: 0; } }
+    .bar { height: .5rem; border-radius: 9999px; background: #04070f; overflow: hidden; }
+    .bar i { display: block; height: 100%; background: linear-gradient(90deg, #3DDC84, #38bdf8); transition: width .5s; }
+    details > summary { cursor: pointer; list-style: none; }
+    details[open] .ch { transform: rotate(180deg); }
+    .ch { transition: .3s; }
+    .toast { transform: translateY(160%); transition: .45s cubic-bezier(.2, 1.3, .4, 1); }
+    .toast.on { transform: none; }
+    .tab.act { background: #3DDC84; color: #041009; font-weight: 800; }
+    .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--pri); font-weight: 700; }
+
+    /* SPA Page Transitions */
+    .spa-page {
+      display: none;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .spa-page.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-btn-link {
+      position: relative;
+      padding: 0.35rem 0.65rem;
+      border-radius: 0.6rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .nav-btn-link.active-link {
+      color: #3DDC84;
+      background: rgba(61, 220, 132, 0.12);
+      font-weight: 700;
+    }
+
+    /* Sliding Capsule Pill Language Switcher */
+    .lang-pill-track {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 3px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .lang-pill-glider {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: calc(50% - 3px);
+      height: calc(100% - 6px);
+      background: linear-gradient(135deg, #3DDC84, #10b981);
+      border-radius: 9999px;
+      box-shadow: 0 2px 8px rgba(61, 220, 132, 0.35);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+    .lang-pill-glider.id-active {
+      transform: translateX(100%);
+    }
+    .lang-pill-opt {
+      position: relative;
+      z-index: 2;
+      width: 32px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 3px 0;
+      transition: color 0.2s ease;
+    }
+  </style>
+
+{% include portal-meta.html %}
+{% include portal-config.html %}
+</head>
+<body class="selection:bg-[#3DDC84] selection:text-[#080c18] antialiased">
+{{ content }}
+<script src="{{ '/assets/portal/andu-core.js' | relative_url }}"></script>
+<script src="{{ '/assets/portal/landing-api.js' | relative_url }}"></script>
+<script src="{{ '/assets/portal/landing.js' | relative_url }}"></script>
+</body>
+</html>

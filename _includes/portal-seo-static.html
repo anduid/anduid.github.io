@@ -1,0 +1,14 @@
+<section class="sr-only" aria-label="Katalog ANDU">
+  <h2>Produk, kelas, dan layanan ANDU</h2>
+  <ul>
+  {% for c in site.data.katalog %}{% if c.type == "product" or c.type == "course" or c.type == "plan" %}
+    <li><strong>{{ c.title }}</strong>{% if c.desc %} – {{ c.desc }}{% endif %}{% if c.price > 0 %} – Rp{{ c.price }}{% else %} – Gratis{% endif %}</li>
+  {% endif %}{% endfor %}
+  </ul>
+  <h2>Artikel terbaru</h2>
+  <ul>{% for p in site.posts limit: 8 %}<li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>{% endfor %}</ul>
+</section>
+<noscript><p style="padding:1rem;color:#fff">Situs ini memerlukan JavaScript untuk menampilkan katalog interaktif.</p></noscript>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ItemList","name":"Katalog ANDU","itemListElement":[{% assign n = 0 %}{% for c in site.data.katalog %}{% if c.type == "product" or c.type == "course" %}{% assign n = n | plus: 1 %}{% if n > 1 %},{% endif %}{"@type":"ListItem","position":{{ n }},"item":{"@type":{% if c.type == "course" %}"Course"{% else %}"SoftwareApplication"{% endif %},"name":{{ c.title | jsonify }},"description":{{ c.desc | default: c.title | jsonify }}}}{% endif %}{% endfor %}]}
+</script>

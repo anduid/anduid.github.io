@@ -1,0 +1,15 @@
+{%- comment -%} Meta SEO untuk halaman portal (tanpa plugin tambahan). Memakai front matter: title, description, noindex, image. {%- endcomment -%}
+{%- assign p_kanonik = page.url | replace: 'index.html', '' | absolute_url -%}
+{%- assign p_gambar = page.image | default: site.default_image_studio | absolute_url -%}
+<title>{{ page.title | escape }}</title>
+<meta name="description" content="{{ page.description | escape }}">
+<link rel="canonical" href="{{ p_kanonik }}">
+{% if page.noindex %}<meta name="robots" content="noindex, nofollow">{% else %}<meta name="robots" content="index, follow, max-image-preview:large">{% endif %}
+<meta name="author" content="El-Salam Technology, Inc.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="ANDU – El-Salam Technology">
+<meta property="og:title" content="{{ page.title | escape }}"><meta property="og:description" content="{{ page.description | escape }}">
+<meta property="og:url" content="{{ p_kanonik }}"><meta property="og:image" content="{{ p_gambar }}"><meta property="og:locale" content="id_ID">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml"><link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}" sizes="any">
+<link rel="apple-touch-icon" href="{{ '/assets/images/apple-touch-icon.png' | relative_url }}"><link rel="manifest" href="{{ '/site.webmanifest' | relative_url }}">
+{% unless page.noindex %}<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"ANDU – El-Salam Technology, Inc.","url":"{{ site.url }}/portal/","parentOrganization":{"@type":"Organization","name":"El-Salam Technology, Inc."}}</script>{% endunless %}

@@ -5,5 +5,7 @@ sitemap: false
 ---
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /terminal/
 
 Sitemap: {{ '/sitemap.xml' | absolute_url }}

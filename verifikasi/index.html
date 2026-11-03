@@ -1,0 +1,26 @@
+---
+layout: page
+title: "Verifikasi Sertifikat ANDU Academy"
+description: "Periksa keaslian sertifikat kompetensi digital yang diterbitkan ANDU Academy, El-Salam Technology."
+permalink: /verifikasi/
+---
+{% include portal-config.html %}
+<p>Masukkan kode sertifikat, contoh <code>CERT-AB12CD34EF</code>.</p>
+<form id="vf" style="display:flex;gap:.5rem;margin:1rem 0"><input id="vc" required placeholder="CERT-XXXXXXXXXX" style="flex:1;padding:.7rem;border:1px solid rgba(128,128,128,.5);border-radius:.5rem;background:transparent;color:inherit;text-transform:uppercase;font-family:monospace"><button style="padding:.7rem 1.2rem;border-radius:.5rem;border:0;font-weight:700;background:#3DDC84;color:#041009;cursor:pointer">Periksa</button></form>
+<div id="vr" style="display:none;padding:1rem;border:1px solid rgba(128,128,128,.4);border-radius:.75rem"></div>
+<script>
+(function(){
+  var g=(window.ANDU||{}).gas, vr=document.getElementById('vr'), vc=document.getElementById('vc');
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  function check(code){
+    vr.style.display='block'; vr.textContent='Memeriksa…';
+    if(!g){vr.textContent='Backend belum dikonfigurasi (gas_url).';return}
+    fetch(g,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'verifyCert',code:code})}).then(function(r){return r.json()}).then(function(j){
+      if(!j.ok){vr.textContent=j.message||'Gagal memeriksa.';return}
+      vr.innerHTML=j.valid?'<strong>✅ Sertifikat valid</strong><p><b>'+esc(j.name)+'</b><br>'+esc(j.course)+' · '+esc(j.hours)+' jam<br><small>Terbit '+esc(String(j.issuedAt).slice(0,10))+'</small></p>':'<strong>❌ Kode tidak ditemukan</strong>';
+    }).catch(function(){vr.textContent='Jaringan bermasalah. Coba lagi.'});
+  }
+  document.getElementById('vf').onsubmit=function(e){e.preventDefault();check(vc.value.trim().toUpperCase())};
+  var q=new URLSearchParams(location.search).get('code'); if(q){vc.value=q;check(q.toUpperCase())}
+})();
+</script>

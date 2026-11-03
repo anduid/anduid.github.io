@@ -1,0 +1,682 @@
+---
+layout: portal-admin
+title: "ANDU Superadmin"
+description: "Konsol superadmin ANDU."
+sitemap: false
+noindex: true
+permalink: /admin/
+---
+<aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-low/90 backdrop-blur-xl z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-16 flex items-center px-gutter gap-space-sm bg-surface-container-lowest/60"><div class="w-9 h-9 rounded bg-primary-container/20 flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[22px]">adb</span></div><div class="flex flex-col"><span class="font-headline-md text-headline-md tracking-tight text-on-surface font-bold">ANDU<span class="text-primary font-label-sm text-label-sm ml-space-xs font-semibold">OS CORE</span></span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Control Tower v4.2</span></div></div><div class="px-gutter pt-space-md pb-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/70">Master Architecture</span></div><nav class="flex flex-col gap-space-xs px-gutter-sm" data-active-classes="bg-primary-container text-on-primary-container font-label-lg text-label-lg font-semibold shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="overview-telemetry" href="#"><span class="material-symbols-outlined text-[19px] group-hover:text-primary transition-colors">monitoring</span><span class="font-body-md text-body-md">Overview &amp; Telemetry</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="apps-code-libraries" href="#"><span class="material-symbols-outlined text-[19px] group-hover:text-primary transition-colors">deployed_code</span><span class="font-body-md text-body-md">Apps, Code &amp; Libraries</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="services-software-house" href="#"><span class="material-symbols-outlined text-[19px] group-hover:text-primary transition-colors">business_center</span><span class="font-body-md text-body-md">Services &amp; Software House</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="academy-classes" href="#"><span class="material-symbols-outlined text-[19px] group-hover:text-primary transition-colors">school</span><span class="font-body-md text-body-md">Academy &amp; Classes</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="partnership-hub" href="#"><span class="material-symbols-outlined text-[19px] group-hover:text-primary transition-colors">handshake</span><span class="font-body-md text-body-md">Partnership Hub</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="tech-blog-articles" href="#"><span class="material-symbols-outlined text-[19px] group-hover:text-primary transition-colors">article</span><span class="font-body-md text-body-md">Tech Blog &amp; Articles</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="members-subscriptions" href="#"><span class="material-symbols-outlined text-[19px] group-hover:text-primary transition-colors">group</span><span class="font-body-md text-body-md">Members &amp; Subscriptions</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="user-terminal-services" href="#"><span class="material-symbols-outlined text-[19px] group-hover:text-primary transition-colors">terminal</span><span class="font-body-md text-body-md">Terminal Services</span></a></nav></div><div class="p-gutter-sm bg-surface-container-lowest/80"><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-label-lg text-label-lg font-semibold"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="system-settings-backup" href="#"><span class="material-symbols-outlined text-[19px] group-hover:text-secondary transition-colors">tune</span><span class="font-body-md text-body-md">Settings &amp; Backup</span></a></nav><div class="mt-space-sm p-space-sm rounded-lg bg-surface-container-high/50 flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant">SYNC: ACTIVE</span></div><span class="font-label-sm text-label-sm text-secondary font-medium">IDB READY</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-dim/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-lg"><div class="flex items-center gap-gutter"><div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-surface-container-high/70"><span class="w-2 h-2 rounded-full bg-primary"></span><span class="font-label-sm text-label-sm font-semibold text-primary uppercase tracking-wide">Nodes Optimal</span><span class="font-label-sm text-label-sm text-on-surface-variant ml-space-xs font-mono">99.98% SLA</span></div><div class="hidden xl:flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant"><span class="material-symbols-outlined text-[16px] text-secondary">shield</span><span>Privilege Tier: <strong class="text-tertiary">Superadmin (L0 Root)</strong></span></div></div><div class="flex items-center gap-gutter"><div class="flex items-center p-space-xs rounded-lg bg-surface-container-high/80"><button class="px-space-sm py-space-xs rounded font-label-md text-label-md font-semibold bg-tertiary-container text-on-tertiary-container" type="button">EN</button><button class="px-space-sm py-space-xs rounded font-label-md text-label-md font-semibold text-on-surface-variant hover:text-on-surface transition-colors" type="button">ID</button></div><button class="relative p-space-sm rounded-lg bg-surface-container-high/50 hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-2.5 h-2.5 bg-secondary-container rounded-full"></span></button><div class="flex items-center gap-space-sm pl-space-sm"><div class="flex flex-col text-right hidden sm:flex"><span class="font-label-md text-label-md font-semibold text-on-surface leading-tight">anduroot</span><span class="font-label-sm text-label-sm text-primary font-mono">sysadmin@andu.io</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface"><div class="w-full px-gutter-lg py-gutter"><div class="flex flex-col w-full">
+<!-- Top Command Telemetry Bar -->
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md p-space-md rounded-xl bg-surface-container-low/90 shadow-md backdrop-blur-xl mb-gutter">
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-primary-container/20 text-primary">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-semibold tracking-wider" data-i18n="pill_superadmin">SUPERADMIN ROOT ACCESS • v2.6 CMS</span>
+</div>
+<div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm font-mono">
+<span class="material-symbols-outlined text-[14px]">database</span>
+<span id="idb-status-indicator">IDB: ONLINE</span>
+</div>
+<div class="hidden lg:flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-surface-container-high text-tertiary font-label-sm text-label-sm font-mono">
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+<span>DAEMON: RUNNING</span>
+</div>
+</div>
+<!-- Quick Utilities -->
+<div class="flex items-center gap-space-sm w-full md:w-auto justify-end">
+<!-- Web Push Button -->
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-secondary transition-all text-label-md font-label-md" id="btn-test-push">
+<span class="material-symbols-outlined text-[16px]">podcasts</span>
+<span data-i18n="btn_push">Test Web Push</span>
+</button>
+<!-- Language Toggle -->
+<div class="flex items-center p-0.5 rounded-lg bg-surface-container-lowest">
+<button class="px-space-sm py-space-xs rounded font-label-sm text-label-sm font-semibold bg-tertiary-container text-on-tertiary-container transition-all" id="lang-btn-en" onclick="setLanguage('en')">EN</button>
+<button class="px-space-sm py-space-xs rounded font-label-sm text-label-sm font-semibold text-on-surface-variant hover:text-on-surface transition-all" id="lang-btn-id" onclick="setLanguage('id')">ID</button>
+</div>
+<!-- Notification Trigger -->
+<button class="relative p-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-all" id="btn-toggle-notifs">
+<span class="material-symbols-outlined text-[20px]">notifications_active</span>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-on-primary rounded-full font-label-sm text-label-sm flex items-center justify-center font-bold" id="notif-badge">3</span>
+</button>
+</div>
+</div>
+<!-- Main View Workspace Switcher & Content Wrapper -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Sub-navigation Modules Deck -->
+<div class="col-span-12 xl:col-span-3 flex flex-col gap-space-sm">
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant" data-i18n="nav_title">ANDU Modules</span>
+<span class="font-label-sm text-label-sm text-primary font-mono">9 Active</span>
+</div>
+<div class="flex flex-col gap-space-xs" id="module-tabs-list">
+<button class="module-tab-btn active-tab flex items-center justify-between px-space-md py-space-sm rounded-lg text-left transition-all" data-view="overview">
+<span class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">monitoring</span>
+<span class="font-body-md text-body-md" data-i18n="mod_overview">Overview &amp; Telemetry</span>
+</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</button>
+<button class="module-tab-btn flex items-center justify-between px-space-md py-space-sm rounded-lg text-left transition-all text-on-surface-variant hover:bg-surface-container-high" data-view="products">
+<span class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">deployed_code</span>
+<span class="font-body-md text-body-md" data-i18n="mod_products">Apps &amp; SaaS Products</span>
+</span>
+<span class="font-label-sm text-label-sm font-mono text-secondary" id="badge-count-products">0</span>
+</button>
+<button class="module-tab-btn flex items-center justify-between px-space-md py-space-sm rounded-lg text-left transition-all text-on-surface-variant hover:bg-surface-container-high" data-view="services">
+<span class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">business_center</span>
+<span class="font-body-md text-body-md" data-i18n="mod_services">Services &amp; Software House</span>
+</span>
+<span class="font-label-sm text-label-sm font-mono text-secondary" id="badge-count-services">0</span>
+</button>
+<button class="module-tab-btn flex items-center justify-between px-space-md py-space-sm rounded-lg text-left transition-all text-on-surface-variant hover:bg-surface-container-high" data-view="courses">
+<span class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">school</span>
+<span class="font-body-md text-body-md" data-i18n="mod_courses">Academy &amp; Classes</span>
+</span>
+<span class="font-label-sm text-label-sm font-mono text-secondary" id="badge-count-courses">0</span>
+</button>
+<button class="module-tab-btn flex items-center justify-between px-space-md py-space-sm rounded-lg text-left transition-all text-on-surface-variant hover:bg-surface-container-high" data-view="partners">
+<span class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">handshake</span>
+<span class="font-body-md text-body-md" data-i18n="mod_partners">Partnership Hub</span>
+</span>
+<span class="font-label-sm text-label-sm font-mono text-secondary" id="badge-count-partners">0</span>
+</button>
+<button class="module-tab-btn flex items-center justify-between px-space-md py-space-sm rounded-lg text-left transition-all text-on-surface-variant hover:bg-surface-container-high" data-view="posts">
+<span class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">article</span>
+<span class="font-body-md text-body-md" data-i18n="mod_posts">Tech Blog &amp; Articles</span>
+</span>
+<span class="font-label-sm text-label-sm font-mono text-secondary" id="badge-count-posts">0</span>
+</button>
+<button class="module-tab-btn flex items-center justify-between px-space-md py-space-sm rounded-lg text-left transition-all text-on-surface-variant hover:bg-surface-container-high" data-view="members">
+<span class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">group</span>
+<span class="font-body-md text-body-md" data-i18n="mod_members">Members &amp; Subscriptions</span>
+</span>
+<span class="font-label-sm text-label-sm font-mono text-secondary" id="badge-count-members">0</span>
+</button>
+<button class="module-tab-btn flex items-center justify-between px-space-md py-space-sm rounded-lg text-left transition-all text-on-surface-variant hover:bg-surface-container-high" data-view="terminal">
+<span class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span class="font-body-md text-body-md" data-i18n="mod_terminal">User Terminal Services</span>
+</span>
+<span class="font-label-sm text-label-sm font-mono text-secondary" id="badge-count-terminal">0</span>
+</button>
+<button class="module-tab-btn flex items-center justify-between px-space-md py-space-sm rounded-lg text-left transition-all text-on-surface-variant hover:bg-surface-container-high" data-view="settings">
+<span class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px]">settings_backup_restore</span>
+<span class="font-body-md text-body-md" data-i18n="mod_settings">System Settings &amp; IDB</span>
+</span>
+<span class="material-symbols-outlined text-[14px] text-tertiary">tune</span>
+</button>
+</div>
+</div>
+<!-- System Quick Health Card -->
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider" data-i18n="lbl_sync_engine">Vault Sync Engine</span>
+<span class="font-label-sm text-label-sm text-primary font-mono">100% OK</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-1.5 rounded-full w-full"></div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span>Active Mutex: <strong class="text-secondary font-mono">L0_MUTEX</strong></span>
+<span>Buffer: <strong class="text-on-surface font-mono">0.02ms</strong></span>
+</div>
+</div>
+</div>
+<!-- Dynamic Stage Area -->
+<div class="col-span-12 xl:col-span-9 flex flex-col gap-gutter">
+<!-- MODULE 1: OVERVIEW & TELEMETRY -->
+<section class="view-panel flex flex-col gap-gutter" id="view-overview">
+<!-- Top Aggregate Metrics -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-space-sm">
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase" data-i18n="kpi_apps">SaaS Apps</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-primary" id="kpi-apps-val">0</span>
+<span class="material-symbols-outlined text-primary text-[20px]">layers</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-xs font-mono">+2 staging</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase" data-i18n="kpi_services">Client Svcs</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-secondary" id="kpi-services-val">0</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">handyman</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-xs font-mono">98.4% SLA</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase" data-i18n="kpi_students">Academy</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-tertiary" id="kpi-students-val">0</span>
+<span class="material-symbols-outlined text-tertiary text-[20px]">school</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-xs font-mono">Cert Active</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase" data-i18n="kpi_partners">Partners</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-primary-fixed" id="kpi-partners-val">0</span>
+<span class="material-symbols-outlined text-primary-fixed text-[20px]">corporate_fare</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-xs font-mono">8 Networks</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase" data-i18n="kpi_posts">Articles</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-secondary-fixed" id="kpi-posts-val">0</span>
+<span class="material-symbols-outlined text-secondary-fixed text-[20px]">feed</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-xs font-mono">14.2k views</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase" data-i18n="kpi_members">Active VIPs</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-tertiary-fixed" id="kpi-members-val">0</span>
+<span class="material-symbols-outlined text-tertiary-fixed text-[20px]">verified</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-space-xs font-mono">ARR $248k</span>
+</div>
+</div>
+<!-- Telemetry Graphs and Live Logs -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Live Gradle Build & Microservice Telemetry (2 cols) -->
+<div class="lg:col-span-2 p-space-lg rounded-xl bg-surface-container-low shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[22px]">ssid_chart</span>
+<span class="font-headline-md text-headline-md text-on-surface" data-i18n="chart_title">Realtime System Throughput &amp; Pipeline Sync</span>
+</div>
+<span class="font-label-sm text-label-sm font-mono px-space-sm py-space-xs rounded bg-surface-container-high text-secondary">24h Cluster Data</span>
+</div>
+<!-- Inline SVG Sparkline / Bar Graph -->
+<div class="w-full bg-surface-container-lowest/60 rounded-xl p-space-md mb-space-md">
+<svg class="w-full h-36" preserveaspectratio="none" viewbox="0 0 600 150">
+<defs>
+<lineargradient id="grad-green" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#3ddc84" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#3ddc84" stop-opacity="0.0"></stop>
+</lineargradient>
+<lineargradient id="grad-blue" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#7bd0ff" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#7bd0ff" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line stroke="#2d3449" stroke-dasharray="4" stroke-width="1" x1="0" x2="600" y1="30" y2="30"></line>
+<line stroke="#2d3449" stroke-dasharray="4" stroke-width="1" x1="0" x2="600" y1="75" y2="75"></line>
+<line stroke="#2d3449" stroke-dasharray="4" stroke-width="1" x1="0" x2="600" y1="120" y2="120"></line>
+<!-- Area 1 (Primary green) -->
+<path d="M0,130 Q70,90 140,110 T280,50 T420,70 T520,30 T600,60 L600,150 L0,150 Z" fill="url(#grad-green)"></path>
+<path d="M0,130 Q70,90 140,110 T280,50 T420,70 T520,30 T600,60" fill="none" stroke="#60f99e" stroke-width="2.5"></path>
+<!-- Area 2 (Cyan network line) -->
+<path d="M0,140 Q60,115 130,80 T260,100 T390,40 T490,65 T600,20 L600,150 L0,150 Z" fill="url(#grad-blue)"></path>
+<path d="M0,140 Q60,115 130,80 T260,100 T390,40 T490,65 T600,20" fill="none" stroke="#7bd0ff" stroke-dasharray="3" stroke-width="2"></path>
+<!-- Coordinate dots -->
+<circle cx="280" cy="50" fill="#60f99e" r="4"></circle>
+<circle cx="520" cy="30" fill="#60f99e" r="4"></circle>
+<circle cx="600" cy="20" fill="#7bd0ff" r="4"></circle>
+</svg>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm mt-space-xs font-mono">
+<span>00:00 UTC</span>
+<span>06:00 UTC</span>
+<span>12:00 UTC</span>
+<span>18:00 UTC</span>
+<span>NOW (LIVE)</span>
+</div>
+</div>
+<!-- Micro Quick Actions Toolbar -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-bold hover:shadow-lg transition-all" onclick="switchModule('products'); openCreateModal('products');">
+<span class="material-symbols-outlined text-[16px]">add_box</span>
+<span data-i18n="btn_quick_app">Deploy New App</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-tertiary font-label-md text-label-md font-semibold transition-all" onclick="switchModule('courses'); openCreateModal('courses');">
+<span class="material-symbols-outlined text-[16px]">post_add</span>
+<span data-i18n="btn_quick_course">Publish Class</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-secondary font-label-md text-label-md font-semibold transition-all" onclick="switchModule('posts'); openCreateModal('posts');">
+<span class="material-symbols-outlined text-[16px]">edit_note</span>
+<span data-i18n="btn_quick_post">Write Article</span>
+</button>
+</div>
+</div>
+<!-- Audit Log Panel (1 col) -->
+<div class="p-space-lg rounded-xl bg-surface-container-low shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-md">
+<span class="font-headline-md text-headline-md text-on-surface" data-i18n="audit_log_title">Audit Telemetry</span>
+<span class="font-label-sm text-label-sm text-primary font-mono">RECORDING</span>
+</div>
+<div class="flex flex-col gap-space-sm" id="audit-log-entries">
+<div class="p-space-sm rounded-lg bg-surface-container-high flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface font-label-sm text-label-sm">
+<span class="text-primary font-bold">MUTATION: APP_DEPLOYED</span>
+<span class="text-on-surface-variant font-mono">1m ago</span>
+</div>
+<span class="text-on-surface-variant font-body-sm text-body-sm">Andu Pro Suite v3.12 commit verified to production.</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-high flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface font-label-sm text-label-sm">
+<span class="text-secondary font-bold">ACCESS: ROOT_TOKEN</span>
+<span class="text-on-surface-variant font-mono">14m ago</span>
+</div>
+<span class="text-on-surface-variant font-body-sm text-body-sm">Superadmin privilege elevation validated via hardware key.</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-high flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface font-label-sm text-label-sm">
+<span class="text-tertiary font-bold">IDB_SYNC: CHECKPOINT</span>
+<span class="text-on-surface-variant font-mono">42m ago</span>
+</div>
+<span class="text-on-surface-variant font-body-sm text-body-sm">IndexedDB offline fallback stores snapshot synced (0 error).</span>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm border-t border-surface-container-highest flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">Hash: 8fbc..91a0</span>
+<button class="font-label-sm text-label-sm text-error hover:underline" data-i18n="btn_flush_logs" onclick="clearAuditLogs()">Flush Logs</button>
+</div>
+</div>
+</div>
+</section>
+<!-- MODULE 2: APPS, CODE & LIBRARIES (CRUD) -->
+<section class="view-panel hidden flex flex-col gap-gutter" id="view-products">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" data-i18n="apps_heading">Apps, Code &amp; Libraries</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" data-i18n="apps_sub">Catalog for Android SDKs, Jetpack Compose kits, and SaaS solutions.</p>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-bold shadow-md hover:scale-105 transition-all" onclick="openCreateModal('products')">
+<span class="material-symbols-outlined text-[18px]">add_box</span>
+<span data-i18n="btn_new_app">Add New App / Kit</span>
+</button>
+</div>
+<!-- Search Bar -->
+<div class="flex items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant ml-space-xs">search</span>
+<input class="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none font-body-md text-body-md" id="search-products" oninput="filterTable('products', this.value)" placeholder="Filter by App name, SDK target or license..." type="text"/>
+</div>
+<!-- Table Card Container -->
+<div class="rounded-xl bg-surface-container-low shadow-md overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/80 text-on-surface-variant font-label-md text-label-md uppercase font-mono">
+<tr>
+<th class="py-space-md px-space-md">App / Kit</th>
+<th class="py-space-md px-space-md">Category</th>
+<th class="py-space-md px-space-md">Price</th>
+<th class="py-space-md px-space-md">Version</th>
+<th class="py-space-md px-space-md">Target SDK</th>
+<th class="py-space-md px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40 font-body-md text-body-md text-on-surface" id="table-body-products">
+<!-- Injected by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- MODULE 3: SERVICES & SOFTWARE HOUSE (CRUD) -->
+<section class="view-panel hidden flex flex-col gap-gutter" id="view-services">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" data-i18n="services_heading">Services &amp; Software House</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" data-i18n="services_sub">Production engagements, architecture review, and Android security audits.</p>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md font-bold shadow-md hover:scale-105 transition-all" onclick="openCreateModal('services')">
+<span class="material-symbols-outlined text-[18px]">add_task</span>
+<span data-i18n="btn_new_service">Create Service Offering</span>
+</button>
+</div>
+<div class="flex items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant ml-space-xs">search</span>
+<input class="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none font-body-md text-body-md" id="search-services" oninput="filterTable('services', this.value)" placeholder="Filter software house service tiers..." type="text"/>
+</div>
+<div class="rounded-xl bg-surface-container-low shadow-md overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/80 text-on-surface-variant font-label-md text-label-md uppercase font-mono">
+<tr>
+<th class="py-space-md px-space-md">Service Name</th>
+<th class="py-space-md px-space-md">Turnaround SLA</th>
+<th class="py-space-md px-space-md">Rate / Unit</th>
+<th class="py-space-md px-space-md">Status</th>
+<th class="py-space-md px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40 font-body-md text-body-md text-on-surface" id="table-body-services">
+<!-- Injected by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- MODULE 4: ACADEMY & CLASSES (CRUD) -->
+<section class="view-panel hidden flex flex-col gap-gutter" id="view-courses">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" data-i18n="courses_heading">Academy &amp; Classes</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" data-i18n="courses_sub">Curated masterclasses in Kotlin Multiplatform, NDK, and Jetpack Compose.</p>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-tertiary-container text-on-tertiary-container font-label-md text-label-md font-bold shadow-md hover:scale-105 transition-all" onclick="openCreateModal('courses')">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span data-i18n="btn_new_course">Add New Class</span>
+</button>
+</div>
+<div class="flex items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant ml-space-xs">search</span>
+<input class="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none font-body-md text-body-md" id="search-courses" oninput="filterTable('courses', this.value)" placeholder="Filter academy courses and workshops..." type="text"/>
+</div>
+<div class="rounded-xl bg-surface-container-low shadow-md overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/80 text-on-surface-variant font-label-md text-label-md uppercase font-mono">
+<tr>
+<th class="py-space-md px-space-md">Class Title</th>
+<th class="py-space-md px-space-md">Difficulty Level</th>
+<th class="py-space-md px-space-md">Modules</th>
+<th class="py-space-md px-space-md">Tuition</th>
+<th class="py-space-md px-space-md">Certification</th>
+<th class="py-space-md px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40 font-body-md text-body-md text-on-surface" id="table-body-courses">
+<!-- Injected by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- MODULE 5: PARTNERSHIP HUB (CRUD) -->
+<section class="view-panel hidden flex flex-col gap-gutter" id="view-partners">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" data-i18n="partners_heading">Partnership Hub</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" data-i18n="partners_sub">Institutional partners, resellers, universities, and revenue shares.</p>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-bold shadow-md hover:scale-105 transition-all" onclick="openCreateModal('partners')">
+<span class="material-symbols-outlined text-[18px]">handshake</span>
+<span data-i18n="btn_new_partner">Register Partner</span>
+</button>
+</div>
+<div class="flex items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant ml-space-xs">search</span>
+<input class="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none font-body-md text-body-md" id="search-partners" oninput="filterTable('partners', this.value)" placeholder="Search partner network directory..." type="text"/>
+</div>
+<div class="rounded-xl bg-surface-container-low shadow-md overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/80 text-on-surface-variant font-label-md text-label-md uppercase font-mono">
+<tr>
+<th class="py-space-md px-space-md">Partner Entity</th>
+<th class="py-space-md px-space-md">Classification</th>
+<th class="py-space-md px-space-md">Rev Share %</th>
+<th class="py-space-md px-space-md">Status</th>
+<th class="py-space-md px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40 font-body-md text-body-md text-on-surface" id="table-body-partners">
+<!-- Injected by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- MODULE 6: TECH BLOG & ARTICLES (CRUD) -->
+<section class="view-panel hidden flex flex-col gap-gutter" id="view-posts">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" data-i18n="posts_heading">Tech Blog &amp; Articles</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" data-i18n="posts_sub">Publish engineering case studies, deep-dives, and platform release notes.</p>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md font-bold shadow-md hover:scale-105 transition-all" onclick="openCreateModal('posts')">
+<span class="material-symbols-outlined text-[18px]">post_add</span>
+<span data-i18n="btn_new_post">Create Article</span>
+</button>
+</div>
+<div class="flex items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant ml-space-xs">search</span>
+<input class="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none font-body-md text-body-md" id="search-posts" oninput="filterTable('posts', this.value)" placeholder="Filter articles by title, author or category..." type="text"/>
+</div>
+<div class="rounded-xl bg-surface-container-low shadow-md overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/80 text-on-surface-variant font-label-md text-label-md uppercase font-mono">
+<tr>
+<th class="py-space-md px-space-md">Article Title</th>
+<th class="py-space-md px-space-md">Category</th>
+<th class="py-space-md px-space-md">Author</th>
+<th class="py-space-md px-space-md">Views</th>
+<th class="py-space-md px-space-md">Date</th>
+<th class="py-space-md px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40 font-body-md text-body-md text-on-surface" id="table-body-posts">
+<!-- Injected by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- MODULE 7: MEMBERS & SUBSCRIPTIONS (CRUD) -->
+<section class="view-panel hidden flex flex-col gap-gutter" id="view-members">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" data-i18n="members_heading">Members &amp; Subscriptions</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" data-i18n="members_sub">Subscriber directory, seat provisioning, and enterprise licensing status.</p>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-tertiary-container text-on-tertiary-container font-label-md text-label-md font-bold shadow-md hover:scale-105 transition-all" onclick="openCreateModal('members')">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span data-i18n="btn_new_member">Register Member</span>
+</button>
+</div>
+<div class="flex items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant ml-space-xs">search</span>
+<input class="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none font-body-md text-body-md" id="search-members" oninput="filterTable('members', this.value)" placeholder="Search members by handle, email, or tier..." type="text"/>
+</div>
+<div class="rounded-xl bg-surface-container-low shadow-md overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/80 text-on-surface-variant font-label-md text-label-md uppercase font-mono">
+<tr>
+<th class="py-space-md px-space-md">Account Name</th>
+<th class="py-space-md px-space-md">Email</th>
+<th class="py-space-md px-space-md">Plan Tier</th>
+<th class="py-space-md px-space-md">Licenses</th>
+<th class="py-space-md px-space-md">Status</th>
+<th class="py-space-md px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40 font-body-md text-body-md text-on-surface" id="table-body-members">
+<!-- Injected by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- MODULE 8: USER TERMINAL SERVICES (CRUD) -->
+<section class="view-panel hidden flex flex-col gap-gutter" id="view-terminal">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" data-i18n="terminal_heading">User Terminal Services</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" data-i18n="terminal_sub">Configure micro-tools and daemon capabilities exposed inside developer terminals.</p>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-bold shadow-md hover:scale-105 transition-all" onclick="openCreateModal('terminal')">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span data-i18n="btn_new_daemon">Add Terminal Service</span>
+</button>
+</div>
+<div class="flex items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant ml-space-xs">search</span>
+<input class="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none font-body-md text-body-md" id="search-terminal" oninput="filterTable('terminal', this.value)" placeholder="Search terminal services and quotas..." type="text"/>
+</div>
+<div class="rounded-xl bg-surface-container-low shadow-md overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/80 text-on-surface-variant font-label-md text-label-md uppercase font-mono">
+<tr>
+<th class="py-space-md px-space-md">Daemon / Service</th>
+<th class="py-space-md px-space-md">Vault Quota</th>
+<th class="py-space-md px-space-md">Gradle Benchmark</th>
+<th class="py-space-md px-space-md">API Inspector</th>
+<th class="py-space-md px-space-md">Status</th>
+<th class="py-space-md px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40 font-body-md text-body-md text-on-surface" id="table-body-terminal">
+<!-- Injected by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- MODULE 9: SYSTEM SETTINGS & IDB BACKUP -->
+<section class="view-panel hidden flex flex-col gap-gutter" id="view-settings">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" data-i18n="settings_heading">System Settings &amp; IndexedDB Backup</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" data-i18n="settings_sub">Manage persistent browser storage, backup JSON manifests, and reset default seeds.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Backup Export & Restore Card -->
+<div class="p-space-lg rounded-xl bg-surface-container-low shadow-md flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-space-sm mb-space-sm text-primary">
+<span class="material-symbols-outlined text-[24px]">backup</span>
+<span class="font-headline-md text-headline-md" data-i18n="backup_title">JSON Manifest Snapshot</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-md" data-i18n="backup_desc">
+                Export the entire <strong class="text-on-surface font-mono">andu_superadmin_db</strong> database to a JSON file or restore from a previous administrative backup.
+              </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold shadow-md hover:opacity-90 transition-all" onclick="exportDatabaseJSON()">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span data-i18n="btn_export_db">Export Database (.JSON)</span>
+</button>
+<label class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-secondary font-label-md text-label-md font-semibold cursor-pointer transition-all">
+<span class="material-symbols-outlined text-[18px]">upload</span>
+<span data-i18n="btn_import_db">Import Backup</span>
+<input accept=".json" class="hidden" id="import-json-file" onchange="importDatabaseJSON(event)" type="file"/>
+</label>
+</div>
+</div>
+<!-- Reset & Reseed Storage Card -->
+<div class="p-space-lg rounded-xl bg-surface-container-low shadow-md flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-space-sm mb-space-sm text-secondary">
+<span class="material-symbols-outlined text-[24px]">restart_alt</span>
+<span class="font-headline-md text-headline-md" data-i18n="seed_title">Database Factory Reseed</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-md" data-i18n="seed_desc">
+                Wipe all localized state and reinstantiate the high-fidelity mock enterprise records across all seven operational engines.
+              </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-secondary font-label-md text-label-md font-semibold transition-all" onclick="reseedDatabase()">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span data-i18n="btn_reseed">Reload Production Seeds</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-error/20 hover:bg-error/30 text-error font-label-md text-label-md font-bold transition-all" onclick="clearEntireDatabase()">
+<span class="material-symbols-outlined text-[18px]">delete_forever</span>
+<span data-i18n="btn_clear_db">Clear All Records</span>
+</button>
+</div>
+</div>
+</div>
+<!-- System Architecture Specification Details -->
+<div class="p-space-lg rounded-xl bg-surface-container-low shadow-md">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-mono mb-space-sm block">Schema Topology Details</span>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-md font-mono text-label-sm text-label-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-high">
+<span class="text-on-surface-variant block">IndexedDB DB</span>
+<span class="text-primary font-bold">andu_superadmin_db</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-high">
+<span class="text-on-surface-variant block">Schema Version</span>
+<span class="text-secondary font-bold">v3 (Auto-Migrated)</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-high">
+<span class="text-on-surface-variant block">Total ObjectStores</span>
+<span class="text-tertiary font-bold">8 Dedicated Stores</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-high">
+<span class="text-on-surface-variant block">Sync State</span>
+<span class="text-primary font-bold">PERSISTENT_UNRESTRICTED</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- NOTIFICATION DRAWER / FLYOUT MODAL -->
+<div class="hidden fixed inset-0 z-50 flex items-start justify-end p-space-md bg-surface-container-lowest/70 backdrop-blur-sm" id="notif-modal">
+<div class="w-full max-w-md bg-surface-container-low rounded-xl shadow-xl border border-surface-container-highest p-space-lg flex flex-col gap-space-md mt-16 animate-in">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs text-primary">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="font-headline-md text-headline-md" data-i18n="notif_drawer_title">Security &amp; Pipeline Feeds</span>
+</div>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface" onclick="toggleNotifsModal(false)">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-space-sm max-h-96 overflow-y-auto pr-1" id="notif-list-container">
+<!-- Rendered by JS -->
+</div>
+<div class="flex items-center justify-between pt-space-sm border-t border-surface-container-highest">
+<button class="font-label-sm text-label-sm text-secondary hover:underline" data-i18n="btn_mark_read" onclick="markAllNotifsRead()">Mark All As Acknowledged</button>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">Channel: #l0-sys</span>
+</div>
+</div>
+</div>
+<!-- UNIFIED CRUD FORM MODAL -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-space-md bg-surface-container-lowest/80 backdrop-blur-md" id="crud-modal">
+<div class="w-full max-w-2xl bg-surface-container-low rounded-xl shadow-2xl border border-surface-container-high p-space-lg flex flex-col gap-space-md max-h-[921px] overflow-y-auto">
+<div class="flex items-center justify-between border-b border-surface-container-highest pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 text-primary flex items-center justify-center" id="crud-modal-icon-wrap">
+<span class="material-symbols-outlined text-[24px]" id="crud-modal-icon">edit_square</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface" id="crud-modal-title">Edit Entity</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono" id="crud-modal-subtitle">Module Target: products</span>
+</div>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface" onclick="closeCrudModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Dynamic Form Target -->
+<form class="flex flex-col gap-space-md" id="crud-form" onsubmit="handleCrudFormSubmit(event)">
+<input id="crud-input-id" name="id" type="hidden"/>
+<input id="crud-input-entity" name="entity" type="hidden"/>
+<!-- Form fields will be dynamically injected here depending on the active store -->
+<div class="flex flex-col gap-space-md" id="crud-dynamic-fields">
+<!-- Injected dynamically -->
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-md border-t border-surface-container-highest">
+<button class="px-space-md py-space-sm rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md font-semibold transition-all" data-i18n="btn_cancel" onclick="closeCrudModal()" type="button">
+            Cancel
+          </button>
+<button class="px-space-lg py-space-sm rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold shadow-lg hover:shadow-primary/30 transition-all flex items-center gap-space-xs" type="submit">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span data-i18n="btn_commit">Commit Mutation</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<!-- TOAST NOTIFICATION CONTAINER -->
+<div class="fixed bottom-space-lg right-space-lg z-50 flex flex-col gap-space-xs pointer-events-none" id="toast-container"></div>
+</div>
+</div></main></div>

@@ -1,0 +1,699 @@
+---
+layout: portal-landing
+title: "ANDU – Android Native Development Unit | El-Salam Technology, Inc."
+description: "Aplikasi Android native premium, lisensi SaaS, jasa software house B2B, dan akademi coding ramah pemula dari ANDU – El-Salam Technology, Inc."
+permalink: /portal/
+---
+<!-- Ambient Glow Orbs -->
+<div class="fixed top-0 -left-12 w-96 h-96 bg-[#3DDC84]/15 rounded-full blur-[130px] pointer-events-none -z-10" style="animation: fl 10s ease-in-out infinite"></div>
+<div class="fixed top-1/3 -right-12 w-96 h-96 bg-[#38bdf8]/15 rounded-full blur-[140px] pointer-events-none -z-10" style="animation: fl 12s ease-in-out infinite -4s"></div>
+<div class="fixed bottom-10 left-1/3 w-80 h-80 bg-[#c084fc]/15 rounded-full blur-[120px] pointer-events-none -z-10" style="animation: fl 11s ease-in-out infinite -6s"></div>
+<div class="fixed top-2/3 -left-10 w-72 h-72 bg-[#38bdf8]/10 rounded-full blur-[110px] pointer-events-none -z-10" style="animation: fl 14s ease-in-out infinite -8s"></div>
+<!-- TOAST NOTIFICATION -->
+<div aria-live="polite" class="toast fixed bottom-5 right-5 z-[80] glass rounded-2xl p-4 flex gap-3 items-center border-l-4 border-l-[#3DDC84] shadow-2xl max-w-sm" id="toast" role="status">
+<span class="text-2xl" id="tI">🚀</span>
+<div class="flex-1"><b class="text-xs text-white block" id="tT">Notifications</b><p class="text-[11px] text-slate-300 mt-0.5 leading-snug" id="tB">SPA System ready. Tap tabs to switch screens.</p></div>
+<button aria-label="Close" class="text-slate-400 hover:text-white p-1 text-xs" onclick="hideT()">✕</button>
+</div>
+<!-- HEADER NAVBAR (SPA NAVIGATOR) -->
+<header class="fixed top-0 inset-x-0 z-50 glass border-b border-white/5">
+<nav class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+<!-- Brand Logo (navigates to home) -->
+<div class="flex items-center gap-2.5 group cursor-pointer" onclick="navigate('home')">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#3DDC84] via-[#38bdf8] to-[#c084fc] p-0.5 flex items-center justify-center shadow-lg shadow-[#3DDC84]/20 group-hover:scale-105 transition-transform">
+<div class="w-full h-full bg-[#080c18] rounded-[10px] grid place-items-center font-extrabold text-white text-base">
+<svg aria-label="Android logo" class="w-5 h-5 fill-[#3DDC84]" viewBox="0 0 24 24"><path d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v6c0 .83.67 1.5 1.5 1.5S5 16.33 5 15.5v-6C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-6c0-.83-.67-1.5-1.5-1.5zm-4.97-4.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.72 2.24 12.88 2 12 2c-.88 0-1.72.24-2.64.63L7.88.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.3 1.3C6.67 3.23 5.4 4.98 5.08 7.09h13.84c-.32-2.11-1.59-3.86-3.39-4.93zM9 5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm6 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"></path></svg>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-extrabold text-white text-base tracking-tight leading-none">ANDU</span>
+<span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#3DDC84]/20 text-[#3DDC84] font-bold">SPA</span>
+</div>
+<small class="text-[9px] text-slate-400 block font-medium">Android Native Development Unit</small>
+</div>
+</div>
+<!-- Desktop SPA Navigation Tabs -->
+<div class="hidden xl:flex items-center gap-1.5 text-xs font-semibold text-slate-300" id="navLinks">
+        <button onclick="navigate('home')" class="nav-btn-link flex items-center gap-1.5 active-link">
+          <span class="">🏠</span>
+          <span class="">Overview</span>
+        </button>
+      
+        <button onclick="navigate('about')" class="nav-btn-link flex items-center gap-1.5 hover:text-[#3DDC84]">
+          <span class="">ℹ️</span>
+          <span class="">About &amp; Legality</span>
+        </button>
+      
+        <button onclick="navigate('products')" class="nav-btn-link flex items-center gap-1.5 hover:text-[#3DDC84]">
+          <span class="">🛍️</span>
+          <span class="">Products &amp; SaaS</span>
+        </button>
+      
+        <button onclick="navigate('services')" class="nav-btn-link flex items-center gap-1.5 hover:text-[#3DDC84]">
+          <span class="">💼</span>
+          <span class="">Services</span>
+        </button>
+      
+        <button onclick="navigate('academy')" class="nav-btn-link flex items-center gap-1.5 hover:text-[#3DDC84]">
+          <span class="">🎓</span>
+          <span class="">Academy</span>
+        </button>
+      
+        <button onclick="navigate('partner')" class="nav-btn-link flex items-center gap-1.5 hover:text-[#3DDC84]">
+          <span class="">🤝</span>
+          <span class="">Partners</span>
+        </button>
+      
+        <button onclick="navigate('blog')" class="nav-btn-link flex items-center gap-1.5 hover:text-[#3DDC84]">
+          <span class="">📰</span>
+          <span class="">Blog</span>
+        </button>
+      
+        <button onclick="navigate('dash')" class="nav-btn-link flex items-center gap-1.5 hover:text-[#3DDC84]">
+          <span class="">💻</span>
+          <span class="">My Terminal</span>
+        </button>
+      </div>
+<!-- Action Controls -->
+<div class="flex items-center gap-2">
+<button aria-label="Notifications" class="relative btn btn-o !p-2 !px-3" onclick="openNotifModal()" title="Push Alerts">
+🔔<span class="hidden absolute -top-1 -right-1 bg-[#3DDC84] text-[#041009] text-[10px] rounded-full w-4 h-4 grid place-items-center font-extrabold animate-pulse" id="badge">0</span>
+</button>
+<!-- Sliding Capsule Pill Language Switcher -->
+<div aria-label="Toggle language switch" class="lang-pill-track" onclick="toggleLang()" role="button" title="Switch Language EN / ID">
+<div class="lang-pill-glider" id="langGlider"></div>
+<span class="lang-pill-opt text-[#041009]" id="lgEn">EN</span>
+<span class="lang-pill-opt text-slate-400" id="lgId">ID</span>
+</div>
+<button class="btn btn-p !py-2 !px-4 text-xs hidden sm:inline-flex" data-i="login" id="authBtn" onclick="authClick()">Sign in / Register</button>
+<button aria-label="Open mobile menu" class="xl:hidden btn btn-o !p-2 !px-3 text-sm" onclick="openMobileDrawer()">☰</button>
+</div>
+</nav>
+</header>
+<!-- Mobile Side Drawer -->
+<div class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] opacity-0 pointer-events-none transition-opacity duration-300" id="drawerBackdrop" onclick="closeMobileDrawer()"></div>
+<aside class="fixed top-0 right-0 bottom-0 w-[290px] max-w-[85vw] bg-[#090e1c] border-l border-white/10 z-[95] transform translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col justify-between shadow-2xl" id="drawerPanel">
+<div>
+<div class="p-4 border-b border-white/10 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#3DDC84] to-[#38bdf8] p-0.5 flex items-center justify-center">
+<div class="w-full h-full bg-[#080c18] rounded-[6px] grid place-items-center">
+<svg class="w-4 h-4 fill-[#3DDC84]" viewBox="0 0 24 24"><path d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v6c0 .83.67 1.5 1.5 1.5S5 16.33 5 15.5v-6C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-6c0-.83-.67-1.5-1.5-1.5zm-4.97-4.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.72 2.24 12.88 2 12 2c-.88 0-1.72.24-2.64.63L7.88.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.3 1.3C6.67 3.23 5.4 4.98 5.08 7.09h13.84c-.32-2.11-1.59-3.86-3.39-4.93zM9 5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm6 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"></path></svg>
+</div>
+</div>
+<div>
+<b class="text-white text-xs block leading-tight">ANDU Hub</b>
+<span class="text-[9px] font-mono text-[#3DDC84]">Native Unit SPA</span>
+</div>
+</div>
+<button aria-label="Close menu" class="p-2 rounded-xl text-slate-400 hover:text-white text-sm bg-white/5" onclick="closeMobileDrawer()">✕</button>
+</div>
+<nav class="p-4 space-y-1.5 text-xs font-semibold overflow-y-auto max-h-[calc(100vh-160px)]" id="drawerNavLinks">
+        <button onclick="navigate('home'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl bg-[#3DDC84]/15 text-[#3DDC84] font-bold border border-[#3DDC84]/30 transition">
+          <span class="text-base">🏠</span>
+          <span class="flex-1">Overview</span>
+          <span class="text-xs text-slate-500 font-mono">→</span>
+        </button>
+      
+        <button onclick="navigate('about'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-200 border border-white/5 transition">
+          <span class="text-base">ℹ️</span>
+          <span class="flex-1">About &amp; Legality</span>
+          <span class="text-xs text-slate-500 font-mono">→</span>
+        </button>
+      
+        <button onclick="navigate('products'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-200 border border-white/5 transition">
+          <span class="text-base">🛍️</span>
+          <span class="flex-1">Products &amp; SaaS</span>
+          <span class="text-xs text-slate-500 font-mono">→</span>
+        </button>
+      
+        <button onclick="navigate('services'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-200 border border-white/5 transition">
+          <span class="text-base">💼</span>
+          <span class="flex-1">Services</span>
+          <span class="text-xs text-slate-500 font-mono">→</span>
+        </button>
+      
+        <button onclick="navigate('academy'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-200 border border-white/5 transition">
+          <span class="text-base">🎓</span>
+          <span class="flex-1">Academy</span>
+          <span class="text-xs text-slate-500 font-mono">→</span>
+        </button>
+      
+        <button onclick="navigate('partner'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-200 border border-white/5 transition">
+          <span class="text-base">🤝</span>
+          <span class="flex-1">Partners</span>
+          <span class="text-xs text-slate-500 font-mono">→</span>
+        </button>
+      
+        <button onclick="navigate('blog'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-200 border border-white/5 transition">
+          <span class="text-base">📰</span>
+          <span class="flex-1">Blog</span>
+          <span class="text-xs text-slate-500 font-mono">→</span>
+        </button>
+      
+        <button onclick="navigate('dash'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-200 border border-white/5 transition">
+          <span class="text-base">💻</span>
+          <span class="flex-1">My Terminal</span>
+          <span class="text-xs text-slate-500 font-mono">→</span>
+        </button>
+      </nav>
+</div>
+<div class="p-4 border-t border-white/10 bg-black/40">
+<button class="btn btn-p w-full !py-2.5 text-xs" onclick="authClick(); closeMobileDrawer();">
+👤 <span id="drawerAuthTxt" class="">Sign in / Register</span>
+</button>
+</div>
+</aside>
+<!-- MAIN SPA VIEWPORT -->
+<main class="flex-1 pt-24 pb-16 max-w-7xl mx-auto px-4 w-full">
+<!-- VIEW 1: HOME / OVERVIEW -->
+<section class="spa-page space-y-12 active" id="view-home">
+<div class="grid lg:grid-cols-12 gap-8 items-center pt-2">
+<div class="lg:col-span-7 space-y-6">
+<div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#3DDC84]/10 border border-[#3DDC84]/30 text-[#3DDC84] text-xs font-mono font-bold">
+<span class="w-2 h-2 rounded-full bg-[#3DDC84] animate-ping"></span>
+<span data-i="badge" class="">Next-gen Android native hub</span>
+</div>
+<h1 class="text-3xl sm:text-5xl lg:text-6xl font-black leading-[1.15] tracking-tight text-white">
+<span data-i="h1a" class="">We build premium apps &amp;</span><br><span class="grad" data-i="h1b">grow tomorrow’s Android developers</span>
+</h1>
+<p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl" data-i="sub">Ready-made SaaS licenses, custom B2B software and a beginner-friendly academy — one friendly ecosystem by El-Salam Technology, Inc.</p>
+<div class="flex flex-wrap gap-3 pt-2">
+<button class="btn btn-p !py-3 !px-6 text-xs uppercase tracking-wider" data-i="cta1" onclick="navigate('products')">🚀 Try our SaaS apps</button>
+<button class="btn btn-o !py-3 !px-6 text-xs uppercase tracking-wider" data-i="cta2" onclick="navigate('services')">💼 Consult custom services</button>
+<button class="btn btn-o !py-3 !px-4 text-xs font-mono text-slate-300" onclick="testPushNotification()">
+🔔 <span data-i="btnTestNotify" class="">Test Push API</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-5 pt-3 text-xs font-mono text-slate-400 border-t border-white/5">
+<span class="flex items-center gap-1.5"><strong class="text-[#3DDC84]">✓</strong> Kotlin 2.0+</span>
+<span class="flex items-center gap-1.5"><strong class="text-[#38bdf8]">✓</strong> Jetpack Compose M3</span>
+<span class="flex items-center gap-1.5"><strong class="text-[#c084fc]">✓</strong> Clean MVI Architecture</span>
+<span class="flex items-center gap-1.5"><strong class="text-amber-400">✓</strong> IndexedDB W3C</span>
+</div>
+</div>
+<!-- Live Engine Code Mockup -->
+<div class="lg:col-span-5">
+<div class="glass-card rounded-3xl p-5 border border-white/10 shadow-2xl relative" style="animation: fl 8s ease-in-out infinite">
+<div class="flex items-center justify-between pb-3 border-b border-white/10 text-xs font-mono">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-red-400"></span>
+<span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+<span class="w-3 h-3 rounded-full bg-[#3DDC84]"></span>
+<span class="ml-2 text-slate-300">AnduApp.kt</span>
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded bg-[#3DDC84]/15 text-[#3DDC84] font-bold border border-[#3DDC84]/30">LIVE ENGINE</span>
+</div>
+<pre aria-label="Kotlin sample" class="font-mono text-xs p-4 text-[#38bdf8] min-h-[220px] whitespace-pre-wrap cur leading-relaxed overflow-x-auto" id="code">class AnduViewModel : ViewModel() {
+  val state = MutableStateFlow(UiState())
+
+  fun build(idea: String) = viewModelScope.launch {
+    val app = repo.ship(idea)   // 🚀
+    state.update { it.copy(app = app) }
+  }
+}</pre>
+<div class="grid grid-cols-2 gap-2 mt-2 pt-3 border-t border-white/10 font-mono text-[11px]">
+<div class="p-2.5 rounded-xl bg-black/40 border border-white/5">
+<span class="text-slate-400 block text-[10px]">Target Platform</span>
+<b class="text-[#3DDC84]">Android 15 (API 35)</b>
+</div>
+<div class="p-2.5 rounded-xl bg-black/40 border border-white/5">
+<span class="text-slate-400 block text-[10px]">Daemon Build</span>
+<b class="text-[#38bdf8]">Gradle 8.7 Ready</b>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Switcher Hub Cards -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4" id="hub">
+        <div onclick="navigate('products')" class="glass-card p-5 rounded-2xl col-span-2 group cursor-pointer">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🛍️</div>
+          <b class="text-sm sm:text-base text-white block">Products &amp; SaaS</b>
+          <p class="text-xs text-[#3DDC84] mt-1 font-semibold">Switch view →</p>
+        </div>
+      
+        <div onclick="navigate('services')" class="glass-card p-5 rounded-2xl  group cursor-pointer">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">💼</div>
+          <b class="text-sm sm:text-base text-white block">Services</b>
+          <p class="text-xs text-[#3DDC84] mt-1 font-semibold">Switch view →</p>
+        </div>
+      
+        <div onclick="navigate('academy')" class="glass-card p-5 rounded-2xl  group cursor-pointer">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🎓</div>
+          <b class="text-sm sm:text-base text-white block">Academy</b>
+          <p class="text-xs text-[#3DDC84] mt-1 font-semibold">Switch view →</p>
+        </div>
+      
+        <div onclick="navigate('blog')" class="glass-card p-5 rounded-2xl  group cursor-pointer">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">📰</div>
+          <b class="text-sm sm:text-base text-white block">Blog</b>
+          <p class="text-xs text-[#3DDC84] mt-1 font-semibold">Switch view →</p>
+        </div>
+      </div>
+</section>
+<!-- VIEW 2: ABOUT & LEGALITY -->
+<section class="spa-page space-y-8" id="view-about">
+<div>
+<div class="eyebrow mb-1">Corporate Identity</div>
+<h2 class="text-2xl sm:text-4xl font-extrabold text-white" data-i="aT">About ANDU &amp; legality</h2>
+<p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl" data-i="aP">ANDU is the Android Native Development Unit of El-Salam Technology, Inc. — engineering clean, secure, high-performance software to international standards.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-4" id="aboutGrid">
+        <div class="glass-card p-6 rounded-3xl space-y-2">
+          <h3 class="font-extrabold text-white text-base">🌍 Vision</h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Be the most trusted native Android partner worldwide.</p>
+        </div>
+      
+        <div class="glass-card p-6 rounded-3xl space-y-2">
+          <h3 class="font-extrabold text-white text-base">🎯 Mission</h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Deliver clean architecture, transparent delivery and learning for everyone.</p>
+        </div>
+      
+        <div class="glass-card p-6 rounded-3xl space-y-2">
+          <h3 class="font-extrabold text-white text-base">🛡️ Trust</h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Corporate transparency, privacy by design and global security standards.</p>
+        </div>
+      </div>
+<div class="space-y-3 pt-2">
+<h3 class="text-base font-extrabold text-white flex items-center gap-2"><span class="">👥</span> Professional Unit Team</h3>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4" id="team">
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-4xl mb-2">👩</div>
+          <p class="text-xs font-bold text-white">‍💻tm1</p>
+        </div>
+      
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-4xl mb-2">🎨</div>
+          <p class="text-xs font-bold text-white">UI/UX Designers</p>
+        </div>
+      
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-4xl mb-2">🔐</div>
+          <p class="text-xs font-bold text-white">Security Experts</p>
+        </div>
+      
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-4xl mb-2">🧑</div>
+          <p class="text-xs font-bold text-white">‍🏫tm4</p>
+        </div>
+      </div>
+</div>
+<div class="glass-card rounded-3xl p-6 border border-white/10 space-y-3 mt-6">
+<h3 class="text-sm sm:text-base font-extrabold text-white flex items-center gap-2">🛡️ Corporate Governance &amp; Data Guarantee</h3>
+<p class="text-xs sm:text-sm text-slate-300 leading-relaxed" data-i="pTxt">We respect your privacy. Data in this demo stays locally in your browser via IndexedDB. We never sell personal data.</p>
+<div class="pt-2 flex flex-wrap gap-4 text-xs font-bold">
+<button class="underline text-[#3DDC84] hover:text-white" data-i="priv" onclick="legal('priv')">Privacy Policy</button>
+<button class="underline text-[#38bdf8] hover:text-white" data-i="terms" onclick="legal('terms')">Terms &amp; Conditions</button>
+</div>
+</div>
+</section>
+<!-- VIEW 3: PRODUCTS & SAAS LICENSES -->
+<section class="spa-page space-y-6" id="view-products">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="eyebrow mb-1" data-i="e_p">Direct distribution</div>
+<h2 class="text-2xl sm:text-4xl font-extrabold text-white" data-i="pT">Apps, code &amp; libraries</h2>
+<p class="text-xs sm:text-sm text-slate-400 mt-1" data-i="pP">Buy instantly — your license key appears in your dashboard.</p>
+</div>
+<div class="flex flex-wrap gap-2" id="pf">
+        <button onclick="setPf('all')" class="btn !py-1.5 !px-3 !text-xs btn-p">All</button>
+      
+        <button onclick="setPf('saas')" class="btn !py-1.5 !px-3 !text-xs btn-o">SaaS</button>
+      
+        <button onclick="setPf('tpl')" class="btn !py-1.5 !px-3 !text-xs btn-o">Templates</button>
+      
+        <button onclick="setPf('free')" class="btn !py-1.5 !px-3 !text-xs btn-o">Free / Open source</button>
+      </div>
+</div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="pg">
+        <article class="glass-card p-5 rounded-3xl flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-3xl p-2 rounded-2xl bg-white/5">🧾</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3DDC84]/20 text-[#3DDC84] font-bold uppercase">saas</span>
+            </div>
+            <h3 class="font-extrabold text-white text-base">Smart POS System</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Cashier app built with Kotlin Clean Architecture &amp; offline Room SQLite.</p>
+          </div>
+          <div class="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+            <b class="text-[#3DDC84] font-mono text-lg">$149</b>
+            <button class="btn btn-p !py-2 !px-4" onclick="buy('pos',149)">Buy / Get</button>
+          </div>
+        </article>
+      
+        <article class="glass-card p-5 rounded-3xl flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-3xl p-2 rounded-2xl bg-white/5">📱</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3DDC84]/20 text-[#3DDC84] font-bold uppercase">saas</span>
+            </div>
+            <h3 class="font-extrabold text-white text-base">Enterprise Mobile CRM</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Real-time synced customer data model, GPS telemetries &amp; biometric auth.</p>
+          </div>
+          <div class="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+            <b class="text-[#3DDC84] font-mono text-lg">$299</b>
+            <button class="btn btn-p !py-2 !px-4" onclick="buy('crm',299)">Buy / Get</button>
+          </div>
+        </article>
+      
+        <article class="glass-card p-5 rounded-3xl flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-3xl p-2 rounded-2xl bg-white/5">🎨</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3DDC84]/20 text-[#3DDC84] font-bold uppercase">tpl</span>
+            </div>
+            <h3 class="font-extrabold text-white text-base">Compose UI Kit (MVVM/MVI)</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Premium screens, clean architecture, Hilt DI &amp; unified Material 3 theme.</p>
+          </div>
+          <div class="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+            <b class="text-[#3DDC84] font-mono text-lg">$79</b>
+            <button class="btn btn-p !py-2 !px-4" onclick="buy('kit',79)">Buy / Get</button>
+          </div>
+        </article>
+      
+        <article class="glass-card p-5 rounded-3xl flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-3xl p-2 rounded-2xl bg-white/5">🧩</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3DDC84]/20 text-[#3DDC84] font-bold uppercase">free</span>
+            </div>
+            <h3 class="font-extrabold text-white text-base">ANDU Android Library</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Free open-source SDK components, coroutines flow &amp; keystore helpers.</p>
+          </div>
+          <div class="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+            <b class="text-[#3DDC84] font-mono text-lg">Free</b>
+            <button class="btn btn-p !py-2 !px-4" onclick="buy('sdk',0)">Buy / Get</button>
+          </div>
+        </article>
+      </div>
+</section>
+<!-- VIEW 4: SOFTWARE HOUSE & SERVICES -->
+<section class="spa-page space-y-8" id="view-services">
+<div>
+<div class="eyebrow mb-1" data-i="e_s">Custom engineering</div>
+<h2 class="text-2xl sm:text-4xl font-extrabold text-white" data-i="sT">Custom software house</h2>
+<p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-3xl" data-i="sP">Agile/Scrum delivery with transparent tracking in your dashboard.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-4" id="sg">
+        <div class="glass-card p-6 rounded-3xl space-y-2">
+          <div class="text-3xl mb-2">🛠️</div>
+          <h3 class="font-extrabold text-white text-base">Custom Android Apps</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">Native apps &amp; mobile prototyping from idea to Play Store.</p>
+        </div>
+      
+        <div class="glass-card p-6 rounded-3xl space-y-2">
+          <div class="text-3xl mb-2">🛡️</div>
+          <h3 class="font-extrabold text-white text-base">Audit, Progita &amp; Optima AI</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">Security audits, archive digitization (Progita) and AI performance tuning (Optima).</p>
+        </div>
+      
+        <div class="glass-card p-6 rounded-3xl space-y-2">
+          <div class="text-3xl mb-2">🔄</div>
+          <h3 class="font-extrabold text-white text-base">Agile Workflow</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">Sprints, demos and clear milestones every two weeks.</p>
+        </div>
+      </div>
+<!-- Quote Request Form & Process Roadmap -->
+<div class="glass-card rounded-3xl p-6 sm:p-8 grid lg:grid-cols-12 gap-8 border border-white/10">
+<div class="lg:col-span-5 space-y-4">
+<div class="eyebrow">Agile Sprint Delivery</div>
+<h3 class="text-xl sm:text-2xl font-extrabold text-white" data-i="fT">Request a quote</h3>
+<p class="text-xs sm:text-sm text-slate-300 leading-relaxed" data-i="fP">Tell us about your project. Our process:</p>
+<ol class="space-y-2.5 text-xs sm:text-sm pt-2" id="steps">
+        <li class="flex gap-3 items-center">
+          <span class="w-6 h-6 rounded-full grid place-items-center text-xs font-black bg-[#3DDC84] text-[#041009]">1</span>
+          <span class="">Submit brief</span>
+        </li>
+      
+        <li class="flex gap-3 items-center">
+          <span class="w-6 h-6 rounded-full grid place-items-center text-xs font-black bg-[#3DDC84] text-[#041009]">2</span>
+          <span class="">Discovery &amp; quote</span>
+        </li>
+      
+        <li class="flex gap-3 items-center">
+          <span class="w-6 h-6 rounded-full grid place-items-center text-xs font-black bg-[#3DDC84] text-[#041009]">3</span>
+          <span class="">Sprints &amp; demos</span>
+        </li>
+      
+        <li class="flex gap-3 items-center">
+          <span class="w-6 h-6 rounded-full grid place-items-center text-xs font-black bg-[#3DDC84] text-[#041009]">4</span>
+          <span class="">Launch &amp; support</span>
+        </li>
+      </ol>
+</div>
+<div class="lg:col-span-7">
+<form class="space-y-3.5" id="qf" onsubmit="return sendQuote(event)">
+<div class="grid sm:grid-cols-2 gap-3.5">
+<div>
+<label class="block text-xs font-bold text-slate-300 mb-1" data-i="fn">Your name</label>
+<input class="glass-input inp w-full p-2.5 rounded-xl text-xs" data-p="fn" id="qn" placeholder="Your name" required="">
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-300 mb-1" data-i="fe">Email</label>
+<input class="glass-input inp w-full p-2.5 rounded-xl text-xs" data-p="fe" id="qe" placeholder="Email" required="" type="email">
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-300 mb-1">Service Type</label>
+<select class="glass-input inp w-full p-2.5 rounded-xl text-xs text-white" id="qt">
+<option data-i="o1" value="custom">Custom Android app</option>
+<option data-i="o2" value="audit">Security audit / Progita / Optima</option>
+<option data-i="o3" value="proto">Mobile prototype</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-300 mb-1" data-i="fd">Project description</label>
+<textarea class="glass-input inp w-full p-2.5 rounded-xl text-xs" data-p="fd" id="qd" placeholder="Project description" required="" rows="3"></textarea>
+</div>
+<button class="btn btn-p w-full !py-3 text-xs uppercase tracking-wider" data-i="fS">Send request</button>
+</form>
+</div>
+</div>
+</section>
+<!-- VIEW 5: CODING ACADEMY -->
+<section class="spa-page space-y-8" id="view-academy">
+<div>
+<div class="eyebrow mb-1" data-i="e_a">Newbie to senior</div>
+<h2 class="text-2xl sm:text-4xl font-extrabold text-white" data-i="cT">ANDU Academy</h2>
+<p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-3xl" data-i="cP">From zero to native master. Video classes, quizzes and official certificates.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-4" id="cg">
+        <article class="glass-card p-6 rounded-3xl space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="text-4xl mb-2">🌱</div>
+            <span class="text-[10px] text-[#38bdf8] font-mono font-bold uppercase">Beginner</span>
+            <h3 class="font-extrabold text-white text-base my-1">Kotlin for Beginners</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Zero-to-hero syntax, functional constructs, and Coroutines primer.</p>
+          </div>
+          <button class="btn btn-p w-full !py-2.5 mt-2" onclick="enroll('c1')">🎓 Enroll</button>
+        </article>
+      
+        <article class="glass-card p-6 rounded-3xl space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="text-4xl mb-2">🗄️</div>
+            <span class="text-[10px] text-[#38bdf8] font-mono font-bold uppercase">Intermediate</span>
+            <h3 class="font-extrabold text-white text-base my-1">APIs &amp; Room Database</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Modern REST networking, offline SQLite caching, and Kotlin Flow observables.</p>
+          </div>
+          <button class="btn btn-p w-full !py-2.5 mt-2" onclick="enroll('c2')">🎓 Enroll</button>
+        </article>
+      
+        <article class="glass-card p-6 rounded-3xl space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="text-4xl mb-2">🚀</div>
+            <span class="text-[10px] text-[#38bdf8] font-mono font-bold uppercase">Advanced</span>
+            <h3 class="font-extrabold text-white text-base my-1">Hilt &amp; Jetpack Compose Pro</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Declarative UI, state hoisting, custom canvas drawing, and smooth animations.</p>
+          </div>
+          <button class="btn btn-p w-full !py-2.5 mt-2" onclick="enroll('c3')">🎓 Enroll</button>
+        </article>
+      </div>
+<div class="grid md:grid-cols-3 gap-4 pt-2" id="plans">
+        <div class="glass-card p-6 rounded-3xl text-center space-y-2 ">
+          <h3 class="font-extrabold text-white text-base">Free Tier</h3>
+          <b class="text-3xl block my-2 grad font-mono">$0</b>
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">Intro lessons &amp; community forum</p>
+          <button class="btn btn-o w-full !py-2.5" onclick="plan('pl1')">Choose plan</button>
+        </div>
+      
+        <div class="glass-card p-6 rounded-3xl text-center space-y-2 ring-2 ring-[#c084fc]">
+          <h3 class="font-extrabold text-white text-base">Premium Monthly</h3>
+          <b class="text-3xl block my-2 grad font-mono">$12</b>
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">All classes + quizzes + verified certificates</p>
+          <button class="btn btn-o w-full !py-2.5" onclick="plan('pl2')">Choose plan</button>
+        </div>
+      
+        <div class="glass-card p-6 rounded-3xl text-center space-y-2 ">
+          <h3 class="font-extrabold text-white text-base">VIP Lifetime</h3>
+          <b class="text-3xl block my-2 grad font-mono">$199</b>
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">Everything forever + live bootcamps &amp; 1-on-1 reviews</p>
+          <button class="btn btn-o w-full !py-2.5" onclick="plan('pl3')">Choose plan</button>
+        </div>
+      </div>
+<div class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 border border-white/10">
+<div class="space-y-1">
+<h3 class="font-extrabold text-lg sm:text-xl text-white flex items-center gap-2" data-i="wT">🎥 Live bootcamp &amp; webinar</h3>
+<p class="text-xs sm:text-sm text-slate-300" data-i="wP">Live coding with global mentors every Saturday.</p>
+</div>
+<button class="btn btn-p !py-3 !px-6 text-xs whitespace-nowrap self-start md:self-auto" data-i="wB" onclick="remind()">Remind me</button>
+</div>
+</section>
+<!-- VIEW 6: PARTNERSHIP HUB -->
+<section class="spa-page space-y-6" id="view-partner">
+<div>
+<div class="eyebrow mb-1">Ecosystem Growth</div>
+<h2 class="text-2xl sm:text-4xl font-extrabold text-white" data-i="kT">Partnership hub</h2>
+<p class="text-xs sm:text-sm text-slate-400 mt-1">Join forces with ANDU and El-Salam Technology, Inc.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-4" id="kg">
+        <div class="glass-card p-6 rounded-3xl space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="text-3xl mb-2">🏛️</div>
+            <h3 class="font-extrabold text-white text-base">Institution collaboration</h3>
+          </div>
+          <button class="btn btn-o w-full !py-2" onclick="notify('nJ',t('k1'))">Apply</button>
+        </div>
+      
+        <div class="glass-card p-6 rounded-3xl space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="text-3xl mb-2">🏷️</div>
+            <h3 class="font-extrabold text-white text-base">License reseller</h3>
+          </div>
+          <button class="btn btn-o w-full !py-2" onclick="notify('nJ',t('k2'))">Apply</button>
+        </div>
+      
+        <div class="glass-card p-6 rounded-3xl space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="text-3xl mb-2">🤝</div>
+            <h3 class="font-extrabold text-white text-base">EdTech affiliate</h3>
+          </div>
+          <button class="btn btn-o w-full !py-2" onclick="notify('nJ',t('k3'))">Apply</button>
+        </div>
+      </div>
+</section>
+<!-- VIEW 7: TECH BLOG -->
+<section class="spa-page space-y-6" id="view-blog">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="eyebrow mb-1" data-i="e_b">Insights</div>
+<h2 class="text-2xl sm:text-4xl font-extrabold text-white" data-i="bT">Tech blog &amp; insights</h2>
+<p class="text-xs sm:text-sm text-slate-400 mt-1" data-i="bP">Case studies, tutorials, changelogs and mobile trends.</p>
+</div>
+<div class="flex flex-wrap gap-2" id="bf">
+        <button onclick="setBf('all')" class="btn !py-1.5 !px-3 !text-xs btn-p">All</button>
+      
+        <button onclick="setBf('case')" class="btn !py-1.5 !px-3 !text-xs btn-o">Case study</button>
+      
+        <button onclick="setBf('tut')" class="btn !py-1.5 !px-3 !text-xs btn-o">Tutorial</button>
+      
+        <button onclick="setBf('log')" class="btn !py-1.5 !px-3 !text-xs btn-o">Changelog</button>
+      
+        <button onclick="setBf('trend')" class="btn !py-1.5 !px-3 !text-xs btn-o">Trends</button>
+      </div>
+</div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="bg">
+        <article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between">
+          <div class="h-28 grid place-items-center text-5xl bg-gradient-to-tr from-[#c084fc]/20 to-[#3DDC84]/20">📈</div>
+          <div class="p-5 space-y-2">
+            <span class="text-[10px] text-[#3DDC84] font-mono font-bold">Case study</span>
+            <h3 class="font-extrabold text-sm text-white">How a retailer cut checkout time by 40%</h3>
+            <span class="text-xs text-[#c084fc] cursor-pointer hover:underline block pt-1" onclick="showT(t('bl1'),'Article opened in ANDU Reader','📖')">Read more →</span>
+          </div>
+        </article>
+      
+        <article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between">
+          <div class="h-28 grid place-items-center text-5xl bg-gradient-to-tr from-[#c084fc]/20 to-[#3DDC84]/20">🌊</div>
+          <div class="p-5 space-y-2">
+            <span class="text-[10px] text-[#3DDC84] font-mono font-bold">Tutorial</span>
+            <h3 class="font-extrabold text-sm text-white">Room + Flow: a gentle guide</h3>
+            <span class="text-xs text-[#c084fc] cursor-pointer hover:underline block pt-1" onclick="showT(t('bl2'),'Article opened in ANDU Reader','📖')">Read more →</span>
+          </div>
+        </article>
+      
+        <article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between">
+          <div class="h-28 grid place-items-center text-5xl bg-gradient-to-tr from-[#c084fc]/20 to-[#3DDC84]/20">🧾</div>
+          <div class="p-5 space-y-2">
+            <span class="text-[10px] text-[#3DDC84] font-mono font-bold">Changelog</span>
+            <h3 class="font-extrabold text-sm text-white">POS v2.4 release notes</h3>
+            <span class="text-xs text-[#c084fc] cursor-pointer hover:underline block pt-1" onclick="showT(t('bl3'),'Article opened in ANDU Reader','📖')">Read more →</span>
+          </div>
+        </article>
+      
+        <article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between">
+          <div class="h-28 grid place-items-center text-5xl bg-gradient-to-tr from-[#c084fc]/20 to-[#3DDC84]/20">✨</div>
+          <div class="p-5 space-y-2">
+            <span class="text-[10px] text-[#3DDC84] font-mono font-bold">Trends</span>
+            <h3 class="font-extrabold text-sm text-white">Why Compose wins in 2026</h3>
+            <span class="text-xs text-[#c084fc] cursor-pointer hover:underline block pt-1" onclick="showT(t('bl4'),'Article opened in ANDU Reader','📖')">Read more →</span>
+          </div>
+        </article>
+      </div>
+<form class="glass-card rounded-3xl p-6 flex flex-col sm:flex-row gap-3 border border-white/10 items-center" onsubmit="return sub(event)">
+<input class="glass-input inp sm:flex-1 w-full p-3 rounded-xl text-xs" data-p="fe" id="ne" placeholder="Email" required="" type="email">
+<button class="btn btn-p !py-3 !px-6 text-xs uppercase font-extrabold tracking-wider whitespace-nowrap w-full sm:w-auto" data-i="nS">Subscribe</button>
+</form>
+</section>
+<!-- VIEW 8: TERMINAL (DASHBOARD WITH INTEGRATED 5 TABS) -->
+<section class="spa-page space-y-6" id="view-dash"><div class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6"><div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4"><div><div class="flex items-center gap-2"><h2 class="text-2xl sm:text-3xl font-extrabold text-white" data-i="dT">My terminal</h2><span class="text-xs px-3 py-1 rounded-full bg-[#3DDC84]/15 text-[#3DDC84] font-mono font-bold" id="who">RBAC · guest</span></div><small class="text-xs text-slate-400 mt-1 block">Unified enterprise developer station: 8 modules including assets, agile tracker, academy, offline vault, dev tools sandbox, billing &amp; security.</small></div><div class="flex items-center gap-2" id="dashTopActions"></div></div><div class="grid lg:grid-cols-12 gap-6 items-start"><aside class="lg:col-span-3 space-y-2"><div class="text-[11px] font-mono uppercase tracking-wider text-slate-400 px-2 font-bold mb-1">Enterprise Modules</div><div class="flex lg:flex-col gap-1.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none" id="terminalTabsNav"></div></aside><div class="lg:col-span-9 min-h-[360px]" id="dbody"></div></div></div></section>
+</main>
+<!-- FOOTER WITH FAQ & LEGAL -->
+<footer class="border-t border-white/10 bg-[#04070f] mt-12 text-slate-400 text-xs">
+<div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
+<div>
+<h2 class="text-lg sm:text-xl font-extrabold text-white mb-3" data-i="faqT">Help center &amp; FAQ</h2>
+<div class="space-y-2" id="faq">
+        <details class="glass rounded-2xl p-4 border border-white/5">
+          <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-white">Is it beginner friendly?<span class="ch text-sm text-slate-400">⌄</span></summary>
+          <p class="text-xs text-slate-300 mt-2 leading-relaxed">Yes — the Free Tier starts from zero with Kotlin basics.</p>
+        </details>
+      
+        <details class="glass rounded-2xl p-4 border border-white/5">
+          <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-white">How do I get my license?<span class="ch text-sm text-slate-400">⌄</span></summary>
+          <p class="text-xs text-slate-300 mt-2 leading-relaxed">Buy a product and the key appears under “My licenses”.</p>
+        </details>
+      
+        <details class="glass rounded-2xl p-4 border border-white/5">
+          <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-white">Can I order a custom app?<span class="ch text-sm text-slate-400">⌄</span></summary>
+          <p class="text-xs text-slate-300 mt-2 leading-relaxed">Yes, send the quote form and track progress in your dashboard.</p>
+        </details>
+      
+        <details class="glass rounded-2xl p-4 border border-white/5">
+          <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-white">Where is my data stored?<span class="ch text-sm text-slate-400">⌄</span></summary>
+          <p class="text-xs text-slate-300 mt-2 leading-relaxed">This demo stores everything locally in your browser (IndexedDB). Zero-Leak storage.</p>
+        </details>
+      </div>
+</div>
+<div class="text-sm text-slate-300 space-y-3">
+<h2 class="text-lg sm:text-xl font-extrabold text-white mb-3" data-i="ctT">Contact</h2>
+<p class="">📍 <span data-i="addr" class="">Jakarta, Indonesia (head office)</span></p>
+<p class="">✉️ <a class="underline hover:text-[#3DDC84]" href="mailto:hello@andu.my.id">hello@andu.my.id</a></p>
+<p class="">💬 <a class="underline hover:text-[#3DDC84]" href="https://wa.me/6281200000000" rel="noopener" target="_blank">WhatsApp Business</a></p>
+<div class="pt-2 flex gap-4 text-xs font-bold">
+<button class="underline hover:text-[#3DDC84]" data-i="priv" onclick="legal('priv')">Privacy Policy</button>
+<button class="underline hover:text-[#3DDC84]" data-i="terms" onclick="legal('terms')">Terms &amp; Conditions</button>
+</div>
+</div>
+</div>
+<div class="border-t border-white/5 py-4 text-center text-xs text-slate-500">
+<div class="flex items-center justify-center gap-2 mb-1.5">
+<div class="w-5 h-5 rounded-lg bg-gradient-to-tr from-[#3DDC84] via-[#38bdf8] to-[#c084fc] p-0.5 flex items-center justify-center">
+<div class="w-full h-full bg-[#080c18] rounded-[5px] grid place-items-center">
+<svg class="w-3 h-3 fill-[#3DDC84]" viewBox="0 0 24 24"><path d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v6c0 .83.67 1.5 1.5 1.5S5 16.33 5 15.5v-6C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-6c0-.83-.67-1.5-1.5-1.5zm-4.97-4.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.72 2.24 12.88 2 12 2c-.88 0-1.72.24-2.64.63L7.88.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.3 1.3C6.67 3.23 5.4 4.98 5.08 7.09h13.84c-.32-2.11-1.59-3.86-3.39-4.93zM9 5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm6 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"></path></svg>
+</div>
+</div>
+<span class="font-black tracking-tight text-white text-xs">ANDU</span>
+<span class="text-[8px] font-mono px-1 py-0.5 rounded bg-[#3DDC84]/15 text-[#3DDC84] border border-[#3DDC84]/30 font-bold">EL-SALAM</span>
+</div>
+© 2026 ANDU – Android Native Development Unit. All rights reserved. El-Salam Technology, Inc.
+</div>
+</footer>
+<!-- MODAL CONTAINER -->
+<div class="hidden fixed inset-0 z-[100] bg-black/75 backdrop-blur-md grid place-items-center p-4" id="md" onclick="if(event.target===this)closeM()">
+<div aria-modal="true" class="glass-card rounded-3xl p-6 sm:p-8 w-full max-w-md max-h-[85vh] overflow-y-auto relative border border-white/10 shadow-2xl" role="dialog">
+<button class="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-white text-base" onclick="closeM()">✕</button>
+<div id="mb"></div>
+</div>
+</div>
+{% include portal-seo-static.html %}

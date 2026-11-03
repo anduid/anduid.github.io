@@ -36,6 +36,7 @@ instagram_username: ""
 # Menu navigasi (dipakai di header dan footer semua halaman bertema)
 nav:
   - { judul: Aplikasi, url: /aplikasi/ }
+  - { judul: Portal, url: /portal/ }
   - { judul: Blog, url: /blog/ }
   - { judul: Arsip, url: /blog/arsip/ }
   - { judul: Topik, url: /blog/topik/ }
@@ -100,8 +101,14 @@ defaults:
       schema_kategori: UtilitiesApplication
       noads: true
 
+# ====== PORTAL ANDU (aplikasi, kelas, layanan) ======
+# URL Web App Apps Script dari backend/Code.gs. Kosong = portal berjalan sebagai demo lokal.
+gas_url: "https://script.google.com/macros/s/AKfycbyGd28EamKulsTz-vzZ-QFTE5w9f-ec75JyWc9fc8WNokzKSPHKHYOXfCsW3AOkdMVv/exec"
+
 # Berkas yang tidak ikut diterbitkan
 exclude:
+  - backend
+  - PANDUAN-PORTAL.md
   - README.md
   - PANDUAN-MIGRASI.md
   - Gemfile

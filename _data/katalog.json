@@ -1,0 +1,284 @@
+[
+  {
+    "active": true,
+    "id": "product-pos",
+    "type": "product",
+    "title": "Smart POS System",
+    "price": 2400000,
+    "sort": 10,
+    "category": "SaaS",
+    "version": "2.4.0",
+    "icon": "🧾",
+    "desc": "Aplikasi kasir Kotlin Clean Architecture."
+  },
+  {
+    "active": true,
+    "id": "product-crm",
+    "type": "product",
+    "title": "Enterprise Mobile CRM",
+    "price": 4800000,
+    "sort": 20,
+    "category": "SaaS",
+    "version": "1.8.0",
+    "icon": "📱",
+    "desc": "Model data pelanggan sinkron real-time."
+  },
+  {
+    "active": true,
+    "id": "product-compose-kit",
+    "type": "product",
+    "title": "Compose UI Kit (MVVM/MVI)",
+    "price": 1250000,
+    "sort": 30,
+    "category": "Template",
+    "version": "1.2.0",
+    "icon": "🎨",
+    "desc": "Layar premium dan template arsitektur bersih."
+  },
+  {
+    "active": true,
+    "id": "product-android-lib",
+    "type": "product",
+    "title": "ANDU Android Library",
+    "price": 0,
+    "sort": 40,
+    "category": "Free",
+    "version": "2.0.4",
+    "icon": "🧩",
+    "desc": "Komponen SDK open-source gratis."
+  },
+  {
+    "active": true,
+    "id": "link-asn-andu",
+    "type": "link",
+    "title": "ASN Andu",
+    "price": 0,
+    "sort": 50,
+    "icon": "🏛️",
+    "desc": "Komunitas dan tools produktivitas ASN. Premium dibeli di situs ASN Andu.",
+    "url": "https://asn.andu.my.id",
+    "priceNote": "Mulai Rp25.000/bulan"
+  },
+  {
+    "active": true,
+    "id": "course-kotlin-pemula",
+    "type": "course",
+    "title": "Kotlin untuk Pemula",
+    "price": 0,
+    "sort": 10,
+    "level": "Beginner",
+    "cert": true,
+    "hours": 8,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Dasar Kotlin",
+        "xp": 50
+      },
+      {
+        "id": 2,
+        "title": "Fungsi & Class",
+        "xp": 100
+      },
+      {
+        "id": 3,
+        "title": "Null Safety",
+        "xp": 100
+      }
+    ]
+  },
+  {
+    "active": true,
+    "id": "course-api-room",
+    "type": "course",
+    "title": "API & Room Database",
+    "price": 349000,
+    "sort": 20,
+    "level": "Intermediate",
+    "minPlan": 1,
+    "cert": true,
+    "hours": 12,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Retrofit & JSON",
+        "xp": 100
+      },
+      {
+        "id": 2,
+        "title": "Room & Flow",
+        "xp": 150
+      },
+      {
+        "id": 3,
+        "title": "Proyek Akhir",
+        "xp": 200
+      }
+    ]
+  },
+  {
+    "active": true,
+    "id": "course-hilt-compose",
+    "type": "course",
+    "title": "Hilt & Jetpack Compose Pro",
+    "price": 549000,
+    "sort": 30,
+    "level": "Advanced",
+    "minPlan": 2,
+    "cert": true,
+    "hours": 16,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Hilt",
+        "xp": 150
+      },
+      {
+        "id": 2,
+        "title": "Compose State",
+        "xp": 200
+      },
+      {
+        "id": 3,
+        "title": "Performa",
+        "xp": 250
+      }
+    ]
+  },
+  {
+    "active": true,
+    "id": "course-asn-masterclass",
+    "type": "course",
+    "title": "ASN Master Class: Automasi Laporan & Produktivitas ASN",
+    "price": 99000,
+    "sort": 40,
+    "level": "Beginner",
+    "minPlan": 2,
+    "cert": true,
+    "hours": 20,
+    "url": "https://asn.andu.my.id",
+    "modules": [
+      {
+        "id": 1,
+        "title": "Pengenalan AI dalam Birokrasi",
+        "xp": 50
+      },
+      {
+        "id": 2,
+        "title": "Anatomi Prompt yang Sempurna",
+        "xp": 100
+      },
+      {
+        "id": 3,
+        "title": "Filter Privasi & Pengamanan NIP",
+        "xp": 150
+      },
+      {
+        "id": 4,
+        "title": "Praktik: Menyusun e-Kinerja",
+        "xp": 200
+      },
+      {
+        "id": 5,
+        "title": "Ujian Akhir & Klaim Sertifikat",
+        "xp": 0
+      }
+    ],
+    "quiz": {
+      "module": 5,
+      "total": 5,
+      "pass": 60,
+      "questions": [
+        {
+          "q": "Data apa yang tidak boleh dimasukkan ke prompt AI publik?",
+          "options": [
+            "NIP, NIK, dan data pribadi pegawai",
+            "Contoh format surat dinas",
+            "Struktur tabel laporan"
+          ]
+        },
+        {
+          "q": "Unsur prompt yang membuat hasil lebih akurat adalah…",
+          "options": [
+            "Kalimat sepanjang mungkin",
+            "Peran, konteks, tugas, dan format keluaran",
+            "Satu kata kunci saja"
+          ]
+        },
+        {
+          "q": "Langkah pertama menyusun e-Kinerja dari log aktivitas adalah…",
+          "options": [
+            "Menghapus log lama",
+            "Menyalin laporan rekan",
+            "Mengelompokkan kegiatan per rencana hasil kerja"
+          ]
+        },
+        {
+          "q": "Hasil AI untuk laporan resmi sebaiknya…",
+          "options": [
+            "Dikirim apa adanya",
+            "Diperiksa dan disesuaikan pegawai sebelum dikirim",
+            "Dibagikan tanpa dicek"
+          ]
+        },
+        {
+          "q": "Masking data bertujuan untuk…",
+          "options": [
+            "Menyamarkan informasi sensitif sebelum diproses",
+            "Mempercepat internet",
+            "Mengubah tampilan dokumen"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "active": true,
+    "id": "plan-monthly",
+    "type": "plan",
+    "title": "Developer Monthly",
+    "price": 189000,
+    "sort": 10,
+    "tier": 1,
+    "days": 30,
+    "desc": "Semua kelas menengah + kuis."
+  },
+  {
+    "active": true,
+    "id": "plan-vip",
+    "type": "plan",
+    "title": "VIP Lifetime",
+    "price": 2999000,
+    "sort": 20,
+    "tier": 2,
+    "days": 0,
+    "desc": "Semua kelas selamanya + bootcamp live."
+  },
+  {
+    "active": true,
+    "id": "service-custom",
+    "type": "service",
+    "title": "Custom Android Apps",
+    "price": 0,
+    "sort": 10,
+    "sla": "Per proyek"
+  },
+  {
+    "active": true,
+    "id": "service-audit",
+    "type": "service",
+    "title": "Audit, Progita & Optima AI",
+    "price": 0,
+    "sort": 20,
+    "sla": "5-21 hari"
+  },
+  {
+    "active": true,
+    "id": "service-agile",
+    "type": "service",
+    "title": "Agile Sprint Delivery",
+    "price": 0,
+    "sort": 30,
+    "sla": "Sprint 2 minggu"
+  }
+]
