@@ -581,16 +581,23 @@ Designed by <a href="https://andu.my.id" target="_blank" rel="noopener" class="f
 </div>
 </div>
 <!-- Upload Drop Area / Touch Zone -->
-<div class="relative border-2 border-dashed border-teal-300 hover:border-teal-500 rounded-2xl p-4 sm:p-6 text-center bg-white/70 transition cursor-pointer flex flex-col items-center justify-center min-h-[140px]" id="dropZone" onclick="document.getElementById('foto-usaha').click()">
-<input accept="image/*" class="hidden" id="foto-usaha" onchange="handleImageUpload(event)" type="file">
+<div class="relative border-2 border-dashed border-teal-300 hover:border-teal-500 rounded-2xl p-4 sm:p-6 text-center bg-white/70 transition flex flex-col items-center justify-center min-h-[140px]" id="dropZone">
+<input accept="image/*" class="hidden" id="foto-usaha" onchange="handleImageUpload(event); this.value=''" type="file">
+<input accept="image/*" capture="environment" class="hidden" id="foto-usaha-kamera" onchange="handleImageUpload(event); this.value=''" type="file">
 <div class="w-12 h-12 rounded-full bg-teal-100/70 text-teal-700 flex items-center justify-center mb-2 shadow-inner">
 <span class="material-symbols-outlined text-2xl">add_a_photo</span>
 </div>
-<p class="text-xs sm:text-sm font-bold text-slate-800">Sentuh untuk Buka Kamera / Galeri Ponsel</p>
+<p class="text-xs sm:text-sm font-bold text-slate-800">Pilih dari Galeri atau Ambil Foto Langsung</p>
 <p class="text-[11px] text-slate-500 mt-0.5">Format JPG, PNG, WEBP (Maks. 5MB) • Preview instan</p>
-<div class="mt-2.5 inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold">
+<div class="mt-3 flex flex-wrap items-center justify-center gap-2">
+<button type="button" onclick="bukaKamera()" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-teal-600 text-white text-xs font-semibold hover:bg-teal-700 transition">
 <span class="material-symbols-outlined text-sm">photo_camera</span>
-<span class="">Ambil Foto Langsung</span>
+<span>Ambil Foto Langsung</span>
+</button>
+<button type="button" onclick="document.getElementById('foto-usaha').click()" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold hover:bg-teal-100 transition">
+<span class="material-symbols-outlined text-sm">photo_library</span>
+<span>Pilih dari Galeri</span>
+</button>
 </div>
 </div>
 <!-- Aesthetic Photo Presets Selector -->
@@ -3249,7 +3256,7 @@ openEditModal = function (id) {
 
 handleImageUpload = function (e) {
   const file = e.target.files[0]; if (!file) return;
-  if (file.size > 5 * 1024 * 1024) { alert('Ukuran foto maksimal 5MB.'); return; }
+  if (file.size > 20 * 1024 * 1024) { alert('Ukuran foto terlalu besar (maks. 20MB).'); return; }
   const reader = new FileReader();
   reader.onload = function (ev) {
     const apply = function (url) {
@@ -4187,5 +4194,64 @@ if (ADMIN_PANELS.indexOf('riwayat') < 0) ADMIN_PANELS.push('riwayat');
 const sipPrevSwitchTabH = switchAdminTab;
 switchAdminTab = function (tab) { sipPrevSwitchTabH(tab); if (tab === 'riwayat') sipHistLoad(true); };
 
+</script>
+
+<!-- Modal Kamera Langsung (desktop/laptop) -->
+<div id="kameraModal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.85);align-items:center;justify-content:center;padding:16px">
+<div style="background:#fff;border-radius:16px;max-width:560px;width:100%;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4)">
+<div style="padding:12px 16px;font-weight:700;font-size:14px;color:#0f172a;display:flex;justify-content:space-between;align-items:center">
+<span>Ambil Foto Langsung</span>
+<button type="button" onclick="tutupKamera()" style="font-size:20px;line-height:1;color:#64748b;background:none;border:0;cursor:pointer">&times;</button>
+</div>
+<video id="kameraVideo" autoplay playsinline muted style="width:100%;background:#000;display:block;max-height:60vh"></video>
+<div id="kameraError" style="display:none;padding:12px 16px;font-size:12px;color:#b91c1c"></div>
+<div style="padding:12px 16px;display:flex;gap:8px;justify-content:center">
+<button type="button" onclick="jepretKamera()" style="background:#0d9488;color:#fff;font-weight:600;font-size:13px;padding:8px 18px;border-radius:10px;border:0;cursor:pointer">Jepret Foto</button>
+<button type="button" onclick="tutupKamera()" style="background:#f1f5f9;color:#334155;font-weight:600;font-size:13px;padding:8px 18px;border-radius:10px;border:0;cursor:pointer">Batal</button>
+</div>
+</div>
+</div>
+<script>
+var kameraStream = null;
+function bukaKamera() {
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+  // Ponsel: atribut capture langsung membuka aplikasi kamera
+  if (isMobile || !(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
+    document.getElementById('foto-usaha-kamera').click();
+    return;
+  }
+  // Laptop/PC: browser mengabaikan "capture", jadi pakai kamera webcam lewat getUserMedia
+  var modal = document.getElementById('kameraModal');
+  var err = document.getElementById('kameraError');
+  err.style.display = 'none';
+  modal.style.display = 'flex';
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 960 } }, audio: false })
+    .then(function (stream) {
+      kameraStream = stream;
+      document.getElementById('kameraVideo').srcObject = stream;
+    })
+    .catch(function () {
+      err.textContent = 'Kamera tidak dapat diakses. Izinkan akses kamera di browser, atau gunakan tombol "Pilih dari Galeri".';
+      err.style.display = 'block';
+    });
+}
+function tutupKamera() {
+  if (kameraStream) { kameraStream.getTracks().forEach(function (t) { t.stop(); }); kameraStream = null; }
+  document.getElementById('kameraVideo').srcObject = null;
+  document.getElementById('kameraModal').style.display = 'none';
+}
+function jepretKamera() {
+  var v = document.getElementById('kameraVideo');
+  if (!v.videoWidth) return;
+  var c = document.createElement('canvas');
+  c.width = v.videoWidth; c.height = v.videoHeight;
+  c.getContext('2d').drawImage(v, 0, 0);
+  c.toBlob(function (blob) {
+    if (!blob) return;
+    var file = new File([blob], 'foto-kamera.jpg', { type: 'image/jpeg' });
+    tutupKamera();
+    handleImageUpload({ target: { files: [file] } });
+  }, 'image/jpeg', 0.9);
+}
 </script>
 </body></html>
