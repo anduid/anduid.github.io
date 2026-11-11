@@ -777,6 +777,8 @@ Terdaftar Mandiri
 <div id="regStatusWrap" class="hidden">
 <label class="block text-xs font-semibold text-slate-700 mb-1.5" for="regStatus">Status Verifikasi (hasil survei petugas)</label>
 <select class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" id="regStatus"><option value="Terverifikasi">Terverifikasi (tampil di Etalase)</option><option value="Menunggu">Menunggu (belum tampil di Etalase)</option></select>
+<label class="block text-xs font-semibold text-slate-700 mt-3 mb-1.5" for="regCatatan">Catatan Verifikasi <span class="font-normal text-slate-400">(opsional, hanya terlihat petugas)</span></label>
+<textarea id="regCatatan" rows="3" maxlength="500" class="w-full px-3.5 py-3 text-base text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition bg-slate-50/50" placeholder="Informasi tambahan hasil survei, mis. pemilik jarang di tempat, perlu kunjungan ulang."></textarea>
 </div>
 <!-- AKUN LOGIN KOMUNITAS -->
 <div id="regAccountBlock" class="rounded-2xl border border-teal-200 bg-teal-50/50 p-4 space-y-3">
@@ -982,6 +984,7 @@ Terdaftar Mandiri
 </div>
 <div class="px-4 py-3 border-b border-slate-100 flex flex-wrap gap-2 items-center">
 <select id="adminFilterStatus" onchange="filterAdminDirectory()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-white"><option value="ALL">Semua status</option><option>Terverifikasi</option><option>Menunggu</option></select>
+<select id="adminFilterAktif" onchange="filterAdminDirectory()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-white"><option value="ALL">Aktif &amp; tidak aktif</option><option value="Aktif">Aktif</option><option value="Tidak Aktif">Tidak aktif</option></select>
 <select id="adminFilterSource" onchange="filterAdminDirectory()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-white"><option value="ALL">Semua sumber</option><option value="mandiri">Pendaftaran Mandiri</option><option value="petugas">Pendampingan Petugas</option></select>
 <select id="adminFilterRw" onchange="filterAdminDirectory()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-white"></select>
 <select id="adminFilterNeed" onchange="filterAdminDirectory()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-white"><option value="ALL">Semua kebutuhan</option><option value="FU">Perlu tindak lanjut</option><option value="NIB OSS">Butuh NIB</option><option value="Sertifikasi Halal">Butuh Halal</option><option value="Bantuan Permodalan">Butuh Modal/KUR</option><option value="Pemasaran Digital">Butuh Pelatihan Medsos</option></select>
@@ -1091,7 +1094,7 @@ Terdaftar Mandiri
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
 <input id="rwQ" type="search" oninput="sipHistDebounce()" placeholder="Cari nama usaha / ID" class="px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-white focus:ring-2 focus:ring-teal-500">
 <input id="rwActor" type="search" oninput="sipHistDebounce()" placeholder="Akun / nama pelaku" class="px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-white focus:ring-2 focus:ring-teal-500">
-<select id="rwAction" onchange="sipHistLoad(true)" class="px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-white focus:ring-2 focus:ring-teal-500"><option value="">Semua aktivitas</option><option value="input">Data ditambahkan</option><option value="update">Data diperbarui</option><option value="verifikasi">Diverifikasi</option><option value="batal_verifikasi">Verifikasi dibatalkan</option><option value="tindak_lanjut">Tindak lanjut</option><option value="hapus">Data dihapus</option><option value="migrasi">Dimigrasikan</option></select>
+<select id="rwAction" onchange="sipHistLoad(true)" class="px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-white focus:ring-2 focus:ring-teal-500"><option value="">Semua aktivitas</option><option value="input">Data ditambahkan</option><option value="update">Data diperbarui</option><option value="verifikasi">Diverifikasi</option><option value="batal_verifikasi">Verifikasi dibatalkan</option><option value="tindak_lanjut">Tindak lanjut</option><option value="hapus">Data dihapus</option><option value="migrasi">Dimigrasikan</option><option value="nonaktif">Ditandai tidak aktif</option><option value="aktifkan">Diaktifkan kembali</option><option value="catatan">Catatan verifikasi</option></select>
 </div>
 <div id="rwSummary" class="text-[11px] text-slate-400"></div>
 <p id="rwNote" class="hidden text-xs font-semibold text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2"></p>
@@ -2216,7 +2219,7 @@ window.switchAdminTab = function(tabName) {
     setTimeout(initGeospasialMap, 200);
   }
 };
-</script><script id="geospasialStatusFilterScript">let activeStatusFilter = 'ALL'; function setStatusFilter(status, btnElem) { activeStatusFilter = status; document.querySelectorAll('.status-filter-btn').forEach(btn => { btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); btn.classList.add('bg-white'); }); if (btnElem) { btnElem.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); btnElem.classList.remove('bg-white'); } if (typeof updateMapFilterSubtext === 'function') updateMapFilterSubtext(); if (typeof renderGeospasialMarkers === 'function') renderGeospasialMarkers(); } const originalRenderGeospasialMarkers = renderGeospasialMarkers; renderGeospasialMarkers = function() { if (!geospasialMapInstance || !geospasialMarkersLayer) return; geospasialMarkersLayer.clearLayers(); const filtered = umkmList.filter(item => { const matchRw = activeRwFilter === 'ALL' || item.rw === activeRwFilter; let matchKlaster = true; if (activeKlasterFilter === 'Kuliner & Minuman') { matchKlaster = item.category.includes('Kuliner'); } else if (activeKlasterFilter === 'Fashion & Kriya') { matchKlaster = item.category.includes('Fashion') || item.category.includes('Kriya'); } else if (activeKlasterFilter === 'Jasa & Reparasi') { matchKlaster = item.category.includes('Jasa') || item.category.includes('Reparasi'); } else if (activeKlasterFilter === 'Ritel') { matchKlaster = !item.category.includes('Kuliner') && !item.category.includes('Fashion') && !item.category.includes('Kriya') && !item.category.includes('Jasa') && !item.category.includes('Reparasi'); } let matchStatus = true; if (activeStatusFilter === 'Terverifikasi') { matchStatus = item.status === 'Terverifikasi'; } else if (activeStatusFilter === 'Menunggu') { matchStatus = item.status !== 'Terverifikasi'; } return matchRw && matchKlaster && matchStatus; }); const counterElem = document.getElementById('mapActivePinsCount'); if (counterElem) { counterElem.innerText = `${filtered.length} Titik Terpetakan Real-time`; } filtered.forEach(item => { const lat = item.lat || -6.3050; const lng = item.lng || 106.9635; const pinIcon = createCustomMapPinIcon(item.category); const isVerified = item.status === 'Terverifikasi'; const statusBadgeColor = isVerified ? '#10b981' : '#f59e0b'; const statusText = isVerified ? '✅ Terverifikasi' : '⏳ Belum Terverifikasi'; const popupHtml = `<div style="min-width: 220px; max-width: 260px; font-family: inherit; font-size: 12px; color: #1e293b;"><div style="position: relative; height: 100px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #e2e8f0;"><img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" /><span style="position: absolute; top: 6px; left: 6px; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.95); font-weight: 700; font-size: 10px; color: #0f172a;">${item.rw}</span><span style="position: absolute; top: 6px; right: 6px; padding: 2px 8px; border-radius: 9999px; background: ${statusBadgeColor}; color: white; font-weight: 700; font-size: 10px;">${statusText}</span></div><strong style="display: block; font-size: 14px; color: #0f172a; margin-bottom: 2px; line-height: 1.2;">${item.name}</strong><p style="margin: 0 0 4px 0; color: #64748b; font-size: 11px;">Pemilik: <b>${item.owner}</b></p><span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: #f0fdfa; color: #0f766e; font-weight: 600; font-size: 10px; margin-bottom: 6px;">${item.category}</span><p style="margin: 0 0 8px 0; color: #475569; font-size: 11px; line-height: 1.3;">${item.address}</p><div style="display: flex; gap: 6px; margin-top: 6px;"><a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #10b981; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Chat WA</a><a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Google Maps</a></div></div>`; const marker = L.marker([lat, lng], { icon: pinIcon }); marker.bindPopup(popupHtml, { maxWidth: 280 }); geospasialMarkersLayer.addLayer(marker); }); if (filtered.length > 0 && geospasialMapInstance) { const group = L.featureGroup(geospasialMarkersLayer.getLayers()); geospasialMapInstance.fitBounds(group.getBounds().pad(0.15)); } }; const origResetMapFilters = resetMapFilters; resetMapFilters = function() { activeStatusFilter = 'ALL'; document.querySelectorAll('.status-filter-btn').forEach((b, i) => { if (i === 0) { b.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); } else { b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); } }); if (origResetMapFilters) origResetMapFilters(); };</script>
+</script><script id="geospasialStatusFilterScript">let activeStatusFilter = 'ALL'; function setStatusFilter(status, btnElem) { activeStatusFilter = status; document.querySelectorAll('.status-filter-btn').forEach(btn => { btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); btn.classList.add('bg-white'); }); if (btnElem) { btnElem.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); btnElem.classList.remove('bg-white'); } if (typeof updateMapFilterSubtext === 'function') updateMapFilterSubtext(); if (typeof renderGeospasialMarkers === 'function') renderGeospasialMarkers(); } const originalRenderGeospasialMarkers = renderGeospasialMarkers; renderGeospasialMarkers = function() { if (!geospasialMapInstance || !geospasialMarkersLayer) return; geospasialMarkersLayer.clearLayers(); const filtered = umkmList.filter(item => { const matchRw = activeRwFilter === 'ALL' || item.rw === activeRwFilter; let matchKlaster = true; if (activeKlasterFilter === 'Kuliner & Minuman') { matchKlaster = item.category.includes('Kuliner'); } else if (activeKlasterFilter === 'Fashion & Kriya') { matchKlaster = item.category.includes('Fashion') || item.category.includes('Kriya'); } else if (activeKlasterFilter === 'Jasa & Reparasi') { matchKlaster = item.category.includes('Jasa') || item.category.includes('Reparasi'); } else if (activeKlasterFilter === 'Ritel') { matchKlaster = !item.category.includes('Kuliner') && !item.category.includes('Fashion') && !item.category.includes('Kriya') && !item.category.includes('Jasa') && !item.category.includes('Reparasi'); } let matchStatus = true; if (activeStatusFilter === 'Terverifikasi') { matchStatus = item.status === 'Terverifikasi'; } else if (activeStatusFilter === 'Menunggu') { matchStatus = item.status !== 'Terverifikasi'; } return matchRw && matchKlaster && matchStatus && item.aktif !== 'Tidak Aktif'; }); const counterElem = document.getElementById('mapActivePinsCount'); if (counterElem) { counterElem.innerText = `${filtered.length} Titik Terpetakan Real-time`; } filtered.forEach(item => { const lat = item.lat || -6.3050; const lng = item.lng || 106.9635; const pinIcon = createCustomMapPinIcon(item.category); const isVerified = item.status === 'Terverifikasi'; const statusBadgeColor = isVerified ? '#10b981' : '#f59e0b'; const statusText = isVerified ? '✅ Terverifikasi' : '⏳ Belum Terverifikasi'; const popupHtml = `<div style="min-width: 220px; max-width: 260px; font-family: inherit; font-size: 12px; color: #1e293b;"><div style="position: relative; height: 100px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; background: #e2e8f0;"><img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" /><span style="position: absolute; top: 6px; left: 6px; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.95); font-weight: 700; font-size: 10px; color: #0f172a;">${item.rw}</span><span style="position: absolute; top: 6px; right: 6px; padding: 2px 8px; border-radius: 9999px; background: ${statusBadgeColor}; color: white; font-weight: 700; font-size: 10px;">${statusText}</span></div><strong style="display: block; font-size: 14px; color: #0f172a; margin-bottom: 2px; line-height: 1.2;">${item.name}</strong><p style="margin: 0 0 4px 0; color: #64748b; font-size: 11px;">Pemilik: <b>${item.owner}</b></p><span style="display: inline-block; padding: 2px 6px; border-radius: 4px; background: #f0fdfa; color: #0f766e; font-weight: 600; font-size: 10px; margin-bottom: 6px;">${item.category}</span><p style="margin: 0 0 8px 0; color: #475569; font-size: 11px; line-height: 1.3;">${item.address}</p><div style="display: flex; gap: 6px; margin-top: 6px;"><a href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #10b981; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Chat WA</a><a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" style="flex: 1; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px;">Google Maps</a></div></div>`; const marker = L.marker([lat, lng], { icon: pinIcon }); marker.bindPopup(popupHtml, { maxWidth: 280 }); geospasialMarkersLayer.addLayer(marker); }); if (filtered.length > 0 && geospasialMapInstance) { const group = L.featureGroup(geospasialMarkersLayer.getLayers()); geospasialMapInstance.fitBounds(group.getBounds().pad(0.15)); } }; const origResetMapFilters = resetMapFilters; resetMapFilters = function() { activeStatusFilter = 'ALL'; document.querySelectorAll('.status-filter-btn').forEach((b, i) => { if (i === 0) { b.classList.add('bg-teal-600', 'text-white', 'shadow-sm'); } else { b.classList.remove('bg-teal-600', 'text-white', 'shadow-sm'); } }); if (origResetMapFilters) origResetMapFilters(); };</script>
 
 <script id="komunitasScript">
 // ===================================================================
@@ -2867,7 +2870,7 @@ function dirFiltered() {
   const q = sipVal('adminSearchInput').toLowerCase(), fs = sipVal('adminFilterStatus') || 'ALL', fsrc = sipVal('adminFilterSource') || 'ALL', frw = sipVal('adminFilterRw') || 'ALL', fn = sipVal('adminFilterNeed') || 'ALL';
   return sipScopedList().filter(u =>
     (!q || [u.name, u.owner, u.rw, u.id, u.nib, u.area].join(' ').toLowerCase().includes(q)) &&
-    (fs === 'ALL' || u.status === fs) && (fsrc === 'ALL' || u.source === fsrc) && (frw === 'ALL' || u.rw === frw) &&
+    (fs === 'ALL' || u.status === fs) && ((sipVal('adminFilterAktif') || 'ALL') === 'ALL' || (u.aktif === 'Tidak Aktif' ? 'Tidak Aktif' : 'Aktif') === sipVal('adminFilterAktif')) && (fsrc === 'ALL' || u.source === fsrc) && (frw === 'ALL' || u.rw === frw) &&
     (fn === 'ALL' || (fn === 'FU' ? needsFollowUp(u).length > 0 : (u.needs || []).includes(fn))));
 }
 function srcChip(u) { return u.source === 'petugas' ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-800">Pendampingan</span>' : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Mandiri</span>'; }
@@ -3086,6 +3089,7 @@ function renderAdminDirectory(filtered) {
     const b = big ? 'flex-1 py-1.5 text-xs' : 'px-2.5 py-1 text-[11px]';
     return '<button onclick="toggleVerificationStatus(\'' + E(u.id) + '\')" class="' + b + ' rounded-lg font-bold ' + (ok(u) ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200') + '">' + (ok(u) ? 'Batalkan' : 'Verifikasi') + '</button>' +
       '<button onclick="openDetailModal(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100" title="Detail"><span class="material-symbols-outlined text-[18px]">visibility</span></button>' +
+      '<button onclick="openAktifModal(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg ' + (sipAktifOf(u) === 'Aktif' ? 'text-slate-500 hover:text-rose-600 hover:bg-rose-50' : 'text-emerald-600 hover:bg-emerald-50') + '" title="' + (sipAktifOf(u) === 'Aktif' ? 'Tandai Tidak Aktif' : 'Aktifkan kembali') + '"><span class="material-symbols-outlined text-[18px]">' + (sipAktifOf(u) === 'Aktif' ? 'person_off' : 'person_check') + '</span></button>' +
       '<button onclick="openEditModal(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="Edit"><span class="material-symbols-outlined text-[18px]">edit</span></button>' +
       '<a href="https://maps.google.com/?q=' + u.lat + ',' + u.lng + '" target="_blank" class="p-1.5 rounded-lg text-slate-500 hover:text-teal-700" title="Maps"><span class="material-symbols-outlined text-[18px]">map</span></a>' +
       (sipIsSuper() ? '<button onclick="confirmDelete(\'' + E(u.id) + '\')" class="p-1.5 rounded-lg text-red-600 hover:bg-red-50" title="Hapus"><span class="material-symbols-outlined text-[18px]">delete</span></button>' : '');
@@ -3095,14 +3099,14 @@ function renderAdminDirectory(filtered) {
     '<td class="px-3 py-3 font-semibold">' + E(u.rw) + '<div class="text-[11px] font-normal text-slate-500">' + E(u.area) + '</div></td>' +
     '<td class="px-3 py-3">' + E(u.category) + '<div class="font-mono text-[11px] text-slate-500">' + E(u.omzet) + '</div></td>' +
     '<td class="px-3 py-3 whitespace-nowrap">' + legalChips(u) + '</td><td class="px-3 py-3">' + needChips(u) + '</td>' +
-    '<td class="px-3 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + (ok(u) ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800') + '">' + E(u.status) + '</span></td>' +
+    '<td class="px-3 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + (ok(u) ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800') + '">' + E(u.status) + '</span>' + sipAktifChipBlock(u) + '</td>' +
     '<td class="px-3 py-3 text-right"><div class="flex items-center justify-end gap-1">' + acts(u, false) + '</div></td></tr>').join('')
     : '<tr><td colspan="7" class="px-4 py-8 text-center text-slate-400">Tidak ada data pada filter ini.</td></tr>';
   if (mob) mob.innerHTML = list.length ? list.map(u => '<div class="p-3.5 space-y-2"><div class="flex items-start justify-between gap-2"><div>' +
     '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase">' + E(u.rw) + '</span> ' + srcChip(u) +
     '<h4 class="font-display font-bold text-sm text-slate-900 mt-1">' + E(u.name) + '</h4><p class="text-xs text-slate-500">' + E(u.owner) + ' • ' + E(u.category) + '</p>' + (u.username ? '<p class="text-[11px] font-semibold text-teal-700">@' + E(u.username) + '</p>' : '<p class="text-[11px] text-slate-400">tanpa akun</p>') + '</div>' +
     '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ' + (ok(u) ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800') + '">' + E(u.status) + '</span></div>' +
-    '<div class="flex flex-wrap gap-1">' + legalChips(u) + '</div><div class="flex flex-wrap gap-1">' + needChips(u) + '</div>' +
+    '<div class="flex flex-wrap gap-1">' + sipAktifChipInline(u) + legalChips(u) + '</div><div class="flex flex-wrap gap-1">' + needChips(u) + '</div>' +
     '<div class="flex items-center gap-1 pt-1">' + sipContactBtns(u, true) + '</div><div class="flex items-center gap-1">' + acts(u, true) + '</div></div>').join('')
     : '<p class="p-6 text-center text-xs text-slate-400">Tidak ada data pada filter ini.</p>';
 }
@@ -3171,7 +3175,7 @@ function sipSetFollowup(id, k, v) {
 renderEtalase = function (filterRw) {
   const container = sipEl('etalaseContainer'); if (!container) return;
   if (filterRw === undefined) filterRw = sipVal('etalaseRwFilter') || 'ALL';
-  const items = umkmList.filter(u => u.status === 'Terverifikasi' && (filterRw === 'ALL' || u.rw === filterRw));
+  const items = umkmList.filter(u => u.status === 'Terverifikasi' && u.aktif !== 'Tidak Aktif' && (filterRw === 'ALL' || u.rw === filterRw));
   const nP = items.filter(u => u.source === 'petugas').length;
   const ct = sipEl('etalaseCounterText');
   if (ct) ct.innerText = 'Menampilkan ' + items.length + ' usaha binaan terverifikasi • ' + nP + ' pendampingan petugas • ' + (items.length - nP) + ' pendaftaran mandiri';
@@ -3672,7 +3676,7 @@ function sipHydrate(r) {
   o.nib = r.nib !== undefined ? r.nib : (r.hasNib ? 'terdata' : '');
   o.halal = r.halal !== undefined ? r.halal : (r.hasHalal ? 'terdata' : '');
   o.bpom = r.bpom !== undefined ? r.bpom : (r.hasBpom ? 'terdata' : '');
-  o.needs = Array.isArray(r.needs) ? r.needs : []; o.followup = r.followup || {};
+  o.needs = Array.isArray(r.needs) ? r.needs : []; o.followup = r.followup || {}; o.aktif = r.aktif === 'Tidak Aktif' ? 'Tidak Aktif' : 'Aktif';
   return o;
 }
 function sipRebuildList() {
@@ -3903,7 +3907,7 @@ if (SIP_REMOTE) {
     if (!sipCanManage({ rw: d.rw })) return showErr('RW ' + d.rw + ' di luar wilayah tugas Anda.');
     const newAcc = sipStaffAccount(showErr); if (newAcc === false) return;
     setBusy(true);
-    try { await sipCall('saveUmkm', { token: sipAdmin.token, mode: umkmFormMode, id: umkmEditId, status: sipVal('regStatus') || 'Terverifikasi', data, account: newAcc || undefined }); }
+    try { const sr = await sipCall('saveUmkm', { token: sipAdmin.token, mode: umkmFormMode, id: umkmEditId, status: sipVal('regStatus') || 'Terverifikasi', data, account: newAcc || undefined, catatan: sipVal('regCatatan') }); if (umkmFormMode === 'add' && sipVal('regCatatan').trim() && sr && sr.umkm) { try { await sipCall('addCatatan', { token: sipAdmin.token, id: sr.umkm.id, catatan: sipVal('regCatatan') }); } catch (e2) {} } }
     catch (ex) { setBusy(false); return showErr(ex.message); }
     setBusy(false);
     showToast(umkmFormMode === 'add' ? 'UMKM binaan ditambahkan.' : 'Perubahan data disimpan.');
@@ -4254,4 +4258,123 @@ function jepretKamera() {
   }, 'image/jpeg', 0.9);
 }
 </script>
+<script id="sipAktifCatatanScript">
+// ===================================================================
+// Status Aktif / Tidak Aktif + Catatan Verifikasi (khusus petugas)
+// Backend: setAktif, addCatatan, setStatus(catatan) di Code.gs. Butuh SIP_API aktif.
+// ===================================================================
+const SIP_ALASAN_NONAKTIF = ['Pemilik meninggal dunia', 'Usaha tutup permanen', 'Pindah / tidak ditemukan', 'Berhenti sementara', 'Lainnya'];
+RW_ACT.nonaktif = { label: 'Ditandai tidak aktif', icon: 'person_off',   cls: 'bg-slate-200 text-slate-700' };
+RW_ACT.aktifkan = { label: 'Diaktifkan kembali',  icon: 'person_check', cls: 'bg-emerald-100 text-emerald-700' };
+RW_ACT.catatan  = { label: 'Catatan verifikasi',  icon: 'sticky_note_2', cls: 'bg-amber-100 text-amber-800' };
+
+function sipAktifOf(u) { return u && u.aktif === 'Tidak Aktif' ? 'Tidak Aktif' : 'Aktif'; }
+function sipAktifChipInline(u) { return sipAktifOf(u) === 'Tidak Aktif' ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-700">Tidak Aktif</span> ' : ''; }
+function sipAktifChipBlock(u) { return sipAktifOf(u) === 'Tidak Aktif' ? '<div class="mt-1"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700" title="' + komEsc(u.aktifAlasan || '') + '">Tidak Aktif</span></div>' : ''; }
+
+function sipModalShell(id, inner) {
+  let m = document.getElementById(id);
+  if (!m) { m = document.createElement('div'); m.id = id; m.style.cssText = 'position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.6)'; document.body.appendChild(m); }
+  m.innerHTML = '<div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl space-y-3 max-h-full overflow-y-auto">' + inner + '</div>';
+  m.style.display = 'flex'; return m;
+}
+function sipCloseModal(id) { const m = document.getElementById(id); if (m) m.style.display = 'none'; }
+function sipNeedRemote() { if (!SIP_REMOTE || !sipAdmin || !sipAdmin.token) { showToast('Fitur ini memerlukan koneksi ke Spreadsheet (SIP_API).', true); return true; } return false; }
+const SIP_FIELD = 'w-full px-3 py-2.5 text-sm text-slate-900 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white';
+
+// ---------- Aktif / Tidak Aktif ----------
+function openAktifModal(id) {
+  const u = umkmList.find(x => x.id === id); if (!u) return;
+  if (!sipCanManage(u)) { showToast('Usaha ini di luar RW tugas Anda.', true); return; }
+  if (sipNeedRemote()) return;
+  const E = komEsc, next = sipAktifOf(u) === 'Aktif' ? 'Tidak Aktif' : 'Aktif', off = next === 'Tidak Aktif';
+  sipModalShell('sipAktifModal',
+    '<div class="flex items-center gap-2"><span class="material-symbols-outlined ' + (off ? 'text-rose-600' : 'text-emerald-600') + '">' + (off ? 'person_off' : 'person_check') + '</span><h3 class="font-display font-bold text-base text-slate-900">' + (off ? 'Tandai Usaha Tidak Aktif' : 'Aktifkan Kembali Usaha') + '</h3></div>' +
+    '<p class="text-xs text-slate-600"><strong>' + E(u.name) + '</strong> (' + E(u.id) + ')' + (off ? '<br>Usaha tidak akan tampil di Etalase dan tidak dihitung sebagai usaha aktif. Data tetap tersimpan.' : '<br>Usaha akan kembali dihitung aktif' + (u.status === 'Terverifikasi' ? ' dan tampil di Etalase.' : '.')) + '</p>' +
+    (off ? '<div><label class="block text-xs font-semibold text-slate-700 mb-1">Alasan</label><select id="sipAktifAlasan" class="' + SIP_FIELD + '">' + SIP_ALASAN_NONAKTIF.map(a => '<option>' + a + '</option>').join('') + '</select></div>' : '') +
+    '<div><label class="block text-xs font-semibold text-slate-700 mb-1">Uraian petugas <span class="text-rose-600">*</span></label><textarea id="sipAktifUraian" rows="4" maxlength="500" class="' + SIP_FIELD + '" placeholder="' + (off ? 'Mis. Pemilik meninggal dunia 3 Nov 2026, usaha tidak diteruskan keluarga. Informasi dari Ketua RT.' : 'Mis. Usaha dibuka kembali dan diteruskan oleh anak pemilik.') + '"></textarea><p class="text-[10px] text-slate-400 mt-0.5">Minimal 10 karakter. Hanya terlihat oleh petugas.</p></div>' +
+    '<p id="sipAktifErr" class="hidden text-xs text-red-600"></p>' +
+    '<div class="flex gap-2 pt-1"><button type="button" onclick="sipCloseModal(\'sipAktifModal\')" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50">Batal</button>' +
+    '<button type="button" id="sipAktifBtn" onclick="sipAktifSubmit(\'' + E(id) + '\',\'' + next + '\')" class="flex-1 py-2.5 rounded-xl text-white font-bold text-xs ' + (off ? 'bg-rose-600 hover:bg-rose-700' : 'bg-emerald-600 hover:bg-emerald-700') + '">' + (off ? 'Tandai Tidak Aktif' : 'Aktifkan Kembali') + '</button></div>');
+  setTimeout(() => { const t = sipEl('sipAktifUraian'); if (t) t.focus(); }, 50);
+}
+async function sipAktifSubmit(id, next) {
+  const uraian = sipVal('sipAktifUraian').trim(), err = sipEl('sipAktifErr'), btn = sipEl('sipAktifBtn');
+  if (uraian.length < 10) { err.textContent = 'Uraian wajib diisi (minimal 10 karakter).'; err.classList.remove('hidden'); return; }
+  btn.disabled = true; err.classList.add('hidden');
+  try {
+    const r = await sipCall('setAktif', { token: sipAdmin.token, id, aktif: next, alasan: next === 'Tidak Aktif' ? sipVal('sipAktifAlasan') : '', uraian });
+    sipReplaceAdminRow(r.umkm); sipSyncPublic();
+    sipCloseModal('sipAktifModal'); closeDetailModal();
+    showToast(next === 'Tidak Aktif' ? 'Usaha ditandai Tidak Aktif dan disembunyikan dari Etalase.' : 'Usaha diaktifkan kembali.');
+  } catch (ex) { btn.disabled = false; err.textContent = ex.message || 'Gagal menyimpan.'; err.classList.remove('hidden'); }
+}
+
+// ---------- Catatan verifikasi (mandiri atau menyertai verifikasi) ----------
+function openCatatanModal(id, verifyTo) {
+  const u = umkmList.find(x => x.id === id); if (!u) return;
+  if (!sipCanManage(u)) { showToast('Usaha ini di luar RW tugas Anda.', true); return; }
+  if (sipNeedRemote()) return;
+  const E = komEsc, v = verifyTo || '', ver = v === 'Terverifikasi';
+  const title = !v ? 'Catatan Verifikasi' : ver ? 'Verifikasi Usaha' : 'Batalkan Verifikasi';
+  const btnTxt = !v ? 'Simpan Catatan' : ver ? 'Verifikasi' : 'Batalkan Verifikasi';
+  const btnCls = !v ? 'bg-teal-600 hover:bg-teal-700' : ver ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-amber-600 hover:bg-amber-700';
+  sipModalShell('sipCatatanModal',
+    '<div class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-600">sticky_note_2</span><h3 class="font-display font-bold text-base text-slate-900">' + title + '</h3></div>' +
+    '<p class="text-xs text-slate-600"><strong>' + E(u.name) + '</strong> (' + E(u.id) + ')</p>' +
+    '<div><label class="block text-xs font-semibold text-slate-700 mb-1">Catatan petugas ' + (v ? '<span class="font-normal text-slate-400">(opsional)</span>' : '') + '</label><textarea id="sipCatatanText" rows="4" maxlength="500" class="' + SIP_FIELD + '" placeholder="Informasi tambahan hasil survei/verifikasi, mis. pemilik sering tidak di tempat, produk dititip di warung RT 03, perlu kunjungan ulang.">' + E(u.catatan || '') + '</textarea><p class="text-[10px] text-slate-400 mt-0.5">Hanya terlihat oleh petugas. Kosongkan untuk menghapus catatan. Setiap perubahan tercatat di Riwayat.</p></div>' +
+    '<p id="sipCatatanErr" class="hidden text-xs text-red-600"></p>' +
+    '<div class="flex gap-2 pt-1"><button type="button" onclick="sipCloseModal(\'sipCatatanModal\')" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50">Batal</button>' +
+    '<button type="button" id="sipCatatanBtn" onclick="sipCatatanSubmit(\'' + E(id) + '\',\'' + v + '\')" class="flex-1 py-2.5 rounded-xl text-white font-bold text-xs ' + btnCls + '">' + btnTxt + '</button></div>');
+  setTimeout(() => { const t = sipEl('sipCatatanText'); if (t) t.focus(); }, 50);
+}
+async function sipCatatanSubmit(id, v) {
+  const text = sipVal('sipCatatanText'), err = sipEl('sipCatatanErr'), btn = sipEl('sipCatatanBtn');
+  btn.disabled = true; err.classList.add('hidden');
+  try {
+    const r = v ? await sipCall('setStatus', { token: sipAdmin.token, id, status: v, catatan: text }) : await sipCall('addCatatan', { token: sipAdmin.token, id, catatan: text });
+    sipReplaceAdminRow(r.umkm); if (v) sipSyncPublic();
+    sipCloseModal('sipCatatanModal');
+    if (sipEl('adminDetailModal') && !sipEl('adminDetailModal').classList.contains('hidden')) openDetailModal(id);
+    showToast(!v ? 'Catatan verifikasi disimpan.' : v === 'Terverifikasi' ? 'Usaha diverifikasi — kini tampil di Etalase.' : 'Verifikasi dibatalkan — usaha disembunyikan dari Etalase.');
+  } catch (ex) { btn.disabled = false; err.textContent = ex.message || 'Gagal menyimpan.'; err.classList.remove('hidden'); }
+}
+
+// tombol Verifikasi/Batalkan di daftar sekarang membuka kotak catatan
+toggleVerificationStatus = function (id) {
+  const u = umkmList.find(i => i.id === id); if (!u) return;
+  openCatatanModal(id, u.status === 'Terverifikasi' ? 'Menunggu' : 'Terverifikasi');
+};
+
+// ---------- Detail usaha: blok status aktif + catatan ----------
+const sipPrevDetail2 = openDetailModal;
+openDetailModal = function (id) {
+  sipPrevDetail2(id);
+  const u = umkmList.find(x => x.id === id), box = sipEl('detailExtra'); if (!u || !box) return;
+  const E = komEsc, off = sipAktifOf(u) === 'Tidak Aktif', can = sipCanManage(u);
+  const who = (n, t) => (n || t) ? '<span class="block text-[10px] text-slate-400 mt-0.5">' + (n ? 'oleh ' + E(n) : '') + (t ? ' • ' + sipTimeId(t) : '') + '</span>' : '';
+  const st = sipEl('detailModalStatus'); if (off && st) st.innerText = u.status + ' • Tidak Aktif';
+  const aktifBox = '<div class="text-xs p-3 rounded-xl border space-y-1.5 ' + (off ? 'bg-slate-100 border-slate-300' : 'bg-emerald-50/60 border-emerald-100') + '">' +
+    '<div class="flex items-center justify-between gap-2"><div class="font-semibold text-slate-700 flex items-center gap-1"><span class="material-symbols-outlined text-[16px] ' + (off ? 'text-slate-600' : 'text-emerald-600') + '">' + (off ? 'person_off' : 'person_check') + '</span>Status usaha: <strong class="' + (off ? 'text-slate-800' : 'text-emerald-700') + '">' + sipAktifOf(u) + '</strong></div>' +
+    (can ? '<button type="button" onclick="openAktifModal(\'' + E(u.id) + '\')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold border ' + (off ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200') + '">' + (off ? 'Aktifkan kembali' : 'Tandai tidak aktif') + '</button>' : '') + '</div>' +
+    (off && u.aktifAlasan ? '<div><span class="text-slate-500">Alasan:</span> <strong class="text-slate-800">' + E(u.aktifAlasan) + '</strong></div>' : '') +
+    (u.aktifUraian ? '<div class="text-slate-700 break-words"><span class="text-slate-500">' + (off ? 'Uraian:' : 'Keterangan terakhir:') + '</span> ' + E(u.aktifUraian) + who(u.aktifBy, u.aktifAt) + '</div>' : '') + '</div>';
+  const catBox = '<div class="text-xs bg-amber-50/60 p-3 rounded-xl border border-amber-100 space-y-1.5"><div class="flex items-center justify-between gap-2"><div class="font-semibold text-slate-700 flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-amber-600">sticky_note_2</span>Catatan verifikasi</div>' +
+    (can ? '<button type="button" onclick="openCatatanModal(\'' + E(u.id) + '\')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white text-amber-800 border border-amber-200">' + (u.catatan ? 'Ubah' : 'Tulis catatan') + '</button>' : '') + '</div>' +
+    (u.catatan ? '<p class="text-slate-700 break-words">' + E(u.catatan) + who(u.catatanBy, u.catatanAt) + '</p>' : '<p class="text-slate-400">Belum ada catatan.</p>') + '</div>';
+  box.insertAdjacentHTML('afterbegin', aktifBox + catBox);
+};
+
+// ---------- Form petugas: isi/bersihkan kolom catatan; pemilik melihat status aktif ----------
+const sipPrevSetFormMode2 = setFormMode;
+setFormMode = function (mode, id) {
+  sipPrevSetFormMode2(mode, id);
+  const t = sipEl('regCatatan'); if (t) { const it = (mode === 'edit' && id) ? umkmList.find(x => x.id === id) : null; t.value = it && it.catatan ? it.catatan : ''; }
+  if (mode === 'self') {
+    const u = (typeof sipMineRows !== 'undefined' ? sipMineRows : []).find(x => x.id === id);
+    if (u && sipAktifOf(u) === 'Tidak Aktif') { const f = sipEl('regFootNote'); if (f) f.textContent = 'Usaha ini ditandai TIDAK AKTIF oleh petugas kelurahan. Jika tidak sesuai, hubungi Kelurahan Jatiasih. ' + f.textContent; }
+  }
+};
+</script>
+
 </body></html>
