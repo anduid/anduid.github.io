@@ -327,7 +327,7 @@
     function renderNavButtons() {
       // Desktop nav links
       $('#navLinks').innerHTML = spaRoutes.map(r => `
-        <button onclick="navigate('${r.id}')" class="nav-btn-link flex items-center gap-1.5 ${currentView === r.id ? 'active-link' : 'hover:text-[#3DDC84]'}">
+        <button onclick="navigate('${r.id}')" class="nav-btn-link flex items-center gap-1.5 ${currentView === r.id ? 'active-link' : 'hover:text-[#FFB800]'}">
           <span>${r.icon}</span>
           <span>${t(r.key)}</span>
         </button>
@@ -335,10 +335,10 @@
 
       // Mobile drawer links
       $('#drawerNavLinks').innerHTML = spaRoutes.map(r => `
-        <button onclick="navigate('${r.id}'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl ${currentView === r.id ? 'bg-[#3DDC84]/15 text-[#3DDC84] font-bold border border-[#3DDC84]/30' : 'bg-white/[0.03] hover:bg-white/[0.08] text-slate-200 border border-white/5'} transition">
+        <button onclick="navigate('${r.id}'); closeMobileDrawer();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl ${currentView === r.id ? 'bg-[#FFB800]/15 text-[#FFB800] font-bold border border-[#FFB800]/30' : 'bg-white/[0.03] hover:bg-white/[0.08] text-blue-50 border border-white/5'} transition">
           <span class="text-base">${r.icon}</span>
           <span class="flex-1">${t(r.key)}</span>
-          <span class="text-xs text-slate-500 font-mono">→</span>
+          <span class="text-xs text-blue-300 font-display">→</span>
         </button>
       `).join('');
     }
@@ -373,12 +373,12 @@
       const idEl = $('#lgId');
       if (LG === 'id') {
         glider.classList.add('id-active');
-        idEl.className = 'lang-pill-opt text-[#041009]';
-        enEl.className = 'lang-pill-opt text-slate-400';
+        idEl.className = 'lang-pill-opt text-[#091A4B]';
+        enEl.className = 'lang-pill-opt text-blue-200';
       } else {
         glider.classList.remove('id-active');
-        enEl.className = 'lang-pill-opt text-[#041009]';
-        idEl.className = 'lang-pill-opt text-slate-400';
+        enEl.className = 'lang-pill-opt text-[#091A4B]';
+        idEl.className = 'lang-pill-opt text-blue-200';
       }
 
       document.querySelectorAll('[data-i]').forEach(e => e.textContent = t(e.dataset.i));
@@ -400,7 +400,7 @@
         <div onclick="navigate('${h[2]}')" class="glass-card p-5 rounded-2xl ${i===0?'col-span-2':''} group cursor-pointer">
           <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">${h[0]}</div>
           <b class="text-sm sm:text-base text-white block">${t(h[1])}</b>
-          <p class="text-xs text-[#3DDC84] mt-1 font-semibold">Switch view →</p>
+          <p class="text-xs text-[#FFB800] mt-1 font-semibold">Switch view →</p>
         </div>
       `).join('');
 
@@ -408,7 +408,7 @@
       $('#aboutGrid').innerHTML = [['a1t','a1'],['a2t','a2'],['a3t','a3']].map(a => `
         <div class="glass-card p-6 rounded-3xl space-y-2">
           <h3 class="font-extrabold text-white text-base">${t(a[0])}</h3>
-          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${t(a[1])}</p>
+          <p class="text-xs sm:text-sm text-blue-100 leading-relaxed">${t(a[1])}</p>
         </div>
       `).join('');
 
@@ -430,13 +430,13 @@
           <div class="space-y-2">
             <div class="flex justify-between items-center">
               <span class="text-3xl p-2 rounded-2xl bg-white/5">${p[3]}</span>
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3DDC84]/20 text-[#3DDC84] font-bold uppercase">${p[1]}</span>
+              <span class="text-[10px] font-display px-2 py-0.5 rounded bg-[#FFB800]/20 text-[#FFB800] font-bold uppercase">${p[1]}</span>
             </div>
             <h3 class="font-extrabold text-white text-base">${t(p[0])}</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">${t(p[0]+'d')}</p>
+            <p class="text-xs text-blue-200 leading-relaxed">${t(p[0]+'d')}</p>
           </div>
           <div class="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
-            <b class="text-[#3DDC84] font-mono text-lg">${p[4] ? p[4] : (p[2] ? _rp(p[2]) : t('free'))}</b>
+            <b class="text-[#FFB800] font-display text-lg">${p[4] ? p[4] : (p[2] ? _rp(p[2]) : t('free'))}</b>
             <button class="btn btn-p !py-2 !px-4" onclick="buy('${p[0]}',${p[2]})">${t('buy')}</button>
           </div>
         </article>
@@ -447,13 +447,13 @@
         <div class="glass-card p-6 rounded-3xl space-y-2">
           <div class="text-3xl mb-2">${s[1]}</div>
           <h3 class="font-extrabold text-white text-base">${t(s[0])}</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">${t(s[0]+'d')}</p>
+          <p class="text-xs text-blue-100 leading-relaxed">${t(s[0]+'d')}</p>
         </div>
       `).join('');
 
       $('#steps').innerHTML = ['st1','st2','st3','st4'].map((s,i) => `
         <li class="flex gap-3 items-center">
-          <span class="w-6 h-6 rounded-full grid place-items-center text-xs font-black bg-[#3DDC84] text-[#041009]">${i+1}</span>
+          <span class="w-6 h-6 rounded-full grid place-items-center text-xs font-black bg-[#FFB800] text-[#091A4B]">${i+1}</span>
           <span>${t(s)}</span>
         </li>
       `).join('');
@@ -463,19 +463,19 @@
         <article class="glass-card p-6 rounded-3xl space-y-3 flex flex-col justify-between">
           <div>
             <div class="text-4xl mb-2">${c[2]}</div>
-            <span class="text-[10px] text-[#38bdf8] font-mono font-bold uppercase">${t(c[1])}</span>
+            <span class="text-[10px] text-[#8EB6FF] font-display font-bold uppercase">${t(c[1])}</span>
             <h3 class="font-extrabold text-white text-base my-1">${t(c[0])}</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">${t(c[0]+'d')}</p>
+            <p class="text-xs text-blue-200 leading-relaxed">${t(c[0]+'d')}</p>
           </div>
           <button class="btn btn-p w-full !py-2.5 mt-2" onclick="enroll('${c[0]}')">🎓 ${t('enr')}</button>
         </article>
       `).join('');
 
       $('#plans').innerHTML = [['pl1','Rp0'],['pl2',_planPrice('plan-monthly','Rp189.000')],['pl3',_planPrice('plan-vip','Rp2.999.000')]].map((p,i) => `
-        <div class="glass-card p-6 rounded-3xl text-center space-y-2 ${i===1?'ring-2 ring-[#c084fc]':''}">
+        <div class="glass-card p-6 rounded-3xl text-center space-y-2 ${i===1?'ring-2 ring-[#FF9B54]':''}">
           <h3 class="font-extrabold text-white text-base">${t(p[0])}</h3>
-          <b class="text-3xl block my-2 grad font-mono">${p[1]}</b>
-          <p class="text-xs text-slate-400 mb-4 leading-relaxed">${t(p[0]+'d')}</p>
+          <b class="text-3xl block my-2 grad font-display">${p[1]}</b>
+          <p class="text-xs text-blue-200 mb-4 leading-relaxed">${t(p[0]+'d')}</p>
           <button class="btn btn-o w-full !py-2.5" onclick="plan('${p[0]}')">${t('pick')}</button>
         </div>
       `).join('');
@@ -495,11 +495,11 @@
       $('#bf').innerHTML = chip([['all','b_all'],['case','b_case'],['tut','b_tut'],['log','b_log'],['trend','b_trend']], bf, 'setBf');
       $('#bg').innerHTML = blogs.filter(b => bf==='all' || b[1]===bf).map(b => `
         <article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between">
-          <div class="h-28 grid place-items-center text-5xl bg-gradient-to-tr from-[#c084fc]/20 to-[#3DDC84]/20">${b[2]}</div>
+          <div class="h-28 grid place-items-center text-5xl bg-gradient-to-tr from-[#FF9B54]/20 to-[#FFB800]/20">${b[2]}</div>
           <div class="p-5 space-y-2">
-            <span class="text-[10px] text-[#3DDC84] font-mono font-bold">${t('b_'+b[1])}</span>
+            <span class="text-[10px] text-[#FFB800] font-display font-bold">${t('b_'+b[1])}</span>
             <h3 class="font-extrabold text-sm text-white">${t(b[0])}</h3>
-            <span class="text-xs text-[#c084fc] cursor-pointer hover:underline block pt-1" onclick="openPost('${b[0]}')">${t('read')}</span>
+            <span class="text-xs text-[#FF9B54] cursor-pointer hover:underline block pt-1" onclick="openPost('${b[0]}')">${t('read')}</span>
           </div>
         </article>
       `).join('');
@@ -507,8 +507,8 @@
       // FAQ
       $('#faq').innerHTML = [1,2,3,4].map(i => `
         <details class="glass rounded-2xl p-4 border border-white/5">
-          <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-white">${t('q'+i)}<span class="ch text-sm text-slate-400">⌄</span></summary>
-          <p class="text-xs text-slate-300 mt-2 leading-relaxed">${t('a'+i+'x')}</p>
+          <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-white">${t('q'+i)}<span class="ch text-sm text-blue-200">⌄</span></summary>
+          <p class="text-xs text-blue-100 mt-2 leading-relaxed">${t('a'+i+'x')}</p>
         </details>
       `).join('');
 
@@ -529,7 +529,7 @@
       openM(`
         <div class="space-y-4">
           <h3 class="text-xl font-black text-white">${t('lT')}</h3>
-          <p class="text-xs text-slate-400">Authenticate to bind licenses, project quotes, and certificates.</p>
+          <p class="text-xs text-blue-200">Authenticate to bind licenses, project quotes, and certificates.</p>
           <form onsubmit="return doLogin(event)" class="space-y-3">
             <input id="ln" class="glass-input w-full p-2.5 rounded-xl text-xs" required placeholder="${t('lN')}">
             <input id="le" type="email" class="glass-input w-full p-2.5 rounded-xl text-xs" required placeholder="${t('fe')}">
@@ -566,7 +566,7 @@
       openM(`
         <div class="space-y-3">
           <h3 class="text-lg font-black text-white">${t(k)}</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">${t(k==='priv'?'pTxt':'tTxt')}</p>
+          <p class="text-xs text-blue-100 leading-relaxed">${t(k==='priv'?'pTxt':'tTxt')}</p>
         </div>
       `);
     }
@@ -579,18 +579,18 @@
         <div class="space-y-4">
           <div class="flex items-center justify-between border-b border-white/10 pb-3">
             <h3 class="text-base font-black text-white flex items-center gap-2">🔔 ${t('pushT')}</h3>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-slate-300">${perm}</span>
+            <span class="text-[10px] font-display px-2 py-0.5 rounded bg-white/10 text-blue-100">${perm}</span>
           </div>
           ${perm === 'default' ? `<button class="btn btn-p w-full !py-2 text-xs" onclick="askPerm()">${t('pushOn')}</button>` : ''}
           <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1">
             ${ns.length ? ns.map(n => `
               <div class="glass-card p-3 rounded-2xl border border-white/5 space-y-1">
-                <div class="flex justify-between items-center"><b class="text-xs text-white">${t(n.key)}</b><small class="text-[10px] text-slate-500 font-mono">${fmt(n.time)}</small></div>
-                <p class="text-xs text-slate-300">${esc(n.body)}</p>
+                <div class="flex justify-between items-center"><b class="text-xs text-white">${t(n.key)}</b><small class="text-[10px] text-blue-300 font-display">${fmt(n.time)}</small></div>
+                <p class="text-xs text-blue-100">${esc(n.body)}</p>
               </div>
-            `).join('') : `<p class="text-xs text-slate-400 py-6 text-center">${t('pushNo')}</p>`}
+            `).join('') : `<p class="text-xs text-blue-200 py-6 text-center">${t('pushNo')}</p>`}
           </div>
-          ${ns.length ? `<button class="btn btn-o w-full !py-2 text-xs text-red-400 border-red-500/20" onclick="clrN()">${t('clr')}</button>` : ''}
+          ${ns.length ? `<button class="btn btn-o w-full !py-2 text-xs text-rose-200 border-red-500/20" onclick="clrN()">${t('clr')}</button>` : ''}
         </div>
       `);
       for (const n of ns) {
@@ -684,18 +684,18 @@
       c.width = 1000; c.height = 640;
       const x = c.getContext('2d');
       const g = x.createLinearGradient(0,0,1000,640);
-      g.addColorStop(0,'#080c18'); g.addColorStop(1,'#1b1236');
+      g.addColorStop(0,'#0F2C7A'); g.addColorStop(1,'#1546BE');
       x.fillStyle = g; x.fillRect(0,0,1000,640);
-      x.strokeStyle = '#3DDC84'; x.lineWidth = 6; x.strokeRect(24,24,952,592);
-      x.fillStyle = '#38bdf8'; x.textAlign = 'center';
+      x.strokeStyle = '#FFB800'; x.lineWidth = 6; x.strokeRect(24,24,952,592);
+      x.fillStyle = '#8EB6FF'; x.textAlign = 'center';
       x.font = '800 40px sans-serif'; x.fillText('ANDU Academy • El-Salam Technology', 500, 130);
       x.fillStyle = '#fff'; x.font = '22px sans-serif';
       x.fillText(LG==='id'?'Sertifikat Kompetensi Digital':'Digital Competency Certificate', 500, 190);
-      x.font = '800 48px sans-serif'; x.fillStyle = '#3DDC84';
+      x.font = '800 48px sans-serif'; x.fillStyle = '#FFB800';
       x.fillText(user ? user.name : 'Android Engineer', 500, 320);
       x.fillStyle = '#fff'; x.font = '26px sans-serif';
       x.fillText(t(k), 500, 400);
-      x.font = '16px monospace'; x.fillStyle = '#94a3b8';
+      x.font = '16px monospace'; x.fillStyle = '#BCD3FF';
       x.fillText('Issued: ' + new Date().toLocaleDateString() + ' · ' + (window.__cc ? window.__cc.code : 'Verified Hash: ANDU-OK'), 500, 560);
       const a = document.createElement('a');
       a.download = 'ANDU-certificate-' + (user ? user.name.replace(/\s+/g,'_') : 'dev') + '.png';
@@ -733,11 +733,11 @@
       const topActions = $('#dashTopActions');
       if (tab === 4) {
         topActions.innerHTML = `
-          <button class="btn btn-o !py-1.5 !px-3 text-xs font-mono text-[#38bdf8]" onclick="seedSampleTasks()">✨ ${t('btnSeedTasks')}</button>
-          <button class="btn btn-o !py-1.5 !px-3 text-xs font-mono text-red-400 border-red-500/20" onclick="clearAllTasks()">🗑️ ${t('btnClearVault')}</button>
+          <button class="btn btn-o !py-1.5 !px-3 text-xs font-display text-[#8EB6FF]" onclick="seedSampleTasks()">✨ ${t('btnSeedTasks')}</button>
+          <button class="btn btn-o !py-1.5 !px-3 text-xs font-display text-rose-200 border-red-500/20" onclick="clearAllTasks()">🗑️ ${t('btnClearVault')}</button>
         `;
       } else if (user) {
-        topActions.innerHTML = `<button class="text-xs text-slate-400 hover:text-white underline" onclick="signOut()">${t('out')}</button>`;
+        topActions.innerHTML = `<button class="text-xs text-blue-200 hover:text-white underline" onclick="signOut()">${t('out')}</button>`;
       } else {
         topActions.innerHTML = '';
       }
@@ -749,14 +749,14 @@
         b.innerHTML = `
           <div class="text-center py-12 glass-card rounded-2xl border border-white/5 space-y-2">
             <span class="text-3xl block opacity-60">🔒</span>
-            <p class="text-slate-400 text-xs">${t('needLogin')}</p>
+            <p class="text-blue-200 text-xs">${t('needLogin')}</p>
             <button class="btn btn-p !py-2 !px-4 text-xs mt-2" onclick="login()">${t('login')}</button>
           </div>
         `;
         return;
       }
 
-      const empty = `<p class="text-slate-400 text-xs py-10 text-center">${t('empty')}</p>`;
+      const empty = `<p class="text-blue-200 text-xs py-10 text-center">${t('empty')}</p>`;
 
       // TAB 1: LICENSES
       if (tab === 1) {
@@ -765,8 +765,8 @@
           <div class="glass-card rounded-2xl p-4 flex flex-wrap gap-3 justify-between items-center mb-2.5 border border-white/5">
             <div>
               <b class="text-white text-sm">${t(x.pk)}</b>
-              <p class="text-[11px] text-slate-400 font-mono">${fmt(x.time)} · INV-${String(x.time).slice(-6)} · ${_rp(x.price)}</p>
-              <p class="font-mono text-xs text-[#3DDC84] mt-1 font-bold">${t('key')}: ${x.key}</p>
+              <p class="text-[11px] text-blue-200 font-display">${fmt(x.time)} · INV-${String(x.time).slice(-6)} · ${_rp(x.price)}</p>
+              <p class="font-display text-xs text-[#FFB800] mt-1 font-bold">${t('key')}: ${x.key}</p>
             </div>
             <button class="btn btn-o !py-2 !px-3 text-xs" onclick="dlSrc('${x.pk}')">⬇ ${t('dl')}</button>
           </div>
@@ -780,12 +780,12 @@
           <div class="glass-card rounded-2xl p-4 mb-2.5 border border-white/5 space-y-2">
             <div class="flex justify-between text-xs">
               <b class="text-white">${esc(x.title)}</b>
-              <span class="text-[#3DDC84] font-mono font-bold">${x.progress}%</span>
+              <span class="text-[#FFB800] font-display font-bold">${x.progress}%</span>
             </div>
             <div class="bar"><i style="width:${x.progress}%"></i></div>
             <div class="pt-1 flex justify-between items-center">
-              <small class="text-[10px] text-slate-500 font-mono">${fmt(x.time)}</small>
-              ${x.progress<100 ? `<button class="btn btn-o !py-1 !px-2.5 text-xs font-bold" onclick="bump(${x.id})">⏩ Sprint (+15%)</button>` : `<span class="text-xs text-[#3DDC84] font-bold">✅ Completed</span>`}
+              <small class="text-[10px] text-blue-300 font-display">${fmt(x.time)}</small>
+              ${x.progress<100 ? `<button class="btn btn-o !py-1 !px-2.5 text-xs font-bold" onclick="bump(${x.id})">⏩ Sprint (+15%)</button>` : `<span class="text-xs text-[#FFB800] font-bold">✅ Completed</span>`}
             </div>
           </div>
         `).join('') : empty;
@@ -798,7 +798,7 @@
           <div class="glass-card rounded-2xl p-4 mb-2.5 border border-white/5 space-y-2">
             <div class="flex justify-between text-xs">
               <b class="text-white">${t(x.id)}</b>
-              <span class="text-[#38bdf8] font-mono font-bold">${x.progress}%</span>
+              <span class="text-[#8EB6FF] font-display font-bold">${x.progress}%</span>
             </div>
             <div class="bar"><i style="width:${x.progress}%"></i></div>
             <div class="pt-1 flex justify-end">
@@ -815,9 +815,9 @@
             <div class="flex items-center justify-between border-b border-white/5 pb-2">
               <div class="flex items-center gap-2">
                 <span class="text-base font-bold text-white">${t('titleTasks')}</span>
-                <span class="px-2 py-0.5 rounded-full bg-[#3DDC84]/20 text-[#3DDC84] text-[10px] font-mono border border-[#3DDC84]/30">${t('badgeIndexedDb')}</span>
+                <span class="px-2 py-0.5 rounded-full bg-[#FFB800]/20 text-[#FFB800] text-[10px] font-display border border-[#FFB800]/30">${t('badgeIndexedDb')}</span>
               </div>
-              <p class="text-xs text-slate-400 hidden sm:block">${t('descTasks')}</p>
+              <p class="text-xs text-blue-200 hidden sm:block">${t('descTasks')}</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
               <!-- Form Left -->
@@ -827,12 +827,12 @@
                 </h3>
                 <form class="space-y-3" id="task-form" onsubmit="handleAddTask(event)">
                   <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1">${t('lblTaskTitle')}</label>
+                    <label class="block text-xs font-bold text-blue-100 mb-1">${t('lblTaskTitle')}</label>
                     <input class="w-full glass-input p-2.5 rounded-xl text-xs" id="input-task-title" placeholder="${t('phTaskTitle')}" required="" type="text"/>
                   </div>
                   <div class="grid grid-cols-2 gap-3">
                     <div>
-                      <label class="block text-xs font-bold text-zinc-300 mb-1">${t('lblCategory')}</label>
+                      <label class="block text-xs font-bold text-blue-100 mb-1">${t('lblCategory')}</label>
                       <select class="w-full glass-input p-2.5 rounded-xl text-xs text-white" id="input-task-category">
                         <option value="Jetpack Compose">Jetpack Compose UI</option>
                         <option value="Coroutines Flow">Coroutines &amp; Async</option>
@@ -842,7 +842,7 @@
                       </select>
                     </div>
                     <div>
-                      <label class="block text-xs font-bold text-zinc-300 mb-1">${t('lblPriority')}</label>
+                      <label class="block text-xs font-bold text-blue-100 mb-1">${t('lblPriority')}</label>
                       <select class="w-full glass-input p-2.5 rounded-xl text-xs text-white" id="input-task-priority">
                         <option value="High">🔴 High Priority</option>
                         <option selected="" value="Medium">🟡 Medium Priority</option>
@@ -851,7 +851,7 @@
                     </div>
                   </div>
                   <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1">${t('lblDescription')}</label>
+                    <label class="block text-xs font-bold text-blue-100 mb-1">${t('lblDescription')}</label>
                     <textarea class="w-full glass-input p-2.5 rounded-xl text-xs" id="input-task-desc" placeholder="${t('phTaskDesc')}" rows="2"></textarea>
                   </div>
                   <button class="w-full py-2.5 rounded-xl btn btn-p text-xs uppercase tracking-wider flex items-center justify-center gap-2" type="submit">
@@ -865,13 +865,13 @@
                   <span class="text-xs font-bold text-white flex items-center gap-2">
                     <span>📁</span> <span>${t('lblVaultList')}</span>
                   </span>
-                  <span class="text-[10px] font-mono font-bold bg-[#3DDC84]/20 text-[#3DDC84] px-2.5 py-0.5 rounded-full border border-[#3DDC84]/30" id="task-count-badge">0</span>
+                  <span class="text-[10px] font-display font-bold bg-[#FFB800]/20 text-[#FFB800] px-2.5 py-0.5 rounded-full border border-[#FFB800]/30" id="task-count-badge">0</span>
                 </div>
                 <div class="space-y-3 max-h-[380px] overflow-y-auto pr-1" id="tasks-list"></div>
                 <div class="flex-col items-center justify-center p-8 glass-card rounded-2xl border border-dashed border-white/10 text-center flex" id="tasks-empty-state">
                   <span class="text-3xl mb-2 opacity-50">📥</span>
                   <h4 class="font-bold text-white text-xs mb-1">${t('emptyVaultTitle')}</h4>
-                  <p class="text-[11px] text-zinc-400">${t('emptyVaultDesc')}</p>
+                  <p class="text-[11px] text-blue-200">${t('emptyVaultDesc')}</p>
                 </div>
               </div>
             </div>
@@ -888,7 +888,7 @@
               <h3 class="text-base font-bold text-white flex items-center gap-2">
                 <span>⚙️</span> <span>${t('titleTools')}</span>
               </h3>
-              <p class="text-xs text-slate-400 mt-0.5">${t('descTools')}</p>
+              <p class="text-xs text-blue-200 mt-0.5">${t('descTools')}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <!-- Gradle Build Benchmark -->
@@ -897,16 +897,16 @@
                   <h4 class="font-bold text-white text-sm flex items-center gap-2">
                     <span>⚙️</span> <span>${t('toolGradleTitle')}</span>
                   </h4>
-                  <span class="text-[10px] font-mono text-[#3DDC84] bg-[#3DDC84]/10 px-2 py-0.5 rounded border border-[#3DDC84]/20" id="gradleBadge">READY</span>
+                  <span class="text-[10px] font-display text-[#FFB800] bg-[#FFB800]/10 px-2 py-0.5 rounded border border-[#FFB800]/20" id="gradleBadge">READY</span>
                 </div>
-                <p class="text-xs text-zinc-300">${t('toolGradleDesc')}</p>
-                <div class="space-y-2 p-3 rounded-2xl bg-black/40 border border-white/5">
-                  <div class="flex justify-between text-xs font-mono text-zinc-400">
+                <p class="text-xs text-blue-100">${t('toolGradleDesc')}</p>
+                <div class="space-y-2 p-3 rounded-2xl bg-[#091A4B]/40 border border-white/5">
+                  <div class="flex justify-between text-xs font-display text-blue-200">
                     <span id="gradle-status-text">Idle</span>
-                    <span class="text-[#3DDC84]" id="gradle-time-text">0.0s</span>
+                    <span class="text-[#FFB800]" id="gradle-time-text">0.0s</span>
                   </div>
-                  <div class="w-full bg-black/60 h-2.5 rounded-full overflow-hidden p-0.5 border border-white/10">
-                    <div class="h-full bg-gradient-to-r from-[#3DDC84] to-[#38bdf8] rounded-full w-0 transition-all duration-150" id="gradle-progress-bar"></div>
+                  <div class="w-full bg-[#091A4B]/60 h-2.5 rounded-full overflow-hidden p-0.5 border border-white/10">
+                    <div class="h-full bg-gradient-to-r from-[#FFB800] to-[#8EB6FF] rounded-full w-0 transition-all duration-150" id="gradle-progress-bar"></div>
                   </div>
                 </div>
                 <button class="w-full py-2.5 rounded-xl btn btn-o text-xs font-bold" id="btn-run-gradle" onclick="runGradleSimulation()">
@@ -920,7 +920,7 @@
                   <span>🎯</span> <span>${t('toolApiTitle')}</span>
                 </h4>
                 <div class="space-y-3">
-                  <label class="block text-xs text-zinc-400">${t('lblSelectApi')}</label>
+                  <label class="block text-xs text-blue-200">${t('lblSelectApi')}</label>
                   <select class="w-full glass-input p-2.5 rounded-xl text-xs text-white" id="api-selector" onchange="updateApiDetails()">
                     <option value="35">API 35 - Android 15 (Vanilla Ice Cream)</option>
                     <option selected="" value="34">API 34 - Android 14 (Upside Down Cake)</option>
@@ -928,18 +928,18 @@
                     <option value="31">API 31 - Android 12 (Snow Cone)</option>
                     <option value="30">API 30 - Android 11 (Red Velvet Cake)</option>
                   </select>
-                  <div class="bg-black/40 p-4 rounded-2xl border border-white/5 space-y-2 text-xs font-mono" id="api-details-card">
-                    <div class="flex justify-between text-zinc-300">
+                  <div class="bg-[#091A4B]/40 p-4 rounded-2xl border border-white/5 space-y-2 text-xs font-display" id="api-details-card">
+                    <div class="flex justify-between text-blue-100">
                       <span>Codename:</span>
-                      <strong class="text-[#3DDC84]" id="api-code-name">UpsideDownCake</strong>
+                      <strong class="text-[#FFB800]" id="api-code-name">UpsideDownCake</strong>
                     </div>
-                    <div class="flex justify-between text-zinc-300">
+                    <div class="flex justify-between text-blue-100">
                       <span>Release Year:</span>
                       <strong class="text-white" id="api-year">2023</strong>
                     </div>
-                    <div class="flex justify-between text-zinc-300">
+                    <div class="flex justify-between text-blue-100">
                       <span>Min Gradle Version:</span>
-                      <strong class="text-[#38bdf8]" id="api-gradle">8.1+</strong>
+                      <strong class="text-[#8EB6FF]" id="api-gradle">8.1+</strong>
                     </div>
                   </div>
                 </div>
@@ -991,21 +991,21 @@
 
       container.innerHTML = tasks.map(tk => {
         let badgeColor = "bg-amber-500/20 text-amber-400 border-amber-500/30";
-        if (tk.priority === 'High') badgeColor = "bg-red-500/20 text-red-400 border-red-500/30";
-        if (tk.priority === 'Low') badgeColor = "bg-[#3DDC84]/20 text-[#3DDC84] border-[#3DDC84]/30";
+        if (tk.priority === 'High') badgeColor = "bg-red-500/20 text-rose-200 border-red-500/30";
+        if (tk.priority === 'Low') badgeColor = "bg-[#FFB800]/20 text-[#FFB800] border-[#FFB800]/30";
 
         return `
           <div class="glass-card p-3 rounded-xl border border-white/5 flex items-start justify-between gap-3">
             <div class="space-y-1">
               <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${badgeColor}">${tk.priority}</span>
-                <span class="px-2 py-0.5 rounded bg-white/5 text-slate-300 text-[10px] font-mono">${tk.category}</span>
-                <span class="text-[10px] text-slate-500 font-mono">${new Date(tk.createdAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-display font-bold border ${badgeColor}">${tk.priority}</span>
+                <span class="px-2 py-0.5 rounded bg-white/5 text-blue-100 text-[10px] font-display">${tk.category}</span>
+                <span class="text-[10px] text-blue-300 font-display">${new Date(tk.createdAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</span>
               </div>
               <h4 class="font-bold text-white text-xs sm:text-sm">${esc(tk.title)}</h4>
-              <p class="text-xs text-slate-400 leading-snug">${esc(tk.desc)}</p>
+              <p class="text-xs text-blue-200 leading-snug">${esc(tk.desc)}</p>
             </div>
-            <button onclick="deleteTask(${tk.id})" class="p-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs border border-red-500/20 transition" title="Delete">
+            <button onclick="deleteTask(${tk.id})" class="p-2 rounded-xl bg-red-500/10 text-rose-200 hover:bg-red-500/20 text-xs border border-red-500/20 transition" title="Delete">
               🗑️
             </button>
           </div>
@@ -1051,7 +1051,7 @@
 
       btn.disabled = true;
       badge.textContent = "BUILDING";
-      badge.className = "text-[10px] font-mono text-[#38bdf8] bg-[#38bdf8]/10 px-2 py-0.5 rounded border border-[#38bdf8]/20";
+      badge.className = "text-[10px] font-display text-[#8EB6FF] bg-[#8EB6FF]/10 px-2 py-0.5 rounded border border-[#8EB6FF]/20";
       status.textContent = "Compiling Kotlin & Compose plugins...";
 
       let progress = 0;
@@ -1066,7 +1066,7 @@
           clearInterval(interval);
           status.textContent = "BUILD SUCCESSFUL in 1.4s (daemon cached)";
           badge.textContent = "PASSED";
-          badge.className = "text-[10px] font-mono text-[#3DDC84] bg-[#3DDC84]/10 px-2 py-0.5 rounded border border-[#3DDC84]/20";
+          badge.className = "text-[10px] font-display text-[#FFB800] bg-[#FFB800]/10 px-2 py-0.5 rounded border border-[#FFB800]/20";
           btn.disabled = false;
           showT('Gradle Build', 'Daemon incremental build finished successfully!', '⚡');
         }

@@ -39,12 +39,12 @@
       openM('<div class="space-y-4"><h3 class="text-xl font-black text-white">' + t('lT') + '</h3>' +
         '<div class="flex gap-2"><button class="btn ' + (mode === 'in' ? 'btn-p' : 'btn-o') + ' !py-1.5 !px-3 text-xs" onclick="login(\'in\')">' + L('Masuk', 'Sign in') + '</button>' +
         '<button class="btn ' + (mode === 'reg' ? 'btn-p' : 'btn-o') + ' !py-1.5 !px-3 text-xs" onclick="login(\'reg\')">' + L('Daftar', 'Register') + '</button></div>' +
-        '<p class="text-xs text-slate-400">' + L('Akun Pesaner yang sama berlaku di Pesaner, ASN Andu, dan ANDU.', 'One Pesaner account works across Pesaner, ASN Andu and ANDU.') + '</p>' +
+        '<p class="text-xs text-blue-200">' + L('Akun Pesaner yang sama berlaku di Pesaner, ASN Andu, dan ANDU.', 'One Pesaner account works across Pesaner, ASN Andu and ANDU.') + '</p>' +
         '<form onsubmit="return doAuth(event,\'' + mode + '\')" class="space-y-3">' +
         (mode === 'reg' ? '<input name="nm" class="' + inp + '" required placeholder="' + t('lN') + '"><input name="em" type="email" class="' + inp + '" required placeholder="Email">' : '') +
         '<input name="un" class="' + inp + '" required autocomplete="username" placeholder="Username">' +
         '<input name="pw" type="password" class="' + inp + '" required autocomplete="' + (mode === 'reg' ? 'new-password' : 'current-password') + '" placeholder="' + L('Kata sandi', 'Password') + '">' +
-        '<p id="aerr" class="text-xs text-red-400"></p><button class="' + btnP + '">' + t('lGo') + '</button></form></div>');
+        '<p id="aerr" class="text-xs text-rose-200"></p><button class="' + btnP + '">' + t('lGo') + '</button></form></div>');
     };
     window.doAuth = async function (e, mode) {
       e.preventDefault(); var f = e.target, b = f.querySelector('button:last-child'); b.disabled = true;
@@ -67,15 +67,15 @@
     var payTimer = null, pollTimer = null;
     var stopPay = function () { clearInterval(payTimer); clearInterval(pollTimer); };
     var _closeM = window.closeM; window.closeM = function () { stopPay(); _closeM(); };
-    function row(a, b, cls) { return '<div class="flex justify-between text-xs ' + (cls || 'text-slate-300') + '"><span>' + a + '</span><b class="font-mono">' + b + '</b></div>'; }
+    function row(a, b, cls) { return '<div class="flex justify-between text-xs ' + (cls || 'text-blue-100') + '"><span>' + a + '</span><b class="font-display">' + b + '</b></div>'; }
 
     window.payForm = function (it) {
       var pts = me ? me.status.points : 0;
       openM('<div class="space-y-4"><h3 class="text-lg font-black text-white">' + C.esc(it.title) + '</h3>' +
-        '<div class="text-2xl font-mono font-black text-[#3DDC84]">' + C.rp(it.price) + '</div>' +
-        (pts > 0 ? '<label class="flex items-center gap-2 text-xs text-slate-300"><input id="pp" type="checkbox"> ' + L('Pakai poin ', 'Use points ') + C.rp(pts) + L(' sebagai potongan', ' as discount') + '</label>' : '') +
-        '<p class="text-[11px] text-slate-400">' + L('Nominal ditambah kode unik 1–499. Kode unik tidak hilang: setelah diverifikasi masuk sebagai poin di akun Anda.', 'A unique code (1–499) is added. It is not lost: once verified it is credited as points to your account.') + '</p>' +
-        '<p id="aerr" class="text-xs text-red-400"></p><button id="pmk" class="' + btnP + '">' + L('Buat Tagihan QRIS', 'Create QRIS invoice') + '</button></div>');
+        '<div class="text-2xl font-display font-black text-[#FFB800]">' + C.rp(it.price) + '</div>' +
+        (pts > 0 ? '<label class="flex items-center gap-2 text-xs text-blue-100"><input id="pp" type="checkbox"> ' + L('Pakai poin ', 'Use points ') + C.rp(pts) + L(' sebagai potongan', ' as discount') + '</label>' : '') +
+        '<p class="text-[11px] text-blue-200">' + L('Nominal ditambah kode unik 1–499. Kode unik tidak hilang: setelah diverifikasi masuk sebagai poin di akun Anda.', 'A unique code (1–499) is added. It is not lost: once verified it is credited as points to your account.') + '</p>' +
+        '<p id="aerr" class="text-xs text-rose-200"></p><button id="pmk" class="' + btnP + '">' + L('Buat Tagihan QRIS', 'Create QRIS invoice') + '</button></div>');
       $('#pmk').onclick = async function () {
         this.disabled = true;
         try { var j = await C.call('createInvoice', { itemId: it.id, usePoints: !!($('#pp') && $('#pp').checked) }); invoiceView(j.invoice); }
@@ -87,14 +87,14 @@
       if (inv.status === 'CLAIMED') return waitView(inv);
       var exp = Date.parse(inv.expiresAt);
       openM('<div class="space-y-3"><h3 class="text-lg font-black text-white">' + L('Bayar dengan QRIS', 'Pay with QRIS') + '</h3>' +
-        '<p class="text-xs text-slate-400 font-mono">' + C.esc(inv.code) + ' · ' + C.esc(inv.itemTitle) + '</p>' +
+        '<p class="text-xs text-blue-200 font-display">' + C.esc(inv.code) + ' · ' + C.esc(inv.itemTitle) + '</p>' +
         '<div class="flex justify-center"><div id="qrbox" class="bg-white p-2 rounded-xl"></div></div>' +
         '<div class="glass-card rounded-xl p-3 space-y-1">' + row(L('Harga', 'Price'), C.rp(inv.price)) +
         (inv.pointsUsed ? row(L('Potongan poin', 'Points used'), '−' + C.rp(inv.pointsUsed)) : '') + row(L('Kode unik', 'Unique code'), '+' + inv.uniqueCode) +
         '<div class="border-t border-white/10 pt-2">' + row(L('Total transfer', 'Total'), C.rp(inv.total), 'text-white text-base') + '</div></div>' +
-        '<p class="text-[11px] text-amber-300">' + L('Bayar PERSIS sesuai total (termasuk kode unik). Kedaluwarsa dalam ', 'Pay the EXACT total. Expires in ') + '<b id="cd" class="font-mono"></b></p>' +
+        '<p class="text-[11px] text-amber-300">' + L('Bayar PERSIS sesuai total (termasuk kode unik). Kedaluwarsa dalam ', 'Pay the EXACT total. Expires in ') + '<b id="cd" class="font-display"></b></p>' +
         '<input id="pn" class="' + inp + '" placeholder="' + L('Nama pengirim di mutasi (opsional)', 'Sender name on statement (optional)') + '">' +
-        '<p id="aerr" class="text-xs text-red-400"></p><div class="flex gap-2"><button id="pdone" class="' + btnP + '">' + L('Saya sudah bayar', 'I have paid') + '</button><button id="pcx" class="' + btnO + '">' + L('Batalkan', 'Cancel') + '</button></div></div>');
+        '<p id="aerr" class="text-xs text-rose-200"></p><div class="flex gap-2"><button id="pdone" class="' + btnP + '">' + L('Saya sudah bayar', 'I have paid') + '</button><button id="pcx" class="' + btnO + '">' + L('Batalkan', 'Cancel') + '</button></div></div>');
       C.qr($('#qrbox'), inv.qris);
       var tick = function () { var s = Math.max(0, Math.floor((exp - Date.now()) / 1000)); var el = $('#cd'); if (el) el.textContent = Math.floor(s / 3600) + ':' + ('0' + Math.floor(s % 3600 / 60)).slice(-2) + ':' + ('0' + s % 60).slice(-2); if (!s) { stopPay(); if (el) el.textContent = L('kedaluwarsa', 'expired'); } };
       tick(); payTimer = setInterval(tick, 1000);
@@ -107,8 +107,8 @@
     function waitView(inv) {
       stopPay();
       openM('<div class="space-y-3 text-center"><div class="text-5xl">⏳</div><h3 class="text-lg font-black text-white">' + L('Menunggu verifikasi', 'Awaiting verification') + '</h3>' +
-        '<p class="text-xs text-slate-300">' + L('Kode tagihan dan nominal unik sudah dikirim ke admin. Biasanya diverifikasi dalam hitungan menit pada jam kerja.', 'Your invoice code and unique amount were sent to the admin for verification.') + '</p>' +
-        '<p class="font-mono text-sm text-[#3DDC84]">' + C.esc(inv.code) + ' · ' + C.rp(inv.total) + '</p><button class="' + btnO + '" onclick="closeM()">' + L('Tutup (tetap dipantau)', 'Close (keeps checking)') + '</button></div>');
+        '<p class="text-xs text-blue-100">' + L('Kode tagihan dan nominal unik sudah dikirim ke admin. Biasanya diverifikasi dalam hitungan menit pada jam kerja.', 'Your invoice code and unique amount were sent to the admin for verification.') + '</p>' +
+        '<p class="font-display text-sm text-[#FFB800]">' + C.esc(inv.code) + ' · ' + C.rp(inv.total) + '</p><button class="' + btnO + '" onclick="closeM()">' + L('Tutup (tetap dipantau)', 'Close (keeps checking)') + '</button></div>');
       var check = async function () {
         try {
           var m = await C.call('me'), open = m.invoice && m.invoice.code === inv.code;
@@ -154,14 +154,14 @@
       var qs = it.quiz.questions || [];
       if (!qs.length) return showT(t(sk(it.id)), L('Ujian belum tersedia.', 'Exam not available yet.'), 'ℹ️');
       openM('<form class="space-y-4" onsubmit="return false"><h3 class="text-lg font-black text-white">' + L('Ujian akhir', 'Final exam') + '</h3>' +
-        qs.map(function (q, i) { return '<div class="space-y-1"><p class="text-xs font-bold text-white">' + (i + 1) + '. ' + C.esc(q.q) + '</p>' + q.options.map(function (o, j) { return '<label class="flex gap-2 text-xs text-slate-300"><input type="radio" name="q' + i + '" value="' + j + '"> ' + C.esc(o) + '</label>'; }).join('') + '</div>'; }).join('') +
-        '<p id="aerr" class="text-xs text-red-400"></p><button id="qs" class="' + btnP + '">' + L('Kirim jawaban', 'Submit') + '</button></form>');
+        qs.map(function (q, i) { return '<div class="space-y-1"><p class="text-xs font-bold text-white">' + (i + 1) + '. ' + C.esc(q.q) + '</p>' + q.options.map(function (o, j) { return '<label class="flex gap-2 text-xs text-blue-100"><input type="radio" name="q' + i + '" value="' + j + '"> ' + C.esc(o) + '</label>'; }).join('') + '</div>'; }).join('') +
+        '<p id="aerr" class="text-xs text-rose-200"></p><button id="qs" class="' + btnP + '">' + L('Kirim jawaban', 'Submit') + '</button></form>');
       $('#qs').onclick = async function () {
         var ans = qs.map(function (q, i) { var r = document.querySelector('input[name=q' + i + ']:checked'); return r ? +r.value : -1; });
         if (ans.indexOf(-1) >= 0) return ($('#aerr').textContent = L('Jawab semua pertanyaan.', 'Answer all questions.'));
         try {
           var j = await C.call('submitQuiz', { courseId: it.id, answers: ans }); await syncMe();
-          $('#mb').innerHTML = '<div class="text-center space-y-3"><div class="text-5xl">' + (j.passed ? '🏆' : '📘') + '</div><h3 class="text-lg font-black text-white">' + L('Nilai: ', 'Score: ') + j.score + '</h3><p class="text-xs text-slate-300">' + (j.passed ? L('Lulus! Klaim sertifikat Anda.', 'Passed! Claim your certificate.') : L('Belum lulus (minimal ' + j.pass + '). Coba lagi.', 'Not passed (min ' + j.pass + '). Try again.')) + '</p><button class="' + btnO + '" onclick="closeM()">OK</button></div>';
+          $('#mb').innerHTML = '<div class="text-center space-y-3"><div class="text-5xl">' + (j.passed ? '🏆' : '📘') + '</div><h3 class="text-lg font-black text-white">' + L('Nilai: ', 'Score: ') + j.score + '</h3><p class="text-xs text-blue-100">' + (j.passed ? L('Lulus! Klaim sertifikat Anda.', 'Passed! Claim your certificate.') : L('Belum lulus (minimal ' + j.pass + '). Coba lagi.', 'Not passed (min ' + j.pass + '). Try again.')) + '</p><button class="' + btnO + '" onclick="closeM()">OK</button></div>';
         } catch (e) { $('#aerr').textContent = e.message; }
       };
     }
@@ -187,7 +187,7 @@
       openM('<form class="space-y-3" onsubmit="return doPartner(event,\'' + type + '\')"><h3 class="text-lg font-black text-white">' + t(k) + '</h3>' +
         '<input name="nm" class="' + inp + '" required placeholder="' + t('fn') + '" value="' + C.esc(user ? user.name : '') + '"><input name="em" type="email" class="' + inp + '" required placeholder="Email" value="' + C.esc(user ? user.email : '') + '">' +
         '<input name="og" class="' + inp + '" placeholder="' + L('Organisasi', 'Organization') + '"><textarea name="ms" rows="3" class="' + inp + '" placeholder="' + L('Pesan singkat', 'Short message') + '"></textarea>' +
-        '<p id="aerr" class="text-xs text-red-400"></p><button class="' + btnP + '">' + t('join') + '</button></form>');
+        '<p id="aerr" class="text-xs text-rose-200"></p><button class="' + btnP + '">' + t('join') + '</button></form>');
     };
     window.doPartner = async function (e, type) {
       e.preventDefault(); var f = e.target;
