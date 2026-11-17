@@ -38,6 +38,10 @@ jobs:
       - name: Sinkronkan aplikasi (pra-build)
         run: python3 tools/sinkron_app.py pra
 
+      # 1b) Bilah ekosistem (topbar) di halaman HTML mandiri, termasuk aplikasi baru. Daftar tautan dari _config.yml
+      - name: Pasang bilah ekosistem (pra-build)
+        run: python3 tools/pasang_topbar.py
+
       - name: Atur GitHub Pages
         id: pages
         uses: actions/configure-pages@v5

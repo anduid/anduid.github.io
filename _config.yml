@@ -43,6 +43,17 @@ nav:
   - { judul: Blog, url: /blog/ }
   - { judul: Profil, url: /profil/ }
 
+# Bilah ekosistem (topbar) di paling atas semua halaman, sama dengan repo anduid/market.
+# kunci dipakai menandai halaman aktif (lihat _includes/topbar.html dan tools/pasang_topbar.py).
+# Mengubah daftar ini lalu menjalankan: python3 tools/pasang_topbar.py  (halaman HTML mandiri ikut diperbarui).
+ekosistem:
+  - { nama: Studio, url: "https://andu.my.id/", kunci: studio }
+  - { nama: Pesaner, url: "https://andu.my.id/pesaner", kunci: pesaner }
+  - { nama: Market, url: "https://andu.my.id/market/", kunci: market }
+  - { nama: Portal, url: "https://andu.my.id/portal/", kunci: portal }
+  - { nama: Blog, url: "https://andu.my.id/blog/", kunci: blog }
+  - { nama: Profil, url: "https://andu.my.id/profil/", kunci: profil }
+
 # Menu di footer
 nav_footer:
   - { judul: Arsip Blog, url: /blog/arsip/ }

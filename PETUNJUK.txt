@@ -12,3 +12,16 @@ FILE UNTUK REPO anduid/anduid.github.io (situs utama andu.my.id), BUKAN repo blo
    Allow: /
 
    Sitemap: https://andu.my.id/blog/sitemap.xml
+
+BILAH EKOSISTEM (TOPBAR) DI SEMUA HALAMAN
+-----------------------------------------
+Bilah biru di paling atas (Studio, Pesaner, Market, Portal, Blog, Profil) sama dengan yang ada di repo market.
+- Daftar tautan: bagian "ekosistem" di _config.yml (satu-satunya tempat yang perlu diubah).
+- Tampilan: assets/css/topbar.css. Perilaku: assets/js/topbar.js. Jika keduanya diubah, naikkan ?v= di
+  _includes/topbar.html dan VERSI di tools/pasang_topbar.py.
+- Halaman ber-layout (blog, hub aplikasi, halaman aplikasi, portal, terminal, admin) memakai _includes/topbar.html.
+- Halaman HTML mandiri (index.html, pesaner.html, aplikasi baru di root, dll.) disisipi oleh
+  python3 tools/pasang_topbar.py. Skrip ini sudah dijalankan otomatis oleh GitHub Actions sebelum build,
+  jadi aplikasi HTML baru di root langsung mendapat bilah. Jalankan --cek untuk memeriksa, --hapus untuk melepas.
+- Bilah tersembunyi otomatis di aplikasi terpasang (PWA) dan bila alamat memuat ?topbar=0 atau ?app=1
+  (pakai ini di WebView aplikasi Android supaya bilah tidak muncul di dalam aplikasi).

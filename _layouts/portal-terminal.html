@@ -209,6 +209,7 @@
 {% include portal-config.html %}
 </head>
 <body class="flex flex-col h-screen selection:bg-andu-green selection:text-andu-bg">
+{% include topbar.html %}
 {{ content }}
 <script src="{{ '/assets/portal/andu-core.js' | relative_url }}"></script>
 <script src="{{ '/assets/portal/terminal-api.js' | relative_url }}"></script>

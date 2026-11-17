@@ -1,0 +1,20 @@
+{%- comment -%}
+  Bilah ekosistem andu.my.id (topbar), sama dengan repo /market. Daftar tautan dari "ekosistem" di _config.yml.
+  Dipanggil dari layout. Halaman HTML mandiri disisipi versi statisnya oleh tools/pasang_topbar.py,
+  dengan aturan "halaman aktif" yang sama.
+{%- endcomment -%}
+{%- assign tb_url = page.url -%}
+{%- assign tb_bagian = tb_url | split: '/' -%}
+{%- assign tb_seg = tb_bagian[1] -%}
+{%- assign tb_aktif = '' -%}
+{%- if tb_url == '/' -%}{%- assign tb_aktif = 'studio' -%}
+{%- elsif tb_seg == 'blog' or page.layout == 'post' -%}{%- assign tb_aktif = 'blog' -%}
+{%- elsif tb_seg == 'portal' or tb_seg == 'terminal' or tb_seg == 'admin' -%}{%- assign tb_aktif = 'portal' -%}
+{%- elsif tb_seg == 'profil' -%}{%- assign tb_aktif = 'profil' -%}
+{%- elsif tb_seg == 'pesaner' -%}{%- assign tb_aktif = 'pesaner' -%}
+{%- endif -%}
+<!-- andu:topbar:mulai -->
+<link rel="stylesheet" href="{{ '/assets/css/topbar.css' | relative_url }}?v=1">
+<nav id="andu-topbar" aria-label="Ekosistem andu.my.id"><div class="atb-isi"><span class="atb-merek">andu<span>.my.id</span></span>{%- for e in site.ekosistem -%}<a class="atb-link" href="{{ e.url }}"{% if e.kunci == tb_aktif %} aria-current="page"{% endif %}>{{ e.nama }}</a>{%- endfor -%}</div></nav>
+<script src="{{ '/assets/js/topbar.js' | relative_url }}?v=1" defer></script>
+<!-- andu:topbar:selesai -->
