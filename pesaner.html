@@ -7,7 +7,7 @@
   gtag('js', new Date());
 </script>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" name="viewport"/>
 <title>Pesaner</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -168,6 +168,35 @@
     main.flex-1 { padding-bottom: 76px; }
     #tab-profile { padding-bottom: 76px; }
   }
+</style>
+<style id="chat-upgrade-css">
+/* ===== Chat: textarea besar & auto-grow, layout mengikuti keyboard, tombol scroll-bawah ===== */
+#chat-thread-view:not(.hidden),#group-thread-view:not(.hidden){display:flex;flex-direction:column;height:var(--thread-h,calc(100dvh - 150px));min-height:320px;min-width:0}
+#chat-thread-view>*,#group-thread-view>*{flex-shrink:0}
+#chat-thread-view .sticky,#group-thread-view .sticky{position:static!important}
+.chat-scroll-wrap{position:relative;flex:1 1 auto!important;min-height:0}
+.chat-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:2px}
+.chat-scroll>div[id$="-messages"]{padding-bottom:10px}
+.chat-input-bar{padding-top:8px;padding-bottom:8px;align-items:flex-end}
+.chat-textarea{flex:1 1 auto;min-width:0;width:auto!important;min-height:46px;max-height:168px;overflow-y:auto;resize:none;font-size:16px!important;line-height:1.4;padding:11px 16px!important;border-radius:23px!important;display:block}
+.chat-input-bar .btn-primary{min-height:46px}
+.chat-input-bar>button.rounded-full{margin-bottom:4px!important}
+#chat-attach-menu:not(.hidden),#group-attach-menu:not(.hidden){max-height:42%;overflow-y:auto}
+.scroll-down-btn{position:absolute;right:10px;bottom:10px;width:42px;height:42px;border-radius:50%;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--amber,#FFB800);color:#091A4B;box-shadow:0 4px 0 var(--amber-d,#D99500),0 8px 18px rgba(0,0,0,.3);z-index:5;transition:opacity .18s,transform .18s}
+.scroll-down-btn.hidden{display:none}
+.scroll-down-btn:active{transform:translateY(2px)}
+.scroll-down-btn .material-symbols-outlined{font-size:28px}
+.scroll-down-btn .sd-badge{position:absolute;top:-6px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#EF4444;color:#fff;font-size:11px;font-weight:700;line-height:18px;text-align:center}
+.scroll-down-btn .sd-badge:empty{display:none}
+@media (max-width:767px){
+  body.chat-open{overflow:hidden!important}
+  body.chat-open #tab-chat{animation:none!important}
+  body.chat-open nav.fixed{display:none!important}
+  body.chat-open .toast{bottom:84px}
+  #chat-thread-view:not(.hidden),#group-thread-view:not(.hidden){position:fixed;left:0;right:0;top:0;height:var(--vvh,100dvh);min-height:0;transform:translateY(var(--vvt,0px));z-index:60;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 0;background-color:#174fd0;background-image:radial-gradient(rgba(255,255,255,.12) 1.5px,transparent 1.5px),linear-gradient(180deg,#1f64f2 0%,#1546be 50%,#0c2d82 100%);background-size:32px 32px,auto;overflow:hidden}
+  #chat-thread-view>div:first-child,#group-thread-view>div:first-child{margin-bottom:8px!important}
+  .chat-input-bar{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}
+}
 </style>
 <style id="monst-theme">
 :root{--amber:#FFB800;--amber-d:#D99500;--r950:#091A4B;--r900:#0F2C7A;--r700:#1546BE;--glass:linear-gradient(135deg,rgba(255,255,255,.15),rgba(255,255,255,.05));--gb:rgba(255,255,255,.22)}
@@ -337,6 +366,32 @@ html,body{max-width:100%;overflow-x:hidden}
   #monster-hub #mon-headerCoins,#monster-hub #mon-headerGems{font-size:11px}
   #monster-hub .mon-clay.flex{flex-wrap:wrap}
 }
+</style>
+<style id="hide-scrollbars">
+/* Sembunyikan semua scrollbar (scroll tetap berfungsi) */
+html,body,*{scrollbar-width:none!important;-ms-overflow-style:none!important}
+html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:none!important;width:0!important;height:0!important;background:transparent!important}
+</style>
+<style id="sticker-css">
+.chat-bubble.sticker{background:transparent!important;box-shadow:none!important;padding:0!important;border:0!important}
+.chat-sticker{width:150px;height:150px;max-width:55vw;max-height:55vw;object-fit:contain;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+#sticker-sheet,#sticker-confirm{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center}
+#sticker-sheet.open,#sticker-confirm.open{display:flex}
+.sticker-panel{width:100%;max-width:560px;max-height:68vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#1546BE,#0F2C7A);color:#fff;border-radius:22px 22px 0 0;padding:14px 14px calc(env(safe-area-inset-bottom,0px) + 14px);box-shadow:0 -8px 30px rgba(0,0,0,.35)}
+.sticker-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sticker-head h3{flex:1;font-size:16px;font-weight:700}
+.sticker-btn{border:0;border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer;background:rgba(255,255,255,.16);color:#fff}
+.sticker-btn.primary{background:var(--amber,#FFB800);color:#091A4B}
+.sticker-grid{flex:1;min-height:90px;overflow-y:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-content:start}
+.sticker-item{position:relative;aspect-ratio:1;border-radius:14px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:4px}
+.sticker-item:active{transform:scale(.94)}
+.sticker-item img{max-width:100%;max-height:100%;object-fit:contain}
+.sticker-item .sdel{display:none;position:absolute;top:-5px;right:-5px;width:22px;height:22px;border-radius:50%;background:#EF4444;color:#fff;border:0;font-size:14px;line-height:22px;padding:0}
+.sticker-grid.manage .sdel{display:block}
+.sticker-empty{grid-column:1/-1;text-align:center;font-size:13px;opacity:.85;padding:22px 8px}
+.sticker-preview{display:flex;justify-content:center;padding:10px 0 14px}
+.sticker-preview img{width:180px;height:180px;object-fit:contain;background:rgba(255,255,255,.1);border-radius:16px}
+@media (min-width:768px){#sticker-sheet,#sticker-confirm{align-items:center}.sticker-panel{border-radius:22px}}
 </style>
 </head>
 <body class="text-on-surface">
@@ -1011,9 +1066,14 @@ html,body{max-width:100%;overflow-x:hidden}
               <span class="material-symbols-outlined">add_alarm</span>
             </button>
           </div>
-          <div id="chat-messages-loading" class="flex justify-center py-6"><div class="spinner"></div></div>
-          <button id="btn-load-more-chat" onclick="loadMoreChatMessages()" class="hidden btn-outline text-xs py-1.5 px-4 mx-auto block mb-3" data-i18n="btn_load_more_chat">Muat pesan sebelumnya</button>
-          <div id="chat-messages" class="flex flex-col gap-2 pb-4" style="min-height:200px;"></div>
+          <div class="chat-scroll-wrap">
+            <div id="chat-scroll" class="chat-scroll" onscroll="onThreadScroll('chat')">
+              <div id="chat-messages-loading" class="flex justify-center py-6"><div class="spinner"></div></div>
+              <button id="btn-load-more-chat" onclick="loadMoreChatMessages()" class="hidden btn-outline text-xs py-1.5 px-4 mx-auto block mb-3" data-i18n="btn_load_more_chat">Muat pesan sebelumnya</button>
+              <div id="chat-messages" class="flex flex-col gap-2 pb-4"></div>
+            </div>
+            <button type="button" id="chat-scroll-down" class="scroll-down-btn hidden" onclick="scrollThreadToBottom('chat', true)" aria-label="Ke pesan terakhir"><span class="material-symbols-outlined">keyboard_arrow_down</span><span class="sd-badge"></span></button>
+          </div>
 
           <!-- Upload progress bar (shown while uploading foto/video/dokumen/audio/voice note) -->
           <div id="chat-upload-progress-wrap" class="hidden sticky bottom-[52px] bg-bg pb-1">
@@ -1037,6 +1097,7 @@ html,body{max-width:100%;overflow-x:hidden}
             <button type="button" class="att-tile" style="--bg:#FAF5FF;--b:#F3E8FF;--c:#7E22CE;" onclick="openChatContactShareModal()"><span class="ico">👤</span><span>Kontak</span></button>
             <button type="button" class="att-tile" style="--bg:#EEF2FF;--b:#E0E7FF;--c:#4338CA;" onclick="attCapture('chat','videonote')"><span class="ico">⭕</span><span>Video Note</span></button>
             <button type="button" class="att-tile" style="--bg:#FFF1F2;--b:#FECDD3;--c:#BE123C;" onclick="attCapture('chat','voice')"><span class="ico">🎤</span><span>Voice Note</span></button>
+            <button type="button" class="att-tile" style="--bg:#FEFCE8;--b:#FEF08A;--c:#A16207;" onclick="openStickerSheet('chat')"><span class="ico">🙂</span><span>Stiker</span></button>
           </div>
 
           <!-- Hidden native file pickers, one per attachment kind -->
@@ -1049,11 +1110,11 @@ html,body{max-width:100%;overflow-x:hidden}
           <input type="file" id="chat-cam-photo" accept="image/*" capture="environment" class="hidden" onchange="handleChatFileSelected(event,'image')"/>
           <input type="file" id="chat-cam-video" accept="video/*" capture="environment" class="hidden" onchange="handleChatFileSelected(event,'video')"/>
 
-          <div class="sticky bottom-0 bg-bg pt-2 pb-2 flex gap-2 items-end">
+          <div class="chat-input-bar sticky bottom-0 bg-bg pt-2 pb-2 flex gap-2 items-end">
             <button onclick="toggleChatAttachMenu()" id="chat-attach-btn" class="flex items-center justify-center rounded-full flex-shrink-0" style="width:38px;height:38px;background:#F3F4F6;margin-bottom:2px;">
               <span class="material-symbols-outlined text-lg">add</span>
             </button>
-            <textarea id="chat-input" rows="1" placeholder="Tulis pesan..." data-i18n-placeholder="chat_input_placeholder" style="resize:none; max-height:100px;" oninput="updateChatInputMode()" onkeydown="handleChatInputKeydown(event)"></textarea>
+            <textarea id="chat-input" class="chat-textarea" rows="1" enterkeyhint="enter" placeholder="Tulis pesan..." data-i18n-placeholder="chat_input_placeholder" oninput="autoGrowTextarea(this); updateChatInputMode()" onpaste="onStickerPaste(event,'chat')" onfocus="onChatInputFocus('chat')" onkeydown="handleChatInputKeydown(event)"></textarea>
             <button onclick="sendChatMessage()" id="btn-send-chat" class="btn-primary text-sm py-2.5 px-4 flex-shrink-0" data-i18n="btn_send">Kirim</button>
             <button id="chat-mic-btn" onmousedown="chatStartVoiceNote()" ontouchstart="chatStartVoiceNote(); event.preventDefault();" onmouseup="chatStopVoiceNote()" onmouseleave="chatCancelVoiceNoteIfRecording()" ontouchend="chatStopVoiceNote(); event.preventDefault();" class="hidden items-center justify-center rounded-full flex-shrink-0" style="width:38px;height:38px;background:#F3F4F6;margin-bottom:2px;">
               <span class="material-symbols-outlined text-lg">mic</span>
@@ -1078,9 +1139,14 @@ html,body{max-width:100%;overflow-x:hidden}
               <span class="material-symbols-outlined">add_alarm</span>
             </button>
           </div>
-          <div id="group-messages-loading" class="flex justify-center py-6"><div class="spinner"></div></div>
-          <button id="btn-load-more-group" onclick="loadMoreGroupMessages()" class="hidden btn-outline text-xs py-1.5 px-4 mx-auto block mb-3">Muat pesan sebelumnya</button>
-          <div id="group-messages" class="flex flex-col gap-2 pb-4" style="min-height:200px;"></div>
+          <div class="chat-scroll-wrap">
+            <div id="group-scroll" class="chat-scroll" onscroll="onThreadScroll('group')">
+              <div id="group-messages-loading" class="flex justify-center py-6"><div class="spinner"></div></div>
+              <button id="btn-load-more-group" onclick="loadMoreGroupMessages()" class="hidden btn-outline text-xs py-1.5 px-4 mx-auto block mb-3">Muat pesan sebelumnya</button>
+              <div id="group-messages" class="flex flex-col gap-2 pb-4"></div>
+            </div>
+            <button type="button" id="group-scroll-down" class="scroll-down-btn hidden" onclick="scrollThreadToBottom('group', true)" aria-label="Ke pesan terakhir"><span class="material-symbols-outlined">keyboard_arrow_down</span><span class="sd-badge"></span></button>
+          </div>
 
           <div id="group-upload-progress-wrap" class="hidden sticky bottom-[52px] bg-bg pb-1">
             <div class="flex justify-between text-[10px] text-on-surface-muted mb-1">
@@ -1101,6 +1167,7 @@ html,body{max-width:100%;overflow-x:hidden}
             <button type="button" class="att-tile" style="--bg:#F0FDFA;--b:#CCFBF1;--c:#0F766E;" onclick="groupAttach('audio')"><span class="ico">🎵</span><span>Upload Audio</span></button>
             <button type="button" class="att-tile" style="--bg:#EEF2FF;--b:#E0E7FF;--c:#4338CA;" onclick="attCapture('group','videonote')"><span class="ico">⭕</span><span>Video Note</span></button>
             <button type="button" class="att-tile" style="--bg:#FFF1F2;--b:#FECDD3;--c:#BE123C;" onclick="attCapture('group','voice')"><span class="ico">🎤</span><span>Voice Note</span></button>
+            <button type="button" class="att-tile" style="--bg:#FEFCE8;--b:#FEF08A;--c:#A16207;" onclick="openStickerSheet('group')"><span class="ico">🙂</span><span>Stiker</span></button>
           </div>
 
           <input type="file" id="group-file-image" accept="image/*" class="hidden" onchange="handleGroupFileSelected(event,'image')"/>
@@ -1112,11 +1179,11 @@ html,body{max-width:100%;overflow-x:hidden}
           <input type="file" id="group-cam-photo" accept="image/*" capture="environment" class="hidden" onchange="handleGroupFileSelected(event,'image')"/>
           <input type="file" id="group-cam-video" accept="video/*" capture="environment" class="hidden" onchange="handleGroupFileSelected(event,'video')"/>
 
-          <div class="sticky bottom-0 bg-bg pt-2 pb-2 flex gap-2 items-end">
+          <div class="chat-input-bar sticky bottom-0 bg-bg pt-2 pb-2 flex gap-2 items-end">
             <button onclick="toggleGroupAttachMenu()" class="flex items-center justify-center rounded-full flex-shrink-0" style="width:38px;height:38px;background:#F3F4F6;margin-bottom:2px;">
               <span class="material-symbols-outlined text-lg">add</span>
             </button>
-            <textarea id="group-input" rows="1" placeholder="Tulis pesan..." style="resize:none; max-height:100px;" onkeydown="handleGroupInputKeydown(event)"></textarea>
+            <textarea id="group-input" class="chat-textarea" rows="1" enterkeyhint="enter" placeholder="Tulis pesan..." oninput="autoGrowTextarea(this)" onpaste="onStickerPaste(event,'group')" onfocus="onChatInputFocus('group')" onkeydown="handleGroupInputKeydown(event)"></textarea>
             <button onclick="sendGroupChatMessage()" class="btn-primary text-sm py-2.5 px-4 flex-shrink-0">Kirim</button>
           </div>
         </div>
@@ -4142,6 +4209,7 @@ function openChatThread(username, name, avUrl) {
   document.getElementById('chat-thread-header-info').onclick = () => viewUserProfile(username);
   document.getElementById('chat-messages').innerHTML = '';
   document.getElementById('chat-input').value = '';
+  autoGrowTextarea(document.getElementById('chat-input'));
 
   loadChatThread(true);
   apiCall('markConversationRead', { username: currentUser.username, otherUsername: username }).then(updateChatBadge).catch(()=>{});
@@ -4199,7 +4267,7 @@ async function loadMoreChatMessages() {
     const older = (res.messages || []).map(m => Object.assign({ status: 'sent' }, m));
     chatMessages = older.concat(chatMessages);
     chatHasMoreOlder = !!res.hasMore;
-    const container = document.getElementById('chat-messages');
+    const container = document.getElementById('chat-scroll');
     const prevHeight = container.scrollHeight;
     renderChatMessages();
     container.scrollTop = container.scrollHeight - prevHeight;
@@ -4239,7 +4307,7 @@ async function pollNewChatMessages() {
 
     if (changed) {
       renderChatMessages();
-      if (newOnes.length) scrollChatToBottom();
+      if (newOnes.length) chatMaybeAutoScroll('chat', newOnes.filter(m => m.fromUsername === activeChatUsername).length, newOnes.some(m => m.fromUsername === currentUser.username));
     }
 
     const incoming = newOnes.some(m => m.fromUsername === activeChatUsername);
@@ -4294,6 +4362,10 @@ function handleChatImageError(imgEl) {
 
 function chatBubbleContent(m) {
   const type = m.type || 'text';
+
+  if (isStickerMsg(m)) {
+    return `<img class="chat-sticker" src="${escHtml(m.fileUrl)}" alt="Stiker" loading="lazy" onerror="handleChatImageError(this)"/>`;
+  }
 
   if (type === 'image') {
     return `<a href="${escHtml(m.fileUrl)}" target="_blank" rel="noopener noreferrer">
@@ -4357,7 +4429,7 @@ function renderChatMessages() {
     const isMe = m.fromUsername === currentUser.username;
     const type = m.type || 'text';
     const mediaTypes = ['image', 'video', 'document', 'audio', 'voice', 'contact'];
-    const bubbleClass = mediaTypes.includes(type) ? ' media' : '';
+    const bubbleClass = (mediaTypes.includes(type) ? ' media' : '') + (isStickerMsg(m) ? ' sticker' : '');
     return `<div class="chat-bubble-row ${isMe ? 'me' : 'them'}">
       <div class="chat-bubble-wrap">
         <div class="chat-bubble ${isMe ? 'me' : 'them'}${bubbleClass}">${chatBubbleContent(m)}</div>
@@ -4370,10 +4442,7 @@ function renderChatMessages() {
   }).join(''));
 }
 
-function scrollChatToBottom() {
-  const container = document.getElementById('chat-messages');
-  container.scrollTop = container.scrollHeight;
-}
+function scrollChatToBottom() { scrollThreadToBottom('chat'); }
 
 // ======= GRUP CHAT =======
 const GROUP_MAX_FILE_BYTES = 25 * 1024 * 1024; // samakan dengan batas di Code.gs
@@ -4393,6 +4462,7 @@ function openGroupThread(groupId, name) {
   document.getElementById('group-thread-member-count').textContent = '';
   document.getElementById('group-messages').innerHTML = '';
   document.getElementById('group-input').value = '';
+  autoGrowTextarea(document.getElementById('group-input'));
 
   loadGroupThread(true);
   apiCall('getGroupInfo', { groupId }).then(res => {
@@ -4433,7 +4503,7 @@ async function loadMoreGroupMessages() {
     const older = (res.messages || []).map(m => Object.assign({ status: 'sent' }, m));
     groupMessages = older.concat(groupMessages);
     groupHasMoreOlder = !!res.hasMore;
-    const container = document.getElementById('group-messages');
+    const container = document.getElementById('group-scroll');
     const prevHeight = container.scrollHeight;
     renderGroupMessages();
     container.scrollTop = container.scrollHeight - prevHeight;
@@ -4455,7 +4525,7 @@ async function pollNewGroupMessages() {
     if (newOnes.length) {
       groupMessages = groupMessages.concat(newOnes);
       renderGroupMessages();
-      scrollGroupToBottom();
+      chatMaybeAutoScroll('group', newOnes.filter(m => m.fromUsername !== currentUser.username).length, newOnes.some(m => m.fromUsername === currentUser.username));
       const incoming = newOnes.some(m => m.fromUsername !== currentUser.username);
       if (incoming) {
         playChatNotificationSound();
@@ -4466,13 +4536,10 @@ async function pollNewGroupMessages() {
   } catch (e) { /* polling diam-diam */ }
 }
 
-function scrollGroupToBottom() {
-  const container = document.getElementById('group-messages');
-  container.scrollTop = container.scrollHeight;
-}
+function scrollGroupToBottom() { scrollThreadToBottom('group'); }
 
 function handleGroupInputKeydown(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey || (CHAT_ENTER_SENDS && !e.shiftKey && !CHAT_IS_TOUCH()))) {
     e.preventDefault();
     sendGroupChatMessage();
   }
@@ -4487,7 +4554,7 @@ function renderGroupMessages() {
     const isMe = m.fromUsername === currentUser.username;
     const type = m.type || 'text';
     const mediaTypes = ['image', 'video', 'document', 'audio', 'voice', 'contact'];
-    const bubbleClass = mediaTypes.includes(type) ? ' media' : '';
+    const bubbleClass = (mediaTypes.includes(type) ? ' media' : '') + (isStickerMsg(m) ? ' sticker' : '');
     return `<div class="chat-bubble-row ${isMe ? 'me' : 'them'}">
       <div class="chat-bubble-wrap">
         ${!isMe ? `<p class="text-[11px] font-bold mb-0.5 px-1" style="color:#0077CC;">${escHtml(m.fromName || m.fromUsername)}</p>` : ''}
@@ -4508,6 +4575,7 @@ async function sendGroupChatMessage() {
   if (content.length > 1000) { showToast(t('toast_max_1000'), 'error'); return; }
 
   input.value = '';
+  autoGrowTextarea(input);
   const tempId = 'temp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
   const tempMsg = {
     id: tempId,
@@ -4826,7 +4894,8 @@ async function confirmLeaveGroup() {
 }
 
 function handleChatInputKeydown(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
+  // Enter = baris baru (seperti WhatsApp di HP). Ctrl/Cmd+Enter = kirim.
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey || (CHAT_ENTER_SENDS && !e.shiftKey && !CHAT_IS_TOUCH()))) {
     e.preventDefault();
     sendChatMessage();
   }
@@ -4839,6 +4908,7 @@ async function sendChatMessage() {
   if (content.length > 1000) { showToast(t('toast_max_1000'), 'error'); return; }
 
   input.value = '';
+  autoGrowTextarea(input); updateChatInputMode();
   const tempId = 'temp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
   const tempMsg = {
     id: tempId,
@@ -4879,6 +4949,7 @@ function retryFailedMessage(tempId) {
   chatMessages.splice(idx, 1);
   if ((msg.type || 'text') === 'text') {
     document.getElementById('chat-input').value = msg.content;
+    autoGrowTextarea(document.getElementById('chat-input')); updateChatInputMode();
     sendChatMessage();
   } else {
     showToast('Pesan gagal ini perlu dikirim ulang manual (pilih file lagi)', 'error');
@@ -5006,6 +5077,288 @@ let chatMediaRecorder = null;
 let chatRecordedChunks = [];
 let chatRecordStartTime = 0;
 let chatIsRecording = false;
+
+// ======= STIKER =======
+// Stiker = pesan bertipe 'image' dengan nama file berawalan "sticker_" (sama seperti pola "videonote_"),
+// jadi tidak perlu mengubah server. Koleksi stiker disimpan di perangkat (IndexedDB).
+function isStickerMsg(m) { return (m.type || 'text') === 'image' && /^sticker_/i.test(m.fileName || ''); }
+
+let stickerTarget = 'chat';
+let stickerManage = false;
+let stickerPending = null; // File dari paste, menunggu konfirmasi
+const stickerUrlCache = {};
+
+function stickerDb() {
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) return reject(new Error('IndexedDB tidak tersedia'));
+    const rq = indexedDB.open('pesaner-stickers', 1);
+    rq.onupgradeneeded = () => rq.result.createObjectStore('stickers', { keyPath: 'id' });
+    rq.onsuccess = () => resolve(rq.result);
+    rq.onerror = () => reject(rq.error);
+  });
+}
+async function stickerAll() {
+  const db = await stickerDb();
+  return new Promise((resolve, reject) => {
+    const rq = db.transaction('stickers').objectStore('stickers').getAll();
+    rq.onsuccess = () => resolve((rq.result || []).sort((a, b) => b.added - a.added));
+    rq.onerror = () => reject(rq.error);
+  });
+}
+async function stickerPut(rec) {
+  const db = await stickerDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('stickers', 'readwrite');
+    tx.objectStore('stickers').put(rec);
+    tx.oncomplete = resolve; tx.onerror = () => reject(tx.error);
+  });
+}
+async function stickerDel(id) {
+  const db = await stickerDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('stickers', 'readwrite');
+    tx.objectStore('stickers').delete(id);
+    tx.oncomplete = resolve; tx.onerror = () => reject(tx.error);
+  });
+}
+
+// Perkecil gambar statis yang terlalu besar (maks 512px, PNG transparan). GIF/WebP dibiarkan agar animasinya tetap.
+async function stickerNormalize(file) {
+  if (/gif|webp/i.test(file.type) || file.size < 150 * 1024) return file;
+  try {
+    const bmp = await createImageBitmap(file);
+    const max = 512, sc = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    if (sc >= 1) return file;
+    const c = document.createElement('canvas');
+    c.width = Math.round(bmp.width * sc); c.height = Math.round(bmp.height * sc);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/png'));
+    return blob ? new File([blob], file.name.replace(/\.\w+$/, '') + '.png', { type: 'image/png' }) : file;
+  } catch (e) { return file; }
+}
+
+async function stickerSave(file) {
+  const f = await stickerNormalize(file);
+  await stickerPut({ id: 'st_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7), blob: f, type: f.type || 'image/png', added: Date.now() });
+}
+
+function openStickerSheet(target) {
+  stickerTarget = target || 'chat';
+  const menu = document.getElementById(stickerTarget + '-attach-menu');
+  if (menu) menu.classList.add('hidden');
+  stickerManage = false;
+  document.getElementById('sticker-sheet').classList.add('open');
+  renderStickerGrid();
+}
+function closeStickerSheet() { document.getElementById('sticker-sheet').classList.remove('open'); }
+function toggleStickerManage() {
+  stickerManage = !stickerManage;
+  document.getElementById('sticker-manage-btn').textContent = stickerManage ? 'Selesai' : 'Kelola';
+  document.getElementById('sticker-grid').classList.toggle('manage', stickerManage);
+}
+
+async function renderStickerGrid() {
+  const grid = document.getElementById('sticker-grid');
+  grid.classList.toggle('manage', stickerManage);
+  let list = [];
+  try { list = await stickerAll(); } catch (e) {
+    grid.innerHTML = '<div class="sticker-empty">Penyimpanan stiker tidak tersedia di browser ini.</div>'; return;
+  }
+  Object.values(stickerUrlCache).forEach(u => URL.revokeObjectURL(u));
+  for (const k in stickerUrlCache) delete stickerUrlCache[k];
+  if (!list.length) {
+    grid.innerHTML = '<div class="sticker-empty">Belum ada stiker.<br>Ketuk <b>+ Tambah</b> lalu pilih gambar stiker dari galeri/penyimpanan HP (PNG, WebP, atau GIF).<br><br>Stiker Bitmoji/WhatsApp: simpan dulu ke galeri (Bagikan → Simpan gambar), lalu tambahkan di sini.</div>';
+    return;
+  }
+  grid.innerHTML = list.map(r => {
+    const u = URL.createObjectURL(r.blob); stickerUrlCache[r.id] = u;
+    return `<div class="sticker-item" onclick="stickerSendSaved('${r.id}')"><img src="${u}" alt="Stiker"/><button class="sdel" onclick="event.stopPropagation();stickerDelete('${r.id}')" aria-label="Hapus">×</button></div>`;
+  }).join('');
+}
+
+async function stickerFilesPicked(ev) {
+  const files = Array.from(ev.target.files || []).filter(f => /^image\//.test(f.type));
+  ev.target.value = '';
+  if (!files.length) return;
+  let ok = 0;
+  for (const f of files) { try { await stickerSave(f); ok++; } catch (e) { console.error(e); } }
+  showToast(ok ? ok + ' stiker ditambahkan' : 'Gagal menyimpan stiker', ok ? 'success' : 'error');
+  renderStickerGrid();
+}
+
+async function stickerDelete(id) {
+  try { await stickerDel(id); } catch (e) {}
+  renderStickerGrid();
+}
+
+function stickerActiveKind() {
+  const g = document.getElementById('group-thread-view');
+  return (g && !g.classList.contains('hidden') && typeof activeGroupId !== 'undefined' && activeGroupId) ? 'group' : 'chat';
+}
+
+async function stickerSendFile(file, kind) {
+  const ext = ((file.type || '').split('/')[1] || 'png').replace('jpeg', 'jpg').replace(/[^a-z0-9]/gi, '');
+  const name = 'sticker_' + Date.now() + '.' + ext;
+  const f = new File([file], name, { type: file.type || 'image/png' });
+  if (f.size > 8 * 1024 * 1024) { showToast('Stiker terlalu besar (maks 8MB)', 'error'); return; }
+  if (kind === 'group') { if (!activeGroupId) return; await uploadThenSendGroupFile(f, 'image', name); }
+  else { if (!activeChatUsername) return; await uploadThenSendChatFile(f, 'image', name, ''); }
+}
+
+async function stickerSendSaved(id) {
+  try {
+    const rec = (await stickerAll()).find(r => r.id === id);
+    if (!rec) return;
+    const kind = stickerTarget || stickerActiveKind();
+    closeStickerSheet();
+    await stickerSendFile(rec.blob, kind);
+  } catch (e) { showToast('Gagal mengirim stiker', 'error'); }
+}
+
+// Tempel gambar (mis. dari keyboard/clipboard) ke kolom teks -> tawarkan kirim sebagai stiker
+function onStickerPaste(e, kind) {
+  const cd = e.clipboardData;
+  if (!cd || !cd.files || !cd.files.length) return;
+  const img = Array.from(cd.files).find(f => /^image\//.test(f.type));
+  if (!img) return;
+  e.preventDefault();
+  stickerTarget = kind;
+  stickerPending = img;
+  document.getElementById('sticker-confirm-img').src = URL.createObjectURL(img);
+  document.getElementById('sticker-confirm').classList.add('open');
+}
+function closeStickerConfirm() {
+  document.getElementById('sticker-confirm').classList.remove('open');
+  stickerPending = null;
+}
+async function stickerConfirmSend() {
+  const f = stickerPending, kind = stickerTarget;
+  closeStickerConfirm();
+  if (f) await stickerSendFile(f, kind);
+}
+async function stickerConfirmSave() {
+  const f = stickerPending;
+  closeStickerConfirm();
+  if (!f) return;
+  try { await stickerSave(f); showToast('Disimpan ke koleksi stiker', 'success'); } catch (e) { showToast('Gagal menyimpan stiker', 'error'); }
+}
+
+// ======= Chat UX: auto-grow textarea, keyboard-aware layout, tombol scroll-bawah =======
+const CHAT_ENTER_SENDS = false; // true = di desktop Enter mengirim (Shift+Enter baris baru); di HP Enter selalu baris baru
+function CHAT_IS_TOUCH() { return window.matchMedia && window.matchMedia('(pointer: coarse)').matches; }
+
+function autoGrowTextarea(el) {
+  if (!el) return;
+  el.style.height = 'auto';
+  const max = parseInt(getComputedStyle(el).maxHeight, 10) || 168;
+  el.style.height = Math.min(el.scrollHeight + 2, max) + 'px';
+  el.style.overflowY = el.scrollHeight + 2 > max ? 'auto' : 'hidden';
+  // tinggi area input berubah -> jaga posisi bawah chat
+  const kind = el.id === 'group-input' ? 'group' : 'chat';
+  const sc = document.getElementById(kind + '-scroll');
+  if (sc && threadNearBottom(sc, 120)) scrollThreadToBottom(kind);
+}
+
+function threadNearBottom(sc, px) {
+  return sc.scrollHeight - sc.scrollTop - sc.clientHeight <= (px || 80);
+}
+
+function scrollThreadToBottom(kind, smooth) {
+  const sc = document.getElementById(kind + '-scroll');
+  if (!sc) return;
+  const go = () => {
+    if (smooth) sc.scrollTo({ top: sc.scrollHeight, behavior: 'smooth' });
+    else sc.scrollTop = sc.scrollHeight;
+  };
+  go();
+  // gambar/video dimuat belakangan -> ulangi sebentar agar benar-benar di dasar
+  if (!smooth) { requestAnimationFrame(go); setTimeout(go, 250); }
+  const btn = document.getElementById(kind + '-scroll-down');
+  if (btn) { btn.classList.add('hidden'); const b = btn.querySelector('.sd-badge'); if (b) b.textContent = ''; }
+}
+
+function onThreadScroll(kind) {
+  const sc = document.getElementById(kind + '-scroll');
+  const btn = document.getElementById(kind + '-scroll-down');
+  if (!sc || !btn) return;
+  const far = sc.scrollHeight - sc.scrollTop - sc.clientHeight > 160;
+  btn.classList.toggle('hidden', !far);
+  if (!far) { const b = btn.querySelector('.sd-badge'); if (b) b.textContent = ''; }
+}
+
+function onChatInputFocus(kind) {
+  // keyboard muncul -> setelah viewport menyesuaikan, tampilkan lagi pesan terakhir & kolom teks
+  setTimeout(() => { syncChatViewport(); const sc = document.getElementById(kind + '-scroll'); if (sc && threadNearBottom(sc, 400)) scrollThreadToBottom(kind); }, 300);
+}
+
+// Tinggi/posisi area chat mengikuti visual viewport (keyboard HP)
+function syncChatViewport() {
+  const vv = window.visualViewport;
+  const root = document.documentElement;
+  root.style.setProperty('--vvh', (vv ? vv.height : window.innerHeight) + 'px');
+  root.style.setProperty('--vvt', (vv ? vv.offsetTop : 0) + 'px');
+  const open = document.body.classList.contains('chat-open');
+  const mobile = window.matchMedia('(max-width: 767px)').matches;
+  ['chat-thread-view', 'group-thread-view'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el || el.classList.contains('hidden')) return;
+    if (mobile) { el.style.height = ''; }
+    else {
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      el.style.height = Math.max(360, window.innerHeight - top - 14) + 'px';
+    }
+    const kind = id === 'group-thread-view' ? 'group' : 'chat';
+    const sc = document.getElementById(kind + '-scroll');
+    if (sc && open && sc._wasNearBottom) scrollThreadToBottom(kind);
+  });
+}
+
+(function initChatUx() {
+  function track() {
+    ['chat', 'group'].forEach(k => {
+      const sc = document.getElementById(k + '-scroll');
+      if (sc) sc._wasNearBottom = threadNearBottom(sc, 120);
+    });
+  }
+  function refreshOpenState() {
+    const tab = document.getElementById('tab-chat');
+    const ct = document.getElementById('chat-thread-view');
+    const gt = document.getElementById('group-thread-view');
+    if (!tab || !ct || !gt) return;
+    const open = !tab.classList.contains('hidden') && (!ct.classList.contains('hidden') || !gt.classList.contains('hidden'));
+    const was = document.body.classList.contains('chat-open');
+    document.body.classList.toggle('chat-open', open);
+    if (open && !was) {
+      window.scrollTo(0, 0);
+      ['chat', 'group'].forEach(k => { const sc = document.getElementById(k + '-scroll'); if (sc) sc._wasNearBottom = true; });
+    }
+    if (open) syncChatViewport();
+  }
+  function start() {
+    const vv = window.visualViewport;
+    if (vv) { vv.addEventListener('resize', () => { track(); syncChatViewport(); }); vv.addEventListener('scroll', syncChatViewport); }
+    window.addEventListener('resize', () => { track(); syncChatViewport(); });
+    window.addEventListener('orientationchange', () => setTimeout(syncChatViewport, 250));
+    ['chat-scroll', 'group-scroll'].forEach(id => { const sc = document.getElementById(id); if (sc) sc.addEventListener('scroll', track, { passive: true }); });
+    const mo = new MutationObserver(refreshOpenState);
+    ['tab-chat', 'chat-thread-view', 'group-thread-view'].forEach(id => { const el = document.getElementById(id); if (el) mo.observe(el, { attributes: true, attributeFilter: ['class'] }); });
+    syncChatViewport(); refreshOpenState();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+// Pesan masuk saat user sedang membaca riwayat -> tombol scroll-bawah memberi badge, tanpa memaksa loncat
+function chatMaybeAutoScroll(kind, newCount, force) {
+  const sc = document.getElementById(kind + '-scroll');
+  if (!sc) return;
+  if (force || threadNearBottom(sc, 200)) { scrollThreadToBottom(kind); return; }
+  const btn = document.getElementById(kind + '-scroll-down');
+  if (btn && newCount) {
+    btn.classList.remove('hidden');
+    const b = btn.querySelector('.sd-badge');
+    if (b) b.textContent = String((parseInt(b.textContent, 10) || 0) + newCount);
+  }
+}
 
 function updateChatInputMode() {
   const hasText = document.getElementById('chat-input').value.trim().length > 0;
@@ -7900,5 +8253,27 @@ window.onload = function() {
 </script>
 <!-- =================== /PENGINGAT CHAT =================== -->
 
+<input type="file" id="sticker-file-input" accept="image/png,image/webp,image/gif,image/jpeg" multiple class="hidden" onchange="stickerFilesPicked(event)"/>
+<div id="sticker-sheet" onclick="if(event.target===this)closeStickerSheet()">
+  <div class="sticker-panel">
+    <div class="sticker-head">
+      <h3>Stiker</h3>
+      <button class="sticker-btn" id="sticker-manage-btn" onclick="toggleStickerManage()">Kelola</button>
+      <button class="sticker-btn primary" onclick="document.getElementById('sticker-file-input').click()">+ Tambah</button>
+      <button class="sticker-btn" onclick="closeStickerSheet()" aria-label="Tutup">✕</button>
+    </div>
+    <div id="sticker-grid" class="sticker-grid"></div>
+  </div>
+</div>
+<div id="sticker-confirm" onclick="if(event.target===this)closeStickerConfirm()">
+  <div class="sticker-panel">
+    <div class="sticker-head"><h3>Kirim sebagai stiker?</h3><button class="sticker-btn" onclick="closeStickerConfirm()" aria-label="Tutup">✕</button></div>
+    <div class="sticker-preview"><img id="sticker-confirm-img" alt=""/></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+      <button class="sticker-btn primary" onclick="stickerConfirmSend()">Kirim stiker</button>
+      <button class="sticker-btn" onclick="stickerConfirmSave()">Simpan ke koleksi</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
