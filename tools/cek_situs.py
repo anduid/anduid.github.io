@@ -161,6 +161,8 @@ def periksa(situs):
                 href = href[len(SITE):] or "/"
             if not href.startswith("/"):
                 continue
+            if href.startswith(("/market/",)):
+                continue  # dilayani repo anduid/market, bukan repo ini
             if ke_berkas(situs, href) is None:
                 patah.setdefault(href, set()).add(str(h.relative_to(situs)))
     for href, sumber in sorted(patah.items())[:30]:

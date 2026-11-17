@@ -9,3 +9,4 @@ Disallow: /admin/
 Disallow: /terminal/
 
 Sitemap: {{ '/sitemap.xml' | absolute_url }}
+Sitemap: {{ '/market/sitemap.xml' | absolute_url }}
