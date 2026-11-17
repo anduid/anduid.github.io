@@ -80,6 +80,40 @@
   .chat-list-item { display: flex; align-items: center; gap: 12px; padding: 10px 8px; border-radius: 12px; cursor: pointer; transition: background 0.15s; }
   .chat-list-item:hover { background: #F3F4F6; }
   .chat-unread-badge { background: #0077CC; color: #fff; font-size: 11px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 999px; display: flex; align-items: center; justify-content: center; padding: 0 5px; flex-shrink: 0; }
+  /* ===== Lampiran lengkap + kamera/rekam langsung (chat online & grup) ===== */
+  .att-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 10px 4px 8px; border-top: 1px solid #F3F4F6; }
+  .att-grid.hidden { display: none; }
+  .att-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 2px; border-radius: 16px; border: 1px solid var(--b); background: var(--bg); color: var(--c); font-size: 10px; font-weight: 700; line-height: 1.15; text-align: center; cursor: pointer; transition: transform .12s; }
+  .att-tile:active { transform: scale(.94); }
+  .att-tile .ico { width: 40px; height: 40px; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+  #att-overlay { position: fixed; inset: 0; z-index: 10050; background: rgba(15,23,42,.88); backdrop-filter: blur(6px); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 16px; color: #fff; }
+  #att-overlay.show { display: flex; }
+  #att-overlay .att-head { position: absolute; top: 14px; left: 16px; right: 16px; display: flex; align-items: center; justify-content: space-between; font-weight: 800; font-size: 14px; }
+  #att-overlay .att-x { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.15); color: #fff; display: flex; align-items: center; justify-content: center; }
+  #att-stage { width: 100%; max-width: 420px; aspect-ratio: 3/4; max-height: 62vh; background: #000; border-radius: 20px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
+  #att-stage.round { width: min(78vw, 300px); max-width: 300px; aspect-ratio: 1/1; border-radius: 50%; border: 4px solid #FF8A65; }
+  #att-stage video, #att-stage img { width: 100%; height: 100%; object-fit: cover; }
+  #att-stage canvas { width: 100%; height: 100%; }
+  #att-stage.voice { aspect-ratio: auto; height: 140px; background: linear-gradient(135deg,#be123c,#f43f5e); }
+  #att-timer { margin-top: 12px; font-weight: 800; font-variant-numeric: tabular-nums; font-size: 18px; min-height: 26px; }
+  #att-timer.rec::before { content: '●'; color: #EF4444; margin-right: 6px; animation: attblink 1s infinite; }
+  @keyframes attblink { 50% { opacity: .2; } }
+  .att-controls { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 16px; }
+  .att-btn { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; display: flex; align-items: center; justify-content: center; }
+  .att-main { width: 72px; height: 72px; border-radius: 50%; background: #fff; border: 5px solid rgba(255,255,255,.45); display: flex; align-items: center; justify-content: center; }
+  .att-main .dot { width: 46px; height: 46px; border-radius: 50%; background: #EF4444; transition: all .15s; }
+  .att-main.photo .dot { background: #fff; border: 2px solid #94a3b8; }
+  .att-main.rec .dot { width: 26px; height: 26px; border-radius: 6px; }
+  .att-pill { padding: 12px 22px; border-radius: 999px; font-weight: 800; font-size: 14px; color: #fff; background: #0077CC; }
+  .att-pill.ghost { background: rgba(255,255,255,.18); }
+  /* ===== Pemutar media langsung di chat ===== */
+  .att-media .att-fallback { display: none; }
+  .att-media.failed .att-player, .att-media.failed .att-note { display: none; }
+  .att-media.failed .att-fallback { display: flex; }
+  .att-note { position: relative; width: 168px; height: 168px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg,#FF8A65,#FFD54F,#4DD0E1); cursor: pointer; }
+  .att-note video { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #0f172a; display: block; }
+  .att-note .att-play { position: absolute; inset: 3px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; background: rgba(15,23,42,.28); transition: opacity .15s; }
+  .att-note.playing .att-play { opacity: 0; }
   .chat-bubble-row { display: flex; }
   .chat-bubble-row.me { justify-content: flex-end; }
   .chat-bubble-row.them { justify-content: flex-start; }
@@ -949,6 +983,7 @@ html,body{max-width:100%;overflow-x:hidden}
           <div class="flex justify-between items-center mb-4 gap-2">
             <h2 class="text-xl font-black text-on-surface" data-i18n="chat_title">Pesan</h2>
             <div class="flex gap-2 flex-shrink-0">
+              <button onclick="remOpenPanel()" id="rem-list-btn" class="btn-outline text-sm py-2 px-3" style="position:relative;" data-i18n-title="rem_title" title="Pengingat"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:-4px;">alarm</span><span id="rem-list-badge" style="display:none;position:absolute;top:-6px;right:-4px;background:#EF4444;color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:999px;align-items:center;justify-content:center;padding:0 4px;"></span></button>
               <button onclick="openNewGroupModal()" class="btn-outline text-sm py-2 px-3">+ Grup</button>
               <button onclick="openNewChatModal()" class="btn-primary text-sm py-2 px-4" data-i18n="btn_new_chat">+ Chat Baru</button>
             </div>
@@ -972,6 +1007,9 @@ html,body{max-width:100%;overflow-x:hidden}
               <p id="chat-thread-name" class="font-bold text-sm truncate"></p>
               <p id="chat-thread-username" class="text-xs text-on-surface-muted truncate"></p>
             </div>
+            <button onclick="remOpenFormFromChat()" class="p-1.5 rounded-full hover:bg-gray-100 flex-shrink-0" data-i18n-title="rem_set_here" title="Set pengingat">
+              <span class="material-symbols-outlined">add_alarm</span>
+            </button>
           </div>
           <div id="chat-messages-loading" class="flex justify-center py-6"><div class="spinner"></div></div>
           <button id="btn-load-more-chat" onclick="loadMoreChatMessages()" class="hidden btn-outline text-xs py-1.5 px-4 mx-auto block mb-3" data-i18n="btn_load_more_chat">Muat pesan sebelumnya</button>
@@ -988,28 +1026,17 @@ html,body{max-width:100%;overflow-x:hidden}
             </div>
           </div>
 
-          <!-- Attachment menu (hidden by default), same layout as the P2P attach menu -->
-          <div id="chat-attach-menu" class="hidden sticky bottom-[52px] bg-bg grid grid-cols-3 gap-2 px-1 pb-2 pt-2" style="border-top:1px solid #F3F4F6;">
-            <button onclick="chatAttach('image')" class="flex flex-col items-center gap-1 py-2 rounded-xl" style="background:#F9FAFB;">
-              <span class="material-symbols-outlined" style="color:#0077CC;">image</span>
-              <span class="text-[10px] font-semibold">Foto</span>
-            </button>
-            <button onclick="chatAttach('video')" class="flex flex-col items-center gap-1 py-2 rounded-xl" style="background:#F9FAFB;">
-              <span class="material-symbols-outlined" style="color:#7C3AED;">videocam</span>
-              <span class="text-[10px] font-semibold">Video</span>
-            </button>
-            <button onclick="chatAttach('document')" class="flex flex-col items-center gap-1 py-2 rounded-xl" style="background:#F9FAFB;">
-              <span class="material-symbols-outlined" style="color:#DC2626;">description</span>
-              <span class="text-[10px] font-semibold">Dokumen</span>
-            </button>
-            <button onclick="chatAttach('audio')" class="flex flex-col items-center gap-1 py-2 rounded-xl" style="background:#F9FAFB;">
-              <span class="material-symbols-outlined" style="color:#059669;">audiotrack</span>
-              <span class="text-[10px] font-semibold">Audio</span>
-            </button>
-            <button onclick="openChatContactShareModal()" class="flex flex-col items-center gap-1 py-2 rounded-xl" style="background:#F9FAFB;">
-              <span class="material-symbols-outlined" style="color:#EA580C;">person</span>
-              <span class="text-[10px] font-semibold">Kontak</span>
-            </button>
+          <!-- Menu lampiran lengkap (gaya BubblyChat): kamera langsung, upload, kontak, video note, voice note -->
+          <div id="chat-attach-menu" class="hidden sticky bottom-[52px] bg-bg att-grid">
+            <button type="button" class="att-tile" style="--bg:#FFF1F2;--b:#FFE4E6;--c:#E11D48;" onclick="attCapture('chat','photo')"><span class="ico">📸</span><span>Ambil Foto</span></button>
+            <button type="button" class="att-tile" style="--bg:#FDF2F8;--b:#FCE7F3;--c:#DB2777;" onclick="chatAttach('image')"><span class="ico">🖼️</span><span>Upload Foto</span></button>
+            <button type="button" class="att-tile" style="--bg:#FFFBEB;--b:#FEF3C7;--c:#B45309;" onclick="attCapture('chat','video')"><span class="ico">📹</span><span>Rekam Video</span></button>
+            <button type="button" class="att-tile" style="--bg:#FFF7ED;--b:#FFEDD5;--c:#EA580C;" onclick="chatAttach('video')"><span class="ico">📁</span><span>Upload Video</span></button>
+            <button type="button" class="att-tile" style="--bg:#EFF6FF;--b:#DBEAFE;--c:#2563EB;" onclick="chatAttach('document')"><span class="ico">📄</span><span>Upload Dokumen</span></button>
+            <button type="button" class="att-tile" style="--bg:#F0FDFA;--b:#CCFBF1;--c:#0F766E;" onclick="chatAttach('audio')"><span class="ico">🎵</span><span>Upload Audio</span></button>
+            <button type="button" class="att-tile" style="--bg:#FAF5FF;--b:#F3E8FF;--c:#7E22CE;" onclick="openChatContactShareModal()"><span class="ico">👤</span><span>Kontak</span></button>
+            <button type="button" class="att-tile" style="--bg:#EEF2FF;--b:#E0E7FF;--c:#4338CA;" onclick="attCapture('chat','videonote')"><span class="ico">⭕</span><span>Video Note</span></button>
+            <button type="button" class="att-tile" style="--bg:#FFF1F2;--b:#FECDD3;--c:#BE123C;" onclick="attCapture('chat','voice')"><span class="ico">🎤</span><span>Voice Note</span></button>
           </div>
 
           <!-- Hidden native file pickers, one per attachment kind -->
@@ -1017,6 +1044,10 @@ html,body{max-width:100%;overflow-x:hidden}
           <input type="file" id="chat-file-video" accept="video/*" class="hidden" onchange="handleChatFileSelected(event,'video')"/>
           <input type="file" id="chat-file-document" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" class="hidden" onchange="handleChatFileSelected(event,'document')"/>
           <input type="file" id="chat-file-audio" accept="audio/*" class="hidden" onchange="handleChatFileSelected(event,'audio')"/>
+
+          <!-- Input kamera native (cadangan bila getUserMedia tidak tersedia, mis. di WebView) -->
+          <input type="file" id="chat-cam-photo" accept="image/*" capture="environment" class="hidden" onchange="handleChatFileSelected(event,'image')"/>
+          <input type="file" id="chat-cam-video" accept="video/*" capture="environment" class="hidden" onchange="handleChatFileSelected(event,'video')"/>
 
           <div class="sticky bottom-0 bg-bg pt-2 pb-2 flex gap-2 items-end">
             <button onclick="toggleChatAttachMenu()" id="chat-attach-btn" class="flex items-center justify-center rounded-full flex-shrink-0" style="width:38px;height:38px;background:#F3F4F6;margin-bottom:2px;">
@@ -1043,6 +1074,9 @@ html,body{max-width:100%;overflow-x:hidden}
               <p id="group-thread-name" class="font-bold text-sm truncate"></p>
               <p id="group-thread-member-count" class="text-xs text-on-surface-muted truncate"></p>
             </div>
+            <button onclick="remOpenFormFromChat()" class="p-1.5 rounded-full hover:bg-gray-100 flex-shrink-0" data-i18n-title="rem_set_here" title="Set pengingat">
+              <span class="material-symbols-outlined">add_alarm</span>
+            </button>
           </div>
           <div id="group-messages-loading" class="flex justify-center py-6"><div class="spinner"></div></div>
           <button id="btn-load-more-group" onclick="loadMoreGroupMessages()" class="hidden btn-outline text-xs py-1.5 px-4 mx-auto block mb-3">Muat pesan sebelumnya</button>
@@ -1058,29 +1092,25 @@ html,body{max-width:100%;overflow-x:hidden}
             </div>
           </div>
 
-          <div id="group-attach-menu" class="hidden sticky bottom-[52px] bg-bg grid grid-cols-4 gap-2 px-1 pb-2 pt-2" style="border-top:1px solid #F3F4F6;">
-            <button onclick="groupAttach('image')" class="flex flex-col items-center gap-1 py-2 rounded-xl" style="background:#F9FAFB;">
-              <span class="material-symbols-outlined" style="color:#0077CC;">image</span>
-              <span class="text-[10px] font-semibold">Foto</span>
-            </button>
-            <button onclick="groupAttach('video')" class="flex flex-col items-center gap-1 py-2 rounded-xl" style="background:#F9FAFB;">
-              <span class="material-symbols-outlined" style="color:#7C3AED;">videocam</span>
-              <span class="text-[10px] font-semibold">Video</span>
-            </button>
-            <button onclick="groupAttach('document')" class="flex flex-col items-center gap-1 py-2 rounded-xl" style="background:#F9FAFB;">
-              <span class="material-symbols-outlined" style="color:#DC2626;">description</span>
-              <span class="text-[10px] font-semibold">Dokumen</span>
-            </button>
-            <button onclick="groupAttach('audio')" class="flex flex-col items-center gap-1 py-2 rounded-xl" style="background:#F9FAFB;">
-              <span class="material-symbols-outlined" style="color:#059669;">audiotrack</span>
-              <span class="text-[10px] font-semibold">Audio</span>
-            </button>
+          <div id="group-attach-menu" class="hidden sticky bottom-[52px] bg-bg att-grid">
+            <button type="button" class="att-tile" style="--bg:#FFF1F2;--b:#FFE4E6;--c:#E11D48;" onclick="attCapture('group','photo')"><span class="ico">📸</span><span>Ambil Foto</span></button>
+            <button type="button" class="att-tile" style="--bg:#FDF2F8;--b:#FCE7F3;--c:#DB2777;" onclick="groupAttach('image')"><span class="ico">🖼️</span><span>Upload Foto</span></button>
+            <button type="button" class="att-tile" style="--bg:#FFFBEB;--b:#FEF3C7;--c:#B45309;" onclick="attCapture('group','video')"><span class="ico">📹</span><span>Rekam Video</span></button>
+            <button type="button" class="att-tile" style="--bg:#FFF7ED;--b:#FFEDD5;--c:#EA580C;" onclick="groupAttach('video')"><span class="ico">📁</span><span>Upload Video</span></button>
+            <button type="button" class="att-tile" style="--bg:#EFF6FF;--b:#DBEAFE;--c:#2563EB;" onclick="groupAttach('document')"><span class="ico">📄</span><span>Upload Dokumen</span></button>
+            <button type="button" class="att-tile" style="--bg:#F0FDFA;--b:#CCFBF1;--c:#0F766E;" onclick="groupAttach('audio')"><span class="ico">🎵</span><span>Upload Audio</span></button>
+            <button type="button" class="att-tile" style="--bg:#EEF2FF;--b:#E0E7FF;--c:#4338CA;" onclick="attCapture('group','videonote')"><span class="ico">⭕</span><span>Video Note</span></button>
+            <button type="button" class="att-tile" style="--bg:#FFF1F2;--b:#FECDD3;--c:#BE123C;" onclick="attCapture('group','voice')"><span class="ico">🎤</span><span>Voice Note</span></button>
           </div>
 
           <input type="file" id="group-file-image" accept="image/*" class="hidden" onchange="handleGroupFileSelected(event,'image')"/>
           <input type="file" id="group-file-video" accept="video/*" class="hidden" onchange="handleGroupFileSelected(event,'video')"/>
           <input type="file" id="group-file-document" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" class="hidden" onchange="handleGroupFileSelected(event,'document')"/>
           <input type="file" id="group-file-audio" accept="audio/*" class="hidden" onchange="handleGroupFileSelected(event,'audio')"/>
+
+          <!-- Input kamera native (cadangan bila getUserMedia tidak tersedia, mis. di WebView) -->
+          <input type="file" id="group-cam-photo" accept="image/*" capture="environment" class="hidden" onchange="handleGroupFileSelected(event,'image')"/>
+          <input type="file" id="group-cam-video" accept="video/*" capture="environment" class="hidden" onchange="handleGroupFileSelected(event,'video')"/>
 
           <div class="sticky bottom-0 bg-bg pt-2 pb-2 flex gap-2 items-end">
             <button onclick="toggleGroupAttachMenu()" class="flex items-center justify-center rounded-full flex-shrink-0" style="width:38px;height:38px;background:#F3F4F6;margin-bottom:2px;">
@@ -4271,31 +4301,25 @@ function chatBubbleContent(m) {
     </a>${m.content ? `<div class="mt-1.5">${linkifyContent(m.content)}</div>` : ''}`;
   }
 
-  if (type === 'video') {
-    // Video dibuka lewat halaman viewer resmi Google Drive (bukan tag <video>
-    // atau iframe custom) — lihat komentar di uploadChatFile() pada Code.gs
-    // untuk alasan lengkapnya. Halaman itu punya pemutar sendiri + tombol
-    // unduh, jadi selalu ada jalan keluar walau pemutaran gagal.
-    return `<a href="${escHtml(m.fileUrl)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2" style="text-decoration:none;color:inherit;">
-      <span class="material-symbols-outlined" style="font-size:28px;">movie</span>
-      <div class="min-w-0">
-        <div class="text-xs font-bold truncate" style="max-width:160px;">${escHtml(m.fileName || 'Video')}</div>
-        <div class="text-[11px] opacity-80">${m.fileSize ? formatFileSize(Number(m.fileSize)) : ''} · Ketuk untuk buka/unduh</div>
-      </div>
-    </a>${m.content ? `<div class="mt-1.5">${linkifyContent(m.content)}</div>` : ''}`;
-  }
-
-  if (type === 'audio' || type === 'voice') {
-    const label = type === 'voice' ? '🎤 Pesan Suara' : '🎵 ' + (m.fileName || 'Audio');
-    const dur = m.duration ? ` · ${m.duration}s` : '';
-    // Sama seperti video di atas: dibuka lewat halaman viewer Drive.
-    return `<a href="${escHtml(m.fileUrl)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2" style="text-decoration:none;color:inherit;">
-      <span class="material-symbols-outlined" style="font-size:28px;">audio_file</span>
-      <div class="min-w-0">
-        <div class="text-xs font-bold truncate" style="max-width:160px;">${label}</div>
-        <div class="text-[11px] opacity-80">${dur ? dur.replace(' · ', '') : ''}${dur ? ' · ' : ''}Ketuk untuk buka/unduh</div>
-      </div>
-    </a>`;
+  if (type === 'video' || type === 'audio' || type === 'voice') {
+    const url = escHtml(m.fileUrl);
+    const caption = (type === 'video' && m.content) ? `<div class="mt-1.5">${linkifyContent(m.content)}</div>` : '';
+    const sizeTxt = m.fileSize ? formatFileSize(Number(m.fileSize)) : '';
+    const isNote = type === 'video' && /^videonote_/i.test(m.fileName || '');
+    const dur = m.duration ? ' · ' + escHtml(String(m.duration)) + 's' : '';
+    const isAud = type !== 'video';
+    const label = type === 'voice' ? '🎤 Pesan Suara' : (isAud ? '🎵 ' + escHtml(m.fileName || 'Audio') : escHtml(m.fileName || 'Video'));
+    // Cadangan: kartu tautan lama (buka/unduh lewat viewer Drive) bila pemutaran langsung gagal.
+    const fallback = `<a class="att-fallback items-center gap-2" href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;"><span class="material-symbols-outlined" style="font-size:28px;">${isAud ? 'audio_file' : 'movie'}</span><div class="min-w-0"><div class="text-xs font-bold truncate" style="max-width:160px;">${label}</div><div class="text-[11px] opacity-80">${isAud ? (m.duration ? escHtml(String(m.duration)) + 's · ' : '') : (sizeTxt ? sizeTxt + ' · ' : '')}Ketuk untuk buka/unduh</div></div></a>`;
+    let player;
+    if (isNote) {
+      player = `<div class="att-note" onclick="attToggleNote(this)"><video src="${url}#t=0.1" preload="metadata" playsinline loop onerror="attMediaFailed(this)" onplay="this.parentNode.classList.add('playing')" onpause="this.parentNode.classList.remove('playing')"></video><span class="att-play"><span class="material-symbols-outlined" style="font-size:52px;">play_circle</span></span></div><div class="text-[11px] opacity-80 text-center" style="margin-top:3px;">⭕ Video Note${dur}</div>`;
+    } else if (isAud) {
+      player = `<div class="text-[11px] font-bold" style="margin-bottom:4px;">${label}${dur}</div><audio class="att-player" src="${url}" controls preload="metadata" onerror="attMediaFailed(this)" style="width:230px;max-width:100%;height:40px;display:block;"></audio>`;
+    } else {
+      player = `<video class="att-player" src="${url}#t=0.1" controls preload="metadata" playsinline onerror="attMediaFailed(this)" style="max-width:240px;max-height:300px;border-radius:12px;display:block;background:#000;"></video>`;
+    }
+    return `<div class="att-media">${player}${fallback}</div>${caption}`;
   }
 
   if (type === 'document') {
@@ -4329,7 +4353,7 @@ function chatBubbleContent(m) {
 
 function renderChatMessages() {
   const container = document.getElementById('chat-messages');
-  container.innerHTML = chatMessages.map(m => {
+  attSetMessagesHtml(container, chatMessages.map(m => {
     const isMe = m.fromUsername === currentUser.username;
     const type = m.type || 'text';
     const mediaTypes = ['image', 'video', 'document', 'audio', 'voice', 'contact'];
@@ -4343,7 +4367,7 @@ function renderChatMessages() {
         </div>
       </div>
     </div>`;
-  }).join('');
+  }).join(''));
 }
 
 function scrollChatToBottom() {
@@ -4459,7 +4483,7 @@ function handleGroupInputKeydown(e) {
 // grup punya lebih dari satu lawan bicara.
 function renderGroupMessages() {
   const container = document.getElementById('group-messages');
-  container.innerHTML = groupMessages.map(m => {
+  attSetMessagesHtml(container, groupMessages.map(m => {
     const isMe = m.fromUsername === currentUser.username;
     const type = m.type || 'text';
     const mediaTypes = ['image', 'video', 'document', 'audio', 'voice', 'contact'];
@@ -4474,7 +4498,7 @@ function renderGroupMessages() {
         </div>
       </div>
     </div>`;
-  }).join('');
+  }).join(''));
 }
 
 async function sendGroupChatMessage() {
@@ -4614,7 +4638,8 @@ async function uploadThenSendGroupFile(file, type, displayName) {
     }
   } catch (e) {
     tempMsg.status = 'failed';
-    showToast('Gagal mengunggah file', 'error');
+    console.error('Upload grup gagal:', e);
+    showToast('Gagal mengunggah file: ' + ((e && e.message) ? e.message : 'koneksi bermasalah'), 'error');
   }
   renderGroupMessages();
   hideGroupUploadProgress();
@@ -4967,7 +4992,8 @@ async function uploadThenSendChatFile(file, type, displayName, duration) {
     }
   } catch (e) {
     tempMsg.status = 'failed';
-    showToast('Gagal mengirim file: koneksi bermasalah', 'error');
+    console.error('Upload chat gagal:', e);
+    showToast('Gagal mengirim file: ' + ((e && e.message) ? e.message : 'koneksi bermasalah'), 'error');
   }
 
   renderChatMessages();
@@ -5111,6 +5137,283 @@ async function sendChatContactShare() {
   }
   renderChatMessages();
   scrollChatToBottom();
+}
+
+// ======= PEMUTAR MEDIA LANGSUNG DI CHAT =======
+function attMediaFailed(el) {
+  const w = el.closest('.att-media');
+  if (w) w.classList.add('failed');
+}
+function attToggleNote(box) {
+  const v = box.querySelector('video');
+  if (!v) return;
+  if (v.paused) { v.play().catch(() => attMediaFailed(v)); } else { v.pause(); }
+}
+// Hanya satu media yang diputar pada satu waktu.
+document.addEventListener('play', function (e) {
+  document.querySelectorAll('video, audio').forEach(el => { if (el !== e.target && !el.paused) el.pause(); });
+}, true);
+// Render ulang daftar pesan tanpa memutus media yang sedang diputar.
+function attSetMessagesHtml(container, html) {
+  if (container._attHtml === html) return;
+  let playing = null;
+  const el = container.querySelector('video:not([paused]), audio:not([paused])');
+  container.querySelectorAll('video, audio').forEach(x => {
+    if (!x.paused) playing = { src: x.getAttribute('src'), t: x.currentTime };
+  });
+  container._attHtml = html;
+  container.innerHTML = html;
+  if (playing) {
+    const again = Array.from(container.querySelectorAll('video, audio')).find(x => x.getAttribute('src') === playing.src);
+    if (again) { try { again.currentTime = playing.t; } catch (e) {} again.play().catch(() => {}); }
+  }
+}
+
+// ======= KAMERA & REKAMAN LANGSUNG (dipakai chat online & grup) =======
+// Ambil Foto / Rekam Video / Video Note (bulat) / Voice Note langsung dari
+// kamera & mikrofon perangkat lewat getUserMedia + MediaRecorder. Hasilnya
+// masuk ke alur bawaan yang sama dengan lampiran biasa: uploadThenSendChatFile()
+// (chat online) atau uploadThenSendGroupFile() (grup) -> upload ke Drive ->
+// kirim pesan. Foto/video punya cadangan <input capture> bila getUserMedia
+// tidak tersedia (mis. WebView tanpa izin kamera).
+const ATT = { ctx: null, mode: null, stream: null, recorder: null, chunks: [], startTs: 0,
+              timer: null, facing: 'environment', audioCtx: null, raf: null,
+              recording: false, canceled: false, photoBlob: null, mime: '' };
+const ATT_LIMITS = { video: 120, videonote: 60, voice: 600 }; // detik, batas rekam otomatis
+
+function attReady(ctx) { return ctx === 'group' ? !!activeGroupId : !!activeChatUsername; }
+
+function attEnsureOverlay() {
+  if (document.getElementById('att-overlay')) return;
+  const el = document.createElement('div');
+  el.id = 'att-overlay';
+  el.innerHTML = `
+    <div class="att-head"><span id="att-title"></span>
+      <button type="button" class="att-x" onclick="attClose()"><span class="material-symbols-outlined">close</span></button></div>
+    <div id="att-stage"></div>
+    <div id="att-timer"></div>
+    <div class="att-controls" id="att-controls"></div>`;
+  document.body.appendChild(el);
+}
+
+function attPickMime(list) {
+  if (!window.MediaRecorder || !MediaRecorder.isTypeSupported) return '';
+  return list.find(x => MediaRecorder.isTypeSupported(x)) || '';
+}
+
+async function attCapture(ctx, mode) {
+  if (!attReady(ctx)) return;
+  document.getElementById(ctx + '-attach-menu').classList.add('hidden');
+  const canMedia = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  const canRec = !!window.MediaRecorder;
+  const nativeInput = mode === 'photo' ? ctx + '-cam-photo' : (mode === 'video' ? ctx + '-cam-video' : null);
+
+  if (!canMedia || (mode !== 'photo' && !canRec)) {
+    if (nativeInput) { document.getElementById(nativeInput).click(); return; }
+    showToast('Perekaman tidak didukung di perangkat ini', 'error');
+    return;
+  }
+  ATT.ctx = ctx; ATT.mode = mode; ATT.canceled = false; ATT.photoBlob = null;
+  ATT.facing = mode === 'videonote' ? 'user' : 'environment';
+  try {
+    await attStartStream();
+  } catch (e) {
+    attStopStream();
+    if (nativeInput) { document.getElementById(nativeInput).click(); return; }
+    showToast(mode === 'voice' ? 'Tidak bisa mengakses mikrofon' : 'Tidak bisa mengakses kamera/mikrofon', 'error');
+    return;
+  }
+  attRenderUi();
+}
+
+async function attStartStream() {
+  attStopStream();
+  const m = ATT.mode;
+  let constraints;
+  if (m === 'voice') constraints = { audio: true };
+  else if (m === 'photo') constraints = { video: { facingMode: ATT.facing } };
+  else if (m === 'videonote') constraints = { video: { facingMode: 'user', width: { ideal: 480 }, height: { ideal: 480 } }, audio: true };
+  else constraints = { video: { facingMode: ATT.facing }, audio: true };
+  ATT.stream = await navigator.mediaDevices.getUserMedia(constraints);
+}
+
+function attStopStream() {
+  if (ATT.raf) { cancelAnimationFrame(ATT.raf); ATT.raf = null; }
+  if (ATT.audioCtx) { try { ATT.audioCtx.close(); } catch (e) {} ATT.audioCtx = null; }
+  if (ATT.stream) { ATT.stream.getTracks().forEach(tr => tr.stop()); ATT.stream = null; }
+}
+
+function attRenderUi() {
+  attEnsureOverlay();
+  const m = ATT.mode;
+  const titles = { photo: '📸 Ambil Foto', video: '📹 Rekam Video', videonote: '⭕ Video Note', voice: '🎤 Voice Note' };
+  document.getElementById('att-title').textContent = titles[m];
+  const stage = document.getElementById('att-stage');
+  stage.className = m === 'videonote' ? 'round' : (m === 'voice' ? 'voice' : '');
+  const timer = document.getElementById('att-timer');
+  timer.className = ''; timer.textContent = '';
+
+  if (m === 'voice') {
+    stage.innerHTML = '<canvas id="att-wave" width="400" height="140"></canvas>';
+    attStartWave();
+  } else {
+    stage.innerHTML = '<video id="att-video" autoplay muted playsinline></video>';
+    const v = document.getElementById('att-video');
+    v.srcObject = ATT.stream;
+    v.style.transform = ATT.facing === 'user' ? 'scaleX(-1)' : 'none';
+  }
+
+  const ctrl = document.getElementById('att-controls');
+  const switchBtn = (m === 'voice') ? '<span style="width:48px"></span>' :
+    '<button type="button" class="att-btn" id="att-switch" onclick="attSwitchCamera()"><span class="material-symbols-outlined">cameraswitch</span></button>';
+  ctrl.innerHTML = switchBtn +
+    '<button type="button" class="att-main ' + (m === 'photo' ? 'photo' : '') + '" id="att-main" onclick="attMainAction()"><span class="dot"></span></button>' +
+    '<span style="width:48px"></span>';
+  document.getElementById('att-overlay').classList.add('show');
+}
+
+async function attSwitchCamera() {
+  if (ATT.recording || ATT.mode === 'voice' || ATT.mode === 'videonote') {
+    if (ATT.recording) return;
+  }
+  ATT.facing = ATT.facing === 'user' ? 'environment' : 'user';
+  try { await attStartStream(); } catch (e) { ATT.facing = ATT.facing === 'user' ? 'environment' : 'user'; try { await attStartStream(); } catch (e2) {} }
+  const v = document.getElementById('att-video');
+  if (v) { v.srcObject = ATT.stream; v.style.transform = ATT.facing === 'user' ? 'scaleX(-1)' : 'none'; }
+}
+
+function attMainAction() {
+  if (ATT.mode === 'photo') return attTakePhoto();
+  if (ATT.recording) return attStopRecording();
+  attStartRecording();
+}
+
+function attTakePhoto() {
+  const v = document.getElementById('att-video');
+  if (!v || !v.videoWidth) { showToast('Kamera belum siap', 'error'); return; }
+  const c = document.createElement('canvas');
+  c.width = v.videoWidth; c.height = v.videoHeight;
+  c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+  c.toBlob(blob => {
+    if (!blob) { showToast('Gagal mengambil foto', 'error'); return; }
+    ATT.photoBlob = blob;
+    const url = URL.createObjectURL(blob);
+    document.getElementById('att-stage').innerHTML = '<img src="' + url + '" alt=""/>';
+    document.getElementById('att-controls').innerHTML =
+      '<button type="button" class="att-pill ghost" onclick="attRetakePhoto()">Ulangi</button>' +
+      '<button type="button" class="att-pill" onclick="attSendPhoto()">Kirim</button>';
+  }, 'image/jpeg', 0.9);
+}
+
+function attRetakePhoto() { ATT.photoBlob = null; attRenderUi(); }
+
+async function attSendPhoto() {
+  const blob = ATT.photoBlob;
+  const ctx = ATT.ctx;
+  attClose();
+  if (!blob || !attReady(ctx)) return;
+  const file = new File([blob], 'foto_' + Date.now() + '.jpg', { type: 'image/jpeg' });
+  await attDeliver(ctx, file, 'image', file.name, '');
+}
+
+function attStartRecording() {
+  if (!ATT.stream) return;
+  const isAudio = ATT.mode === 'voice';
+  ATT.mime = isAudio
+    ? attPickMime(['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'])
+    : attPickMime(['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm', 'video/mp4']);
+  const opts = {};
+  if (ATT.mime) opts.mimeType = ATT.mime;
+  if (!isAudio) opts.videoBitsPerSecond = 1000000; // jaga ukuran file di bawah batas 25MB
+  try { ATT.recorder = new MediaRecorder(ATT.stream, opts); }
+  catch (e) { try { ATT.recorder = new MediaRecorder(ATT.stream); } catch (e2) { showToast('Perekaman tidak didukung di perangkat ini', 'error'); return; } }
+  ATT.chunks = [];
+  ATT.recorder.ondataavailable = e => { if (e.data && e.data.size > 0) ATT.chunks.push(e.data); };
+  ATT.recorder.onstop = attOnRecorderStop;
+  ATT.recorder.start(250);
+  ATT.recording = true; ATT.startTs = Date.now();
+  document.getElementById('att-main').classList.add('rec');
+  const sw = document.getElementById('att-switch'); if (sw) sw.style.visibility = 'hidden';
+  const timer = document.getElementById('att-timer');
+  timer.className = 'rec'; timer.textContent = '00:00';
+  const limit = ATT_LIMITS[ATT.mode];
+  ATT.timer = setInterval(() => {
+    const sec = Math.floor((Date.now() - ATT.startTs) / 1000);
+    timer.textContent = String(Math.floor(sec / 60)).padStart(2, '0') + ':' + String(sec % 60).padStart(2, '0');
+    if (sec >= limit) attStopRecording();
+  }, 250);
+}
+
+function attStopRecording() {
+  if (!ATT.recording || !ATT.recorder) return;
+  ATT.recording = false;
+  clearInterval(ATT.timer); ATT.timer = null;
+  try { ATT.recorder.stop(); } catch (e) { attClose(); }
+}
+
+async function attOnRecorderStop() {
+  const ctx = ATT.ctx, mode = ATT.mode, canceled = ATT.canceled;
+  const durationSec = Math.max(1, Math.round((Date.now() - ATT.startTs) / 1000));
+  const mime = (ATT.recorder && ATT.recorder.mimeType) || ATT.mime || (mode === 'voice' ? 'audio/webm' : 'video/webm');
+  const chunks = ATT.chunks.slice();
+  attClose();
+  if (canceled || !chunks.length || !attReady(ctx)) return;
+  const cleanMime = mime.split(';')[0]; // buang ";codecs=..." supaya lolos validasi tipe file di server/Drive
+  const blob = new Blob(chunks, { type: cleanMime });
+  if (blob.size < 500) { showToast('Rekaman terlalu pendek', 'error'); return; }
+  const ext = mime.includes('mp4') ? (mode === 'voice' ? 'm4a' : 'mp4') : (mime.includes('ogg') ? 'ogg' : 'webm');
+  const prefix = mode === 'voice' ? 'voice_' : (mode === 'videonote' ? 'videonote_' : 'video_');
+  const file = new File([blob], prefix + Date.now() + '.' + ext, { type: blob.type });
+  const type = mode === 'voice' ? 'voice' : 'video';
+  await attDeliver(ctx, file, type, file.name, mode === 'video' ? '' : durationSec);
+}
+
+async function attDeliver(ctx, file, type, name, duration) {
+  if (file.size > 25 * 1024 * 1024) { showToast('Ukuran file maksimal 25MB', 'error'); return; }
+  if (ctx === 'group') {
+    // Grup belum punya tipe 'voice' di server, jadi voice note dikirim sebagai audio.
+    await uploadThenSendGroupFile(file, type === 'voice' ? 'audio' : type, name);
+  } else {
+    await uploadThenSendChatFile(file, type, name, duration || '');
+  }
+}
+
+function attClose() {
+  clearInterval(ATT.timer); ATT.timer = null;
+  if (ATT.recording && ATT.recorder) {
+    ATT.canceled = true; ATT.recording = false;
+    try { ATT.recorder.onstop = null; ATT.recorder.stop(); } catch (e) {}
+  }
+  attStopStream();
+  const ov = document.getElementById('att-overlay');
+  if (ov) { ov.classList.remove('show'); const st = document.getElementById('att-stage'); if (st) st.innerHTML = ''; }
+}
+
+// Gelombang suara langsung untuk Voice Note
+function attStartWave() {
+  const canvas = document.getElementById('att-wave');
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!canvas || !AC || !ATT.stream) return;
+  try {
+    ATT.audioCtx = new AC();
+    const analyser = ATT.audioCtx.createAnalyser();
+    analyser.fftSize = 128;
+    ATT.audioCtx.createMediaStreamSource(ATT.stream).connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    const g = canvas.getContext('2d');
+    const draw = () => {
+      analyser.getByteFrequencyData(data);
+      g.clearRect(0, 0, canvas.width, canvas.height);
+      g.fillStyle = 'rgba(255,255,255,.92)';
+      const bars = 32, w = canvas.width / bars;
+      for (let i = 0; i < bars; i++) {
+        const h = Math.max(6, (data[i] / 255) * canvas.height * 0.9);
+        g.fillRect(i * w + 3, (canvas.height - h) / 2, w - 6, h);
+      }
+      ATT.raf = requestAnimationFrame(draw);
+    };
+    draw();
+  } catch (e) {}
 }
 
 // ======= P2P OFFLINE MESSAGING (WiFi Direct via NativeBridge) =======
@@ -7199,5 +7502,403 @@ window.onload = function() {
   });
 };
 </script>
+<!-- ===================== PENGINGAT CHAT (IndexedDB: PesanerRemindersDB) ===================== -->
+<style id="rem-css">
+#rem-form-modal input[type=time]{background:rgba(255,255,255,.1)!important;color:#fff!important;border:1px solid rgba(255,255,255,.28)!important;border-radius:10px;padding:10px 14px;font-size:14px;width:100%;color-scheme:dark;outline:none}
+#rem-form-modal input[type=time]:focus{border-color:var(--amber,#FFB800)!important;box-shadow:0 0 0 3px rgba(255,184,0,.28)!important}
+#rem-form-modal input[type=date]{border-radius:10px;padding:10px 14px;font-size:14px;width:100%}
+#rem-form-modal select{border-radius:10px;padding:10px 14px;font-size:14px;width:100%}
+.rem-lbl{display:block;font-size:12px;font-weight:700;margin:12px 0 5px;opacity:.9}
+.rem-chip{padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;cursor:pointer;transition:all .15s}
+.rem-chip.on{background:#FFB800;border-color:#FFB800;color:#091A4B}
+.rem-card{display:flex;align-items:center;gap:10px;padding:12px;border-radius:16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22)}
+.rem-card.done{opacity:.6}
+.rem-card.done .rem-t{text-decoration:line-through}
+.rem-check{width:30px;height:30px;border-radius:999px;border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;color:#091A4B;cursor:pointer}
+.rem-check.on{background:#34D399;border-color:#34D399}
+.rem-ico{width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#D9E6FF;background:transparent;cursor:pointer}
+.rem-ico:hover{background:rgba(255,255,255,.16);color:#fff}
+.rem-banner{pointer-events:auto;width:min(94vw,420px);padding:14px;border-radius:18px;color:#fff;background:linear-gradient(160deg,rgba(29,92,229,.98),rgba(15,44,122,.98));border:1px solid rgba(255,255,255,.3);box-shadow:0 14px 40px rgba(5,23,77,.55);animation:popIn .32s cubic-bezier(.2,1.2,.4,1)}
+</style>
+
+<div id="rem-banner-wrap" style="position:fixed;top:10px;left:0;right:0;z-index:400;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;"></div>
+
+<!-- Daftar pengingat -->
+<div id="rem-panel-modal" class="modal-overlay hidden" onclick="if(event.target===this)remClosePanel()">
+  <div class="modal" style="max-height:88vh;display:flex;flex-direction:column;">
+    <div class="flex items-start justify-between mb-3 gap-2">
+      <div class="min-w-0">
+        <h3 class="font-black text-lg" data-i18n="rem_title">Pengingat</h3>
+        <p class="text-xs text-on-surface-muted" data-i18n="rem_sub">Tersimpan di perangkat (IndexedDB)</p>
+      </div>
+      <div class="flex items-center gap-1 flex-shrink-0">
+        <button onclick="remOpenForm(null)" class="btn-primary text-sm py-1.5 px-3" data-i18n="rem_add">+ Baru</button>
+        <button onclick="remClosePanel()" class="text-on-surface-muted hover:text-on-surface p-1 rounded-full"><span class="material-symbols-outlined">close</span></button>
+      </div>
+    </div>
+    <div class="flex gap-2 mb-3" id="rem-filters">
+      <button class="rem-chip on" data-f="all"><span data-i18n="rem_f_all">Semua</span> (<span id="rem-count-all">0</span>)</button>
+      <button class="rem-chip" data-f="pending" data-i18n="rem_f_pending">Aktif</button>
+      <button class="rem-chip" data-f="completed" data-i18n="rem_f_done">Selesai</button>
+    </div>
+    <div id="rem-list" class="space-y-2 overflow-y-auto" style="max-height:52vh;"></div>
+  </div>
+</div>
+
+<!-- Form pengingat baru -->
+<div id="rem-form-modal" class="modal-overlay hidden" onclick="if(event.target===this)remCloseForm()">
+  <div class="modal" style="max-height:92vh;overflow-y:auto;">
+    <div class="flex items-center justify-between mb-1">
+      <h3 class="font-black text-lg" data-i18n="rem_new">Pengingat Baru</h3>
+      <button onclick="remCloseForm()" class="text-on-surface-muted hover:text-on-surface p-1 rounded-full"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <div id="rem-ctx" class="hidden items-center gap-2 text-xs mt-1 px-3 py-2 rounded-xl" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);">
+      <span class="material-symbols-outlined" style="font-size:16px;">forum</span>
+      <span class="flex-1 min-w-0 truncate"><span data-i18n="rem_linked">Terkait chat:</span> <b id="rem-ctx-name"></b></span>
+      <button type="button" onclick="remUnlinkCtx()" class="p-0.5 rounded-full" title="×"><span class="material-symbols-outlined" style="font-size:16px;">close</span></button>
+    </div>
+    <label class="rem-lbl" for="rem-title-input" data-i18n="rem_f_title">Judul pengingat</label>
+    <input type="text" id="rem-title-input" maxlength="120" autocomplete="off" placeholder="Balas pesan..." data-i18n-placeholder="rem_ph_title"/>
+    <div class="flex gap-3">
+      <div class="flex-1 min-w-0"><label class="rem-lbl" for="rem-date-input" data-i18n="rem_f_date">Tanggal</label><input type="date" id="rem-date-input"/></div>
+      <div class="flex-1 min-w-0"><label class="rem-lbl" for="rem-time-input" data-i18n="rem_f_time">Jam</label><input type="time" id="rem-time-input"/></div>
+    </div>
+    <label class="rem-lbl" for="rem-repeat-input" data-i18n="rem_f_repeat">Ulangi</label>
+    <select id="rem-repeat-input">
+      <option value="once" data-i18n="rem_once">Sekali</option>
+      <option value="daily" data-i18n="rem_daily">Setiap hari</option>
+      <option value="weekly" data-i18n="rem_weekly">Setiap minggu</option>
+    </select>
+    <label class="rem-lbl" data-i18n="rem_f_cat">Kategori</label>
+    <div id="rem-cats" class="flex flex-wrap gap-2"></div>
+    <button type="button" onclick="remSave()" class="btn-primary text-sm py-2.5 px-4 w-full mt-5" data-i18n="rem_save">Simpan Pengingat</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  /* ---------- i18n (ditambahkan ke kamus yang sudah ada) ---------- */
+  Object.assign(I18N.id, {
+    rem_title:'Pengingat', rem_sub:'Tersimpan di perangkat (IndexedDB)', rem_add:'+ Baru', rem_set_here:'Set pengingat',
+    rem_new:'Pengingat Baru', rem_f_title:'Judul pengingat', rem_ph_title:'Contoh: Balas pesan Budi',
+    rem_f_date:'Tanggal', rem_f_time:'Jam', rem_f_repeat:'Ulangi', rem_once:'Sekali', rem_daily:'Setiap hari', rem_weekly:'Setiap minggu',
+    rem_f_cat:'Kategori', rem_cat_chat:'Chat', rem_cat_focus:'Fokus', rem_cat_health:'Kesehatan', rem_cat_water:'Minum', rem_cat_other:'Lainnya',
+    rem_linked:'Terkait chat:', rem_save:'Simpan Pengingat', rem_f_all:'Semua', rem_f_pending:'Aktif', rem_f_done:'Selesai',
+    rem_empty:'Belum ada pengingat. Buka chat lalu tap ikon alarm, atau tekan + Baru.',
+    rem_saved:'Pengingat disimpan ⏰', rem_deleted:'Pengingat dihapus', rem_completed:'Pengingat selesai ✅',
+    rem_past:'Waktu sudah lewat, pilih waktu yang akan datang', rem_need_title:'Judul pengingat wajib diisi', rem_need_time:'Tanggal dan jam wajib diisi',
+    rem_db_fail:'Gagal mengakses IndexedDB', rem_due:'⏰ Waktunya!', rem_open_chat:'Buka chat', rem_dismiss:'Tutup',
+    rem_late:'terlewat', rem_next:'Berikutnya', rem_fired:'sudah berbunyi', rem_today:'Hari ini', rem_tomorrow:'Besok',
+    rem_every_day:'Setiap hari', rem_every_week:'Setiap minggu'
+  });
+  Object.assign(I18N.en, {
+    rem_title:'Reminders', rem_sub:'Stored on this device (IndexedDB)', rem_add:'+ New', rem_set_here:'Set reminder',
+    rem_new:'New Reminder', rem_f_title:'Reminder title', rem_ph_title:'e.g. Reply to Budi',
+    rem_f_date:'Date', rem_f_time:'Time', rem_f_repeat:'Repeat', rem_once:'Once', rem_daily:'Every day', rem_weekly:'Every week',
+    rem_f_cat:'Category', rem_cat_chat:'Chat', rem_cat_focus:'Focus', rem_cat_health:'Health', rem_cat_water:'Hydration', rem_cat_other:'Other',
+    rem_linked:'Linked chat:', rem_save:'Save Reminder', rem_f_all:'All', rem_f_pending:'Active', rem_f_done:'Done',
+    rem_empty:'No reminders yet. Open a chat and tap the alarm icon, or press + New.',
+    rem_saved:'Reminder saved ⏰', rem_deleted:'Reminder deleted', rem_completed:'Reminder completed ✅',
+    rem_past:'That time has passed, pick a future time', rem_need_title:'Reminder title is required', rem_need_time:'Date and time are required',
+    rem_db_fail:'Failed to access IndexedDB', rem_due:'⏰ Time is up!', rem_open_chat:'Open chat', rem_dismiss:'Dismiss',
+    rem_late:'missed', rem_next:'Next', rem_fired:'already fired', rem_today:'Today', rem_tomorrow:'Tomorrow',
+    rem_every_day:'Every day', rem_every_week:'Every week'
+  });
+
+  /* ---------- IndexedDB (DB terpisah, tidak mengubah PesanerMonsterDB) ---------- */
+  const DB_NAME = 'PesanerRemindersDB', DB_VER = 1, ST = 'reminders';
+  let dbp = null;
+  function openDB() {
+    if (dbp) return dbp;
+    dbp = new Promise((res, rej) => {
+      if (!window.indexedDB) return rej(new Error('IndexedDB tidak tersedia'));
+      const r = indexedDB.open(DB_NAME, DB_VER);
+      r.onupgradeneeded = () => {
+        const db = r.result;
+        if (!db.objectStoreNames.contains(ST)) {
+          const o = db.createObjectStore(ST, { keyPath: 'id', autoIncrement: true });
+          o.createIndex('username', 'username', { unique: false });
+        }
+      };
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    });
+    dbp.catch(() => { dbp = null; });
+    return dbp;
+  }
+  function run(mode, fn) {
+    return openDB().then(db => new Promise((res, rej) => {
+      const tx = db.transaction(ST, mode);
+      const q = fn(tx.objectStore(ST));
+      tx.oncomplete = () => res(q ? q.result : undefined);
+      tx.onerror = () => rej(tx.error);
+      tx.onabort = () => rej(tx.error);
+    }));
+  }
+  const dbAddR = r => run('readwrite', s => s.add(r));
+  const dbPutR = r => run('readwrite', s => s.put(r));
+  const dbDelR = id => run('readwrite', s => s.delete(id));
+  const dbMine = u => run('readonly', s => s.index('username').getAll(IDBKeyRange.only(u))).then(x => x || []);
+  // Baca-ubah-tulis atomik (aman jika pesaner terbuka di beberapa tab)
+  function claim(id, fn) {
+    return openDB().then(db => new Promise((res, rej) => {
+      const tx = db.transaction(ST, 'readwrite'), s = tx.objectStore(ST), g = s.get(id);
+      let ok = false, rec = null;
+      g.onsuccess = () => { rec = g.result; if (rec && fn(rec)) { s.put(rec); ok = true; } };
+      tx.oncomplete = () => res(ok ? rec : null);
+      tx.onerror = () => rej(tx.error);
+    }));
+  }
+
+  /* ---------- Helpers ---------- */
+  const $ = id => document.getElementById(id);
+  const p2 = n => String(n).padStart(2, '0');
+  const ymd = d => d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate());
+  const locale = () => (currentLang === 'en' ? 'en-US' : 'id-ID');
+  const uname = () => (typeof currentUser !== 'undefined' && currentUser && currentUser.username) || null;
+  function dueOn(r, day) {
+    const [y, m, d] = day.split('-').map(Number), [h, mi] = r.time.split(':').map(Number);
+    return new Date(y, m - 1, d, h, mi, 0, 0);
+  }
+  const weekdayOf = day => { const [y, m, d] = day.split('-').map(Number); return new Date(y, m - 1, d).getDay(); };
+  function nextOccurrence(r, now) {
+    if (r.repeat === 'once') return dueOn(r, r.date);
+    for (let i = 0; i < 8; i++) {
+      const day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+      const ds = ymd(day);
+      if (ds < r.date) continue;
+      if (r.repeat === 'weekly' && day.getDay() !== weekdayOf(r.date)) continue;
+      const due = dueOn(r, ds);
+      if (due >= now || (i === 0 && r.lastFired !== ds && now - due < 10 * 60000)) return due;
+    }
+    return dueOn(r, r.date);
+  }
+  function fmtWhen(d, now) {
+    const t = p2(d.getHours()) + ':' + p2(d.getMinutes());
+    const a = new Date(now.getFullYear(), now.getMonth(), now.getDate()), b = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const diff = Math.round((b - a) / 86400000);
+    if (diff === 0) return window.t('rem_today') + ' ' + t;
+    if (diff === 1) return window.t('rem_tomorrow') + ' ' + t;
+    return d.toLocaleDateString(locale(), { weekday: 'short', day: 'numeric', month: 'short' }) + ' ' + t;
+  }
+  const CATS = [
+    { k: 'chat', e: '💬', l: 'rem_cat_chat' }, { k: 'focus', e: '🎯', l: 'rem_cat_focus' },
+    { k: 'health', e: '💊', l: 'rem_cat_health' }, { k: 'water', e: '💧', l: 'rem_cat_water' }, { k: 'other', e: '✨', l: 'rem_cat_other' }
+  ];
+  const catOf = k => CATS.find(c => c.k === k) || CATS[4];
+
+  /* ---------- Bunyi & notifikasi ---------- */
+  let actx = null;
+  function chime() {
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === 'suspended') actx.resume();
+      const now = actx.currentTime;
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+        const o = actx.createOscillator(), g = actx.createGain();
+        o.type = 'triangle'; o.frequency.setValueAtTime(f, now + i * 0.1);
+        g.gain.setValueAtTime(0.22, now + i * 0.1);
+        g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.1 + 0.2);
+        o.connect(g); g.connect(actx.destination); o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.22);
+      });
+    } catch (e) {}
+  }
+  function banner(r, late) {
+    const wrap = $('rem-banner-wrap'); if (!wrap) return;
+    const c = catOf(r.category), el = document.createElement('div');
+    el.className = 'rem-banner';
+    el.innerHTML = '<div class="flex items-start gap-3"><div style="font-size:26px;line-height:1">' + c.e + '</div><div class="flex-1 min-w-0">' +
+      '<p class="text-xs font-bold" style="color:#FFD76A">' + escHtml(t('rem_due')) + (late ? ' · ' + escHtml(t('rem_late')) : '') + ' · ' + escHtml(r.time) + '</p>' +
+      '<p class="font-bold text-sm" style="overflow-wrap:anywhere">' + escHtml(r.title) + '</p>' +
+      (r.chatName ? '<p class="text-xs opacity-80 truncate">💬 ' + escHtml(r.chatName) + '</p>' : '') +
+      '</div></div><div class="flex gap-2 mt-3 justify-end"></div>';
+    const row = el.lastChild;
+    if (r.chatKey) {
+      const b = document.createElement('button'); b.className = 'btn-primary text-xs py-1.5 px-3'; b.textContent = t('rem_open_chat');
+      b.onclick = () => { el.remove(); openLinked(r); }; row.appendChild(b);
+    }
+    const x = document.createElement('button'); x.className = 'btn-outline text-xs py-1.5 px-3'; x.textContent = t('rem_dismiss');
+    x.onclick = () => el.remove(); row.appendChild(x);
+    wrap.appendChild(el);
+    setTimeout(() => el.remove(), 30000);
+  }
+  function systemNotify(r) {
+    try {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('Pesaner ⏰ ' + r.title, { body: r.chatName ? ('💬 ' + r.chatName + ' · ' + r.time) : r.time });
+      }
+    } catch (e) {}
+  }
+  function openLinked(r) {
+    remClosePanel();
+    try {
+      switchTab('chat');
+      if (r.chatType === 'group') openGroupThread(r.chatKey, r.chatName || '');
+      else openChatThread(r.chatKey, r.chatName || r.chatKey, '');
+    } catch (e) {}
+  }
+
+  /* ---------- Penjadwal ---------- */
+  async function check() {
+    const u = uname(); if (!u) return;
+    let list; try { list = await dbMine(u); } catch (e) { return; }
+    const now = new Date(), today = ymd(now);
+    for (const r of list) {
+      if (r.status !== 'pending') continue;
+      let late = false, due = false;
+      if (r.repeat === 'once') {
+        if (r.fired) continue;
+        const d = dueOn(r, r.date);
+        if (now >= d) { due = true; late = now - d > 5 * 60000; }
+      } else {
+        if (today < r.date || r.lastFired === today) continue;
+        if (r.repeat === 'weekly' && weekdayOf(r.date) !== now.getDay()) continue;
+        const d = dueOn(r, today);
+        if (now >= d && now - d < 10 * 60000) due = true;
+      }
+      if (!due) continue;
+      let got = null;
+      try {
+        got = await claim(r.id, rec => {
+          if (rec.status !== 'pending') return false;
+          if (rec.repeat === 'once') { if (rec.fired) return false; rec.fired = true; rec.firedAt = Date.now(); }
+          else { if (rec.lastFired === today) return false; rec.lastFired = today; }
+          return true;
+        });
+      } catch (e) {}
+      if (got) { chime(); banner(got, late); systemNotify(got); }
+    }
+    refreshBadge(list); if (panelOpen()) renderList();
+  }
+
+  /* ---------- Badge ---------- */
+  async function refreshBadge(list) {
+    const b = $('rem-list-badge'); if (!b) return;
+    const u = uname(); let n = 0;
+    if (u) { try { list = list || await dbMine(u); n = list.filter(r => r.status === 'pending' && !(r.repeat === 'once' && r.fired)).length; } catch (e) {} }
+    b.textContent = n > 99 ? '99+' : n; b.style.display = n > 0 ? 'flex' : 'none';
+  }
+
+  /* ---------- Panel daftar ---------- */
+  let filter = 'all';
+  const panelOpen = () => !$('rem-panel-modal').classList.contains('hidden');
+  async function renderList() {
+    const u = uname(), box = $('rem-list'); if (!u || !box) return;
+    let list = []; try { list = await dbMine(u); } catch (e) { showToast(t('rem_db_fail'), 'error'); }
+    $('rem-count-all').textContent = list.length;
+    const now = new Date();
+    list = list.filter(r => filter === 'all' ? true : r.status === filter);
+    list.sort((a, b) => (a.status === 'completed') - (b.status === 'completed') || nextOccurrence(a, now) - nextOccurrence(b, now));
+    if (!list.length) {
+      box.innerHTML = '<div class="text-center py-10 text-on-surface-muted"><span class="material-symbols-outlined" style="font-size:44px;opacity:.5">alarm_off</span><p class="text-sm mt-2">' + escHtml(t('rem_empty')) + '</p></div>';
+      refreshBadge(); return;
+    }
+    box.innerHTML = list.map(r => {
+      const done = r.status === 'completed', c = catOf(r.category);
+      let when;
+      if (r.repeat === 'daily') when = t('rem_every_day') + ' · ' + r.time;
+      else if (r.repeat === 'weekly') when = t('rem_every_week') + ' · ' + new Date(2024, 0, 7 + weekdayOf(r.date)).toLocaleDateString(locale(), { weekday: 'long' }) + ' ' + r.time;
+      else when = fmtWhen(dueOn(r, r.date), now);
+      if (r.repeat === 'once' && r.fired) when += ' · ' + t('rem_fired');
+      else if (!done && r.repeat !== 'once') when += ' · ' + t('rem_next') + ': ' + fmtWhen(nextOccurrence(r, now), now);
+      return '<div class="rem-card ' + (done ? 'done' : '') + '" data-id="' + r.id + '">' +
+        '<button class="rem-check ' + (done ? 'on' : '') + '" data-act="toggle">' + (done ? '<span class="material-symbols-outlined" style="font-size:18px;font-weight:700">check</span>' : '') + '</button>' +
+        '<div class="flex-1 min-w-0"><p class="rem-t font-bold text-sm" style="overflow-wrap:anywhere">' + escHtml(r.title) + '</p>' +
+        '<p class="text-xs opacity-80">' + c.e + ' ' + escHtml(t(c.l)) + ' · ' + escHtml(when) + '</p>' +
+        (r.chatKey ? '<p class="text-xs mt-0.5"><a href="#" data-act="open" style="color:#FFD76A">💬 ' + escHtml(r.chatName || r.chatKey) + '</a></p>' : '') +
+        '</div><button class="rem-ico" data-act="del"><span class="material-symbols-outlined" style="font-size:20px">delete</span></button></div>';
+    }).join('');
+    refreshBadge();
+  }
+  $('rem-list').addEventListener('click', async e => {
+    const a = e.target.closest('[data-act]'); if (!a) return; e.preventDefault();
+    const id = Number(a.closest('.rem-card').dataset.id);
+    try {
+      if (a.dataset.act === 'del') { await dbDelR(id); showToast(t('rem_deleted')); }
+      else if (a.dataset.act === 'toggle') {
+        const rec = await claim(id, r => { r.status = r.status === 'completed' ? 'pending' : 'completed'; return true; });
+        if (rec && rec.status === 'completed') showToast(t('rem_completed'));
+      } else if (a.dataset.act === 'open') {
+        const list = await dbMine(uname()); const r = list.find(x => x.id === id); if (r) openLinked(r); return;
+      }
+    } catch (err) { showToast(t('rem_db_fail'), 'error'); }
+    renderList();
+  });
+  $('rem-filters').addEventListener('click', e => {
+    const b = e.target.closest('[data-f]'); if (!b) return;
+    filter = b.dataset.f;
+    $('rem-filters').querySelectorAll('.rem-chip').forEach(x => x.classList.toggle('on', x === b));
+    renderList();
+  });
+  window.remOpenPanel = function () { $('rem-panel-modal').classList.remove('hidden'); renderList(); };
+  window.remClosePanel = function () { $('rem-panel-modal').classList.add('hidden'); };
+
+  /* ---------- Form ---------- */
+  let ctx = null, selCat = 'chat';
+  function drawCats() {
+    $('rem-cats').innerHTML = CATS.map(c => '<button type="button" class="rem-chip ' + (c.k === selCat ? 'on' : '') + '" data-k="' + c.k + '">' + c.e + ' ' + escHtml(t(c.l)) + '</button>').join('');
+  }
+  $('rem-cats').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (!b) return; selCat = b.dataset.k; drawCats(); });
+  function drawCtx() {
+    const box = $('rem-ctx');
+    if (ctx) { $('rem-ctx-name').textContent = ctx.name || ctx.key; box.classList.remove('hidden'); box.classList.add('flex'); }
+    else { box.classList.add('hidden'); box.classList.remove('flex'); }
+  }
+  window.remUnlinkCtx = function () { ctx = null; drawCtx(); };
+  window.remOpenForm = function (context, prefill) {
+    ctx = context || null; selCat = ctx ? 'chat' : 'other';
+    const d = new Date(Date.now() + 30 * 60000);
+    $('rem-title-input').value = prefill || '';
+    $('rem-date-input').value = ymd(d);
+    $('rem-time-input').value = p2(d.getHours()) + ':' + p2(d.getMinutes());
+    $('rem-repeat-input').value = 'once';
+    drawCats(); drawCtx();
+    $('rem-form-modal').classList.remove('hidden');
+    setTimeout(() => $('rem-title-input').focus(), 50);
+  };
+  window.remCloseForm = function () { $('rem-form-modal').classList.add('hidden'); };
+  window.remOpenFormFromChat = function () {
+    let c = null, pre = '';
+    const gv = $('group-thread-view');
+    try {
+      if (gv && !gv.classList.contains('hidden') && activeGroupId) c = { type: 'group', key: activeGroupId, name: activeGroupName };
+      else if (activeChatUsername) {
+        c = { type: 'user', key: activeChatUsername, name: activeChatName };
+        const inp = $('chat-input'); if (inp && inp.value.trim()) pre = inp.value.trim().slice(0, 120);
+      }
+    } catch (e) {}
+    remOpenForm(c, pre);
+  };
+  window.remSave = async function () {
+    const u = uname(); if (!u) return;
+    const title = $('rem-title-input').value.trim(), date = $('rem-date-input').value, time = $('rem-time-input').value, repeat = $('rem-repeat-input').value;
+    if (!title) return showToast(t('rem_need_title'), 'error');
+    if (!date || !time) return showToast(t('rem_need_time'), 'error');
+    const rec = { username: u, title, date, time, repeat, category: selCat, status: 'pending', fired: false, lastFired: null,
+      chatType: ctx ? ctx.type : null, chatKey: ctx ? ctx.key : null, chatName: ctx ? ctx.name : null, createdAt: new Date().toISOString() };
+    if (repeat === 'once' && dueOn(rec, date) <= new Date()) return showToast(t('rem_past'), 'error');
+    try { await dbAddR(rec); } catch (e) { return showToast(t('rem_db_fail'), 'error'); }
+    try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch (e) {}
+    remCloseForm(); showToast(t('rem_saved'));
+    renderList(); refreshBadge();
+  };
+
+  /* ---------- Sambungan ke aplikasi ---------- */
+  const _setLang = window.setLang;
+  if (typeof _setLang === 'function') window.setLang = function (l) { _setLang.apply(this, arguments); drawCats(); if (panelOpen()) renderList(); };
+
+  let lastUser = null;
+  setInterval(() => {
+    const u = uname();
+    if (u !== lastUser) { lastUser = u; filter = 'all'; remClosePanel(); remCloseForm(); refreshBadge(); }
+    check();
+  }, 15000);
+  setTimeout(() => { lastUser = uname(); refreshBadge(); check(); }, 1500);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+})();
+</script>
+<!-- =================== /PENGINGAT CHAT =================== -->
+
 </body>
 </html>
