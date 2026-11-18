@@ -393,6 +393,229 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
 .sticker-preview img{width:180px;height:180px;object-fit:contain;background:rgba(255,255,255,.1);border-radius:16px}
 @media (min-width:768px){#sticker-sheet,#sticker-confirm{align-items:center}.sticker-panel{border-radius:22px}}
 </style>
+<style id="finance-upgrade-css">
+/* ===== KEUANGAN: tampilan kartu/chart ala DompetCeria (scope: #tab-finance + modal keuangan) ===== */
+#tab-finance{--fx-brand:#00D084;--fx-brand-d:#00AA6B;--fx-coral:#FF6584;--fx-coral-d:#E54D6D;--fx-amber:#FFB800;--fx-indigo:#6366F1;--fx-ink:#0F172A;--fx-mut:#64748B;--fx-line:#E2E8F0}
+#tab-finance .hidden{display:none!important}
+#tab-finance .fx-stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+#tab-finance .fx-muted{color:#64748B}
+#tab-finance .fx-xs{font-size:11px;font-weight:600}
+#tab-finance .fx-scroll{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;-webkit-overflow-scrolling:touch}
+#tab-finance .fx-wrap{display:flex;flex-wrap:wrap;gap:8px}
+
+/* --- hero --- */
+#tab-finance .fx-hero{position:relative;overflow:hidden;border-radius:28px;padding:20px;color:#fff;background:linear-gradient(135deg,#00AA6B 0%,#00D084 55%,#34D399 100%);box-shadow:0 18px 36px -14px rgba(0,208,132,.6),inset 0 1px 1px rgba(255,255,255,.35)}
+#tab-finance .fx-blob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(18px)}
+#tab-finance .fx-blob-a{width:140px;height:140px;right:-28px;bottom:-28px;background:rgba(255,255,255,.16)}
+#tab-finance .fx-blob-b{width:100px;height:100px;left:-26px;top:-26px;background:rgba(252,211,77,.32)}
+#tab-finance .fx-hero-top,#tab-finance .fx-hero-grid{position:relative;z-index:1}
+#tab-finance .fx-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+#tab-finance .fx-hero-label{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#D1FAE5}
+#tab-finance .fx-hero-label .material-symbols-outlined{font-size:15px;color:#FCD34D}
+#tab-finance .fx-chip-glass{font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.22);color:#fff;letter-spacing:.04em}
+#tab-finance .fx-hero-amount{margin-top:4px;font-size:30px;line-height:1.1;font-weight:800;letter-spacing:-.02em;color:#fff;word-break:break-word}
+#tab-finance .fx-icon-btn{width:38px;height:38px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.2);color:#fff;flex:none;transition:transform .12s}
+#tab-finance .fx-icon-btn:active{transform:scale(.9) rotate(90deg)}
+#tab-finance .fx-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+#tab-finance .fx-hero-grid+.fx-hero-grid{margin-top:10px;padding-top:12px;border-top:1px solid rgba(255,255,255,.2)}
+#tab-finance .fx-mini{display:flex;align-items:center;gap:10px;min-width:0;padding:10px;border-radius:18px;background:rgba(0,0,0,.12)}
+#tab-finance .fx-mini .ic{width:32px;height:32px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.22);flex:none}
+#tab-finance .fx-mini .ic .material-symbols-outlined{font-size:18px}
+#tab-finance .fx-mini p{margin:0}
+#tab-finance .fx-mini .l{font-size:11px;font-weight:600;color:#D1FAE5;line-height:1.2}
+#tab-finance .fx-mini .v{font-size:13px;font-weight:800;color:#fff;word-break:break-word}
+
+/* --- streak --- */
+#tab-finance .fx-streak{display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:24px;padding:14px 16px;color:#fff;background:linear-gradient(90deg,#7C3AED,#4F46E5 55%,#4338CA);box-shadow:0 14px 28px -14px rgba(79,70,229,.7)}
+#tab-finance .fx-streak-l{display:flex;align-items:center;gap:12px;min-width:0}
+#tab-finance .fx-streak-ic{width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(255,255,255,.16);animation:fxFloat 3s ease-in-out infinite;flex:none}
+@keyframes fxFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+#tab-finance .fx-streak-t{margin:0;font-size:12px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#E0E7FF}
+#tab-finance .fx-streak-s{margin:2px 0 0;font-size:12px;font-weight:600;color:#C7D2FE}
+#tab-finance .fx-streak-btn{display:flex;align-items:center;gap:4px;flex:none;padding:8px 12px;border-radius:14px;background:#FBBF24;color:#312E81;font-size:12px;font-weight:800;box-shadow:0 4px 10px rgba(0,0,0,.2);transition:transform .12s}
+#tab-finance .fx-streak-btn:active{transform:scale(.93)}
+#tab-finance .fx-streak-btn .material-symbols-outlined{font-size:16px}
+
+/* --- quick actions --- */
+#tab-finance .fx-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+#tab-finance .fx-q{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 4px;border-radius:22px;background:#fff;border:1px solid #E2E8F0;color:#334155;font-size:11px;font-weight:700;box-shadow:0 8px 18px -12px rgba(5,23,77,.6);transition:transform .12s,box-shadow .12s}
+#tab-finance .fx-q:active{transform:scale(.94)}
+#tab-finance .fx-q .ic{width:44px;height:44px;border-radius:16px;display:flex;align-items:center;justify-content:center}
+#tab-finance .fx-q .ic .material-symbols-outlined{font-size:26px}
+#tab-finance .t-coral{background:#FFE4EA;color:#E54D6D}
+#tab-finance .t-brand{background:#C5FAE0;color:#00AA6B}
+#tab-finance .t-amber{background:#FEF3C7;color:#D97706}
+#tab-finance .t-indigo{background:#E0E7FF;color:#4F46E5}
+
+/* --- cards --- */
+#tab-finance .fx-card{background:#fff;color:#0F172A;border:1px solid rgba(226,232,240,.95);border-radius:24px;padding:16px;box-shadow:0 14px 28px -16px rgba(5,23,77,.65);min-width:0}
+#tab-finance .fx-card-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+#tab-finance .fx-h{margin:0;font-size:14px;font-weight:800;color:#0F172A}
+#tab-finance .fx-sub{margin:10px 0 6px;font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.05em}
+#tab-finance .fx-link{font-size:12px;font-weight:800;color:#00AA6B;display:inline-flex;align-items:center;gap:2px}
+#tab-finance .fx-link:active{opacity:.6}
+
+/* --- pills & chips --- */
+#tab-finance .fx-pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px}
+#tab-finance .fx-pill{flex:none;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;background:#fff;color:#475569;border:1px solid #E2E8F0;transition:all .12s}
+#tab-finance .fx-pill.on{background:#0F172A;color:#fff;border-color:#0F172A;box-shadow:0 4px 10px -4px rgba(15,23,42,.5)}
+#tab-finance .fx-chip,.fx-sheet .fx-chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:16px;background:#F1F5F9;color:#0F172A;font-size:12px;font-weight:700;border:1px solid #E2E8F0;transition:transform .12s}
+#tab-finance .fx-chip:active,.fx-sheet .fx-chip:active{transform:scale(.94)}
+#tab-finance .fx-chip.inc{background:#E8FDF2;border-color:#C5FAE0;color:#047857}
+#tab-finance .fx-chip.exp{background:#FFF1F3;border-color:#FFD6DE;color:#BE3A55}
+.fx-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c,#94A3B8)}
+
+/* --- starter banner --- */
+#tab-finance .fx-starter{display:flex;align-items:center;gap:12px;border-radius:24px;padding:14px 16px;color:#fff;background:linear-gradient(120deg,#F59E0B,#FB923C 55%,#FF6584);box-shadow:0 14px 28px -14px rgba(251,146,60,.8)}
+#tab-finance .fx-starter .em{font-size:30px;flex:none}
+#tab-finance .fx-starter p{margin:0}
+#tab-finance .fx-starter .t{font-size:13px;font-weight:800}
+#tab-finance .fx-starter .d{font-size:11px;font-weight:600;opacity:.92;margin-top:2px}
+#tab-finance .fx-starter button{flex:none;padding:8px 12px;border-radius:14px;background:#fff;color:#B45309;font-size:12px;font-weight:800;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+#tab-finance .fx-starter button:disabled,.fx-sheet .fin-install-btn:disabled{opacity:.7}
+
+/* --- insights --- */
+#tab-finance .fx-insights{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#tab-finance .fx-ins{background:#fff;color:#0F172A;border:1px solid #E2E8F0;border-radius:20px;padding:12px;box-shadow:0 8px 18px -14px rgba(5,23,77,.6);min-width:0}
+#tab-finance .fx-ins .top{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;color:#64748B}
+#tab-finance .fx-ins .top .e{font-size:16px}
+#tab-finance .fx-ins .val{margin:6px 0 0;font-size:17px;font-weight:800;word-break:break-word}
+#tab-finance .fx-ins .sub{margin:2px 0 0;font-size:10.5px;font-weight:600;color:#94A3B8}
+#tab-finance .fx-good{color:#00AA6B}
+#tab-finance .fx-bad{color:#E54D6D}
+
+/* --- charts --- */
+#tab-finance .fx-chart{position:relative;height:210px}
+#tab-finance .fx-donut-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center}
+#tab-finance .fx-donut{position:relative;width:140px;height:140px;flex:none}
+#tab-finance .fx-donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center}
+#tab-finance .fx-donut-center .a{font-size:13px;font-weight:800;color:#0F172A}
+#tab-finance .fx-donut-center .b{font-size:10px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.05em}
+#tab-finance .fx-legend{flex:1;min-width:150px;display:flex;flex-direction:column;gap:9px}
+#tab-finance .fx-leg-row .r1{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:700;color:#0F172A}
+#tab-finance .fx-leg-row .r1 .n{display:flex;align-items:center;gap:6px;min-width:0}
+#tab-finance .fx-leg-row .r1 .n span.t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tab-finance .fx-leg-row .r2{display:flex;justify-content:space-between;font-size:10.5px;font-weight:600;color:#94A3B8;margin-top:2px}
+#tab-finance .fx-bar{height:6px;border-radius:999px;background:#F1F5F9;overflow:hidden;margin-top:4px}
+#tab-finance .fx-bar>i{display:block;height:100%;border-radius:999px;background:var(--c,#00D084);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+#tab-finance .fx-note{margin:10px 0 0;font-size:11px;font-weight:600;color:#94A3B8;text-align:center}
+
+/* --- accounts --- */
+#tab-finance .fx-alloc{height:12px;border-radius:999px;overflow:hidden;display:flex;background:#F1F5F9;margin-bottom:8px}
+#tab-finance .fx-alloc i{display:block;height:100%;transition:width .5s}
+#tab-finance .fx-alloc-leg{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;font-weight:700;color:#475569;margin-bottom:12px}
+#tab-finance .fx-alloc-leg span{display:inline-flex;align-items:center;gap:6px}
+#tab-finance .fx-acc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#tab-finance .fx-acc{background:#fff;border:1px solid #E2E8F0;border-radius:20px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-width:0;box-shadow:0 6px 14px -12px rgba(5,23,77,.7)}
+#tab-finance .fx-acc .hd{display:flex;align-items:center;gap:8px;min-width:0}
+#tab-finance .fx-acc .em{font-size:20px;padding:7px;border-radius:14px;background:var(--bg,#ECFDF5);flex:none;line-height:1}
+#tab-finance .fx-acc .nm{margin:0;font-size:12px;font-weight:800;color:#0F172A;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tab-finance .fx-acc .jn{font-size:10px;font-weight:700;color:#94A3B8}
+#tab-finance .fx-acc .sd{margin:0;font-size:13px;font-weight:800;color:#0F172A;word-break:break-word}
+#tab-finance .fx-acc .sd.neg{color:#E54D6D}
+#tab-finance .fx-acc .pc{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:#94A3B8;margin-top:3px}
+
+/* --- target --- */
+#tab-finance .fx-goal{display:flex;align-items:center;gap:16px}
+#tab-finance .fx-ring{position:relative;width:84px;height:84px;flex:none}
+#tab-finance .fx-ring svg{width:84px;height:84px;transform:rotate(-90deg)}
+#tab-finance .fx-ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#0F172A}
+#tab-finance .fx-goal-info{min-width:0;flex:1}
+#tab-finance .fx-goal select{background:transparent!important;border:none!important;box-shadow:none!important;padding:0 0 2px!important;margin:0!important;color:#0F172A!important;font-weight:800;font-size:14px;width:100%;appearance:none;-webkit-appearance:none}
+#tab-finance .fx-goal select option{background:#fff;color:#0F172A}
+#tab-finance .fx-goal-nom{margin:0;font-size:12px;font-weight:700;color:#64748B}
+#tab-finance .fx-goal-meta{margin:4px 0 0;font-size:11px;font-weight:700;color:#00AA6B}
+#tab-finance .fx-tg-row{cursor:pointer;padding:10px 12px;border-radius:16px;background:#F8FAFC;border:1px solid #EEF2F7;margin-top:8px}
+#tab-finance .fx-tg-row.on{background:#ECFDF5;border-color:#A7F3D0}
+#tab-finance .fx-tg-row .r1{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:800;color:#0F172A}
+#tab-finance .fx-tg-row .r2{display:flex;justify-content:space-between;font-size:10.5px;font-weight:600;color:#94A3B8;margin-top:2px}
+
+/* --- transaksi --- */
+#tab-finance .fx-search{position:relative;margin-bottom:10px}
+#tab-finance .fx-search .material-symbols-outlined{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px;color:#94A3B8;pointer-events:none}
+#tab-finance .fx-search input{background:#F8FAFC!important;color:#0F172A!important;border:1px solid #E2E8F0!important;border-radius:16px!important;padding:10px 14px 10px 38px!important;font-size:13px!important;font-weight:600}
+#tab-finance .fx-search input::placeholder{color:#94A3B8!important}
+#tab-finance .fx-search input:focus{border-color:#00D084!important;box-shadow:0 0 0 3px rgba(0,208,132,.2)!important}
+#tab-finance .fx-day{display:flex;justify-content:space-between;gap:8px;margin:14px 4px 6px;font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.04em}
+#tab-finance .fx-day:first-child{margin-top:2px}
+#tab-finance .fx-tx{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;margin-bottom:8px;border-radius:18px;background:#F8FAFC;border:1px solid #EEF2F7;cursor:pointer;transition:transform .12s,border-color .12s}
+#tab-finance .fx-tx:active{transform:scale(.98)}
+#tab-finance .fx-tx:hover{border-color:#CBD5E1}
+#tab-finance .fx-ic{position:relative;width:38px;height:38px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none;overflow:hidden}
+#tab-finance .fx-ic::before{content:'';position:absolute;inset:0;background:var(--c,#94A3B8);opacity:.17}
+#tab-finance .fx-ic>*{position:relative}
+#tab-finance .fx-tx-t{margin:0;font-size:13px;font-weight:700;color:#0F172A}
+#tab-finance .fx-tx-s{margin:1px 0 0;font-size:11px;font-weight:600;color:#94A3B8}
+#tab-finance .fx-amt{margin:0;font-size:13px;font-weight:800;flex:none}
+#tab-finance .fx-amt.in{color:#00AA6B}
+#tab-finance .fx-amt.out{color:#E54D6D}
+#tab-finance .fx-more{width:100%;margin-top:4px;padding:10px;border-radius:16px;background:#F1F5F9;color:#334155;font-size:12px;font-weight:800}
+#tab-finance .fx-more:active{background:#E2E8F0}
+#tab-finance .fx-empty{text-align:center;padding:28px 8px;color:#94A3B8}
+#tab-finance .fx-empty .material-symbols-outlined{font-size:40px;opacity:.5}
+#tab-finance .fx-empty p{margin:6px 0 0;font-size:13px;font-weight:600}
+
+/* --- bottom sheets (tx, master, report) --- */
+#finance-tx-modal:not(.hidden)>.fx-sheet,#finance-master-modal:not(.hidden)>.fx-sheet,#finance-report-modal:not(.hidden)>.fx-sheet{animation:fxSheetUp .32s cubic-bezier(.16,1,.3,1)}
+@keyframes fxSheetUp{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+.fx-sheet{background:#fff!important;color:#0F172A;width:100%;max-width:448px;max-height:92vh;overflow-y:auto;border-radius:32px 32px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));box-shadow:0 -20px 50px -20px rgba(5,23,77,.6)}
+@media(min-width:640px){.fx-sheet{border-radius:28px}}
+.fx-sheet *{box-sizing:border-box}
+.fx-sheet .fx-sh-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid #F1F5F9}
+.fx-sheet .fx-sh-title{display:flex;align-items:center;gap:10px;min-width:0}
+.fx-sheet .fx-sh-ic{width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;background:#FFE4EA;flex:none}
+.fx-sheet .fx-sh-ic.inc{background:#C5FAE0}
+.fx-sheet h3{margin:0;font-size:16px;font-weight:800;color:#0F172A}
+.fx-sheet .fx-x{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#94A3B8;background:transparent}
+.fx-sheet .fx-x:active{background:#F1F5F9}
+.fx-sheet label{display:block;margin-bottom:4px;font-size:11px;font-weight:700;color:#475569}
+.fx-sheet input:not([type=hidden]):not([type=color]),.fx-sheet select{background:#F8FAFC!important;color:#0F172A!important;border:1px solid #E2E8F0!important;border-radius:16px!important;padding:11px 14px!important;font-size:13px!important;font-weight:700;width:100%}
+.fx-sheet input::placeholder{color:#94A3B8!important;font-weight:600}
+.fx-sheet input:focus,.fx-sheet select:focus{border-color:#00D084!important;box-shadow:0 0 0 3px rgba(0,208,132,.2)!important}
+.fx-sheet select option{background:#fff;color:#0F172A}
+.fx-sheet input[type=date]{color-scheme:light}
+.fx-sheet input[type=color]{width:100%;height:42px;border:1px solid #E2E8F0;border-radius:16px;background:#F8FAFC;padding:4px}
+.fx-sheet #fin-tx-nominal{font-size:18px!important;font-weight:800}
+.fx-sheet .fx-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#F1F5F9;border-radius:18px}
+.fx-sheet .fx-seg button{padding:9px;border-radius:14px;font-size:12px;font-weight:800;color:#64748B;background:transparent;transition:all .15s}
+.fx-sheet #fin-tx-type-expense.active-toggle{background:#fff;color:#E54D6D;box-shadow:0 2px 6px rgba(15,23,42,.12)}
+.fx-sheet #fin-tx-type-income.active-toggle{background:#fff;color:#00AA6B;box-shadow:0 2px 6px rgba(15,23,42,.12)}
+.fx-sheet .fx-prev{margin:4px 2px 0;font-size:11px;font-weight:700;color:#00AA6B;min-height:14px}
+.fx-sheet .fx-btn-primary{background:linear-gradient(90deg,#00D084,#10B981);color:#fff;border-radius:18px;padding:12px;font-weight:800;font-size:14px;box-shadow:0 10px 20px -8px rgba(0,208,132,.65);transition:transform .12s}
+.fx-sheet .fx-btn-primary:active{transform:scale(.96)}
+.fx-sheet .fx-btn-ghost{background:#F1F5F9;color:#334155;border-radius:18px;padding:12px;font-weight:700;font-size:14px}
+.fx-sheet .fx-btn-del{color:#E54D6D;font-weight:800;font-size:13px;padding:12px;border-radius:18px;background:#FFF1F3}
+.fx-sheet .fx-btn-soft{width:100%;margin-top:10px;padding:10px;border-radius:16px;background:#ECFDF5;color:#047857;font-size:12px;font-weight:800}
+.fx-sheet .fx-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:16px;background:#F8FAFC;border:1px solid #EEF2F7}
+.fx-sheet .fx-row .nm{margin:0;font-size:13px;font-weight:800;color:#0F172A;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fx-sheet .fx-row .sb{margin:1px 0 0;font-size:11px;font-weight:600;color:#94A3B8}
+.fx-sheet .fx-row .bd{font-size:10px;font-weight:800;color:#00AA6B;margin-left:4px}
+.fx-sheet .fx-ibtn{width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #E2E8F0}
+.fx-sheet .fx-ibtn.e{color:#4F46E5}
+.fx-sheet .fx-ibtn.d{color:#E54D6D}
+.fx-sheet .fx-ibtn .material-symbols-outlined{font-size:18px}
+.fx-sheet .fx-form{border-top:1px solid #F1F5F9;padding-top:14px;display:flex;flex-direction:column;gap:10px}
+.fx-sheet .fx-sub{margin:12px 0 6px;font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.05em}
+
+/* --- report modal --- */
+.fx-sheet .fx-score{padding:16px;border-radius:22px;text-align:center;background:linear-gradient(135deg,#ECFDF5,#D1FAE5)}
+.fx-sheet .fx-score.bad{background:linear-gradient(135deg,#FFF1F3,#FFE4EA)}
+.fx-sheet .fx-score .a{margin:0;font-size:12px;font-weight:800;color:#065F46}
+.fx-sheet .fx-score.bad .a{color:#9F1239}
+.fx-sheet .fx-score .b{margin:4px 0 0;font-size:32px;font-weight:800;color:#059669}
+.fx-sheet .fx-score.bad .b{color:#E11D48}
+.fx-sheet .fx-score .c{margin:4px 0 0;font-size:12px;font-weight:700;color:#047857}
+.fx-sheet .fx-score.bad .c{color:#BE123C}
+.fx-sheet .fx-rgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.fx-sheet .fx-rbox{padding:10px 12px;border-radius:16px;background:#F8FAFC;border:1px solid #EEF2F7;min-width:0}
+.fx-sheet .fx-rbox .l{margin:0;font-size:10.5px;font-weight:700;color:#64748B}
+.fx-sheet .fx-rbox .v{margin:2px 0 0;font-size:13px;font-weight:800;color:#0F172A;word-break:break-word}
+.fx-sheet .fx-rcat{margin-top:10px}
+.fx-sheet .fx-rcat .r1{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:700;color:#0F172A}
+.fx-sheet .fx-bar{height:7px;border-radius:999px;background:#F1F5F9;overflow:hidden;margin-top:4px}
+.fx-sheet .fx-bar>i{display:block;height:100%;border-radius:999px;background:var(--c,#00D084)}
+@media(max-width:380px){#tab-finance .fx-hero-amount{font-size:26px}#tab-finance .fx-acc-grid,#tab-finance .fx-insights{gap:8px}}
+</style>
 </head>
 <body class="text-on-surface">
 <!-- andu:topbar:mulai -->
@@ -1115,6 +1338,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
               <span class="material-symbols-outlined text-lg">add</span>
             </button>
             <textarea id="chat-input" class="chat-textarea" rows="1" enterkeyhint="enter" placeholder="Tulis pesan..." data-i18n-placeholder="chat_input_placeholder" oninput="autoGrowTextarea(this); updateChatInputMode()" onpaste="onStickerPaste(event,'chat')" onfocus="onChatInputFocus('chat')" onkeydown="handleChatInputKeydown(event)"></textarea>
+            <button type="button" onclick="toggleEmojiPicker('chat')" id="chat-emoji-btn" class="emoji-trigger flex items-center justify-center rounded-full flex-shrink-0" style="width:38px;height:38px;background:#F3F4F6;margin-bottom:2px;" title="Emoji" aria-label="Emoji" aria-haspopup="dialog" aria-expanded="false"><span class="material-symbols-outlined text-lg">mood</span></button>
             <button onclick="sendChatMessage()" id="btn-send-chat" class="btn-primary text-sm py-2.5 px-4 flex-shrink-0" data-i18n="btn_send">Kirim</button>
             <button id="chat-mic-btn" onmousedown="chatStartVoiceNote()" ontouchstart="chatStartVoiceNote(); event.preventDefault();" onmouseup="chatStopVoiceNote()" onmouseleave="chatCancelVoiceNoteIfRecording()" ontouchend="chatStopVoiceNote(); event.preventDefault();" class="hidden items-center justify-center rounded-full flex-shrink-0" style="width:38px;height:38px;background:#F3F4F6;margin-bottom:2px;">
               <span class="material-symbols-outlined text-lg">mic</span>
@@ -1184,6 +1408,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
               <span class="material-symbols-outlined text-lg">add</span>
             </button>
             <textarea id="group-input" class="chat-textarea" rows="1" enterkeyhint="enter" placeholder="Tulis pesan..." oninput="autoGrowTextarea(this)" onpaste="onStickerPaste(event,'group')" onfocus="onChatInputFocus('group')" onkeydown="handleGroupInputKeydown(event)"></textarea>
+            <button type="button" onclick="toggleEmojiPicker('group')" id="group-emoji-btn" class="emoji-trigger flex items-center justify-center rounded-full flex-shrink-0" style="width:38px;height:38px;background:#F3F4F6;margin-bottom:2px;" title="Emoji" aria-label="Emoji" aria-haspopup="dialog" aria-expanded="false"><span class="material-symbols-outlined text-lg">mood</span></button>
             <button onclick="sendGroupChatMessage()" class="btn-primary text-sm py-2.5 px-4 flex-shrink-0">Kirim</button>
           </div>
         </div>
@@ -1248,82 +1473,209 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
         </div>
 
         <div id="finance-content" class="hidden">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-black text-on-surface" data-i18n="fin_title">Keuangan</h2>
-          <button onclick="openFinanceTxModal()" class="btn-primary text-sm py-2 px-4 flex items-center gap-1">
-            <span class="material-symbols-outlined text-base">add</span> <span data-i18n="fin_btn_new_tx">Transaksi</span>
-          </button>
-        </div>
+        <div class="fx-stack">
 
-        <!-- Summary cards -->
-        <div class="grid grid-cols-2 gap-3 mb-4">
-          <div class="post-card !mb-0">
-            <p class="text-xs text-on-surface-muted font-semibold" data-i18n="fin_total_assets">Total Aset</p>
-            <p id="fin-total-assets" class="text-lg font-black text-primary tabular-nums">Rp 0</p>
+          <div class="flex items-center justify-between">
+            <h2 class="text-xl font-black text-on-surface" data-i18n="fin_title">Keuangan</h2>
+            <button onclick="openFinanceTxModal()" class="btn-primary text-sm py-2 px-4 flex items-center gap-1">
+              <span class="material-symbols-outlined text-base">add</span> <span data-i18n="fin_btn_new_tx">Transaksi</span>
+            </button>
           </div>
-          <div class="post-card !mb-0">
-            <p class="text-xs text-on-surface-muted font-semibold" data-i18n="fin_liquid_balance">Saldo Cair (Liquid)</p>
-            <p id="fin-liquid-total" class="text-lg font-black text-on-surface tabular-nums">Rp 0</p>
-          </div>
-          <div class="post-card !mb-0">
-            <p class="text-xs text-on-surface-muted font-semibold" data-i18n="fin_nonliquid">Non-Liquid</p>
-            <p id="fin-nonliquid-total" class="text-lg font-black text-on-surface tabular-nums">Rp 0</p>
-          </div>
-          <div class="post-card !mb-0">
-            <p class="text-xs text-on-surface-muted font-semibold" data-i18n="fin_expense_this_month">Pengeluaran Bulan Ini</p>
-            <p id="fin-expense-total" class="text-lg font-black text-secondary tabular-nums">Rp 0</p>
-          </div>
-        </div>
 
-        <!-- Target / Goal -->
-        <div class="post-card">
-          <div class="flex items-center justify-between mb-2">
-            <p class="font-bold text-sm" data-i18n="fin_target_goal">Target / Goal</p>
-            <button onclick="openFinanceMasterModal('target')" class="text-xs text-primary font-semibold" data-i18n="fin_manage_target">Kelola Target</button>
+          <!-- Banner template starter (muncul kalau akun/kategori masih kosong) -->
+          <div id="fin-starter-banner" class="fx-starter hidden">
+            <span class="em">🚀</span>
+            <div class="min-w-0" style="flex:1">
+              <p class="t" data-i18n="fx_starter_title">Mulai cepat dengan template</p>
+              <p class="d" data-i18n="fx_starter_desc">Pasang kategori, akun, dan target umum sekali ketuk. Bisa kamu ubah kapan saja.</p>
+            </div>
+            <button class="fin-install-btn" data-i18n="fx_tpl_install_all" onclick="finInstallStarter('all')">Pasang Template</button>
           </div>
-          <div class="flex items-center gap-4">
-            <div class="relative w-20 h-20 shrink-0">
-              <svg viewBox="0 0 120 120" class="w-20 h-20 -rotate-90">
-                <circle cx="60" cy="60" r="54" stroke="#E8F4FD" stroke-width="10" fill="none"/>
-                <circle id="fin-progress-ring" cx="60" cy="60" r="54" stroke="#0077CC" stroke-width="10" fill="none"
-                  stroke-dasharray="339.3" stroke-dashoffset="339.3" stroke-linecap="round"/>
-              </svg>
-              <div class="absolute inset-0 flex items-center justify-center">
-                <span id="fin-progress-percent" class="text-sm font-black">0%</span>
+
+          <!-- HERO: total aset + ringkasan -->
+          <div class="fx-hero">
+            <div class="fx-blob fx-blob-a"></div><div class="fx-blob fx-blob-b"></div>
+            <div class="fx-hero-top">
+              <div class="min-w-0">
+                <div class="fx-hero-label">
+                  <span class="material-symbols-outlined">auto_awesome</span>
+                  <span data-i18n="fin_total_assets">Total Aset</span>
+                  <span class="fx-chip-glass" id="fin-month-label"></span>
+                </div>
+                <p id="fin-total-assets" class="fx-hero-amount tabular-nums">Rp 0</p>
+              </div>
+              <button class="fx-icon-btn" onclick="loadFinance()" data-i18n-title="fx_refresh" title="Segarkan"><span class="material-symbols-outlined">refresh</span></button>
+            </div>
+            <div class="fx-hero-grid">
+              <div class="fx-mini">
+                <span class="ic"><span class="material-symbols-outlined">water_drop</span></span>
+                <div class="min-w-0"><p class="l" data-i18n="fin_liquid_balance">Saldo Cair (Liquid)</p><p id="fin-liquid-total" class="v tabular-nums">Rp 0</p></div>
+              </div>
+              <div class="fx-mini">
+                <span class="ic"><span class="material-symbols-outlined">lock</span></span>
+                <div class="min-w-0"><p class="l" data-i18n="fin_nonliquid">Non-Liquid</p><p id="fin-nonliquid-total" class="v tabular-nums">Rp 0</p></div>
               </div>
             </div>
-            <div class="min-w-0">
-              <select id="fin-target-switcher" class="text-sm font-bold border-none bg-transparent p-0 mb-1 w-full truncate" style="appearance:none;"></select>
-              <p id="fin-target-nominal" class="text-xs text-on-surface-muted tabular-nums">Rp 0</p>
+            <div class="fx-hero-grid">
+              <div class="fx-mini">
+                <span class="ic"><span class="material-symbols-outlined">trending_up</span></span>
+                <div class="min-w-0"><p class="l" data-i18n="fx_income_this_month">Pemasukan Bulan Ini</p><p id="fin-income-total" class="v tabular-nums">Rp 0</p></div>
+              </div>
+              <div class="fx-mini">
+                <span class="ic"><span class="material-symbols-outlined">trending_down</span></span>
+                <div class="min-w-0"><p class="l" data-i18n="fin_expense_this_month">Pengeluaran Bulan Ini</p><p id="fin-expense-total" class="v tabular-nums">Rp 0</p></div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Doughnut chart pengeluaran per kategori -->
-        <div class="post-card">
-          <p class="font-bold text-sm mb-2" data-i18n="fin_expense_by_category">Pengeluaran per Kategori (Bulan Ini)</p>
-          <div class="flex items-center gap-4">
-            <div class="relative w-28 h-28 shrink-0">
-              <canvas id="fin-expense-pie"></canvas>
+          <!-- STREAK -->
+          <div class="fx-streak">
+            <div class="fx-streak-l">
+              <div class="fx-streak-ic">🎯</div>
+              <div class="min-w-0">
+                <p id="fin-streak-title" class="fx-streak-t"></p>
+                <p id="fin-streak-sub" class="fx-streak-s"></p>
+              </div>
             </div>
-            <div id="fin-pie-legend" class="flex-1 space-y-1.5 min-w-0"></div>
+            <button class="fx-streak-btn" onclick="openFinanceTxModal()"><span class="material-symbols-outlined">edit_note</span><span data-i18n="fx_streak_btn">Catat</span></button>
           </div>
-        </div>
 
-        <!-- Transaksi list -->
-        <div class="post-card">
-          <div class="flex items-center justify-between mb-2">
-            <p class="font-bold text-sm" data-i18n="fin_recent_tx">Transaksi Terbaru</p>
-            <button onclick="openFinanceMasterModal('akun')" class="text-xs text-primary font-semibold" data-i18n="fin_manage_account">Kelola Akun</button>
+          <!-- AKSI CEPAT -->
+          <div class="fx-quick">
+            <button class="fx-q" onclick="openFinanceTxModal('', 'Expense')">
+              <span class="ic t-coral"><span class="material-symbols-outlined">remove_circle</span></span>
+              <span data-i18n="fx_qa_expense">Belanja</span>
+            </button>
+            <button class="fx-q" onclick="openFinanceTxModal('', 'Income')">
+              <span class="ic t-brand"><span class="material-symbols-outlined">add_circle</span></span>
+              <span data-i18n="fx_qa_income">Pemasukan</span>
+            </button>
+            <button class="fx-q" onclick="openFinanceMasterModal('akun')">
+              <span class="ic t-amber"><span class="material-symbols-outlined">account_balance_wallet</span></span>
+              <span data-i18n="fx_qa_accounts">Akun</span>
+            </button>
+            <button class="fx-q" onclick="openFinanceReportModal()">
+              <span class="ic t-indigo"><span class="material-symbols-outlined">pie_chart</span></span>
+              <span data-i18n="fx_qa_analysis">Analisis</span>
+            </button>
           </div>
-          <div class="flex gap-2 mb-3">
-            <button onclick="openFinanceMasterModal('kategori')" class="btn-outline text-xs py-1.5 px-3" data-i18n="fin_manage_category">Kelola Kategori</button>
+
+          <!-- INSIGHT -->
+          <div id="fin-insights" class="fx-insights"></div>
+
+          <!-- TEMPLATE CEPAT -->
+          <div class="fx-card">
+            <div class="fx-card-h">
+              <p class="fx-h" data-i18n="fx_quick_templates">Template Cepat</p>
+              <span class="fx-muted fx-xs" data-i18n="fx_quick_hint">Ketuk untuk mengisi form otomatis</span>
+            </div>
+            <div id="fin-quick-templates" class="fx-scroll"></div>
+            <div id="fin-frequent-wrap" class="hidden">
+              <p class="fx-sub" data-i18n="fx_frequent">Sering Dicatat</p>
+              <div id="fin-frequent" class="fx-scroll"></div>
+            </div>
           </div>
-          <div id="fin-tx-list" class="divide-y divide-gray-100"></div>
-          <div id="fin-tx-empty" class="hidden text-center py-8 text-on-surface-muted">
-            <span class="material-symbols-outlined text-4xl mb-2 opacity-30">receipt_long</span>
-            <p class="text-sm" data-i18n="fin_tx_empty">Belum ada transaksi.</p>
+
+          <!-- TREN (chart) -->
+          <div class="fx-card">
+            <div class="fx-card-h"><p class="fx-h" data-i18n="fx_trend_title">Tren Keuangan</p></div>
+            <div class="fx-pills">
+              <button class="fx-pill on" data-pill="trend:cashflow" onclick="finSetPill('trend','cashflow')" data-i18n="fx_trend_cashflow">Arus Kas</button>
+              <button class="fx-pill" data-pill="trend:balance" onclick="finSetPill('trend','balance')" data-i18n="fx_trend_balance">Saldo</button>
+              <button class="fx-pill" data-pill="trend:daily" onclick="finSetPill('trend','daily')" data-i18n="fx_trend_daily">Harian</button>
+            </div>
+            <div class="fx-chart"><canvas id="fin-trend-chart"></canvas></div>
+            <p id="fin-trend-note" class="fx-note"></p>
           </div>
+
+          <!-- Doughnut komposisi kategori -->
+          <div class="fx-card">
+            <div class="fx-card-h"><p class="fx-h" data-i18n="fx_cat_title">Komposisi per Kategori</p></div>
+            <div class="fx-pills" style="margin-bottom:6px">
+              <button class="fx-pill on" data-pill="catType:Expense" onclick="finSetPill('catType','Expense')" data-i18n="fin_tx_type_expense">Pengeluaran</button>
+              <button class="fx-pill" data-pill="catType:Income" onclick="finSetPill('catType','Income')" data-i18n="fin_tx_type_income">Pemasukan</button>
+            </div>
+            <div class="fx-pills">
+              <button class="fx-pill on" data-pill="catPeriod:month" onclick="finSetPill('catPeriod','month')" data-i18n="fx_period_month">Bulan Ini</button>
+              <button class="fx-pill" data-pill="catPeriod:prev" onclick="finSetPill('catPeriod','prev')" data-i18n="fx_period_prev">Bulan Lalu</button>
+              <button class="fx-pill" data-pill="catPeriod:3m" onclick="finSetPill('catPeriod','3m')" data-i18n="fx_period_3m">3 Bulan</button>
+              <button class="fx-pill" data-pill="catPeriod:all" onclick="finSetPill('catPeriod','all')" data-i18n="fx_all">Semua</button>
+            </div>
+            <div class="fx-donut-row">
+              <div class="fx-donut">
+                <canvas id="fin-expense-pie"></canvas>
+                <div class="fx-donut-center" id="fin-pie-center"></div>
+              </div>
+              <div id="fin-pie-legend" class="fx-legend"></div>
+            </div>
+          </div>
+
+          <!-- ALOKASI AKUN -->
+          <div class="fx-card">
+            <div class="fx-card-h">
+              <p class="fx-h" data-i18n="fx_acc_title">Alokasi Aset</p>
+              <button class="fx-link" onclick="openFinanceMasterModal('akun')"><span data-i18n="fin_manage_account">Kelola Akun</span><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></button>
+            </div>
+            <div id="fin-alloc-wrap" class="hidden">
+              <div class="fx-alloc" id="fin-alloc"></div>
+              <div class="fx-alloc-leg" id="fin-alloc-leg"></div>
+            </div>
+            <div class="fx-pills">
+              <button class="fx-pill on" data-pill="acc:all" onclick="finSetPill('acc','all')" data-i18n="fx_all">Semua</button>
+              <button class="fx-pill" data-pill="acc:liquid" onclick="finSetPill('acc','liquid')" data-i18n="fin_type_liquid">Liquid</button>
+              <button class="fx-pill" data-pill="acc:non" onclick="finSetPill('acc','non')" data-i18n="fin_type_nonliquid">Non-Liquid</button>
+            </div>
+            <div id="fin-account-grid" class="fx-acc-grid"></div>
+          </div>
+
+          <!-- Target / Goal -->
+          <div class="fx-card">
+            <div class="fx-card-h">
+              <p class="fx-h" data-i18n="fin_target_goal">Target / Goal</p>
+              <button onclick="openFinanceMasterModal('target')" class="fx-link"><span data-i18n="fin_manage_target">Kelola Target</span><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></button>
+            </div>
+            <div class="fx-goal">
+              <div class="fx-ring">
+                <svg viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="54" stroke="#E2E8F0" stroke-width="11" fill="none"/>
+                  <circle id="fin-progress-ring" cx="60" cy="60" r="54" stroke="#00D084" stroke-width="11" fill="none"
+                    stroke-dasharray="339.3" stroke-dashoffset="339.3" stroke-linecap="round" style="transition:stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1)"/>
+                </svg>
+                <span id="fin-progress-percent" class="pct">0%</span>
+              </div>
+              <div class="fx-goal-info">
+                <select id="fin-target-switcher" style="appearance:none;"></select>
+                <p id="fin-target-nominal" class="fx-goal-nom tabular-nums">Rp 0</p>
+                <p id="fin-target-meta" class="fx-goal-meta"></p>
+              </div>
+            </div>
+            <div id="fin-target-list"></div>
+          </div>
+
+          <!-- Transaksi list -->
+          <div class="fx-card">
+            <div class="fx-card-h">
+              <p class="fx-h" data-i18n="fin_recent_tx">Transaksi Terbaru</p>
+              <button onclick="openFinanceMasterModal('kategori')" class="fx-link"><span data-i18n="fin_manage_category">Kelola Kategori</span><span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></button>
+            </div>
+            <div class="fx-search">
+              <span class="material-symbols-outlined">search</span>
+              <input type="search" id="fin-tx-search" data-i18n-placeholder="fx_tx_search_ph" placeholder="Cari transaksi…" oninput="finOnTxSearch(this.value)" autocomplete="off"/>
+            </div>
+            <div class="fx-pills" style="margin-bottom:6px">
+              <button class="fx-pill on" data-pill="tx:all" onclick="finSetPill('tx','all')" data-i18n="fx_all">Semua</button>
+              <button class="fx-pill" data-pill="tx:income" onclick="finSetPill('tx','income')" data-i18n="fin_tx_type_income">Pemasukan</button>
+              <button class="fx-pill" data-pill="tx:expense" onclick="finSetPill('tx','expense')" data-i18n="fin_tx_type_expense">Pengeluaran</button>
+            </div>
+            <p id="fin-tx-count" class="fx-muted fx-xs" style="margin:0 4px 4px"></p>
+            <div id="fin-tx-list"></div>
+            <button id="fin-tx-more" class="fx-more hidden" onclick="finTxShowMore()" data-i18n="fx_load_more">Tampilkan lebih banyak</button>
+            <div id="fin-tx-empty" class="hidden fx-empty">
+              <span class="material-symbols-outlined">receipt_long</span>
+              <p data-i18n="fin_tx_empty">Belum ada transaksi.</p>
+            </div>
+          </div>
+
         </div>
         </div>
       </div>
@@ -1468,86 +1820,111 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
       </div>
 
       <!-- Modal: Tambah/Edit Transaksi -->
-      <div id="finance-tx-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 modal-blur bg-black/40">
-        <div class="bg-white rounded-2xl w-full max-w-sm p-5 max-h-[90vh] overflow-y-auto">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="font-black text-base" data-i18n="fin_tx_modal_title">Transaksi Baru</h3>
-            <button onclick="closeFinanceTxModal()" class="text-on-surface-muted"><span class="material-symbols-outlined">close</span></button>
+      <div id="finance-tx-modal" class="hidden fixed inset-0 z-[60] flex items-end sm:items-center justify-center sm:p-4 modal-blur bg-black/40">
+        <div class="fx-sheet">
+          <div class="fx-sh-head">
+            <div class="fx-sh-title">
+              <span id="fin-tx-type-ic" class="fx-sh-ic">📉</span>
+              <h3 id="fin-tx-modal-title" data-i18n="fin_tx_modal_title">Transaksi Baru</h3>
+            </div>
+            <button class="fx-x" onclick="closeFinanceTxModal()"><span class="material-symbols-outlined">close</span></button>
           </div>
           <input type="hidden" id="fin-tx-id"/>
-          <div class="space-y-3">
-            <div class="flex gap-2">
-              <button type="button" onclick="setFinTxType('Expense')" id="fin-tx-type-expense" class="btn-outline flex-1 text-sm py-2 active-toggle" data-i18n="fin_tx_type_expense">Pengeluaran</button>
-              <button type="button" onclick="setFinTxType('Income')" id="fin-tx-type-income" class="btn-outline flex-1 text-sm py-2" data-i18n="fin_tx_type_income">Pemasukan</button>
+          <div class="space-y-3" style="display:flex;flex-direction:column;gap:12px">
+            <div class="fx-seg">
+              <button type="button" onclick="setFinTxType('Expense')" id="fin-tx-type-expense" class="active-toggle">📉 <span data-i18n="fin_tx_type_expense">Pengeluaran</span></button>
+              <button type="button" onclick="setFinTxType('Income')" id="fin-tx-type-income">📈 <span data-i18n="fin_tx_type_income">Pemasukan</span></button>
             </div>
             <div>
-              <label class="text-xs font-semibold text-on-surface-muted" data-i18n="fin_label_tanggal">Tanggal</label>
-              <input type="date" id="fin-tx-tanggal" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"/>
+              <label data-i18n="fin_label_nominal">Nominal (Rp)</label>
+              <input type="number" id="fin-tx-nominal" placeholder="0" inputmode="decimal" oninput="finUpdateNominalPreview()"/>
+              <p id="fin-tx-nominal-preview" class="fx-prev"></p>
             </div>
             <div>
-              <label class="text-xs font-semibold text-on-surface-muted" data-i18n="fin_label_deskripsi">Deskripsi</label>
-              <input type="text" id="fin-tx-deskripsi" placeholder="cth: beli makan siang" data-i18n-placeholder="fin_ph_deskripsi" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"/>
+              <label data-i18n="fin_label_deskripsi">Deskripsi</label>
+              <input type="text" id="fin-tx-deskripsi" placeholder="cth: beli makan siang" data-i18n-placeholder="fin_ph_deskripsi"/>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div>
+                <label data-i18n="fin_label_kategori">Kategori</label>
+                <select id="fin-tx-kategori"></select>
+              </div>
+              <div>
+                <label data-i18n="fin_label_akun">Akun</label>
+                <select id="fin-tx-akun"></select>
+              </div>
             </div>
             <div>
-              <label class="text-xs font-semibold text-on-surface-muted" data-i18n="fin_label_nominal">Nominal (Rp)</label>
-              <input type="number" id="fin-tx-nominal" placeholder="0" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"/>
-            </div>
-            <div>
-              <label class="text-xs font-semibold text-on-surface-muted" data-i18n="fin_label_kategori">Kategori</label>
-              <select id="fin-tx-kategori" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"></select>
-            </div>
-            <div>
-              <label class="text-xs font-semibold text-on-surface-muted" data-i18n="fin_label_akun">Akun</label>
-              <select id="fin-tx-akun" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"></select>
+              <label data-i18n="fin_label_tanggal">Tanggal</label>
+              <input type="date" id="fin-tx-tanggal"/>
             </div>
           </div>
-          <div class="flex gap-2 mt-5">
-            <button id="fin-tx-delete-btn" onclick="deleteFinanceTx()" class="hidden text-sm text-red-500 font-semibold px-3" data-i18n="fin_btn_hapus">Hapus</button>
-            <button onclick="closeFinanceTxModal()" class="btn-outline flex-1 text-sm py-2" data-i18n="btn_cancel">Batal</button>
-            <button onclick="saveFinanceTx()" class="btn-primary flex-1 text-sm py-2" data-i18n="btn_save">Simpan</button>
+          <div style="display:flex;gap:8px;margin-top:18px">
+            <button id="fin-tx-delete-btn" onclick="deleteFinanceTx()" class="hidden fx-btn-del" data-i18n="fin_btn_hapus">Hapus</button>
+            <button onclick="closeFinanceTxModal()" class="fx-btn-ghost" style="flex:1" data-i18n="btn_cancel">Batal</button>
+            <button onclick="saveFinanceTx()" class="fx-btn-primary" style="flex:1.4" data-i18n="btn_save">Simpan</button>
           </div>
         </div>
       </div>
 
       <!-- Modal: Kelola Master Data (Target / Kategori / Akun) -->
-      <div id="finance-master-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 modal-blur bg-black/40">
-        <div class="bg-white rounded-2xl w-full max-w-sm p-5 max-h-[90vh] overflow-y-auto">
-          <div class="flex justify-between items-center mb-4">
-            <h3 id="fin-master-title" class="font-black text-base">Kelola Data</h3>
-            <button onclick="closeFinanceMasterModal()" class="text-on-surface-muted"><span class="material-symbols-outlined">close</span></button>
+      <div id="finance-master-modal" class="hidden fixed inset-0 z-[60] flex items-end sm:items-center justify-center sm:p-4 modal-blur bg-black/40">
+        <div class="fx-sheet">
+          <div class="fx-sh-head">
+            <div class="fx-sh-title">
+              <span class="fx-sh-ic inc">⚙️</span>
+              <h3 id="fin-master-title">Kelola Data</h3>
+            </div>
+            <button class="fx-x" onclick="closeFinanceMasterModal()"><span class="material-symbols-outlined">close</span></button>
           </div>
-          <div id="fin-master-list" class="space-y-2 mb-4"></div>
+          <div id="fin-master-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:6px"></div>
+          <div id="fin-master-templates"></div>
 
           <!-- Form target -->
-          <div id="fin-master-form-target" class="hidden space-y-2 border-t border-gray-100 pt-3">
+          <div id="fin-master-form-target" class="hidden fx-form" style="margin-top:14px">
             <input type="hidden" id="fin-target-edit-id"/>
-            <input type="text" id="fin-target-nama-input" placeholder="Nama target (cth: Dana Darurat)" data-i18n-placeholder="fin_ph_target_nama" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"/>
-            <input type="number" id="fin-target-nominal-input" placeholder="Nominal target (Rp)" data-i18n-placeholder="fin_ph_target_nominal" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"/>
-            <button onclick="saveFinanceTarget()" class="btn-primary w-full text-sm py-2" data-i18n="fin_btn_simpan_target">Simpan Target</button>
+            <input type="text" id="fin-target-nama-input" placeholder="Nama target (cth: Dana Darurat)" data-i18n-placeholder="fin_ph_target_nama"/>
+            <input type="number" id="fin-target-nominal-input" placeholder="Nominal target (Rp)" data-i18n-placeholder="fin_ph_target_nominal" inputmode="decimal"/>
+            <button onclick="saveFinanceTarget()" class="fx-btn-primary" data-i18n="fin_btn_simpan_target">Simpan Target</button>
           </div>
 
           <!-- Form kategori -->
-          <div id="fin-master-form-kategori" class="hidden space-y-2 border-t border-gray-100 pt-3">
+          <div id="fin-master-form-kategori" class="hidden fx-form" style="margin-top:14px">
             <input type="hidden" id="fin-kategori-edit-id"/>
-            <input type="text" id="fin-kategori-nama-input" placeholder="Nama kategori" data-i18n-placeholder="fin_ph_kategori_nama" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"/>
-            <select id="fin-kategori-tipe-input" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+            <input type="text" id="fin-kategori-nama-input" placeholder="Nama kategori" data-i18n-placeholder="fin_ph_kategori_nama"/>
+            <select id="fin-kategori-tipe-input">
               <option value="Expense" data-i18n="fin_type_expense">Expense</option>
               <option value="Income" data-i18n="fin_type_income">Income</option>
             </select>
-            <input type="color" id="fin-kategori-warna-input" value="#0077CC" class="w-full h-9 border border-gray-200 rounded-lg"/>
-            <button onclick="saveFinanceKategori()" class="btn-primary w-full text-sm py-2" data-i18n="fin_btn_simpan_kategori">Simpan Kategori</button>
+            <input type="color" id="fin-kategori-warna-input" value="#0077CC"/>
+            <button onclick="saveFinanceKategori()" class="fx-btn-primary" data-i18n="fin_btn_simpan_kategori">Simpan Kategori</button>
           </div>
 
           <!-- Form akun -->
-          <div id="fin-master-form-akun" class="hidden space-y-2 border-t border-gray-100 pt-3">
+          <div id="fin-master-form-akun" class="hidden fx-form" style="margin-top:14px">
             <input type="hidden" id="fin-akun-edit-id"/>
-            <input type="text" id="fin-akun-nama-input" placeholder="Nama akun (cth: BCA, Cash)" data-i18n-placeholder="fin_ph_akun_nama" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"/>
-            <select id="fin-akun-jenis-input" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+            <input type="text" id="fin-akun-nama-input" placeholder="Nama akun (cth: BCA, Cash)" data-i18n-placeholder="fin_ph_akun_nama"/>
+            <select id="fin-akun-jenis-input">
               <option value="Liquid" data-i18n="fin_type_liquid">Liquid</option>
               <option value="Non-Liquid" data-i18n="fin_type_nonliquid">Non-Liquid</option>
             </select>
-            <button onclick="saveFinanceAkun()" class="btn-primary w-full text-sm py-2" data-i18n="fin_btn_simpan_akun">Simpan Akun</button>
+            <button onclick="saveFinanceAkun()" class="fx-btn-primary" data-i18n="fin_btn_simpan_akun">Simpan Akun</button>
           </div>
+        </div>
+      </div>
+
+      <!-- Modal: Analisis Keuangan -->
+      <div id="finance-report-modal" class="hidden fixed inset-0 z-[60] flex items-end sm:items-center justify-center sm:p-4 modal-blur bg-black/40">
+        <div class="fx-sheet">
+          <div class="fx-sh-head">
+            <div class="fx-sh-title">
+              <span class="fx-sh-ic inc">📊</span>
+              <h3 data-i18n="fx_report_title">Analisis Keuangan</h3>
+            </div>
+            <button class="fx-x" onclick="closeFinanceReportModal()"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <div id="fin-report-body"></div>
+          <button onclick="closeFinanceReportModal()" class="fx-btn-ghost" style="width:100%;margin-top:16px" data-i18n="fx_report_close">Tutup</button>
         </div>
       </div>
 
@@ -2934,6 +3311,75 @@ const I18N = {
     fin_ph_kategori_nama: 'Nama kategori', fin_type_expense: 'Expense', fin_type_income: 'Income', fin_btn_simpan_kategori: 'Simpan Kategori',
     fin_ph_akun_nama: 'Nama akun (cth: BCA, Cash)', fin_type_liquid: 'Liquid', fin_type_nonliquid: 'Non-Liquid', fin_btn_simpan_akun: 'Simpan Akun',
     fin_empty_target: 'Belum ada target.', fin_empty_kategori: 'Belum ada kategori.', fin_empty_akun: 'Belum ada akun.', fin_active_badge: 'Aktif',
+    fx_refresh: "Segarkan",
+    fx_income_this_month: "Pemasukan Bulan Ini",
+    fx_starter_title: "Mulai cepat dengan template",
+    fx_starter_desc: "Pasang kategori, akun, dan target umum sekali ketuk. Bisa kamu ubah kapan saja.",
+    fx_tpl_install_all: "Pasang Template",
+    fx_tpl_install_kind: "Pasang Semua Template Ini",
+    fx_installing: "Memasang",
+    fx_tpl_done: "{n} template berhasil dipasang.",
+    fx_tpl_partial: "{ok} terpasang, {fail} gagal.",
+    fx_tpl_none_new: "Semua template sudah ada.",
+    fx_tpl_need_master: "Buat kategori & akun dulu (atau pasang template).",
+    fx_tpl_chips: "Template — ketuk untuk mengisi form",
+    fx_streak_title: "Streak Catat: {n} Hari! 🔥",
+    fx_streak_zero: "Mulai streak pencatatanmu!",
+    fx_streak_today_done: "Hari ini sudah dicatat ✅",
+    fx_streak_today_todo: "Belum mencatat hari ini, yuk catat!",
+    fx_streak_btn: "Catat",
+    fx_qa_expense: "Belanja",
+    fx_qa_income: "Pemasukan",
+    fx_qa_accounts: "Akun",
+    fx_qa_analysis: "Analisis",
+    fx_insight_savings: "Tingkat Tabungan",
+    fx_insight_no_income: "Belum ada pemasukan bulan ini",
+    fx_insight_net: "Selisih",
+    fx_insight_avg_daily: "Rata-rata / Hari",
+    fx_insight_projection: "Proyeksi akhir bulan",
+    fx_insight_vs_prev: "vs Bulan Lalu",
+    fx_insight_prev_exp: "Bulan lalu",
+    fx_insight_biggest: "Pengeluaran Terbesar",
+    fx_quick_templates: "Template Cepat",
+    fx_quick_hint: "Ketuk untuk mengisi form otomatis",
+    fx_frequent: "Sering Dicatat",
+    fx_trend_title: "Tren Keuangan",
+    fx_trend_cashflow: "Arus Kas",
+    fx_trend_balance: "Saldo",
+    fx_trend_daily: "Harian",
+    fx_trend_note_cashflow: "Pemasukan vs pengeluaran, 6 bulan terakhir",
+    fx_trend_note_balance: "Total aset di akhir tiap bulan",
+    fx_trend_note_daily: "Pengeluaran per hari bulan ini",
+    fx_cat_title: "Komposisi per Kategori",
+    fx_period_month: "Bulan Ini",
+    fx_period_prev: "Bulan Lalu",
+    fx_period_3m: "3 Bulan",
+    fx_all: "Semua",
+    fx_no_income_period: "Belum ada pemasukan pada periode ini.",
+    fx_no_expense_period: "Belum ada pengeluaran pada periode ini.",
+    fx_others: "Lainnya",
+    fx_acc_title: "Alokasi Aset",
+    fx_acc_empty: "Belum ada akun. Tambahkan akun atau pasang template.",
+    fx_target_remaining: "Kurang {amount}",
+    fx_target_done: "Target tercapai! 🎉",
+    fx_target_eta: "perkiraan ±{n} bulan lagi",
+    fx_all_targets: "Semua Target",
+    fx_tx_search_ph: "Cari transaksi…",
+    fx_tx_count: "{n} transaksi",
+    fx_load_more: "Tampilkan lebih banyak",
+    fx_today: "Hari Ini",
+    fx_yesterday: "Kemarin",
+    fx_tx_edit_title: "Ubah Transaksi",
+    fx_report_title: "Analisis Keuangan",
+    fx_report_close: "Tutup",
+    fx_report_savings_label: "Tingkat Tabungan Bulan Ini",
+    fx_report_msg_none: "Belum ada transaksi bulan ini.",
+    fx_report_msg_noincome: "Belum ada pemasukan tercatat bulan ini.",
+    fx_report_msg_great: "Luar biasa! Kamu menabung banyak bulan ini 🎉",
+    fx_report_msg_good: "Bagus, pertahankan kebiasaan ini 👍",
+    fx_report_msg_tight: "Hampir impas, coba kurangi pengeluaran kecil.",
+    fx_report_msg_deficit: "Pengeluaran melebihi pemasukan bulan ini ⚠️",
+    fx_report_top_cats: "Kategori Pengeluaran Terbesar",
     btn_post: '+ Post', btn_buat_post: '+ Buat Post', btn_wa_status_side: '📱 Status WA Mood', btn_wa_status: 'Buat Status WA Mood 🔥',
     feed_composer_placeholder: 'Apa yang ingin kamu bagikan?', feed_empty: 'Belum ada post. Jadilah yang pertama!',
     btn_load_more_feed: 'Muat 10 Post Lagi',
@@ -3038,6 +3484,75 @@ const I18N = {
     fin_ph_kategori_nama: 'Category name', fin_type_expense: 'Expense', fin_type_income: 'Income', fin_btn_simpan_kategori: 'Save Category',
     fin_ph_akun_nama: 'Account name (e.g. BCA, Cash)', fin_type_liquid: 'Liquid', fin_type_nonliquid: 'Non-Liquid', fin_btn_simpan_akun: 'Save Account',
     fin_empty_target: 'No targets yet.', fin_empty_kategori: 'No categories yet.', fin_empty_akun: 'No accounts yet.', fin_active_badge: 'Active',
+    fx_refresh: "Refresh",
+    fx_income_this_month: "This Month's Income",
+    fx_starter_title: "Quick start with templates",
+    fx_starter_desc: "Install common categories, accounts, and targets in one tap. You can edit them anytime.",
+    fx_tpl_install_all: "Install Templates",
+    fx_tpl_install_kind: "Install All of These",
+    fx_installing: "Installing",
+    fx_tpl_done: "{n} templates installed.",
+    fx_tpl_partial: "{ok} installed, {fail} failed.",
+    fx_tpl_none_new: "All templates already exist.",
+    fx_tpl_need_master: "Create categories & accounts first (or install templates).",
+    fx_tpl_chips: "Templates — tap to fill the form",
+    fx_streak_title: "Logging Streak: {n} Days! 🔥",
+    fx_streak_zero: "Start your logging streak!",
+    fx_streak_today_done: "Logged today ✅",
+    fx_streak_today_todo: "Nothing logged today — let's log!",
+    fx_streak_btn: "Log",
+    fx_qa_expense: "Spend",
+    fx_qa_income: "Income",
+    fx_qa_accounts: "Accounts",
+    fx_qa_analysis: "Analysis",
+    fx_insight_savings: "Savings Rate",
+    fx_insight_no_income: "No income this month",
+    fx_insight_net: "Net",
+    fx_insight_avg_daily: "Daily Average",
+    fx_insight_projection: "Month-end projection",
+    fx_insight_vs_prev: "vs Last Month",
+    fx_insight_prev_exp: "Last month",
+    fx_insight_biggest: "Biggest Expense",
+    fx_quick_templates: "Quick Templates",
+    fx_quick_hint: "Tap to prefill the form",
+    fx_frequent: "Frequently Logged",
+    fx_trend_title: "Financial Trends",
+    fx_trend_cashflow: "Cash Flow",
+    fx_trend_balance: "Balance",
+    fx_trend_daily: "Daily",
+    fx_trend_note_cashflow: "Income vs expenses, last 6 months",
+    fx_trend_note_balance: "Total assets at each month end",
+    fx_trend_note_daily: "Daily spending this month",
+    fx_cat_title: "Breakdown by Category",
+    fx_period_month: "This Month",
+    fx_period_prev: "Last Month",
+    fx_period_3m: "3 Months",
+    fx_all: "All",
+    fx_no_income_period: "No income in this period.",
+    fx_no_expense_period: "No expenses in this period.",
+    fx_others: "Others",
+    fx_acc_title: "Asset Allocation",
+    fx_acc_empty: "No accounts yet. Add one or install templates.",
+    fx_target_remaining: "{amount} to go",
+    fx_target_done: "Target reached! 🎉",
+    fx_target_eta: "about {n} months left",
+    fx_all_targets: "All Targets",
+    fx_tx_search_ph: "Search transactions…",
+    fx_tx_count: "{n} transactions",
+    fx_load_more: "Show more",
+    fx_today: "Today",
+    fx_yesterday: "Yesterday",
+    fx_tx_edit_title: "Edit Transaction",
+    fx_report_title: "Financial Analysis",
+    fx_report_close: "Close",
+    fx_report_savings_label: "This Month's Savings Rate",
+    fx_report_msg_none: "No transactions this month yet.",
+    fx_report_msg_noincome: "No income recorded this month.",
+    fx_report_msg_great: "Great! You're saving a lot this month 🎉",
+    fx_report_msg_good: "Nice, keep it up 👍",
+    fx_report_msg_tight: "Almost break-even; try trimming small expenses.",
+    fx_report_msg_deficit: "Spending exceeds income this month ⚠️",
+    fx_report_top_cats: "Top Spending Categories",
     btn_post: '+ Post', btn_buat_post: '+ New Post', btn_wa_status_side: '📱 WA Mood Status', btn_wa_status: 'Create WA Mood Status 🔥',
     feed_composer_placeholder: "What's on your mind?", feed_empty: 'No posts yet. Be the first!',
     btn_load_more_feed: 'Load 10 More Posts',
@@ -7431,18 +7946,118 @@ async function loadFinance() {
   renderFinanceAll();
 }
 
+/* ---------- Tampilan baru Keuangan: state UI (tidak mengubah data/logika server) ---------- */
+let finTxFilter = 'all', finTxSearch = '', finTxLimit = 15;
+let finCatPeriod = 'month', finCatType = 'Expense';
+let finTrendMode = 'cashflow', finAccFilter = 'all';
+let finTrendChart = null;
+let finExtra = null;
+let finFrequent = [];
+
+function finLocale() { return currentLang === 'en' ? 'en-US' : 'id-ID'; }
+function finDate(tx) { const d = new Date(tx.tanggal); return isNaN(d) ? null : d; }
+function finDayKey(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function finShortRp(n) {
+  n = Number(n) || 0;
+  const a = Math.abs(n), sign = n < 0 ? '-' : '', idn = currentLang !== 'en';
+  const fmt = (v) => v.toFixed(1).replace(/\.0$/, '').replace('.', idn ? ',' : '.');
+  if (a >= 1e9) return sign + fmt(a / 1e9) + (idn ? ' M' : 'B');
+  if (a >= 1e6) return sign + fmt(a / 1e6) + (idn ? ' jt' : 'M');
+  if (a >= 1e3) return sign + Math.round(a / 1e3) + (idn ? ' rb' : 'K');
+  return sign + Math.round(a);
+}
+function finCatEmoji(nama, tipe) {
+  const s = (nama || '').toLowerCase();
+  const map = [
+    [/makan|food|kuliner|minum|kopi|coffee|resto|drink/, '🍜'], [/transport|bensin|ojek|bbm|parkir|fuel|ride/, '🛵'],
+    [/belanja|shop|market|grocer/, '🛍️'], [/tagihan|listrik|utilit|bill|internet|pulsa|wifi|air /, '💡'],
+    [/hibur|game|nonton|movie|fun|entertain/, '🎮'], [/sehat|health|obat|dokter|medis/, '💊'],
+    [/didik|sekolah|kuliah|edu|buku/, '📚'], [/gaji|salary|upah/, '💵'], [/bonus|hadiah|gift/, '🎁'],
+    [/invest|saham|reksa|dividen|bunga/, '📈'], [/rumah|sewa|kos|kontrak|home|rent/, '🏠'],
+    [/donasi|sedekah|zakat|infaq|charity/, '🤲'], [/lain|other/, '📦']
+  ];
+  for (const [re, e] of map) if (re.test(s)) return e;
+  return tipe === 'Income' ? '💰' : '🧾';
+}
+function finAccEmoji(nama, jenis) {
+  const s = (nama || '').toLowerCase();
+  const map = [
+    [/cash|tunai|kas|dompet|wallet fisik/, '💵'], [/dana|ovo|gopay|shopee|linkaja|e-?wallet|jenius/, '📱'],
+    [/bank|bca|bri|bni|mandiri|rekening|tabungan|cimb|btn|bsi|permata/, '🏦'], [/emas|gold|antam/, '🪙'],
+    [/saham|reksa|invest|crypto|kripto|btc|obligasi|sbn|stock|fund/, '📈'], [/properti|tanah|rumah|property|house/, '🏠'],
+    [/kendaraan|motor|mobil|vehicle|car/, '🚗']
+  ];
+  for (const [re, e] of map) if (re.test(s)) return e;
+  return jenis === 'Liquid' ? '💰' : '💎';
+}
+
+// Hitungan tambahan untuk chart/insight (murni turunan dari finData, tidak menyentuh server)
+function finComputeExtra() {
+  const now = new Date(), y = now.getFullYear(), m = now.getMonth();
+  const rows = finData.transaksi.map(tx => ({ tx, d: finDate(tx), n: Number(tx.nominal) || 0 })).filter(r => r.d);
+  const pm = new Date(y, m - 1, 1);
+  let incomeMonth = 0, expenseMonth = 0, incomePrev = 0, expensePrev = 0, biggest = null;
+  const daily = {};
+  rows.forEach(({ tx, d, n }) => {
+    if (d.getFullYear() === y && d.getMonth() === m) {
+      if (tx.tipe === 'Income') incomeMonth += n;
+      else { expenseMonth += n; daily[d.getDate()] = (daily[d.getDate()] || 0) + n; if (!biggest || n > biggest.n) biggest = { tx, n }; }
+    } else if (d.getFullYear() === pm.getFullYear() && d.getMonth() === pm.getMonth()) {
+      if (tx.tipe === 'Income') incomePrev += n; else expensePrev += n;
+    }
+  });
+  const dayOfMonth = now.getDate(), dim = new Date(y, m + 1, 0).getDate();
+  const avgDaily = dayOfMonth ? expenseMonth / dayOfMonth : 0;
+  const projected = avgDaily * dim;
+  const savingsRate = incomeMonth > 0 ? (incomeMonth - expenseMonth) / incomeMonth * 100 : null;
+  const vsPrev = expensePrev > 0 ? (expenseMonth - expensePrev) / expensePrev * 100 : null;
+
+  const months = [];
+  for (let i = 5; i >= 0; i--) {
+    const dt = new Date(y, m - i, 1);
+    months.push({ y: dt.getFullYear(), m: dt.getMonth(), label: dt.toLocaleDateString(finLocale(), { month: 'short' }), inc: 0, exp: 0, bal: 0 });
+  }
+  const firstStart = new Date(months[0].y, months[0].m, 1);
+  let before = 0;
+  rows.forEach(({ tx, d, n }) => {
+    const signed = tx.tipe === 'Income' ? n : -n;
+    if (d < firstStart) { before += signed; return; }
+    const slot = months.find(s => s.y === d.getFullYear() && s.m === d.getMonth());
+    if (slot) { if (tx.tipe === 'Income') slot.inc += n; else slot.exp += n; }
+  });
+  let run = before;
+  months.forEach(s => { run += s.inc - s.exp; s.bal = run; });
+
+  const days = new Set(rows.map(r => finDayKey(r.d)));
+  const todayLogged = days.has(finDayKey(new Date()));
+  let streak = 0;
+  const cur = new Date();
+  if (!todayLogged) cur.setDate(cur.getDate() - 1);
+  while (days.has(finDayKey(cur))) { streak++; cur.setDate(cur.getDate() - 1); }
+
+  return { incomeMonth, expenseMonth, incomePrev, expensePrev, biggest, daily, dayOfMonth, dim, avgDaily, projected, savingsRate, vsPrev, months, streak, todayLogged };
+}
+
 function renderFinanceAll() {
+  if (!finData) return;
   renderFinanceDashboard();
   renderFinanceTxList();
   renderFinanceTargetSwitcher();
+  renderFinanceExtras();
+  finSyncPills();
 }
 
 function renderFinanceDashboard() {
   const s = finComputeSummary();
+  const x = finExtra = finComputeExtra();
   document.getElementById('fin-total-assets').textContent = finFormatRp(s.totalAssets);
   document.getElementById('fin-liquid-total').textContent = finFormatRp(s.liquidTotal);
   document.getElementById('fin-nonliquid-total').textContent = finFormatRp(s.nonLiquidTotal);
   document.getElementById('fin-expense-total').textContent = finFormatRp(s.expenseThisMonth);
+  const incEl = document.getElementById('fin-income-total');
+  if (incEl) incEl.textContent = finFormatRp(x.incomeMonth);
+  const ml = document.getElementById('fin-month-label');
+  if (ml) ml.textContent = new Date().toLocaleDateString(finLocale(), { month: 'short', year: 'numeric' });
 
   const target = s.activeTarget;
   document.getElementById('fin-target-nominal').textContent = target ? finFormatRp(target.nominalTarget) : t('fin_no_target');
@@ -7452,29 +8067,80 @@ function renderFinanceDashboard() {
   const offset = circumference - (progress / 100) * circumference;
   document.getElementById('fin-progress-ring').setAttribute('stroke-dashoffset', offset);
 
-  // Doughnut chart pengeluaran per kategori
-  const byCat = s.expenseByCategory || {};
-  const labels = Object.keys(byCat);
-  const values = Object.values(byCat);
-  const colors = labels.map(l => finCatColor(l));
-  const canvas = document.getElementById('fin-expense-pie');
-  const ctx = canvas.getContext('2d');
-  if (finPieChart) finPieChart.destroy();
-  if (labels.length === 0) {
-    document.getElementById('fin-pie-legend').innerHTML = `<p class="text-xs text-on-surface-muted">${t('fin_no_expense_this_month')}</p>`;
-  } else if (typeof Chart !== 'undefined') {
-    finPieChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 2, borderColor: '#ffffff' }] },
-      options: { plugins: { legend: { display: false } }, cutout: '68%', maintainAspectRatio: false }
-    });
-    const total = values.reduce((a, b) => a + b, 0);
-    document.getElementById('fin-pie-legend').innerHTML = labels.map((l, i) => `
-      <div class="flex items-center justify-between text-xs">
-        <span class="flex items-center gap-1.5 truncate"><span class="w-2 h-2 rounded-full shrink-0" style="background:${colors[i]}"></span>${escHtml(l)}</span>
-        <span class="font-bold tabular-nums shrink-0">${Math.round(values[i] / total * 100)}%</span>
-      </div>`).join('');
+  // info sisa target + perkiraan waktu tercapai
+  const metaEl = document.getElementById('fin-target-meta');
+  if (metaEl) {
+    metaEl.textContent = '';
+    if (target && Number(target.nominalTarget) > 0) {
+      const remain = Number(target.nominalTarget) - s.totalAssets;
+      if (remain <= 0) metaEl.textContent = t('fx_target_done');
+      else {
+        let txt = t('fx_target_remaining').replace('{amount}', finFormatRp(remain));
+        const net3 = x.months.slice(-3).reduce((a, mo) => a + (mo.inc - mo.exp), 0) / 3;
+        if (net3 > 0) txt += ' · ' + t('fx_target_eta').replace('{n}', Math.ceil(remain / net3));
+        metaEl.textContent = txt;
+      }
+    }
   }
+
+  // Doughnut chart per kategori (id canvas & legend tetap sama)
+  renderFinanceCategoryChart();
+}
+
+function renderFinanceCategoryChart() {
+  const canvas = document.getElementById('fin-expense-pie');
+  const legend = document.getElementById('fin-pie-legend');
+  const center = document.getElementById('fin-pie-center');
+  if (!canvas || !legend || !finData) return;
+  const now = new Date();
+  let from = null, to = null;
+  if (finCatPeriod === 'month') from = new Date(now.getFullYear(), now.getMonth(), 1);
+  else if (finCatPeriod === 'prev') { from = new Date(now.getFullYear(), now.getMonth() - 1, 1); to = new Date(now.getFullYear(), now.getMonth(), 1); }
+  else if (finCatPeriod === '3m') from = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+  const sums = {}; let total = 0;
+  finData.transaksi.forEach(tx => {
+    if (tx.tipe !== finCatType) return;
+    const d = finDate(tx); if (!d) return;
+    if (from && d < from) return;
+    if (to && d >= to) return;
+    const n = Number(tx.nominal) || 0;
+    sums[tx.kategori] = (sums[tx.kategori] || 0) + n; total += n;
+  });
+  const entries = Object.entries(sums).sort((a, b) => b[1] - a[1]);
+  if (finPieChart) { finPieChart.destroy(); finPieChart = null; }
+  if (!entries.length) {
+    if (center) center.innerHTML = '';
+    legend.innerHTML = `<p class="fx-muted fx-xs" style="text-align:center">${t(finCatType === 'Income' ? 'fx_no_income_period' : (finCatPeriod === 'month' ? 'fin_no_expense_this_month' : 'fx_no_expense_period'))}</p>`;
+    return;
+  }
+  const labels = entries.map(e => e[0]), values = entries.map(e => e[1]);
+  const colors = labels.map(l => finCatColor(l));
+  if (typeof Chart !== 'undefined') {
+    finPieChart = new Chart(canvas.getContext('2d'), {
+      type: 'doughnut',
+      data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 3, borderColor: '#ffffff', hoverOffset: 4 }] },
+      options: {
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ' + c.label + ': ' + finFormatRp(c.parsed) } } },
+        cutout: '68%', maintainAspectRatio: false
+      }
+    });
+  }
+  if (center) center.innerHTML = `<span class="a tabular-nums">${finShortRp(total)}</span><span class="b">${t(finCatType === 'Income' ? 'fin_tx_type_income' : 'fin_tx_type_expense')}</span>`;
+  const top = entries.slice(0, 6);
+  const restSum = entries.slice(6).reduce((a, e) => a + e[1], 0);
+  const rowsHtml = top.map(([l, v]) => {
+    const pct = Math.round(v / total * 100);
+    return `<div class="fx-leg-row">
+      <div class="r1"><span class="n"><i class="fx-dot" style="--c:${finCatColor(l)}"></i><span class="t">${finCatEmoji(l, finCatType)} ${escHtml(l)}</span></span><span class="tabular-nums">${pct}%</span></div>
+      <div class="fx-bar"><i style="--c:${finCatColor(l)};width:${pct}%"></i></div>
+      <div class="r2"><span class="tabular-nums">${finFormatRp(v)}</span></div>
+    </div>`;
+  });
+  if (restSum > 0) {
+    const pct = Math.round(restSum / total * 100);
+    rowsHtml.push(`<div class="fx-leg-row"><div class="r1"><span class="n"><i class="fx-dot" style="--c:#94A3B8"></i><span class="t">${t('fx_others')} (${entries.length - 6})</span></span><span class="tabular-nums">${pct}%</span></div><div class="fx-bar"><i style="--c:#94A3B8;width:${pct}%"></i></div><div class="r2"><span class="tabular-nums">${finFormatRp(restSum)}</span></div></div>`);
+  }
+  legend.innerHTML = rowsHtml.join('');
 }
 
 function renderFinanceTargetSwitcher() {
@@ -7482,49 +8148,238 @@ function renderFinanceTargetSwitcher() {
   if (finData.target.length === 0) {
     sel.innerHTML = `<option>${t('fin_no_target')}</option>`;
     sel.onchange = null;
+    renderFinanceTargetList();
     return;
   }
-  sel.innerHTML = finData.target.map(t =>
-    `<option value="${t.id}" ${t.status === 'Aktif' ? 'selected' : ''}>${escHtml(t.nama)}</option>`
+  sel.innerHTML = finData.target.map(tg =>
+    `<option value="${tg.id}" ${tg.status === 'Aktif' ? 'selected' : ''}>${escHtml(tg.nama)}</option>`
   ).join('');
-  sel.onchange = async () => {
-    const id = sel.value;
-    finData.target.forEach(t => t.status = (t.id === id ? 'Aktif' : 'Non-Aktif'));
-    renderFinanceDashboard();
-    try {
-      await apiCall('setActiveFinanceTarget', { username: currentUser.username, id });
-    } catch (e) {
-      showToast(t('fin_toast_fail_active_target'), 'error');
-    }
-  };
+  sel.onchange = () => finActivateTarget(sel.value);
+  renderFinanceTargetList();
+}
+
+// Jadikan target aktif (logika sama dengan switcher asli: update lokal dulu, lalu simpan ke server)
+async function finActivateTarget(id) {
+  finData.target.forEach(tg => tg.status = (tg.id === id ? 'Aktif' : 'Non-Aktif'));
+  renderFinanceDashboard();
+  renderFinanceTargetList();
+  const sel = document.getElementById('fin-target-switcher');
+  if (sel) sel.value = id;
+  try {
+    await apiCall('setActiveFinanceTarget', { username: currentUser.username, id });
+  } catch (e) {
+    showToast(t('fin_toast_fail_active_target'), 'error');
+  }
+}
+
+function renderFinanceTargetList() {
+  const box = document.getElementById('fin-target-list');
+  if (!box || !finData) return;
+  if (finData.target.length < 2) { box.innerHTML = ''; return; }
+  const total = finComputeSummary().totalAssets;
+  box.innerHTML = `<p class="fx-sub">${t('fx_all_targets')}</p>` + finData.target.map(tg => {
+    const goal = Number(tg.nominalTarget) || 0;
+    const pct = goal > 0 ? Math.max(0, Math.min(100, total / goal * 100)) : 0;
+    return `<div class="fx-tg-row ${tg.status === 'Aktif' ? 'on' : ''}" onclick="finActivateTarget('${tg.id}')">
+      <div class="r1"><span class="truncate">🎯 ${escHtml(tg.nama)}</span><span class="tabular-nums">${Math.round(pct)}%</span></div>
+      <div class="fx-bar"><i style="--c:#00D084;width:${pct}%"></i></div>
+      <div class="r2"><span class="tabular-nums">${finFormatRp(goal)}</span>${tg.status === 'Aktif' ? `<span>${t('fin_active_badge')}</span>` : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+function finDayLabel(d) {
+  const today = new Date(), y = new Date(); y.setDate(y.getDate() - 1);
+  if (finDayKey(d) === finDayKey(today)) return t('fx_today');
+  if (finDayKey(d) === finDayKey(y)) return t('fx_yesterday');
+  return d.toLocaleDateString(finLocale(), { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
 }
 
 function renderFinanceTxList() {
   const container = document.getElementById('fin-tx-list');
   const empty = document.getElementById('fin-tx-empty');
-  const sorted = [...finData.transaksi].sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal)).slice(0, 15);
-  if (sorted.length === 0) {
+  const more = document.getElementById('fin-tx-more');
+  const countEl = document.getElementById('fin-tx-count');
+  const q = (finTxSearch || '').trim().toLowerCase();
+  let rows = [...finData.transaksi];
+  if (finTxFilter !== 'all') rows = rows.filter(tx => tx.tipe === (finTxFilter === 'income' ? 'Income' : 'Expense'));
+  if (q) rows = rows.filter(tx => [tx.deskripsi, tx.kategori, tx.akun].some(v => (v || '').toLowerCase().includes(q)));
+  rows.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+  const shown = rows.slice(0, finTxLimit);
+  if (countEl) countEl.textContent = rows.length ? t('fx_tx_count').replace('{n}', rows.length) : '';
+  if (shown.length === 0) {
     container.innerHTML = '';
     empty.classList.remove('hidden');
+    if (more) more.classList.add('hidden');
     return;
   }
   empty.classList.add('hidden');
-  container.innerHTML = sorted.map(tx => `
-    <div class="flex items-center justify-between py-3 cursor-pointer" onclick="openFinanceTxModal('${tx.id}')">
-      <div class="flex items-center gap-3 min-w-0">
-        <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background:${finCatColor(tx.kategori)}22;color:${finCatColor(tx.kategori)}">
-          <span class="material-symbols-outlined text-base">${tx.tipe === 'Income' ? 'trending_up' : 'shopping_bag'}</span>
+  if (more) more.classList.toggle('hidden', rows.length <= shown.length);
+
+  // kelompokkan per hari
+  const groups = [];
+  shown.forEach(tx => {
+    const d = finDate(tx);
+    const key = d ? finDayKey(d) : 'x';
+    let g = groups[groups.length - 1];
+    if (!g || g.key !== key) { g = { key, d, items: [], net: 0 }; groups.push(g); }
+    g.items.push(tx);
+    g.net += (tx.tipe === 'Income' ? 1 : -1) * (Number(tx.nominal) || 0);
+  });
+  container.innerHTML = groups.map(g => `
+    <div class="fx-day"><span>${g.d ? finDayLabel(g.d) : '-'}</span><span class="tabular-nums">${g.net >= 0 ? '+' : '-'} ${finShortRp(Math.abs(g.net))}</span></div>
+    ${g.items.map(tx => {
+      const inc = tx.tipe === 'Income';
+      return `<div class="fx-tx" onclick="openFinanceTxModal('${tx.id}')">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="fx-ic" style="--c:${finCatColor(tx.kategori)}"><span>${finCatEmoji(tx.kategori, tx.tipe)}</span></div>
+          <div class="min-w-0">
+            <p class="fx-tx-t truncate">${escHtml(tx.deskripsi || tx.kategori)}</p>
+            <p class="fx-tx-s truncate">${escHtml(tx.kategori)} · ${escHtml(tx.akun)}</p>
+          </div>
         </div>
-        <div class="min-w-0">
-          <p class="font-semibold text-sm truncate">${escHtml(tx.deskripsi || tx.kategori)}</p>
-          <p class="text-[11px] text-on-surface-muted">${finFormatDate(tx.tanggal)} · ${escHtml(tx.kategori)} · ${escHtml(tx.akun)}</p>
-        </div>
-      </div>
-      <p class="font-bold text-sm tabular-nums shrink-0 ${tx.tipe === 'Income' ? 'text-primary' : 'text-secondary'}">
-        ${tx.tipe === 'Income' ? '+' : '-'} ${finFormatRp(tx.nominal)}
-      </p>
-    </div>
+        <p class="fx-amt ${inc ? 'in' : 'out'} tabular-nums">${inc ? '+' : '-'} ${finFormatRp(tx.nominal)}</p>
+      </div>`;
+    }).join('')}
   `).join('');
+}
+
+function finTxShowMore() { finTxLimit += 15; renderFinanceTxList(); }
+function finOnTxSearch(v) { finTxSearch = v || ''; finTxLimit = 15; renderFinanceTxList(); }
+
+function finSetPill(group, val) {
+  if (group === 'trend') { finTrendMode = val; renderFinanceTrend(); }
+  else if (group === 'catType') { finCatType = val; renderFinanceCategoryChart(); }
+  else if (group === 'catPeriod') { finCatPeriod = val; renderFinanceCategoryChart(); }
+  else if (group === 'acc') { finAccFilter = val; renderFinanceAccounts(); }
+  else if (group === 'tx') { finTxFilter = val; finTxLimit = 15; renderFinanceTxList(); }
+  finSyncPills();
+}
+function finSyncPills() {
+  const st = { trend: finTrendMode, catType: finCatType, catPeriod: finCatPeriod, acc: finAccFilter, tx: finTxFilter };
+  document.querySelectorAll('#tab-finance [data-pill]').forEach(el => {
+    const [g, v] = el.getAttribute('data-pill').split(':');
+    el.classList.toggle('on', st[g] === v);
+  });
+}
+
+// Bagian tambahan: streak, insight, template, tren, akun, banner starter
+function renderFinanceExtras() {
+  if (!finData || !finExtra) return;
+  renderFinanceStreak();
+  renderFinanceInsights();
+  renderFinanceTemplates();
+  renderFinanceTrend();
+  renderFinanceAccounts();
+  const banner = document.getElementById('fin-starter-banner');
+  if (banner) banner.classList.toggle('hidden', !(finData.akun.length === 0 || finData.kategori.length === 0));
+}
+
+function renderFinanceStreak() {
+  const x = finExtra;
+  const tt = document.getElementById('fin-streak-title'), ss = document.getElementById('fin-streak-sub');
+  if (!tt || !ss) return;
+  tt.textContent = x.streak > 0 ? t('fx_streak_title').replace('{n}', x.streak) : t('fx_streak_zero');
+  ss.textContent = x.todayLogged ? t('fx_streak_today_done') : t('fx_streak_today_todo');
+}
+
+function renderFinanceInsights() {
+  const box = document.getElementById('fin-insights');
+  if (!box) return;
+  const x = finExtra;
+  const sr = x.savingsRate;
+  const srTxt = sr === null ? '—' : Math.round(sr) + '%';
+  const srCls = sr === null ? '' : (sr >= 10 ? 'fx-good' : (sr < 0 ? 'fx-bad' : ''));
+  const net = x.incomeMonth - x.expenseMonth;
+  let vsTxt = '—', vsCls = '';
+  if (x.vsPrev !== null) { vsTxt = (x.vsPrev > 0 ? '▲ +' : (x.vsPrev < 0 ? '▼ ' : '')) + Math.round(x.vsPrev) + '%'; vsCls = x.vsPrev > 0 ? 'fx-bad' : 'fx-good'; }
+  const big = x.biggest;
+  const card = (e, label, val, sub, cls) => `<div class="fx-ins"><div class="top"><span class="e">${e}</span><span>${label}</span></div><p class="val tabular-nums ${cls || ''}">${val}</p>${sub ? `<p class="sub">${sub}</p>` : ''}</div>`;
+  box.innerHTML = [
+    card('🐷', t('fx_insight_savings'), srTxt, sr === null ? t('fx_insight_no_income') : (t('fx_insight_net') + ': ' + (net >= 0 ? '+' : '-') + ' ' + finShortRp(Math.abs(net))), srCls),
+    card('📆', t('fx_insight_avg_daily'), finFormatRp(x.avgDaily), t('fx_insight_projection') + ': ' + finShortRp(x.projected)),
+    card('📊', t('fx_insight_vs_prev'), vsTxt, t('fx_insight_prev_exp') + ': ' + finShortRp(x.expensePrev), vsCls),
+    card('🔥', t('fx_insight_biggest'), big ? finFormatRp(big.n) : '—', big ? escHtml(big.tx.deskripsi || big.tx.kategori) : '')
+  ].join('');
+}
+
+function renderFinanceTrend() {
+  const canvas = document.getElementById('fin-trend-chart');
+  const noteEl = document.getElementById('fin-trend-note');
+  if (!canvas || !finExtra) return;
+  const x = finExtra;
+  if (finTrendChart) { finTrendChart.destroy(); finTrendChart = null; }
+  if (noteEl) noteEl.textContent = t('fx_trend_note_' + finTrendMode);
+  if (typeof Chart === 'undefined') return;
+  const tick = '#64748B', grid = 'rgba(100,116,139,.16)';
+  let data, type = 'bar';
+  if (finTrendMode === 'cashflow') {
+    data = { labels: x.months.map(s => s.label), datasets: [
+      { label: t('fin_tx_type_income'), data: x.months.map(s => s.inc), backgroundColor: '#00D084', borderRadius: 8, maxBarThickness: 22 },
+      { label: t('fin_tx_type_expense'), data: x.months.map(s => s.exp), backgroundColor: '#FF6584', borderRadius: 8, maxBarThickness: 22 }
+    ] };
+  } else if (finTrendMode === 'balance') {
+    type = 'line';
+    data = { labels: x.months.map(s => s.label), datasets: [{
+      label: t('fin_total_assets'), data: x.months.map(s => s.bal), borderColor: '#6366F1', backgroundColor: 'rgba(99,102,241,.16)',
+      fill: true, tension: .35, borderWidth: 3, pointRadius: 4, pointBackgroundColor: '#6366F1', pointBorderColor: '#fff', pointBorderWidth: 2
+    }] };
+  } else {
+    const days = []; for (let i = 1; i <= x.dayOfMonth; i++) days.push(i);
+    data = { labels: days, datasets: [{
+      label: t('fin_tx_type_expense'), data: days.map(i => x.daily[i] || 0), backgroundColor: '#FFB800', borderRadius: 6, maxBarThickness: 16
+    }] };
+  }
+  finTrendChart = new Chart(canvas.getContext('2d'), {
+    type, data,
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: finTrendMode === 'cashflow', labels: { color: tick, usePointStyle: true, boxWidth: 8, font: { size: 11, weight: '700' } } },
+        tooltip: { callbacks: { label: c => ' ' + (c.dataset.label ? c.dataset.label + ': ' : '') + finFormatRp(c.parsed.y) } }
+      },
+      scales: {
+        x: { ticks: { color: tick, font: { size: 10, weight: '600' }, maxRotation: 0, autoSkip: true }, grid: { display: false }, border: { display: false } },
+        y: { beginAtZero: finTrendMode !== 'balance', ticks: { color: tick, font: { size: 10, weight: '600' }, callback: v => finShortRp(v) }, grid: { color: grid }, border: { display: false } }
+      }
+    }
+  });
+}
+
+function renderFinanceAccounts() {
+  const grid = document.getElementById('fin-account-grid');
+  if (!grid || !finData) return;
+  const s = finComputeSummary();
+  const allAcc = finData.akun;
+  const posTotal = allAcc.reduce((a, ac) => a + Math.max(0, s.saldoPerAkun[ac.nama] || 0), 0);
+  // bar alokasi Liquid vs Non-Liquid
+  const wrap = document.getElementById('fin-alloc-wrap'), bar = document.getElementById('fin-alloc'), leg = document.getElementById('fin-alloc-leg');
+  const liq = Math.max(0, s.liquidTotal), non = Math.max(0, s.nonLiquidTotal), sum = liq + non;
+  if (wrap) wrap.classList.toggle('hidden', sum <= 0);
+  if (sum > 0 && bar && leg) {
+    const lp = Math.round(liq / sum * 100), np = 100 - lp;
+    bar.innerHTML = `<i style="width:${lp}%;background:#00D084"></i><i style="width:${np}%;background:#6366F1"></i>`;
+    leg.innerHTML = `<span><i class="fx-dot" style="--c:#00D084"></i>${t('fin_type_liquid')} ${lp}%</span><span><i class="fx-dot" style="--c:#6366F1"></i>${t('fin_type_nonliquid')} ${np}%</span>`;
+  }
+  const list = allAcc.filter(a => finAccFilter === 'all' || (finAccFilter === 'liquid' ? a.jenisAset === 'Liquid' : a.jenisAset !== 'Liquid'));
+  if (!list.length) {
+    grid.innerHTML = `<div class="fx-empty" style="grid-column:1/-1;padding:14px 8px"><p>${t('fx_acc_empty')}</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(a => {
+    const saldo = s.saldoPerAkun[a.nama] || 0;
+    const pct = posTotal > 0 ? Math.max(0, Math.round(saldo / posTotal * 100)) : 0;
+    const liquid = a.jenisAset === 'Liquid';
+    const col = liquid ? '#00D084' : '#6366F1';
+    return `<div class="fx-acc">
+      <div class="hd"><span class="em" style="--bg:${liquid ? '#ECFDF5' : '#EEF2FF'}">${finAccEmoji(a.nama, a.jenisAset)}</span>
+        <div class="min-w-0"><p class="nm">${escHtml(a.nama)}</p><span class="jn">${liquid ? t('fin_type_liquid') : t('fin_type_nonliquid')}</span></div></div>
+      <div><p class="sd tabular-nums ${saldo < 0 ? 'neg' : ''}">${finFormatRp(saldo)}</p>
+        <div class="fx-bar"><i style="--c:${col};width:${pct}%"></i></div>
+        <div class="pc"><span>${pct}%</span></div></div>
+    </div>`;
+  }).join('');
 }
 
 function finFormatDate(d) {
@@ -7538,6 +8393,8 @@ function setFinTxType(type) {
   finTxType = type;
   document.getElementById('fin-tx-type-expense').classList.toggle('active-toggle', type === 'Expense');
   document.getElementById('fin-tx-type-income').classList.toggle('active-toggle', type === 'Income');
+  const ic = document.getElementById('fin-tx-type-ic');
+  if (ic) { ic.textContent = type === 'Income' ? '📈' : '📉'; ic.classList.toggle('inc', type === 'Income'); }
   finPopulateKategoriSelect(type);
 }
 
@@ -7554,10 +8411,16 @@ function finPopulateAkunSelect() {
     || `<option value="">${t('fin_no_akun')}</option>`;
 }
 
-function openFinanceTxModal(id) {
+function openFinanceTxModal(id, presetType) {
   document.getElementById('fin-tx-id').value = id || '';
   document.getElementById('fin-tx-delete-btn').classList.toggle('hidden', !id);
   finPopulateAkunSelect();
+  const titleEl = document.getElementById('fin-tx-modal-title');
+  if (titleEl) {
+    const k = id ? 'fx_tx_edit_title' : 'fin_tx_modal_title';
+    titleEl.setAttribute('data-i18n', k);
+    titleEl.textContent = t(k);
+  }
 
   if (id) {
     const tx = finData.transaksi.find(x => x.id === id);
@@ -7570,11 +8433,12 @@ function openFinanceTxModal(id) {
       document.getElementById('fin-tx-akun').value = tx.akun;
     }
   } else {
-    setFinTxType('Expense');
+    setFinTxType(presetType === 'Income' ? 'Income' : 'Expense');
     document.getElementById('fin-tx-tanggal').value = new Date().toISOString().slice(0, 10);
     document.getElementById('fin-tx-deskripsi').value = '';
     document.getElementById('fin-tx-nominal').value = '';
   }
+  finUpdateNominalPreview();
   document.getElementById('finance-tx-modal').classList.remove('hidden');
 }
 
@@ -7666,43 +8530,37 @@ function finResetMasterForm() {
 
 function renderFinanceMasterList() {
   const container = document.getElementById('fin-master-list');
+  const btns = (editFn, delFn, id) => `
+        <div style="display:flex;gap:6px;flex:none">
+          <button class="fx-ibtn e" onclick="${editFn}('${id}')"><span class="material-symbols-outlined">edit</span></button>
+          <button class="fx-ibtn d" onclick="${delFn}('${id}')"><span class="material-symbols-outlined">delete</span></button>
+        </div>`;
   if (finMasterMode === 'target') {
     container.innerHTML = finData.target.map(tg => `
-      <div class="flex items-center justify-between text-sm border border-gray-100 rounded-lg px-3 py-2">
+      <div class="fx-row">
         <div class="min-w-0">
-          <p class="font-semibold truncate">${escHtml(tg.nama)} ${tg.status === 'Aktif' ? `<span class=\\"text-[10px] text-primary font-bold\\">(${t('fin_active_badge')})</span>` : ''}</p>
-          <p class="text-xs text-on-surface-muted tabular-nums">${finFormatRp(tg.nominalTarget)}</p>
-        </div>
-        <div class="flex gap-1 shrink-0">
-          <button onclick="editFinanceTarget('${tg.id}')" class="text-primary"><span class="material-symbols-outlined text-lg">edit</span></button>
-          <button onclick="deleteFinanceTarget('${tg.id}')" class="text-red-500"><span class="material-symbols-outlined text-lg">delete</span></button>
-        </div>
-      </div>`).join('') || `<p class="text-xs text-on-surface-muted">${t('fin_empty_target')}</p>`;
+          <p class="nm">🎯 ${escHtml(tg.nama)}${tg.status === 'Aktif' ? `<span class="bd">(${t('fin_active_badge')})</span>` : ''}</p>
+          <p class="sb tabular-nums">${finFormatRp(tg.nominalTarget)}</p>
+        </div>${btns('editFinanceTarget', 'deleteFinanceTarget', tg.id)}
+      </div>`).join('') || `<p class="fx-muted fx-xs">${t('fin_empty_target')}</p>`;
   } else if (finMasterMode === 'kategori') {
     container.innerHTML = finData.kategori.map(k => `
-      <div class="flex items-center justify-between text-sm border border-gray-100 rounded-lg px-3 py-2">
-        <div class="flex items-center gap-2 min-w-0">
-          <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${k.warna}"></span>
-          <p class="font-semibold truncate">${escHtml(k.nama)} <span class="text-[10px] text-on-surface-muted">(${k.tipe})</span></p>
-        </div>
-        <div class="flex gap-1 shrink-0">
-          <button onclick="editFinanceKategori('${k.id}')" class="text-primary"><span class="material-symbols-outlined text-lg">edit</span></button>
-          <button onclick="deleteFinanceKategori('${k.id}')" class="text-red-500"><span class="material-symbols-outlined text-lg">delete</span></button>
-        </div>
-      </div>`).join('') || `<p class="text-xs text-on-surface-muted">${t('fin_empty_kategori')}</p>`;
+      <div class="fx-row">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0">
+          <i class="fx-dot" style="--c:${k.warna || '#94A3B8'};width:12px;height:12px"></i>
+          <div class="min-w-0"><p class="nm">${finCatEmoji(k.nama, k.tipe)} ${escHtml(k.nama)}</p><p class="sb">${k.tipe}</p></div>
+        </div>${btns('editFinanceKategori', 'deleteFinanceKategori', k.id)}
+      </div>`).join('') || `<p class="fx-muted fx-xs">${t('fin_empty_kategori')}</p>`;
   } else if (finMasterMode === 'akun') {
     container.innerHTML = finData.akun.map(a => `
-      <div class="flex items-center justify-between text-sm border border-gray-100 rounded-lg px-3 py-2">
-        <div class="min-w-0">
-          <p class="font-semibold truncate">${escHtml(a.nama)}</p>
-          <p class="text-xs text-on-surface-muted">${a.jenisAset}</p>
-        </div>
-        <div class="flex gap-1 shrink-0">
-          <button onclick="editFinanceAkun('${a.id}')" class="text-primary"><span class="material-symbols-outlined text-lg">edit</span></button>
-          <button onclick="deleteFinanceAkun('${a.id}')" class="text-red-500"><span class="material-symbols-outlined text-lg">delete</span></button>
-        </div>
-      </div>`).join('') || `<p class="text-xs text-on-surface-muted">${t('fin_empty_akun')}</p>`;
+      <div class="fx-row">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0">
+          <span style="font-size:20px">${finAccEmoji(a.nama, a.jenisAset)}</span>
+          <div class="min-w-0"><p class="nm">${escHtml(a.nama)}</p><p class="sb">${a.jenisAset}</p></div>
+        </div>${btns('editFinanceAkun', 'deleteFinanceAkun', a.id)}
+      </div>`).join('') || `<p class="fx-muted fx-xs">${t('fin_empty_akun')}</p>`;
   }
+  renderFinanceMasterTemplates();
 }
 
 // Target CRUD
@@ -7840,6 +8698,249 @@ async function deleteFinanceAkun(id) {
   } catch (e) {
     showToast(t('fin_toast_server_fail'), 'error');
   }
+}
+
+/* ---------- Keuangan: template, analisis, & helper tampilan baru ---------- */
+// Template transaksi cepat (hanya mengisi form; tersimpan lewat saveFinanceTx yang asli)
+const FIN_QUICK = [
+  { ico: '☕', n: ['Kopi', 'Coffee'], tipe: 'Expense', kw: ['makan', 'food', 'minum', 'kopi', 'drink'] },
+  { ico: '🍜', n: ['Makan Siang', 'Lunch'], tipe: 'Expense', kw: ['makan', 'food', 'resto'] },
+  { ico: '🛵', n: ['Bensin / Ojek', 'Fuel / Ride'], tipe: 'Expense', kw: ['transport', 'bensin', 'ojek', 'fuel'] },
+  { ico: '🛒', n: ['Belanja Bulanan', 'Groceries'], tipe: 'Expense', kw: ['belanja', 'shop', 'market'] },
+  { ico: '💡', n: ['Listrik & Air', 'Electricity & Water'], tipe: 'Expense', kw: ['tagihan', 'listrik', 'bill', 'utilit'] },
+  { ico: '📶', n: ['Pulsa & Internet', 'Phone & Internet'], tipe: 'Expense', kw: ['tagihan', 'pulsa', 'internet', 'bill'] },
+  { ico: '💵', n: ['Gaji', 'Salary'], tipe: 'Income', kw: ['gaji', 'salary'] },
+  { ico: '🎁', n: ['Bonus', 'Bonus'], tipe: 'Income', kw: ['bonus', 'hadiah', 'gift'] }
+];
+
+// Paket template awal (dipasang lewat endpoint simpan yang sudah ada)
+const FIN_STARTER = {
+  kategori: [
+    { n: ['Makan & Minum', 'Food & Drink'], tipe: 'Expense', warna: '#FF6584' },
+    { n: ['Transportasi', 'Transport'], tipe: 'Expense', warna: '#6366F1' },
+    { n: ['Belanja', 'Shopping'], tipe: 'Expense', warna: '#FFB800' },
+    { n: ['Tagihan & Utilitas', 'Bills & Utilities'], tipe: 'Expense', warna: '#06B6D4' },
+    { n: ['Hiburan', 'Entertainment'], tipe: 'Expense', warna: '#A855F7' },
+    { n: ['Kesehatan', 'Health'], tipe: 'Expense', warna: '#F97316' },
+    { n: ['Lainnya', 'Other'], tipe: 'Expense', warna: '#94A3B8' },
+    { n: ['Gaji', 'Salary'], tipe: 'Income', warna: '#00D084' },
+    { n: ['Bonus', 'Bonus'], tipe: 'Income', warna: '#10B981' },
+    { n: ['Hasil Investasi', 'Investment Returns'], tipe: 'Income', warna: '#14B8A6' }
+  ],
+  akun: [
+    { n: ['Tunai', 'Cash'], jenis: 'Liquid' },
+    { n: ['Rekening Bank', 'Bank Account'], jenis: 'Liquid' },
+    { n: ['E-Wallet', 'E-Wallet'], jenis: 'Liquid' },
+    { n: ['Emas', 'Gold'], jenis: 'Non-Liquid' },
+    { n: ['Reksa Dana / Saham', 'Funds / Stocks'], jenis: 'Non-Liquid' }
+  ],
+  target: [
+    { n: ['Dana Darurat', 'Emergency Fund'], nominal: 10000000 },
+    { n: ['Liburan', 'Vacation'], nominal: 5000000 },
+    { n: ['Dana Pendidikan', 'Education Fund'], nominal: 20000000 },
+    { n: ['DP Rumah', 'House Down Payment'], nominal: 50000000 }
+  ]
+};
+
+function finLangIdx() { return currentLang === 'en' ? 1 : 0; }
+
+function renderFinanceTemplates() {
+  const wrap = document.getElementById('fin-quick-templates');
+  if (!wrap || !finData) return;
+  const li = finLangIdx();
+  wrap.innerHTML = FIN_QUICK.map((q, i) =>
+    `<button type="button" class="fx-chip ${q.tipe === 'Income' ? 'inc' : 'exp'}" onclick="finApplyQuick(${i})"><span>${q.ico}</span>${escHtml(q.n[li])}</button>`
+  ).join('');
+
+  // Template "Sering Dicatat": diturunkan dari transaksi yang berulang
+  const map = {};
+  finData.transaksi.forEach(tx => {
+    const key = [tx.tipe, tx.deskripsi || '', tx.kategori, tx.akun].join('|');
+    const m = map[key] || (map[key] = { tx, count: 0, last: 0 });
+    m.count++;
+    const d = finDate(tx), ts = d ? d.getTime() : 0;
+    if (ts >= m.last) { m.last = ts; m.tx = tx; }
+  });
+  finFrequent = Object.values(map).filter(m => m.count >= 2 && m.tx.deskripsi).sort((a, b) => b.count - a.count || b.last - a.last).slice(0, 6);
+  const fw = document.getElementById('fin-frequent-wrap'), fl = document.getElementById('fin-frequent');
+  if (fw && fl) {
+    fw.classList.toggle('hidden', finFrequent.length === 0);
+    fl.innerHTML = finFrequent.map((m, i) => {
+      const inc = m.tx.tipe === 'Income';
+      return `<button type="button" class="fx-chip ${inc ? 'inc' : 'exp'}" onclick="finApplyFrequent(${i})"><span>${finCatEmoji(m.tx.kategori, m.tx.tipe)}</span>${escHtml(m.tx.deskripsi)} · ${finShortRp(m.tx.nominal)}</button>`;
+    }).join('');
+  }
+}
+
+function finApplyQuick(i) {
+  const q = FIN_QUICK[i];
+  if (!q || !finData) return;
+  const cats = finData.kategori.filter(k => k.tipe === q.tipe);
+  if (!cats.length || !finData.akun.length) { showToast(t('fx_tpl_need_master'), 'error'); return; }
+  openFinanceTxModal('', q.tipe);
+  document.getElementById('fin-tx-deskripsi').value = q.n[finLangIdx()];
+  const match = cats.find(k => q.kw.some(w => (k.nama || '').toLowerCase().includes(w))) || cats[0];
+  document.getElementById('fin-tx-kategori').value = match.nama;
+  const acc = finData.akun.find(a => a.jenisAset === 'Liquid') || finData.akun[0];
+  document.getElementById('fin-tx-akun').value = acc.nama;
+  const nom = document.getElementById('fin-tx-nominal');
+  if (nom) nom.focus();
+}
+
+function finApplyFrequent(i) {
+  const m = finFrequent[i];
+  if (!m) return;
+  const tx = m.tx;
+  openFinanceTxModal('', tx.tipe);
+  document.getElementById('fin-tx-deskripsi').value = tx.deskripsi || '';
+  document.getElementById('fin-tx-nominal').value = tx.nominal;
+  document.getElementById('fin-tx-kategori').value = tx.kategori;
+  document.getElementById('fin-tx-akun').value = tx.akun;
+  finUpdateNominalPreview();
+}
+
+function finUpdateNominalPreview() {
+  const el = document.getElementById('fin-tx-nominal'), p = document.getElementById('fin-tx-nominal-preview');
+  if (!el || !p) return;
+  const v = Number(el.value) || 0;
+  p.textContent = v > 0 ? '≈ ' + finFormatRp(v) : '';
+}
+
+/* ---------- Pasang template starter (memakai endpoint simpan yang sudah ada) ---------- */
+let finInstalling = false;
+function finSetInstallProgress(i, n) {
+  document.querySelectorAll('.fin-install-btn').forEach(el => {
+    el.disabled = n > 0;
+    el.textContent = n > 0 ? (t('fx_installing') + ' ' + i + '/' + n) : t(el.getAttribute('data-i18n') || 'fx_tpl_install_all');
+  });
+}
+
+async function finInstallStarter(kind) {
+  if (finInstalling || !currentUser || !finData) return;
+  const li = finLangIdx();
+  const kinds = kind === 'all' ? ['kategori', 'akun', 'target'] : [kind];
+  const jobs = [];
+  kinds.forEach(k => {
+    const existing = k === 'kategori' ? finData.kategori : (k === 'akun' ? finData.akun : finData.target);
+    FIN_STARTER[k].forEach(it => {
+      const nama = it.n[li];
+      const dup = existing.some(e => (e.nama || '').toLowerCase() === nama.toLowerCase() && (k !== 'kategori' || e.tipe === it.tipe));
+      if (!dup) jobs.push({ k, it, nama });
+    });
+  });
+  if (!jobs.length) { showToast(t('fx_tpl_none_new')); return; }
+  finInstalling = true;
+  let ok = 0, fail = 0;
+  for (let i = 0; i < jobs.length; i++) {
+    finSetInstallProgress(i + 1, jobs.length);
+    const { k, it, nama } = jobs[i];
+    try {
+      let res;
+      if (k === 'kategori') res = await apiCall('saveFinanceCategory', { username: currentUser.username, id: '', nama, tipe: it.tipe, warna: it.warna });
+      else if (k === 'akun') res = await apiCall('saveFinanceAccount', { username: currentUser.username, id: '', nama, jenisAset: it.jenis });
+      else res = await apiCall('saveFinanceTarget', { username: currentUser.username, id: '', nama, nominalTarget: it.nominal });
+      if (res && res.success) ok++; else fail++;
+    } catch (e) { fail++; }
+  }
+  finInstalling = false;
+  finSetInstallProgress(0, 0);
+  await finLoadData();
+  renderFinanceAll();
+  const mm = document.getElementById('finance-master-modal');
+  if (mm && !mm.classList.contains('hidden')) renderFinanceMasterList();
+  if (fail) showToast(t('fx_tpl_partial').replace('{ok}', ok).replace('{fail}', fail), 'error');
+  else showToast(t('fx_tpl_done').replace('{n}', ok));
+}
+
+// Chip template di dalam modal Kelola (mengisi form saja, belum menyimpan)
+function renderFinanceMasterTemplates() {
+  const box = document.getElementById('fin-master-templates');
+  if (!box || !finData) return;
+  const li = finLangIdx(), mode = finMasterMode;
+  const src = FIN_STARTER[mode] || [];
+  const existing = (mode === 'kategori' ? finData.kategori : (mode === 'akun' ? finData.akun : finData.target)).map(e => (e.nama || '').toLowerCase());
+  const chips = src.map((it, i) => ({ it, i })).filter(({ it }) => !existing.includes(it.n[li].toLowerCase()));
+  if (!chips.length) { box.innerHTML = ''; return; }
+  box.innerHTML = `<p class="fx-sub">${t('fx_tpl_chips')}</p>
+    <div class="fx-wrap">${chips.map(({ it, i }) => {
+      const lead = mode === 'kategori' ? `<i class="fx-dot" style="--c:${it.warna}"></i>` : (mode === 'akun' ? `<span>${finAccEmoji(it.n[li], it.jenis)}</span>` : '<span>🎯</span>');
+      const tail = mode === 'target' ? ` · ${finShortRp(it.nominal)}` : '';
+      return `<button type="button" class="fx-chip" onclick="finFillMasterTemplate(${i})">${lead}${escHtml(it.n[li])}${tail}</button>`;
+    }).join('')}</div>
+    <button type="button" class="fx-btn-soft fin-install-btn" data-i18n="fx_tpl_install_kind" onclick="finInstallStarter('${mode}')">${t('fx_tpl_install_kind')}</button>`;
+}
+
+function finFillMasterTemplate(i) {
+  const it = (FIN_STARTER[finMasterMode] || [])[i];
+  if (!it) return;
+  const li = finLangIdx();
+  if (finMasterMode === 'target') {
+    document.getElementById('fin-target-edit-id').value = '';
+    document.getElementById('fin-target-nama-input').value = it.n[li];
+    document.getElementById('fin-target-nominal-input').value = it.nominal;
+  } else if (finMasterMode === 'kategori') {
+    document.getElementById('fin-kategori-edit-id').value = '';
+    document.getElementById('fin-kategori-nama-input').value = it.n[li];
+    document.getElementById('fin-kategori-tipe-input').value = it.tipe;
+    document.getElementById('fin-kategori-warna-input').value = it.warna;
+  } else if (finMasterMode === 'akun') {
+    document.getElementById('fin-akun-edit-id').value = '';
+    document.getElementById('fin-akun-nama-input').value = it.n[li];
+    document.getElementById('fin-akun-jenis-input').value = it.jenis;
+  }
+}
+
+/* ---------- Modal Analisis Keuangan ---------- */
+function openFinanceReportModal() {
+  if (!finData) return;
+  finExtra = finComputeExtra();
+  renderFinanceReport();
+  document.getElementById('finance-report-modal').classList.remove('hidden');
+}
+function closeFinanceReportModal() {
+  document.getElementById('finance-report-modal').classList.add('hidden');
+}
+
+function renderFinanceReport() {
+  const body = document.getElementById('fin-report-body');
+  if (!body) return;
+  const x = finExtra, s = finComputeSummary();
+  const sr = x.savingsRate;
+  let msg;
+  if (x.incomeMonth === 0 && x.expenseMonth === 0) msg = t('fx_report_msg_none');
+  else if (sr === null) msg = t('fx_report_msg_noincome');
+  else if (sr >= 30) msg = t('fx_report_msg_great');
+  else if (sr >= 10) msg = t('fx_report_msg_good');
+  else if (sr >= 0) msg = t('fx_report_msg_tight');
+  else msg = t('fx_report_msg_deficit');
+  const bad = sr !== null && sr < 0;
+  const net = x.incomeMonth - x.expenseMonth;
+  const box = (l, v) => `<div class="fx-rbox"><p class="l">${l}</p><p class="v tabular-nums">${v}</p></div>`;
+
+  // kategori pengeluaran terbesar bulan ini
+  const cats = Object.entries(s.expenseByCategory || {}).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const totalExp = s.expenseThisMonth || 0;
+  const catHtml = cats.length ? cats.map(([k, v]) => {
+    const pct = totalExp > 0 ? Math.round(v / totalExp * 100) : 0;
+    return `<div class="fx-rcat"><div class="r1"><span>${finCatEmoji(k, 'Expense')} ${escHtml(k)}</span><span class="tabular-nums">${pct}% · ${finShortRp(v)}</span></div><div class="fx-bar"><i style="--c:${finCatColor(k)};width:${pct}%"></i></div></div>`;
+  }).join('') : `<p class="fx-muted fx-xs" style="margin-top:8px">${t('fin_no_expense_this_month')}</p>`;
+
+  body.innerHTML = `
+    <div class="fx-score ${bad ? 'bad' : ''}">
+      <p class="a">${t('fx_report_savings_label')}</p>
+      <p class="b">${sr === null ? '—' : Math.round(sr) + '%'}</p>
+      <p class="c">${msg}</p>
+    </div>
+    <div class="fx-rgrid">
+      ${box(t('fx_income_this_month'), finFormatRp(x.incomeMonth))}
+      ${box(t('fin_expense_this_month'), finFormatRp(x.expenseMonth))}
+      ${box(t('fx_insight_net'), (net >= 0 ? '+ ' : '- ') + finFormatRp(Math.abs(net)))}
+      ${box(t('fx_insight_vs_prev'), x.vsPrev === null ? '—' : ((x.vsPrev > 0 ? '+' : '') + Math.round(x.vsPrev) + '%'))}
+      ${box(t('fx_insight_avg_daily'), finFormatRp(x.avgDaily))}
+      ${box(t('fx_insight_projection'), finFormatRp(x.projected))}
+    </div>
+    <p class="fx-sub">${t('fx_report_top_cats')}</p>
+    ${catHtml}`;
 }
 
 // ======= STARTUP =======
@@ -8262,7 +9363,27 @@ window.onload = function() {
       <button class="sticker-btn primary" onclick="document.getElementById('sticker-file-input').click()">+ Tambah</button>
       <button class="sticker-btn" onclick="closeStickerSheet()" aria-label="Tutup">✕</button>
     </div>
+    <div class="sticker-tabs" id="stk-tabs">
+      <button type="button" class="sticker-tab active" data-tab="koleksi" onclick="stkSetTab('koleksi')">Koleksiku</button>
+      <button type="button" class="sticker-tab" data-tab="lib" onclick="stkSetTab('lib')">Stiker Monster</button>
+    </div>
     <div id="sticker-grid" class="sticker-grid"></div>
+    <div id="stk-lib">
+      <div class="stk-bar">
+        <div class="stk-search-row">
+          <div class="stk-search-wrap">
+            <input type="search" id="stk-search" class="stk-search" placeholder="Cari stiker (mis. pika, tidur, marah)…" aria-label="Cari stiker" autocomplete="off"/>
+            <button type="button" class="stk-clear" id="stk-clear" aria-label="Hapus pencarian">✕</button>
+          </div>
+          <button type="button" class="sticker-btn" id="stk-random">🎲 Acak</button>
+        </div>
+        <div class="stk-row" id="stk-chars"><span class="stk-lbl">Karakter</span></div>
+        <div class="stk-row" id="stk-moods"><span class="stk-lbl">Emosi</span></div>
+        <div class="stk-row" id="stk-fins"><span class="stk-lbl">Efek</span></div>
+      </div>
+      <div class="stk-meta"><span id="stk-count"></span><small>Ketuk = kirim • Tahan = pratinjau</small></div>
+      <div class="stk-grid" id="stk-grid"></div>
+    </div>
   </div>
 </div>
 <div id="sticker-confirm" onclick="if(event.target===this)closeStickerConfirm()">
@@ -8275,5 +9396,526 @@ window.onload = function() {
     </div>
   </div>
 </div>
+
+<style id="emoji-picker-style">
+.emo-panel,.emo-panel *{box-sizing:border-box}
+.emo-panel{position:fixed;z-index:110;display:none;flex-direction:column;width:380px;max-width:calc(100vw - 16px);height:420px;background:linear-gradient(180deg,#1546BE,#0F2C7A);color:#fff;border-radius:20px;padding:10px;box-shadow:0 -4px 30px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.18);overscroll-behavior:contain}
+.emo-panel.open{display:flex}
+.emo-search-row{position:relative;flex:0 0 auto}
+.emo-search{width:100%;box-sizing:border-box;border:0;outline:0;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;font-size:16px;padding:9px 34px 9px 14px}
+.emo-search::placeholder{color:rgba(255,255,255,.65)}
+.emo-search:focus{background:rgba(255,255,255,.24);box-shadow:0 0 0 2px var(--amber,#FFB800)}
+.emo-search::-webkit-search-cancel-button{display:none}
+.emo-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:none;border:0;background:none;color:#fff;font-size:15px;line-height:1;padding:6px;cursor:pointer;opacity:.8}
+.emo-tones{flex:0 0 auto;display:flex;align-items:center;gap:4px;margin-top:8px;overflow-x:auto;scrollbar-width:none}
+.emo-tones::-webkit-scrollbar,.emo-tabs::-webkit-scrollbar{display:none}
+.emo-tones span{font-size:10px;font-weight:800;letter-spacing:.5px;opacity:.75;padding:0 4px 0 2px;white-space:nowrap}
+.emo-tone{flex:0 0 auto;width:30px;height:30px;border-radius:10px;border:2px solid transparent;background:transparent;font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.emo-tone.active{border-color:var(--amber,#FFB800);background:rgba(255,255,255,.16)}
+.emo-tabs{flex:0 0 auto;display:flex;gap:4px;margin:8px 0 6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.emo-tab{flex:0 0 auto;width:38px;height:34px;border:0;border-radius:12px;background:rgba(255,255,255,.1);font-size:19px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.emo-tab.active{background:var(--amber,#FFB800);box-shadow:0 3px 0 var(--amber-d,#D99500)}
+.emo-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.35) transparent;-webkit-overflow-scrolling:touch}
+.emo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:2px}
+.emo-item{height:40px;border:0;border-radius:10px;background:transparent;font-size:24px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;color:inherit;user-select:none;-webkit-user-select:none}
+.emo-item:hover,.emo-item:focus-visible{background:rgba(255,255,255,.18);outline:0}
+.emo-item:active{transform:scale(.88)}
+.emo-empty{grid-column:1/-1;text-align:center;font-size:13px;opacity:.85;padding:36px 8px}
+.emo-empty b{display:block;font-size:30px;margin-bottom:6px;font-weight:400}
+.emo-foot{flex:0 0 auto;display:flex;align-items:center;gap:8px;margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.16);font-size:12px;min-height:30px}
+.emo-prev-sym{font-size:22px;line-height:1;min-width:26px;text-align:center}
+.emo-prev-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;text-transform:capitalize}
+.emo-count{font-weight:700;opacity:.8;white-space:nowrap}
+</style>
+
+<!-- =================== EMOJI PICKER =================== -->
+<div id="emoji-picker" class="emo-panel" role="dialog" aria-label="Pemilih emoji">
+  <div class="emo-search-row">
+    <input type="search" id="emo-search" class="emo-search" placeholder="Cari emoji (mis. kucing, kopi, hati)…" aria-label="Cari emoji" autocomplete="off"/>
+    <button type="button" class="emo-clear" id="emo-clear" aria-label="Hapus pencarian">✕</button>
+  </div>
+  <div class="emo-tones" id="emo-tones" role="radiogroup" aria-label="Warna kulit">
+    <span>KULIT</span>
+    <button type="button" class="emo-tone active" data-tone="" title="Warna default">🖐️</button>
+    <button type="button" class="emo-tone" data-tone="🏻" title="Kulit cerah">🖐🏻</button>
+    <button type="button" class="emo-tone" data-tone="🏼" title="Kulit cerah-sedang">🖐🏼</button>
+    <button type="button" class="emo-tone" data-tone="🏽" title="Kulit sedang">🖐🏽</button>
+    <button type="button" class="emo-tone" data-tone="🏾" title="Kulit gelap-sedang">🖐🏾</button>
+    <button type="button" class="emo-tone" data-tone="🏿" title="Kulit gelap">🖐🏿</button>
+  </div>
+  <div class="emo-tabs" id="emo-tabs"></div>
+  <div class="emo-scroll" id="emo-scroll"><div class="emo-grid" id="emo-grid"></div></div>
+  <div class="emo-foot">
+    <span class="emo-prev-sym" id="emo-prev-sym">✨</span>
+    <span class="emo-prev-name" id="emo-prev-name">Pilih emoji</span>
+    <span class="emo-count" id="emo-count"></span>
+  </div>
+</div>
+
+<script id="emoji-picker-script">
+(function () {
+  // Data lengkap dari code.html (Playful Emoji Picker)
+var RAW = {
+"Senyum & Emosi":"😀 wajah gembira|😁 gembira mata bahagia|😂 tertawa berurai air mata|😃 tersenyum lebar|😄 tersenyum lebar mata tertutup|😅 tersenyum berkeringat|😆 tersenyum memejamkan mata|😇 wajah malaikat|😉 berkedip|😊 tersenyum mata bahagia|🙂 agak tersenyum|🙃 terbalik|🤣 tertawa terbahak-bahak|🫠 wajah meleleh|😍 mata hati|😘 ciuman jauh|😗 memberi ciuman|😚 ciuman mata tertutup|🤩 mata bintang|🥰 tersenyum 3 hati|🥲 tersenyum dengan air mata|😛 menjulurkan lidah|😋 menikmati|😜 lidah dan berkedip|😝 lidah memejamkan mata|🤑 materialistis|🤪 konyol|🤔 berpikir|🤗 memeluk|🤫 menyuruh diam|🤭 tangan menutup mulut|🫡 memberi hormat|🫢 tangan menutupi mulut|🫣 mengintip|🤐 mulut tertutup rapat|😏 tersenyum sombong|😐 netral|😑 tanpa ekspresi|😒 bosan|😬 menyeringai|😮‍💨 mengembuskan napas|😶 tanpa mulut|🙄 mata ke atas|🤥 bohong|🤨 alis terangkat|🫥 garis titik-titik|🫨 gemetar|😌 lega|😔 merenung|😪 mengantuk|😴 tidur|🤤 ngiler|🫩 kantung mata|😵 pusing|😵‍💫 mata berputar|😷 bermasker|🤒 bertermometer|🤕 diperban|🤢 mual|🤧 bersin|🤮 muntah|🤯 kepala meledak|🥴 pusing mabuk|🥵 kepanasan|🥶 kedinginan|🤠 koboi|🥳 pesta|🥸 menyamar|😎 kacamata hitam|🤓 kutu buku|🧐 monokel|☹️ cemberut|😓 berkeringat|😕 bingung|😖 stres|😞 kecewa|😟 cemas|😢 menangis|😣 tidak setuju|😥 kecewa namun lega|😦 mengerutkan kening|😧 menderita|😨 ketakutan|😩 terlalu lelah|😫 kelelahan|😭 menangis keras|😮 mulut terbuka|😯 hening|😰 takut berkeringat|😱 sangat ketakutan|😲 terpukau|😳 tersipu|🙁 agak cemberut|🥱 menguap|🥹 menahan air mata|🥺 memelas|😠 marah|😡 sangat marah|😤 bersungguh-sungguh|🤬 simbol pada mulut|😈 tersenyum bertanduk|👿 marah bertanduk|💀 tengkorak|☠️ tengkorak dan tulang|💩 kotoran|🤡 badut|👹 monster|👺 topeng hidung panjang|👻 hantu|👽 alien|👾 monster alien|🤖 robot|😸 kucing gembira|😹 kucing tertawa|😺 kucing tersenyum|😻 kucing mata hati|😼 kucing sombong|😽 kucing mencium|😾 kucing marah|😿 kucing menangis|🙀 kucing ketakutan|🙈 tidak melihat|🙉 tidak mendengar|🙊 tidak bicara|❤️ hati merah|🧡 hati oranye|💛 hati kuning|💚 hati hijau|💙 hati biru|🩵 hati biru muda|💜 hati ungu|🤎 hati cokelat|🖤 hati hitam|🩶 hati abu-abu|🤍 hati putih|🩷 hati merah muda|💔 patah hati|❣️ tanda seru hati|💕 dua hati|💞 hati berputar|💓 hati berdetak|💗 hati membesar|💖 hati bersinar|💘 hati terpanah|💝 hati berpita|💟 dekorasi hati|❤️‍🔥 hati berapi-api|❤️‍🩹 mengobati hati|💌 surat cinta|💋 tanda ciuman|💢 marah|💤 zzz|💥 tabrakan|💦 keringat|💨 berlari|💫 pusing|💬 balon ucapan|💭 gelembung pikiran|💯 nilai seratus|🕳️ lubang",
+"Tangan & Tubuh":"~✋ telapak tangan terbuka|~👋 tangan melambai|~🖐️ telapak tangan terbuka|~🖖 salam vulcan|~🤚 angkat tangan|~🫱 tangan menghadap kanan|~🫲 tangan menghadap kiri|~🫳 telapak ke bawah|~🫴 telapak ke atas|~🫷 mendorong ke kiri|~🫸 mendorong ke kanan|~✌️ kemenangan|~👌 oke|~🤌 jari terkuncup|~🤏 tangan menjepit|~🤘 lambang tanduk|~🤙 panggil saya|~🤞 jari menyilang|~🤟 sayang kamu|~🫰 jari menyilang ibu jari|~☝️ menunjuk ke atas|~👆 menunjuk atas|~👇 menunjuk bawah|~👈 menunjuk kiri|~👉 menunjuk kanan|~🖕 jari tengah|~🫵 menunjuk penonton|~✊ tangan terkepal ke atas|~👊 tinju ke depan|~👍 jempol ke atas|~👎 jempol ke bawah|~🤛 tinju kiri|~🤜 tinju kanan|~👏 tepuk tangan|~👐 tangan terbuka|~🙌 mengangkat tangan|~🙏 melipat tangan|~🤝 jabat tangan|~🤲 tangan dirapatkan|~🫶 tangan membentuk hati|~✍️ tangan menulis|~💅 poles kuku|~🤳 selfie|~👂 telinga|~👃 hidung|~💪 lengan berotot|~🦵 tungkai|~🦶 telapak kaki|~🦻 alat bantu dengar|👀 dua mata|👁️ satu mata|👄 mulut|👅 lidah|🦴 tulang|🦷 gigi|🧠 otak|🫀 organ jantung|🫁 paru-paru|🦾 lengan robot|🦿 tungkai robot|🫦 menggigit bibir|👣 jejak kaki|🗣️ kepala berbicara|👤 siluet|👥 beberapa siluet|🫂 orang berpelukan|🫆 sidik jari",
+"Orang":"~👦 anak laki-laki|~👧 anak perempuan|~👨 pria|~👩 wanita|~🧑 dewasa|~🧒 anak|~🧓 lanjut usia|~👴 pria tua|~👵 wanita tua|~👶 bayi|~👱 rambut pirang|~🧔 janggut|👨‍🦰 pria rambut merah|👨‍🦱 pria rambut keriting|👨‍🦲 pria gundul|👨‍🦳 pria rambut putih|👩‍🦰 wanita rambut merah|👩‍🦱 wanita rambut keriting|👩‍🦲 wanita gundul|👩‍🦳 wanita rambut putih|~💁 menengadahkan tangan|~🙅 mengisyaratkan TIDAK|~🙆 mengisyaratkan OKE|~🙇 membungkuk|~🙋 mengangkat tangan|~🙍 marah|~🙎 tidak senang|~🤦 tepuk jidat|~🤷 mengangkat bahu|~🧏 tuli|~👮 polisi|~👰 berpenutup kepala|~👲 topi Tionghoa|~👳 serban|~👷 pekerja konstruksi|~👸 putri|~💂 penjaga|~🕵️ detektif|~🤰 wanita hamil|~🤱 menyusui|~🤴 pangeran|~🤵 bertuksedo|~🥷 ninja|~🧕 kerudung|~🫃 pria hamil|~🫄 orang hamil|~🫅 mahkota|~🧑‍⚕️ petugas kesehatan|~🧑‍⚖️ hakim|~🧑‍✈️ pilot|~🧑‍🌾 petani|~🧑‍🍳 koki|~🧑‍🎓 murid|~🧑‍🎤 penyanyi|~🧑‍🎨 seniman|~🧑‍🏫 guru|~🧑‍🏭 pekerja pabrik|~🧑‍💻 ahli teknologi|~🧑‍💼 pekerja kantoran|~🧑‍🔧 mekanik|~🧑‍🔬 ilmuwan|~🧑‍🚀 astronaut|~🧑‍🚒 pemadam kebakaran|~🎅 Sinterklas|~🤶 Nyonya Sinterklas|~👼 malaikat bayi|~🦸 pahlawan super|~🦹 penjahat super|~🧙 magi|~🧚 peri|~🧛 vampir|~🧜 orang duyung|~🧝 kurcaci|🧞 jin|🧟 zombi|🧌 raksasa|~🏃 berlari|~🚶 berjalan kaki|~🧍 berdiri|~🧎 berlutut|~💃 wanita menari|~🕺 pria menari|~🕴️ pria melayang berjas|~💆 dipijat|~💇 potong rambut|~🧖 ruangan beruap|~🧗 memanjat|~🧑‍🦯 dengan tongkat|~🧑‍🦼 kursi roda bermotor|~🧑‍🦽 kursi roda manual|~🧑‍🩰 penari balet|~⛹️ memantulkan bola|~🏂 peselancar salju|~🏄 berselancar|~🏇 balap kuda|~🏊 berenang|~🏋️ angkat beban|~🏌️ bermain golf|~🚣 mendayung|~🚴 bersepeda|~🚵 sepeda gunung|~🤸 meroda|~🤹 melempar|~🤼 bergulat|~🤽 polo air|~🤾 bola tangan|~🛀 di bak mandi|~🛌 di tempat tidur|~🧘 posisi teratai|⛷️ pemain ski|🤺 anggar|👯 telinga kelinci|👫 pria dan wanita bergandengan|👬 dua pria bergandengan|👭 dua wanita bergandengan|💏 berciuman|💑 pasangan dengan hati|👨‍👩‍👧‍👦 keluarga|👨‍👩‍👦 keluarga pria wanita anak laki-laki|👨‍👩‍👧 keluarga pria wanita anak perempuan|👩‍👧 keluarga ibu dan anak perempuan|👨‍👦 keluarga ayah dan anak laki-laki|👪 keluarga",
+"Hewan & Alam":"🐵 wajah monyet|🐒 monyet|🦍 gorila|🦧 orangutan|🐶 wajah anjing|🐕 anjing|🐩 pudel|🐺 serigala|🦊 rubah|🦝 rakun|🐱 wajah kucing|🐈 kucing|🐈‍⬛ kucing hitam|🦁 singa|🐯 wajah harimau|🐅 harimau|🐆 macan tutul|🐴 wajah kuda|🐎 kuda|🦄 unicorn|🦓 zebra|🦌 rusa|🦬 bison|🐮 wajah sapi|🐂 lembu|🐃 kerbau|🐄 sapi|🐷 wajah babi|🐖 babi|🐗 babi hutan|🐏 domba jantan|🐑 domba|🐐 kambing|🐪 unta|🐫 unta berpunuk dua|🦙 llama|🦒 jerapah|🐘 gajah|🦣 mamut|🦏 badak|🦛 kuda nil|🐭 wajah tikus|🐁 tikus putih|🐀 tikus|🐹 hamster|🐰 wajah kelinci|🐇 kelinci|🐿️ tupai|🦫 biwara|🦔 landak|🦇 kelelawar|🐻 beruang|🐻‍❄️ beruang kutub|🐨 koala|🐼 panda|🦥 kungkang|🦦 berang-berang|🦨 sigung|🦘 kanguru|🦡 musang|🐾 jejak kaki hewan|🦃 kalkun|🐔 ayam|🐓 ayam jago|🐣 itik menetas|🐤 itik bayi|🐦 burung|🐧 pinguin|🕊️ merpati|🦅 elang|🦆 bebek|🦢 angsa|🦉 burung hantu|🦤 dodo|🪶 bulu|🦩 flamingo|🦚 merak|🦜 nuri|🪽 sayap|🐦‍🔥 phoenix|🐸 katak|🐊 buaya|🐢 kura-kura|🦎 kadal|🐍 ular|🐲 wajah naga|🐉 naga|🦕 sauropod|🦖 T-Rex|🐳 paus menyembur|🐋 ikan paus|🐬 lumba-lumba|🦭 anjing laut|🐟 ikan|🐠 ikan tropis|🐡 ikan gembung|🦈 hiu|🐙 gurita|🐚 cangkang spiral|🪸 terumbu karang|🪼 ubur-ubur|🦀 kepiting|🦞 lobster|🦐 udang|🦑 cumi-cumi|🦪 tiram|🐌 siput|🦋 kupu-kupu|🐛 serangga kecil|🐜 semut|🐝 lebah madu|🪲 kumbang|🐞 kumbang betina|🦗 jangkrik|🪳 kecoak|🕷️ laba-laba|🕸️ jaring laba-laba|🦂 kalajengking|🦟 nyamuk|🪰 lalat|🪱 cacing|🦠 mikroba|💐 karangan bunga|🌸 sakura|💮 bunga putih|🪷 teratai|🏵️ hiasan mawar|🌹 mawar|🥀 bunga layu|🌺 kembang sepatu|🌻 bunga matahari|🌼 mekar|🌷 tulip|🪻 hyacinthus|🌱 semai|🪴 tanaman pot|🌲 pohon hijau abadi|🌳 pohon meranggas|🌴 pohon palem|🌵 kaktus|🌾 seikat padi|🌿 herba|☘️ semanggi|🍀 empat daun semanggi|🍁 daun maple|🍂 daun berguguran|🍃 daun tertiup angin|🍄 jamur|🪹 sarang kosong|🪺 sarang bertelur|🌍 bola dunia Eropa-Afrika|🌎 bola dunia Amerika|🌏 bola dunia Asia-Australia|🌋 gunung berapi|⛰️ gunung|🏔️ gunung bersalju|🌙 bulan sabit|🌕 bulan purnama|🌑 bulan baru|⭐ bintang|🌟 bintang bersinar|🌠 bintang jatuh|🌌 bima sakti|☀️ matahari|🌞 wajah matahari|⛅ matahari di balik awan|☁️ awan|🌧️ awan hujan|⛈️ awan petir hujan|🌩️ awan petir|🌨️ awan salju|❄️ serpihan salju|☃️ boneka salju|🌪️ tornado|🌫️ kabut|🌈 pelangi|☔ payung hujan|⚡ tegangan tinggi|🔥 api|💧 tetesan air|🌊 ombak|🌀 topan|🪐 planet bercincin|☄️ komet",
+"Makanan & Minuman":"🍇 anggur|🍈 melon|🍉 semangka|🍊 jeruk|🍋 lemon|🍋‍🟩 limau|🍌 pisang|🍍 nanas|🥭 mangga|🍎 apel merah|🍏 apel hijau|🍐 pir|🍑 persik|🍒 ceri|🍓 stroberi|🫐 blueberry|🥝 kiwi|🍅 tomat|🫒 zaitun|🥥 kelapa|🥑 alpukat|🍆 terung|🥔 kentang|🥕 wortel|🌽 jagung|🌶️ cabai pedas|🫑 paprika|🥒 ketimun|🥬 selada hijau|🥦 brokoli|🧄 bawang putih|🧅 bawang bombay|🥜 kacang tanah|🫘 kacang merah|🌰 kastanye|🫚 akar jahe|🫛 kacang polong|🍄‍🟫 jamur cokelat|🍞 roti|🥐 croissant|🥖 baguette|🫓 roti pipih|🥨 pretzel|🥯 bagel|🥞 panekuk|🧇 wafel|🧀 keju|🍖 daging pada tulang|🍗 kaki ayam|🥩 potongan daging|🥓 babi asap|🍔 hamburger|🍟 kentang goreng|🍕 pizza|🌭 hot dog|🥪 roti lapis|🌮 taco|🌯 burrito|🫔 tamale|🥙 roti tawar isi|🧆 falafel|🥚 telur|🍳 memasak|🥘 wajan dangkal|🍲 panci makanan|🫕 fondue|🥣 mangkuk dengan sendok|🥗 salad hijau|🍿 popcorn|🧈 mentega|🧂 garam|🥫 makanan kaleng|🍱 kotak bento|🍘 kerupuk beras|🍙 nasi kepal|🍚 nasi matang|🍛 nasi kari|🍜 mangkuk mengepul|🍝 spageti|🍠 ubi panggang|🍢 oden|🍣 sushi|🍤 udang goreng|🍥 kue ikan|🥮 kue bulan|🍡 dango|🥟 dumpling|🥠 kue keberuntungan|🥡 kotak makanan|🍦 es krim lembut|🍧 es serut|🍨 es krim|🍩 donat|🍪 biskuit|🎂 kue ulang tahun|🍰 kue|🧁 kue mangkuk|🥧 pai|🍫 cokelat|🍬 permen|🍭 lolipop|🍮 puding|🍯 madu|🍼 botol bayi|🥛 susu|☕ minuman hangat|🫖 teko|🍵 teh|🍶 sake|🍾 botol sampanye|🍷 anggur|🍸 cocktail|🍹 minuman tropis|🍺 bir|🍻 bir berdenting|🥂 mendentingkan gelas|🥃 tumbler|🫗 menuang cairan|🥤 cangkir sedotan|🧋 teh bubble|🧃 kotak minuman|🧉 teh mate|🧊 es batu|🥢 sumpit|🍽️ garpu pisau piring|🍴 garpu dan pisau|🥄 sendok|🔪 pisau dapur|🫙 toples|🏺 amphora",
+"Perjalanan":"🗺️ peta dunia|🧭 kompas|🏔️ gunung bersalju|🏕️ berkemah|🏖️ pantai|🏜️ gurun|🏝️ pulau terpencil|🏞️ taman nasional|🏟️ stadion|🏛️ bangunan klasik|🏗️ konstruksi|🧱 batu bata|🪨 batu|🪵 kayu|🛖 pondok|🏘️ perumahan|🏠 rumah|🏡 rumah dengan taman|🏢 gedung perkantoran|🏣 kantor pos Jepang|🏤 kantor pos|🏥 rumah sakit|🏦 bank|🏨 hotel|🏩 hotel cinta|🏪 minimarket|🏫 sekolah|🏬 toserba|🏭 pabrik|🏯 kastel Jepang|🏰 kastel|💒 pernikahan|🗼 menara Tokyo|🗽 Patung Liberty|⛪ gereja|🕌 masjid|🛕 pura|🕍 sinagog|⛩️ kuil Shinto|🕋 ka’bah|⛲ air mancur|⛺ tenda|🌁 berkabut|🌃 malam berbintang|🏙️ panorama kota|🌄 matahari terbit di gunung|🌅 matahari terbit|🌆 kota sore hari|🌇 matahari terbenam|🌉 jembatan malam|♨️ sumber air panas|🎠 komidi putar|🛝 perosotan|🎡 kincir ria|🎢 roller coaster|💈 tanda salon|🎪 tenda sirkus|🚂 lokomotif|🚃 gerbong|🚄 kereta ekspres|🚅 kereta peluru|🚆 kereta|🚇 kereta bawah tanah|🚈 light rail|🚉 stasiun|🚊 trem|🚝 monorel|🚌 bus|🚍 bus datang|🚎 bus listrik|🚐 minibus|🚑 ambulans|🚒 pemadam kebakaran|🚓 mobil polisi|🚕 taksi|🚗 mobil|🚙 kendaraan rekreasi|🛻 truk pikap|🚚 truk pengiriman|🚛 lori gandeng|🚜 traktor|🏎️ mobil balap|🏍️ sepeda motor|🛵 motor skuter|🛺 bajaj|🚲 sepeda|🛴 otoped|🛹 papan luncur|🛼 sepatu roda|🚏 halte bus|🛣️ jalan raya|🛤️ rel kereta|⛽ pompa bensin|🛞 roda|🚨 lampu mobil polisi|🚥 lampu lalu lintas horizontal|🚦 lampu lalu lintas vertikal|🛑 rambu stop|🚧 konstruksi|⚓ jangkar|🛟 ban pelampung|⛵ perahu layar|🛶 kano|🚤 perahu cepat|🛳️ kapal penumpang|⛴️ kapal feri|🛥️ perahu bermotor|🚢 kapal|✈️ pesawat|🛩️ pesawat kecil|🛫 lepas landas|🛬 mendarat|🪂 parasut|💺 kursi|🚁 helikopter|🚟 kereta suspensi|🚠 kereta gantung|🚡 trem gantung|🛰️ satelit|🚀 roket|🛸 piring terbang|🛎️ bel meja|🧳 koper|⌛ jam pasir|⏳ jam pasir bergerak|⌚ jam tangan|⏰ jam weker|⏱️ stopwatch|⏲️ penghitung waktu|🕰️ jam perapian|🕛 jam 12|🕐 jam 1|🕑 jam 2|🕒 jam 3|🕓 jam 4|🕔 jam 5|🕕 jam 6|🕖 jam 7|🕗 jam 8|🕘 jam 9|🕙 jam 10|🕚 jam 11",
+"Aktivitas":"🎃 jack-o-lantern|🎄 pohon Natal|🎆 kembang api|🎇 kembang api batang|🧨 petasan|✨ berkilau|🎈 balon|🎉 party popper|🎊 bola konfeti|🎋 pohon tanabata|🎍 dekorasi pinus|🎎 boneka Jepang|🎏 bendera ikan koi|🎐 lonceng angin|🎑 perayaan bulan|🧧 amplop merah|🎀 pita|🎁 kado|🎗️ pita pengingat|🎟️ tiket masuk|🎫 tiket|🎖️ medali militer|🏆 piala|🏅 medali olahraga|🥇 medali emas|🥈 medali perak|🥉 medali perunggu|⚽ bola sepak|⚾ bisbol|🥎 sofbol|🏀 bola basket|🏐 bola voli|🏈 American football|🏉 rugbi|🎾 tenis|🥏 lempar cakram|🎳 bowling|🏏 kriket|🏑 hoki lapangan|🏒 hoki es|🥍 lacrosse|🏓 ping pong|🏸 bulu tangkis|🥊 sarung tinju|🥋 seragam beladiri|🥅 gawang|⛳ bendera golf|⛸️ seluncur es|🎣 pancing|🤿 kacamata selam|🎽 kaos lari|🎿 ski|🛷 kereta luncur|🥌 batu curling|🎯 dart|🪀 yo-yo|🪁 layang-layang|🔫 pistol air|🎱 biliar 8 bola|🔮 bola kristal|🪄 tongkat ajaib|🎮 video game|🕹️ joystick|🎰 mesin slot|🎲 dadu|🧩 keping puzzle|🧸 boneka beruang|🪅 pinata|🪩 bola disko|🪆 boneka bersarang|♠️ waru|♥️ hati kartu|♦️ wajik|♣️ keriting|♟️ pion catur|🃏 joker|🀄 naga merah mahyong|🎴 kartu bunga|🎭 seni drama|🖼️ bingkai gambar|🎨 palet pelukis|🧵 benang|🪡 jarum jahit|🧶 gulungan benang|🪢 simpul",
+"Objek":"👓 kacamata|🕶️ kacamata hitam|🥽 kacamata renang|🥼 jas laboratorium|🦺 rompi pengaman|👔 dasi|👕 kaos|👖 jeans|🧣 syal|🧤 sarung tangan|🧥 mantel|🧦 kaus kaki|👗 gaun|👘 kimono|🥻 sari|🩱 pakaian renang|🩲 celana renang|🩳 celana pendek|👙 bikini|👚 pakaian wanita|🪭 kipas lipat|👛 dompet|👜 tas jinjing|👝 kantung|🛍️ tas belanja|🎒 tas sekolah|🩴 sandal jepit|👞 sepatu pria|👟 sepatu lari|🥾 sepatu mendaki|🥿 sepatu flat|👠 hak tinggi|👡 sandal wanita|🩰 sepatu balet|👢 sepatu bot|🪮 sisir garpu|👑 mahkota|👒 topi wanita|🎩 topi tinggi|🎓 topi wisuda|🧢 topi berlidah|🪖 helm tentara|⛑️ helm palang putih|📿 tasbih|💄 lipstik|💍 cincin|💎 batu permata|🔇 speaker mati|🔈 volume rendah|🔉 volume sedang|🔊 volume tinggi|📢 pengeras suara|📣 megafon|📯 trompet pos|🔔 lonceng|🔕 lonceng dicoret|🎼 naskah musik|🎵 not musik|🎶 not-not musik|🎙️ mikrofon studio|🎚️ penggeser|🎛️ kenop kontrol|🎤 mikrofon|🎧 headphone|📻 radio|🎷 saksofon|🪗 akordeon|🎸 gitar|🎹 keyboard musik|🎺 trompet|🎻 biola|🪕 banjo|🥁 drum|🪘 gendang|🪇 marakas|🪈 seruling|📱 ponsel|📲 telepon masuk|☎️ telepon|📞 gagang telepon|📟 pager|📠 faks|🔋 baterai|🪫 baterai lemah|🔌 steker|💻 laptop|🖥️ desktop|🖨️ printer|⌨️ keyboard|🖱️ mouse|🖲️ trackball|💽 disk komputer|💾 disket|💿 disk optik|📀 dvd|🧮 sempoa|🎥 kamera film|🎞️ frame film|📽️ proyektor|🎬 papan sutradara|📺 televisi|📷 kamera|📸 kamera flash|📹 kamera video|📼 kaset video|🔍 kaca pembesar kiri|🔎 kaca pembesar kanan|🕯️ lilin|💡 bohlam|🔦 senter|🏮 lampion merah|🪔 lampu diya|📔 buku catatan bersampul|📕 buku tertutup|📖 buku terbuka|📗 buku hijau|📘 buku biru|📙 buku oranye|📚 buku|📓 buku catatan|📒 buku besar|📃 halaman tergulung|📜 gulungan|📄 halaman|📰 koran|🗞️ gulungan koran|📑 penanda halaman|🔖 pembatas buku|🏷️ label|💰 kantung uang|🪙 koin|💴 yen|💵 dolar|💶 euro|💷 pound|💸 uang bersayap|💳 kartu kredit|🧾 kuitansi|💹 bagan naik yen|✉️ amplop|📧 email|📨 amplop datang|📩 amplop panah|📤 kotak keluar|📥 kotak masuk|📦 paket|📫 kotak surat|📮 kotak pos|🗳️ kotak surat suara|✏️ pensil|✒️ ujung pena|🖋️ pena tinta|🖊️ pena|🖌️ kuas|🖍️ krayon|📝 memo|💼 tas kantor|📁 folder|📂 folder terbuka|🗂️ pembagi kartu|📅 kalender|📆 kalender sobek|🗒️ catatan spiral|🗓️ kalender spiral|📇 indeks kartu|📈 bagan naik|📉 bagan turun|📊 diagram batang|📋 papan klip|📌 paku penanda|📍 paku bulat|📎 klip kertas|🖇️ klip tertaut|📏 penggaris lurus|📐 penggaris segitiga|✂️ gunting|🗃️ kotak file|🗄️ lemari file|🗑️ keranjang sampah|🔒 gembok|🔓 gembok terbuka|🔏 gembok dengan pena|🔐 gembok dengan kunci|🔑 kunci|🗝️ kunci antik|🔨 palu|🪓 kapak|⛏️ beliung|⚒️ palu dan beliung|🛠️ palu dan kunci inggris|🗡️ belati|⚔️ pedang bersilang|💣 bom|🪃 bumerang|🏹 busur dan panah|🛡️ perisai|🪚 gergaji|🔧 kunci inggris|🪛 obeng|🔩 mur dan baut|⚙️ roda gigi|🗜️ klem|⚖️ timbangan|🦯 tongkat tunanetra|🔗 tautan|⛓️ rantai|🪝 kait|🧰 kotak perkakas|🧲 magnet|🪜 tangga|⚗️ alembic|🧪 tabung uji|🧫 cawan petri|🧬 dna|🔬 mikroskop|🔭 teleskop|📡 antena satelit|💉 suntikan|🩸 tetesan darah|💊 pil|🩹 plester|🩼 kruk|🩺 stetoskop|🩻 sinar-x|🚪 pintu|🛗 elevator|🪞 cermin|🪟 jendela|🛏️ tempat tidur|🛋️ sofa dan lampu|🪑 bangku|🚽 toilet|🪠 penyedot wc|🚿 shower|🛁 bathtub|🪤 perangkap tikus|🪒 pisau cukur|🧴 botol losion|🧷 peniti|🧹 sapu|🧺 keranjang|🧻 gulungan kertas|🪣 ember|🧼 sabun|🫧 gelembung|🪥 sikat gigi|🧽 spons|🧯 pemadam api|🛒 troli belanja|🚬 rokok|⚰️ peti mati|🪦 batu nisan|⚱️ guci abu|🧿 jimat nazar|🪬 hamsa|🗿 moai|🪧 plakat|🪪 kartu identitas",
+"Simbol":"🏧 tanda ATM|🚮 buang sampah|🚰 air minum|♿ kursi roda|🚹 toilet pria|🚺 toilet wanita|🚻 kamar kecil|🚼 simbol bayi|🚾 kloset air|🛂 kontrol paspor|🛃 bea cukai|🛄 bagasi|🛅 koper tertinggal|⚠️ peringatan|🚸 anak menyeberang|⛔ dilarang masuk|🚫 dilarang|🚳 dilarang bersepeda|🚭 dilarang merokok|🚯 dilarang buang sampah|🚱 air tidak layak minum|🚷 pejalan kaki dilarang|📵 dilarang ponsel|🔞 di bawah 18 tahun|☢️ radioaktif|☣️ biohazard|⬆️ panah atas|↗️ panah kanan atas|➡️ panah kanan|↘️ panah kanan bawah|⬇️ panah bawah|↙️ panah kiri bawah|⬅️ panah kiri|↖️ panah kiri atas|↕️ panah atas bawah|↔️ panah kiri kanan|↩️ panah melengkung kiri|↪️ panah melengkung kanan|⤴️ panah melengkung atas|⤵️ panah melengkung bawah|🔃 panah searah jarum jam|🔄 panah berlawanan jarum jam|🔙 BACK|🔚 END|🔛 ON!|🔜 SOON|🔝 TOP|🛐 tempat ibadah|⚛️ atom|🕉️ om|✡️ bintang Daud|☸️ roda dharma|☯️ yin yang|✝️ salib latin|☦️ salib ortodoks|☪️ bintang dan bulan|☮️ simbol damai|🕎 menorah|🔯 bintang enam titik|🪯 khanda|♈ Aries|♉ Taurus|♊ Gemini|♋ Cancer|♌ Leo|♍ Virgo|♎ Libra|♏ Scorpio|♐ Sagitarius|♑ Capricorn|♒ Aquarius|♓ Pisces|⛎ Ophiuchus|🔀 acak lagu|🔁 ulangi|🔂 ulangi satu lagu|▶️ putar|⏩ maju cepat|⏭️ lagu berikutnya|⏯️ putar atau jeda|◀️ mundur|⏪ mundur cepat|⏮️ lagu terakhir|🔼 naik|⏫ naik cepat|🔽 turun|⏬ turun cepat|⏸️ jeda|⏹️ berhenti|⏺️ rekam|⏏️ keluarkan|🎦 film|🔅 redupkan|🔆 cerahkan|📶 batang antena|🛜 nirkabel|📳 mode getar|📴 ponsel nonaktif|♀️ simbol wanita|♂️ simbol pria|⚧️ transgender|✖️ kali|➕ tambah|➖ kurang|➗ bagi|🟰 sama dengan|♾️ tak terhingga|‼️ seru ganda|⁉️ seru dan tanya|❓ tanya merah|❔ tanya putih|❕ seru putih|❗ seru merah|〰️ garis bergelombang|💱 kurs|💲 tanda dolar|⚕️ simbol kedokteran|♻️ daur ulang|⚜️ fleur-de-lis|🔱 trisula|📛 lencana nama|🔰 pemula Jepang|⭕ lingkaran besar|✅ centang putih|☑️ kotak bercentang|✔️ centang|❌ tanda silang|❎ tombol silang|➰ untaian bergelombang|➿ untaian ganda|〽️ alternasi|✳️ bintang delapan lancip|✴️ bintang delapan|❇️ kilauan|©️ hak cipta|®️ terdaftar|™️ merek dagang|🫟 percikan|#️⃣ keycap #|*️⃣ keycap *|0️⃣ keycap 0|1️⃣ keycap 1|2️⃣ keycap 2|3️⃣ keycap 3|4️⃣ keycap 4|5️⃣ keycap 5|6️⃣ keycap 6|7️⃣ keycap 7|8️⃣ keycap 8|9️⃣ keycap 9|🔟 keycap 10|🔠 huruf kapital|🔡 huruf kecil|🔢 angka|🔣 simbol|🔤 huruf latin|🅰️ A|🆎 AB|🅱️ B|🆑 CL|🅾️ O|🅿️ P|🆘 SOS|🆒 COOL|🆓 FREE|🆕 NEW|🆖 NG|🆗 OK|🆙 UP!|🆚 VS|ℹ️ informasi|🆔 ID|Ⓜ️ M dalam lingkaran|🔴 lingkaran merah|🟠 lingkaran oranye|🟡 lingkaran kuning|🟢 lingkaran hijau|🔵 lingkaran biru|🟣 lingkaran ungu|🟤 lingkaran cokelat|⚫ lingkaran hitam|⚪ lingkaran putih|🟥 persegi merah|🟧 persegi oranye|🟨 persegi kuning|🟩 persegi hijau|🟦 persegi biru|🟪 persegi ungu|🟫 persegi cokelat|⬛ persegi besar hitam|⬜ persegi besar putih|◼️ persegi medium hitam|◻️ persegi medium putih|▪️ persegi kecil hitam|▫️ persegi kecil putih|🔶 wajik oranye besar|🔷 wajik biru besar|🔸 wajik oranye kecil|🔹 wajik biru kecil|🔺 segitiga merah atas|🔻 segitiga merah bawah|💠 wajik bertitik|🔘 tombol radio|🔳 tombol persegi putih|🔲 tombol persegi hitam"
+};
+var SPECIAL_FLAGS = "🏁 bendera kotak-kotak|🚩 bendera segitiga|🎌 bendera menyilang|🏴 bendera hitam|🏳️ bendera putih|🏳️‍🌈 bendera pelangi|🏳️‍⚧️ bendera transgender|🏴‍☠️ bendera bajak laut|🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inggris|🏴󠁧󠁢󠁳󠁣󠁴󠁿 Skotlandia|🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales";
+
+  var DATA = {}, ORDER = [], currentCategory = "Senyum & Emosi", recent = [];
+  var selectedTone = "", target = "chat", inited = false, isOpen = false;
+  var RECENT_KEY = "pesaner_emoji_recent";
+  var CATEGORY_ICONS = {"Terbaru":"🕘","Senyum & Emosi":"😄","Tangan & Tubuh":"🖐️","Orang":"🧑","Hewan & Alam":"🐱","Makanan & Minuman":"🍔","Perjalanan":"🚀","Aktivitas":"⚽","Objek":"💡","Simbol":"🔣","Bendera":"🏁"};
+  var $ = function (id) { return document.getElementById(id); };
+
+  function parseData(s) {
+    return s.split("|").map(function (item) {
+      var hasTone = item.charAt(0) === "~";
+      if (hasTone) item = item.slice(1);
+      var sp = item.indexOf(" ");
+      return { e: item.slice(0, sp), n: item.slice(sp + 1), t: hasTone };
+    });
+  }
+
+  function buildData() {
+    Object.keys(RAW).forEach(function (k) { DATA[k] = parseData(RAW[k]); });
+    var flags = parseData(SPECIAL_FLAGS), dn = null;
+    try { dn = new Intl.DisplayNames(["id"], { type: "region" }); } catch (e) {}
+    if (dn) {
+      for (var a = 65; a < 91; a++) for (var b = 65; b < 91; b++) {
+        var code = String.fromCharCode(a, b), name;
+        try { name = dn.of(code); } catch (err) { continue; }
+        if (!name || name === code || name === "Wilayah Tidak Dikenal") continue;
+        flags.push({ e: String.fromCodePoint(127397 + a, 127397 + b), n: name, t: false });
+      }
+    }
+    DATA["Bendera"] = flags;
+    ORDER = ["Terbaru"].concat(Object.keys(DATA));
+    try { var r = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); if (Array.isArray(r)) recent = r.filter(function (x) { return x && x.e; }).slice(0, 40); } catch (e) {}
+  }
+
+  function applySkinTone(item) {
+    if (!item.t || !selectedTone) return item.e;
+    var parts = item.e.split("\u200D");
+    parts[0] = parts[0].replace(/\uFE0F/g, "") + selectedTone;
+    return parts.join("\u200D");
+  }
+
+  function renderTabs() {
+    var box = $("emo-tabs"), hasSearch = $("emo-search").value.trim().length > 0;
+    box.innerHTML = "";
+    ORDER.forEach(function (cat) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "emo-tab" + (cat === currentCategory && !hasSearch ? " active" : "");
+      b.textContent = CATEGORY_ICONS[cat] || "🏷️";
+      b.title = cat; b.setAttribute("aria-label", cat);
+      b.onclick = function () {
+        currentCategory = cat;
+        $("emo-search").value = ""; $("emo-clear").style.display = "none";
+        renderTabs(); renderGrid(); $("emo-scroll").scrollTop = 0;
+      };
+      box.appendChild(b);
+    });
+    var act = box.querySelector(".active");
+    if (act && act.scrollIntoView) { try { box.scrollLeft = act.offsetLeft - 8; } catch (e) {} }
+  }
+
+  function setPreview(sym, name) { $("emo-prev-sym").textContent = sym; $("emo-prev-name").textContent = name; }
+
+  function renderGrid() {
+    var q = $("emo-search").value.trim().toLowerCase(), list = [];
+    if (q) {
+      Object.keys(DATA).forEach(function (cat) {
+        DATA[cat].forEach(function (it) { if (it.n.toLowerCase().indexOf(q) > -1 || it.e.indexOf(q) > -1) list.push(it); });
+      });
+    } else if (currentCategory === "Terbaru") list = recent;
+    else list = DATA[currentCategory] || [];
+
+    $("emo-count").textContent = list.length + " emoji" + (q ? " ditemukan" : "");
+    if (!q) setPreview(CATEGORY_ICONS[currentCategory] || "✨", currentCategory);
+    var grid = $("emo-grid"); grid.innerHTML = "";
+    if (!list.length) {
+      var d = document.createElement("div"); d.className = "emo-empty";
+      d.innerHTML = q ? "<b>🔍</b>Tidak ditemukan. Coba kata lain, mis. “senang”, “kucing”, “kopi”."
+                      : "<b>🕘</b>Belum ada riwayat. Pilih emoji apa saja untuk memulai.";
+      grid.appendChild(d); return;
+    }
+    var frag = document.createDocumentFragment();
+    list.forEach(function (item) {
+      var ch = applySkinTone(item), c = document.createElement("button");
+      c.type = "button"; c.className = "emo-item"; c.textContent = ch;
+      c.setAttribute("aria-label", item.n); c.title = item.n;
+      c.onmouseenter = c.onfocus = function () { setPreview(ch, item.n); };
+      c.onclick = function () { pick(ch, item); };
+      frag.appendChild(c);
+    });
+    grid.appendChild(frag);
+  }
+
+  function pick(ch, item) {
+    var el = $(target + "-input");
+    if (el) {
+      var s = typeof el.selectionStart === "number" ? el.selectionStart : el.value.length;
+      var e = typeof el.selectionEnd === "number" ? el.selectionEnd : s;
+      el.setRangeText(ch, s, e, "end");
+      // memicu handler oninput asli (autoGrowTextarea, updateChatInputMode)
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      if (window.matchMedia && matchMedia("(pointer:fine)").matches) { try { el.focus({ preventScroll: true }); } catch (x) {} }
+    }
+    recent = recent.filter(function (r) { return r.e !== item.e; });
+    recent.unshift({ e: item.e, n: item.n, t: item.t });
+    if (recent.length > 40) recent = recent.slice(0, 40);
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(recent)); } catch (x) {}
+    if (currentCategory === "Terbaru" && !$("emo-search").value.trim()) { /* daftar terbaru diperbarui saat dibuka kembali */ }
+  }
+
+  function position() {
+    var btn = $(target + "-emoji-btn"), p = $("emoji-picker");
+    if (!btn || !isOpen) return;
+    var r = btn.getBoundingClientRect(), vv = window.visualViewport;
+    var vw = vv ? vv.width : window.innerWidth, offL = vv ? vv.offsetLeft : 0;
+    var w = Math.min(380, vw - 16);
+    var h = Math.max(220, Math.min(420, r.top - 16));
+    p.style.width = w + "px"; p.style.height = h + "px";
+    p.style.left = Math.max(offL + 8, Math.min(r.right - w, offL + vw - w - 8)) + "px";
+    p.style.top = Math.max(8, r.top - h - 8) + "px";
+  }
+
+  function open(t) {
+    if (!inited) { buildData(); bind(); inited = true; }
+    target = t || "chat"; isOpen = true;
+    $("emoji-picker").classList.add("open");
+    renderTabs(); renderGrid(); position();
+    var b = $(target + "-emoji-btn"); if (b) b.setAttribute("aria-expanded", "true");
+  }
+  function close() {
+    isOpen = false;
+    $("emoji-picker").classList.remove("open");
+    ["chat", "group"].forEach(function (k) { var b = $(k + "-emoji-btn"); if (b) b.setAttribute("aria-expanded", "false"); });
+  }
+  function toggle(t) { (isOpen && target === t) ? close() : open(t); }
+
+  function bind() {
+    var p = $("emoji-picker"), search = $("emo-search");
+    // jaga fokus & keyboard di kolom pesan saat mengetuk panel
+    p.addEventListener("mousedown", function (e) { if (e.target !== search) e.preventDefault(); });
+    search.addEventListener("input", function () {
+      $("emo-clear").style.display = search.value.trim() ? "block" : "none";
+      renderTabs(); renderGrid(); $("emo-scroll").scrollTop = 0;
+    });
+    $("emo-clear").onclick = function () { search.value = ""; $("emo-clear").style.display = "none"; renderTabs(); renderGrid(); search.focus(); };
+    Array.prototype.forEach.call(document.querySelectorAll("#emo-tones .emo-tone"), function (b, _, all) {
+      b.onclick = function () {
+        Array.prototype.forEach.call(all, function (x) { x.classList.remove("active"); });
+        b.classList.add("active"); selectedTone = b.getAttribute("data-tone") || ""; renderGrid();
+      };
+    });
+    document.addEventListener("pointerdown", function (e) {
+      if (!isOpen) return;
+      if (p.contains(e.target)) return;
+      var t = e.target.closest && e.target.closest(".emoji-trigger");
+      if (t) return; // tombol pemicu menangani toggle sendiri
+      close();
+    }, true);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && isOpen) close(); });
+    window.addEventListener("resize", position);
+    if (window.visualViewport) { visualViewport.addEventListener("resize", position); visualViewport.addEventListener("scroll", position); }
+  }
+
+  window.toggleEmojiPicker = toggle;
+  window.closeEmojiPicker = close;
+})();
+</script>
+
+
+<style id="stk-lib-css">
+#sticker-sheet .sticker-panel{box-sizing:border-box}
+.sticker-tabs{display:flex;gap:6px;margin-bottom:10px;flex:0 0 auto}
+.sticker-tab{flex:1;border:0;border-radius:999px;padding:8px 10px;font-weight:700;font-size:13px;cursor:pointer;background:rgba(255,255,255,.12);color:#fff}
+.sticker-tab.active{background:var(--amber,#FFB800);color:#091A4B;box-shadow:0 3px 0 var(--amber-d,#D99500)}
+#stk-lib{display:none;flex:1 1 auto;min-height:0;flex-direction:column}
+#sticker-sheet.stk-lib-on #stk-lib{display:flex}
+#sticker-sheet.stk-lib-on #sticker-grid,#sticker-sheet.stk-lib-on #sticker-manage-btn,#sticker-sheet.stk-lib-on .sticker-head .sticker-btn.primary{display:none}
+#sticker-sheet.stk-lib-on .sticker-panel{height:80vh;max-height:80vh}
+.stk-bar{flex:0 0 auto;display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.stk-search-row{display:flex;gap:6px;align-items:center}
+.stk-search-wrap{position:relative;flex:1;min-width:0}
+.stk-search{width:100%;box-sizing:border-box;border:0;outline:0;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;font-size:16px;padding:9px 32px 9px 14px}
+.stk-search::placeholder{color:rgba(255,255,255,.65)}
+.stk-search:focus{background:rgba(255,255,255,.24);box-shadow:0 0 0 2px var(--amber,#FFB800)}
+.stk-search::-webkit-search-cancel-button{display:none}
+.stk-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:none;border:0;background:none;color:#fff;font-size:14px;line-height:1;padding:6px;cursor:pointer;opacity:.8}
+.stk-row{display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}
+.stk-row::-webkit-scrollbar{display:none}
+.stk-lbl{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;opacity:.7;padding-right:2px}
+.stk-pill{flex:0 0 auto;border:0;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.14);color:#fff;white-space:nowrap}
+.stk-pill.active{background:var(--amber,#FFB800);color:#091A4B}
+.stk-meta{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;opacity:.9;margin-bottom:6px}
+.stk-meta small{font-weight:600;opacity:.75}
+.stk-grid{flex:1 1 auto;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-content:start;-webkit-overflow-scrolling:touch}
+.stk-item{position:relative;border-radius:14px;background:rgba(255,255,255,.1);display:flex;flex-direction:column;align-items:center;padding:6px 4px 4px;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.stk-item:active{transform:scale(.94)}
+.stk-item img{width:100%;aspect-ratio:1;object-fit:contain;pointer-events:none;display:block}
+.stk-cap{width:100%;text-align:center;font-size:10px;font-weight:700;line-height:1.2;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.9}
+.stk-badge{position:absolute;top:4px;left:4px;font-size:9px;font-weight:800;line-height:1;padding:3px 5px;border-radius:999px;background:rgba(0,0,0,.35);color:#fff}
+.stk-badge.ultra{background:var(--amber,#FFB800);color:#091A4B}
+.stk-badge.holo{background:linear-gradient(90deg,#22d3ee,#f472b6,#fde047);color:#091A4B}
+.stk-badge.neon{background:#00e3fd;color:#091A4B}
+.stk-empty{grid-column:1/-1;text-align:center;font-size:13px;opacity:.85;padding:26px 8px}
+.stk-hint{flex:0 0 auto;text-align:center;font-size:11px;opacity:.7;margin-top:6px}
+</style>
+
+<script id="stk-lib-script">
+(function () {
+  // Pustaka stiker bawaan (diambil dari code_1.html). Dikirim lewat alur stiker asli: stickerSendFile().
+  var STK = [{"id":"m01","no":"#025","badge":"Holo","char":"pikazap","name":"PikaZap","expr":"Happy Sparks","finish":"holo","mood":"happy","rarity":"Holographic Shiny","sfx":"PIKA-PI! ⚡","svg":"<path d=\"M25 80 C15 50 20 15 35 10 C45 8 50 35 48 45\" fill=\"#facc15\" stroke=\"#1b1833\" stroke-width=\"4\"></path><path d=\"M75 80 C85 50 80 15 65 10 C55 8 50 35 52 45\" fill=\"#facc15\" stroke=\"#1b1833\" stroke-width=\"4\"></path><path d=\"M28 20 L35 10 L25 15 Z\" fill=\"#1b1833\"></path><path d=\"M72 20 L65 10 L75 15 Z\" fill=\"#1b1833\"></path><circle cx=\"50\" cy=\"62\" fill=\"#fde047\" r=\"32\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><circle cx=\"28\" cy=\"68\" fill=\"#e11172\" r=\"7\"></circle><circle cx=\"72\" cy=\"68\" fill=\"#e11172\" r=\"7\"></circle><path d=\"M36 58 Q42 50 46 58\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"4\"></path><path d=\"M54 58 Q58 50 64 58\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"4\"></path><path d=\"M44 68 Q50 76 56 68\" fill=\"#e11172\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path>"},{"id":"m02","no":"#025-B","badge":"Neon","char":"pikazap","name":"PikaZap","expr":"Shocked Lightning","finish":"neon","mood":"cry","rarity":"Rare","sfx":"BZZZT! ⚡","svg":"<circle cx=\"50\" cy=\"55\" fill=\"#fef08a\" r=\"32\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><circle cx=\"28\" cy=\"62\" fill=\"#e11172\" r=\"7\"></circle><circle cx=\"72\" cy=\"62\" fill=\"#e11172\" r=\"7\"></circle><circle cx=\"38\" cy=\"50\" fill=\"#ffffff\" r=\"9\" stroke=\"#1b1833\" stroke-width=\"3\"></circle><circle cx=\"38\" cy=\"50\" fill=\"#1b1833\" r=\"3\"></circle><circle cx=\"62\" cy=\"50\" fill=\"#ffffff\" r=\"9\" stroke=\"#1b1833\" stroke-width=\"3\"></circle><circle cx=\"62\" cy=\"50\" fill=\"#1b1833\" r=\"3\"></circle><ellipse cx=\"50\" cy=\"68\" fill=\"#1b1833\" rx=\"8\" ry=\"12\"></ellipse><path d=\"M42 22 L36 12 L48 14 L44 4 L56 16 L48 16 Z\" fill=\"#00e3fd\"></path>"},{"id":"m03","no":"#004","badge":"Holo","char":"pyrolizard","name":"PyroLizard","expr":"Roaring Flame","finish":"holo","mood":"battle","rarity":"Holographic Shiny","sfx":"GAOOO! 🔥","svg":"<path d=\"M50 20 C25 20 25 75 50 82 C75 75 75 20 50 20 Z\" fill=\"#fb923c\" stroke=\"#1b1833\" stroke-width=\"4\"></path><path d=\"M40 70 C44 82 56 82 60 70 Z\" fill=\"#ffedd5\"></path><circle cx=\"36\" cy=\"45\" fill=\"#1b1833\" r=\"5\"></circle><circle cx=\"64\" cy=\"45\" fill=\"#1b1833\" r=\"5\"></circle><path d=\"M35 55 Q50 78 65 55 Z\" fill=\"#b6005a\" stroke=\"#1b1833\" stroke-width=\"3\"></path><path d=\"M45 55 L50 65 L55 55\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\"></path><path d=\"M50 85 C45 92 55 96 50 100 C60 92 50 88 50 85 Z\" fill=\"#ea580c\"></path>"},{"id":"m04","no":"#004-B","badge":"8-Bit","char":"pyrolizard","name":"PyroLizard","expr":"Spicy Breath","finish":"pixel","mood":"angry","rarity":"Rare","sfx":"HOT! 🌶️","svg":"<rect fill=\"#ea580c\" height=\"50\" rx=\"8\" stroke=\"#1b1833\" stroke-width=\"4\" width=\"50\" x=\"25\" y=\"25\"></rect><rect fill=\"#1b1833\" height=\"6\" width=\"10\" x=\"32\" y=\"38\"></rect><rect fill=\"#1b1833\" height=\"6\" width=\"10\" x=\"58\" y=\"38\"></rect><path d=\"M45 56 L55 56 L50 68 Z\" fill=\"#facc15\" stroke=\"#1b1833\" stroke-width=\"2\"></path><circle cx=\"30\" cy=\"50\" fill=\"#ef4444\" r=\"4\"></circle><circle cx=\"70\" cy=\"50\" fill=\"#ef4444\" r=\"4\"></circle>"},{"id":"m05","no":"#2112","badge":"Ultra","char":"doraneko","name":"DoraNeko","expr":"Dorayaki Feast","finish":"holo","mood":"food","rarity":"Ultra Secret","sfx":"NYUM! 🥞","svg":"<circle cx=\"50\" cy=\"46\" fill=\"#0284c7\" r=\"34\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><circle cx=\"50\" cy=\"52\" fill=\"#ffffff\" r=\"26\" stroke=\"#1b1833\" stroke-width=\"3\"></circle><circle cx=\"50\" cy=\"44\" fill=\"#e11172\" r=\"6\" stroke=\"#1b1833\" stroke-width=\"2\"></circle><line stroke=\"#1b1833\" stroke-width=\"3\" x1=\"50\" x2=\"50\" y1=\"50\" y2=\"62\"></line><ellipse cx=\"50\" cy=\"64\" fill=\"#b45309\" rx=\"14\" ry=\"7\" stroke=\"#1b1833\" stroke-width=\"3\"></ellipse><ellipse cx=\"50\" cy=\"64\" fill=\"#78350f\" rx=\"11\" ry=\"3\"></ellipse><path d=\"M36 38 Q42 32 46 38\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path><path d=\"M54 38 Q58 32 64 38\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path><line stroke=\"#1b1833\" stroke-width=\"2\" x1=\"28\" x2=\"38\" y1=\"50\" y2=\"52\"></line><line stroke=\"#1b1833\" stroke-width=\"2\" x1=\"62\" x2=\"72\" y1=\"52\" y2=\"50\"></line>"},{"id":"m06","no":"#2112-B","badge":"Neon","char":"doraneko","name":"DoraNeko","expr":"Mouse Panic","finish":"neon","mood":"cry","rarity":"Rare","sfx":"GYAAA! 🐭","svg":"<circle cx=\"50\" cy=\"46\" fill=\"#0284c7\" r=\"34\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><circle cx=\"50\" cy=\"52\" fill=\"#ffffff\" r=\"26\" stroke=\"#1b1833\" stroke-width=\"3\"></circle><ellipse cx=\"50\" cy=\"62\" fill=\"#ba1a1a\" rx=\"16\" ry=\"12\" stroke=\"#1b1833\" stroke-width=\"3\"></ellipse><ellipse cx=\"50\" cy=\"66\" fill=\"#f43f5e\" rx=\"8\" ry=\"4\"></ellipse><circle cx=\"40\" cy=\"38\" fill=\"#ffffff\" r=\"8\" stroke=\"#1b1833\" stroke-width=\"3\"></circle><circle cx=\"60\" cy=\"38\" fill=\"#ffffff\" r=\"8\" stroke=\"#1b1833\" stroke-width=\"3\"></circle><path d=\"M34 44 Q30 65 32 75\" stroke=\"#38bdf8\" stroke-linecap=\"round\" stroke-width=\"4\"></path><path d=\"M66 44 Q70 65 68 75\" stroke=\"#38bdf8\" stroke-linecap=\"round\" stroke-width=\"4\"></path>"},{"id":"m07","no":"#GARU","badge":"Holo","char":"digiwolf","name":"DigiWolf","expr":"Cool Howl","finish":"holo","mood":"battle","rarity":"Holographic Shiny","sfx":"AWOOO! ❄️","svg":"<polygon fill=\"#dc2626\" points=\"50,10 44,30 56,30\" stroke=\"#1b1833\" stroke-width=\"3\"></polygon><polygon fill=\"#1e40af\" points=\"20,40 32,20 40,42\" stroke=\"#1b1833\" stroke-width=\"3\"></polygon><polygon fill=\"#1e40af\" points=\"80,40 68,20 60,42\" stroke=\"#1b1833\" stroke-width=\"3\"></polygon><polygon fill=\"#f8fafc\" points=\"30,42 70,42 60,82 40,82\" stroke=\"#1b1833\" stroke-width=\"4\"></polygon><path d=\"M35 50 L44 54 M65 50 L56 54\" stroke=\"#2563eb\" stroke-linecap=\"round\" stroke-width=\"4\"></path><polygon fill=\"#dc2626\" points=\"38,54 46,58 38,60\"></polygon><polygon fill=\"#dc2626\" points=\"62,54 54,58 62,60\"></polygon><ellipse cx=\"50\" cy=\"74\" fill=\"#1b1833\" rx=\"4\" ry=\"3\"></ellipse>"},{"id":"m08","no":"#GARU-C","badge":"Standard","char":"digiwolf","name":"DigiWolf","expr":"Snuggle Pelt","finish":"all","mood":"love","rarity":"Common","sfx":"PURR~ 💖","svg":"<circle cx=\"50\" cy=\"55\" fill=\"#f8fafc\" r=\"30\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><circle cx=\"36\" cy=\"62\" fill=\"#f43f5e\" r=\"5\"></circle><circle cx=\"64\" cy=\"62\" fill=\"#f43f5e\" r=\"5\"></circle><path d=\"M50 24 C45 15 35 18 35 26 C35 34 50 42 50 42 C50 42 65 34 65 26 C65 18 55 15 50 24 Z\" fill=\"#e11172\"></path><path d=\"M38 52 Q44 48 48 52\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path><path d=\"M52 52 Q56 48 62 52\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path>"},{"id":"m09","no":"#001","badge":"Holo","char":"bulbasprout","name":"BulbaSprout","expr":"Sunlight Chill","finish":"holo","mood":"happy","rarity":"Holographic Shiny","sfx":"BULBA! 🌱","svg":"<path d=\"M50 22 C35 22 30 45 42 50 C58 50 65 22 50 22 Z\" fill=\"#15803d\" stroke=\"#1b1833\" stroke-width=\"3\"></path><ellipse cx=\"50\" cy=\"62\" fill=\"#34d399\" rx=\"30\" ry=\"24\" stroke=\"#1b1833\" stroke-width=\"4\"></ellipse><rect fill=\"#047857\" height=\"5\" rx=\"2\" width=\"6\" x=\"36\" y=\"52\"></rect><rect fill=\"#047857\" height=\"6\" rx=\"2\" width=\"7\" x=\"58\" y=\"50\"></rect><circle cx=\"38\" cy=\"60\" fill=\"#b91c1c\" r=\"4\"></circle><circle cx=\"62\" cy=\"60\" fill=\"#b91c1c\" r=\"4\"></circle><path d=\"M44 68 Q50 74 56 68\" fill=\"#ffffff\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path>"},{"id":"m10","no":"#001-B","badge":"Neon","char":"bulbasprout","name":"BulbaSprout","expr":"Grumpy Vines","finish":"neon","mood":"angry","rarity":"Rare","sfx":"WHIP! 🌿","svg":"<path d=\"M30 50 Q10 30 14 15\" stroke=\"#15803d\" stroke-linecap=\"round\" stroke-width=\"5\"></path><path d=\"M70 50 Q90 30 86 15\" stroke=\"#15803d\" stroke-linecap=\"round\" stroke-width=\"5\"></path><ellipse cx=\"50\" cy=\"60\" fill=\"#34d399\" rx=\"28\" ry=\"22\" stroke=\"#1b1833\" stroke-width=\"4\"></ellipse><line stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"4\" x1=\"34\" x2=\"44\" y1=\"52\" y2=\"58\"></line><line stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"4\" x1=\"66\" x2=\"56\" y1=\"52\" y2=\"58\"></line><path d=\"M44 68 Q50 63 56 68\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path>"},{"id":"m11","no":"#094","badge":"Holo","char":"gengarboo","name":"GengarBoo","expr":"Wicked Cackle","finish":"holo","mood":"happy","rarity":"Holographic Shiny","sfx":"KEKEKE! 😈","svg":"<polygon fill=\"#7e22ce\" points=\"30,35 25,18 40,28\" stroke=\"#1b1833\" stroke-width=\"3\"></polygon><polygon fill=\"#7e22ce\" points=\"70,35 75,18 60,28\" stroke=\"#1b1833\" stroke-width=\"3\"></polygon><circle cx=\"50\" cy=\"55\" fill=\"#9333ea\" r=\"32\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><polygon fill=\"#ef4444\" points=\"32,45 44,48 35,55\"></polygon><polygon fill=\"#ef4444\" points=\"68,45 56,48 65,55\"></polygon><path d=\"M26 62 Q50 82 74 62 Q50 68 26 62 Z\" fill=\"#ffffff\" stroke=\"#1b1833\" stroke-width=\"3\"></path><line stroke=\"#1b1833\" stroke-width=\"2\" x1=\"38\" x2=\"40\" y1=\"64\" y2=\"72\"></line><line stroke=\"#1b1833\" stroke-width=\"2\" x1=\"50\" x2=\"50\" y1=\"65\" y2=\"74\"></line><line stroke=\"#1b1833\" stroke-width=\"2\" x1=\"62\" x2=\"60\" y1=\"64\" y2=\"72\"></line>"},{"id":"m12","no":"#094-B","badge":"Neon","char":"gengarboo","name":"GengarBoo","expr":"Tongue Lick","finish":"neon","mood":"food","rarity":"Rare","sfx":"BLEEEH! 👅","svg":"<circle cx=\"50\" cy=\"50\" fill=\"#9333ea\" r=\"30\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><path d=\"M42 60 C42 85 58 95 54 98 C46 95 46 80 40 60 Z\" fill=\"#ec4899\" stroke=\"#1b1833\" stroke-width=\"3\"></path><polygon fill=\"#ef4444\" points=\"35,42 45,46 38,52\"></polygon><polygon fill=\"#ef4444\" points=\"65,42 55,46 62,52\"></polygon>"},{"id":"m13","no":"#133","badge":"Holo","char":"eeveepuff","name":"EeveePuff","expr":"Fluffy Roll","finish":"holo","mood":"love","rarity":"Holographic Shiny","sfx":"EBUII! 💖","svg":"<polygon fill=\"#b45309\" points=\"30,45 10,15 35,28\" stroke=\"#1b1833\" stroke-width=\"3\"></polygon><polygon fill=\"#b45309\" points=\"70,45 90,15 65,28\" stroke=\"#1b1833\" stroke-width=\"3\"></polygon><ellipse cx=\"50\" cy=\"72\" fill=\"#fef3c7\" rx=\"28\" ry=\"14\" stroke=\"#1b1833\" stroke-width=\"3\"></ellipse><circle cx=\"50\" cy=\"50\" fill=\"#d97706\" r=\"24\" stroke=\"#1b1833\" stroke-width=\"3\"></circle><ellipse cx=\"42\" cy=\"48\" fill=\"#1b1833\" rx=\"4\" ry=\"6\"></ellipse><circle cx=\"43\" cy=\"46\" fill=\"#ffffff\" r=\"1.5\"></circle><ellipse cx=\"58\" cy=\"48\" fill=\"#1b1833\" rx=\"4\" ry=\"6\"></ellipse><circle cx=\"59\" cy=\"46\" fill=\"#ffffff\" r=\"1.5\"></circle><ellipse cx=\"50\" cy=\"56\" fill=\"#1b1833\" rx=\"2.5\" ry=\"1.5\"></ellipse>"},{"id":"m14","no":"#133-B","badge":"Standard","char":"eeveepuff","name":"EeveePuff","expr":"Sleepy Nap","finish":"all","mood":"sleep","rarity":"Common","sfx":"ZZZ... 💤","svg":"<ellipse cx=\"50\" cy=\"62\" fill=\"#d97706\" rx=\"30\" ry=\"20\" stroke=\"#1b1833\" stroke-width=\"4\"></ellipse><polygon fill=\"#b45309\" points=\"25,55 10,70 30,70\" stroke=\"#1b1833\" stroke-width=\"3\"></polygon><path d=\"M40 60 Q45 64 50 60\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path><path d=\"M52 60 Q57 64 62 60\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path><text fill=\"#006875\" font-size=\"18\" font-weight=\"bold\" x=\"65\" y=\"38\">Z</text><text fill=\"#006875\" font-size=\"14\" font-weight=\"bold\" x=\"74\" y=\"24\">z</text>"},{"id":"m15","no":"#NYA-01","badge":"Ultra","char":"nyankopaws","name":"NyankoPaws","expr":"Lucky Fortune","finish":"holo","mood":"happy","rarity":"Ultra Secret","sfx":"NYAA! 🪙","svg":"<circle cx=\"50\" cy=\"50\" fill=\"#ffffff\" r=\"30\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><path d=\"M28 30 Q38 20 48 30 Z\" fill=\"#ea580c\"></path><polygon fill=\"#ea580c\" points=\"26,30 20,15 36,22\" stroke=\"#1b1833\" stroke-width=\"2\"></polygon><polygon fill=\"#1b1833\" points=\"74,30 80,15 64,22\" stroke=\"#1b1833\" stroke-width=\"2\"></polygon><ellipse cx=\"28\" cy=\"40\" fill=\"#ffffff\" rx=\"8\" ry=\"12\" stroke=\"#1b1833\" stroke-width=\"3\"></ellipse><circle cx=\"28\" cy=\"34\" fill=\"#fbbf24\" r=\"3\"></circle><path d=\"M38 52 Q44 48 48 52\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path><circle cx=\"60\" cy=\"50\" fill=\"#1b1833\" r=\"4\"></circle><path d=\"M46 58 Q50 64 54 58\" stroke=\"#1b1833\" stroke-width=\"2\"></path>"},{"id":"m16","no":"#NYA-02","badge":"Standard","char":"nyankopaws","name":"NyankoPaws","expr":"Fish Thief","finish":"all","mood":"food","rarity":"Common","sfx":"FISH! 🐟","svg":"<circle cx=\"50\" cy=\"48\" fill=\"#ffffff\" r=\"28\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><path d=\"M30 60 C40 50 60 50 72 60 L80 54 L78 66 L80 68 Z\" fill=\"#38bdf8\" stroke=\"#1b1833\" stroke-width=\"3\"></path><circle cx=\"34\" cy=\"58\" fill=\"#1b1833\" r=\"2\"></circle><circle cx=\"42\" cy=\"42\" fill=\"#1b1833\" r=\"5\"></circle><circle cx=\"43\" cy=\"40\" fill=\"#ffffff\" r=\"1.5\"></circle><circle cx=\"58\" cy=\"42\" fill=\"#1b1833\" r=\"5\"></circle><circle cx=\"59\" cy=\"40\" fill=\"#ffffff\" r=\"1.5\"></circle>"},{"id":"m17","no":"#025-C","badge":"Holo","char":"pikazap","name":"PikaZap","expr":"Nomming Berries","finish":"holo","mood":"food","rarity":"Holographic Shiny","sfx":"NYAM! 🍓","svg":"<circle cx=\"50\" cy=\"55\" fill=\"#fde047\" r=\"30\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><ellipse cx=\"26\" cy=\"62\" fill=\"#e11172\" rx=\"10\" ry=\"8\"></ellipse><ellipse cx=\"74\" cy=\"62\" fill=\"#e11172\" rx=\"10\" ry=\"8\"></ellipse><circle cx=\"50\" cy=\"72\" fill=\"#dc2626\" r=\"8\" stroke=\"#1b1833\" stroke-width=\"2\"></circle><circle cx=\"50\" cy=\"48\" fill=\"#1b1833\" r=\"3\"></circle><path d=\"M42 42 Q46 38 50 42\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path>"},{"id":"m18","no":"#2112-C","badge":"Ultra","char":"doraneko","name":"DoraNeko","expr":"Gadget Eureka","finish":"holo","mood":"battle","rarity":"Ultra Secret","sfx":"TADA! 💡","svg":"<line stroke=\"#1b1833\" stroke-width=\"4\" x1=\"50\" x2=\"50\" y1=\"20\" y2=\"10\"></line><line stroke=\"#facc15\" stroke-linecap=\"round\" stroke-width=\"5\" x1=\"30\" x2=\"70\" y1=\"10\" y2=\"10\"></line><circle cx=\"50\" cy=\"50\" fill=\"#0284c7\" r=\"30\" stroke=\"#1b1833\" stroke-width=\"4\"></circle><circle cx=\"50\" cy=\"54\" fill=\"#ffffff\" r=\"22\"></circle><circle cx=\"50\" cy=\"46\" fill=\"#e11172\" r=\"5\"></circle><path d=\"M38 42 Q44 38 46 44\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path><path d=\"M54 44 Q56 38 62 42\" stroke=\"#1b1833\" stroke-linecap=\"round\" stroke-width=\"3\"></path>"}];
+  var CHARS = [["pikazap","⚡","PikaZap"],["pyrolizard","🔥","PyroLizard"],["doraneko","🤖","DoraNeko"],["digiwolf","🐺","DigiWolf"],["bulbasprout","🌱","BulbaSprout"],["gengarboo","👻","GengarBoo"],["eeveepuff","🦊","EeveePuff"],["nyankopaws","🐾","NyankoPaws"]];
+  var MOODS = [["all","Semua Emosi"],["happy","✨ Senang & Ceria"],["angry","💢 Marah & Api"],["cry","💧 Nangis & Panik"],["love","💖 Cinta & Gemas"],["food","🍙 Ngemil & Lapar"],["battle","⚔️ Tempur & Aksi"],["sleep","💤 Mengantuk"]];
+  var FINS = [["all","Semua"],["holo","✨ Hologram"],["neon","🌟 Neon Glow"],["pixel","👾 8-Bit Pixel"]];
+  var MOOD_KEYS = {happy:"senang ceria bahagia gembira",angry:"marah api kesal",cry:"nangis panik sedih takut kaget",love:"cinta gemas sayang",food:"ngemil lapar makan nyam",battle:"tempur aksi lawan",sleep:"mengantuk ngantuk tidur"};
+  var TAB_KEY = "pesaner_sticker_tab";
+  var st = { tab: "koleksi", ch: "all", mood: "all", fin: "all", q: "" };
+  var $ = function (id) { return document.getElementById(id); };
+  var urlCache = {}, fileCache = {}, built = false, pressed = false, timer = null;
+
+  function svgDoc(inner, px) {
+    // bingkai putih ala stiker (dilatasi alpha) + ruang ekstra agar tidak terpotong
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-9 -9 118 118" width="' + px + '" height="' + px + '">' +
+      '<defs><filter id="o" x="-15%" y="-15%" width="130%" height="130%">' +
+      '<feMorphology in="SourceAlpha" operator="dilate" radius="3.2" result="d"/>' +
+      '<feFlood flood-color="#ffffff"/><feComposite in2="d" operator="in" result="w"/>' +
+      '<feMerge><feMergeNode in="w"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>' +
+      '<g filter="url(#o)">' + inner + '</g></svg>';
+  }
+  function thumbUrl(s) {
+    return urlCache[s.id] || (urlCache[s.id] = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgDoc(s.svg, 128)));
+  }
+  function toFile(s) {
+    if (fileCache[s.id]) return fileCache[s.id];
+    fileCache[s.id] = new Promise(function (resolve, reject) {
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var c = document.createElement("canvas"); c.width = c.height = 512;
+          c.getContext("2d").drawImage(img, 0, 0, 512, 512);
+          c.toBlob(function (b) {
+            if (!b) return reject(new Error("toBlob"));
+            resolve(new File([b], "sticker_" + s.id + ".png", { type: "image/png" }));
+          }, "image/png");
+        } catch (e) { reject(e); }
+      };
+      img.onerror = function () { reject(new Error("img")); };
+      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgDoc(s.svg, 512));
+    });
+    fileCache[s.id].catch(function () { delete fileCache[s.id]; });
+    return fileCache[s.id];
+  }
+  function esc(t) { return String(t).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function byId(id) { return STK.filter(function (s) { return s.id === id; })[0]; }
+
+  function pills(boxId, items, key) {
+    var box = $(boxId);
+    items.forEach(function (it) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "stk-pill" + (it[0] === "all" ? " active" : ""); b.dataset.v = it[0];
+      b.textContent = key === "ch" ? (it[0] === "all" ? "Semua (" + CHARS.length + ")" : it[1] + " " + it[2]) : it[1];
+      b.onclick = function () {
+        st[key] = it[0];
+        Array.prototype.forEach.call(box.querySelectorAll(".stk-pill"), function (x) { x.classList.toggle("active", x === b); });
+        render();
+      };
+      box.appendChild(b);
+    });
+  }
+  function setActive(boxId, v) {
+    Array.prototype.forEach.call($(boxId).querySelectorAll(".stk-pill"), function (x) { x.classList.toggle("active", x.dataset.v === v); });
+  }
+
+  function build() {
+    if (built) return; built = true;
+    pills("stk-chars", [["all"]].concat(CHARS), "ch");
+    pills("stk-moods", MOODS, "mood");
+    pills("stk-fins", FINS, "fin");
+    var search = $("stk-search");
+    search.addEventListener("input", function () {
+      st.q = search.value.trim().toLowerCase();
+      $("stk-clear").style.display = st.q ? "block" : "none"; render();
+    });
+    $("stk-clear").onclick = function () { search.value = ""; st.q = ""; $("stk-clear").style.display = "none"; render(); search.focus(); };
+    $("stk-random").onclick = function () {
+      var c = CHARS[Math.floor(Math.random() * CHARS.length)][0];
+      st.ch = c; setActive("stk-chars", c); render();
+      if (typeof showToast === "function") showToast("Mengacak koleksi stiker monster! ✨", "success");
+    };
+    var grid = $("stk-grid");
+    function itemOf(e) { return e.target.closest && e.target.closest(".stk-item"); }
+    grid.addEventListener("pointerdown", function (e) {
+      var it = itemOf(e); if (!it) return;
+      pressed = false; clearTimeout(timer);
+      timer = setTimeout(function () { pressed = true; preview(it.dataset.id); }, 450);
+    });
+    ["pointerup", "pointerleave", "pointercancel"].forEach(function (ev) { grid.addEventListener(ev, function () { clearTimeout(timer); }); });
+    grid.addEventListener("scroll", function () { clearTimeout(timer); });
+    grid.addEventListener("click", function (e) {
+      var it = itemOf(e); if (!it) return;
+      if (pressed) { pressed = false; return; }
+      send(it.dataset.id);
+    });
+    grid.addEventListener("contextmenu", function (e) {
+      var it = itemOf(e); if (!it) return;
+      e.preventDefault(); clearTimeout(timer); pressed = true; preview(it.dataset.id);
+    });
+  }
+
+  function filtered() {
+    return STK.filter(function (s) {
+      var okC = st.ch === "all" || s.char === st.ch;
+      var okM = st.mood === "all" || s.mood === st.mood;
+      var okF = st.fin === "all" || s.finish === st.fin || s.finish === "all";
+      var hay = (s.name + " " + s.expr + " " + s.sfx + " " + (MOOD_KEYS[s.mood] || "")).toLowerCase();
+      var okS = !st.q || hay.indexOf(st.q) > -1;
+      return okC && okM && okF && okS;
+    });
+  }
+  function render() {
+    var list = filtered();
+    $("stk-count").textContent = list.length + " stiker monster ditemukan";
+    var grid = $("stk-grid");
+    if (!list.length) { grid.innerHTML = '<div class="stk-empty">Tidak ada stiker yang cocok.<br>Coba ubah filter atau kata kunci.</div>'; return; }
+    grid.innerHTML = list.map(function (s) {
+      var cls = /ultra/i.test(s.badge) ? "ultra" : (s.finish === "holo" ? "holo" : (s.finish === "neon" ? "neon" : ""));
+      return '<div class="stk-item" data-id="' + s.id + '" title="' + esc(s.name + " – " + s.expr + " " + s.sfx) + '" role="button" aria-label="' + esc(s.name + " " + s.expr) + '">' +
+        '<span class="stk-badge ' + cls + '">' + esc(s.badge) + '</span>' +
+        '<img src="' + thumbUrl(s) + '" alt="' + esc(s.name) + '" draggable="false" loading="lazy"/>' +
+        '<span class="stk-cap">' + esc(s.expr) + '</span></div>';
+    }).join("");
+  }
+
+  async function send(id) {
+    var s = byId(id); if (!s) return;
+    try {
+      var f = await toFile(s);
+      var kind = (typeof stickerTarget !== "undefined" && stickerTarget) || stickerActiveKind();
+      closeStickerSheet();
+      await stickerSendFile(f, kind);
+    } catch (e) { console.error(e); if (typeof showToast === "function") showToast("Gagal mengirim stiker", "error"); }
+  }
+  // Pratinjau memakai dialog "Kirim sebagai stiker?" milik Pesaner (Kirim / Simpan ke koleksi)
+  async function preview(id) {
+    var s = byId(id); if (!s) return;
+    try {
+      var f = await toFile(s);
+      stickerPending = f;
+      $("sticker-confirm-img").src = URL.createObjectURL(f);
+      $("sticker-confirm").classList.add("open");
+    } catch (e) { console.error(e); if (typeof showToast === "function") showToast("Gagal memuat stiker", "error"); }
+  }
+
+  function setTab(t) {
+    st.tab = t === "lib" ? "lib" : "koleksi";
+    try { localStorage.setItem(TAB_KEY, st.tab); } catch (e) {}
+    $("sticker-sheet").classList.toggle("stk-lib-on", st.tab === "lib");
+    Array.prototype.forEach.call(document.querySelectorAll("#stk-tabs .sticker-tab"), function (b) { b.classList.toggle("active", b.dataset.tab === st.tab); });
+    if (st.tab === "lib") { build(); render(); }
+  }
+  window.stkSetTab = setTab;
+
+  // Bungkus fungsi asli tanpa mengubah perilakunya
+  var _open = window.openStickerSheet;
+  window.openStickerSheet = function () {
+    var r = _open.apply(this, arguments);
+    var t = "koleksi"; try { t = localStorage.getItem(TAB_KEY) || "koleksi"; } catch (e) {}
+    setTab(t);
+    return r;
+  };
+  var _send = window.stickerConfirmSend;
+  window.stickerConfirmSend = function () {
+    var r = _send.apply(this, arguments);
+    try { closeStickerSheet(); } catch (e) {}
+    return r;
+  };
+})();
+</script>
+
+
+<style id="dnd-sticker-css">
+#dnd-sticker-overlay{position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;background:rgba(9,26,75,.72);pointer-events:none}
+#dnd-sticker-overlay.show{display:flex}
+#dnd-sticker-overlay .dnd-box{box-sizing:border-box;max-width:min(86vw,420px);padding:28px 24px;border:3px dashed rgba(255,255,255,.85);border-radius:24px;background:rgba(21,70,190,.55);color:#fff;text-align:center;font-weight:700;font-size:16px;line-height:1.4}
+#dnd-sticker-overlay .dnd-ico{font-size:44px;line-height:1;margin-bottom:8px}
+#dnd-sticker-overlay small{display:block;font-weight:600;font-size:12px;opacity:.8;margin-top:4px}
+</style>
+<div id="dnd-sticker-overlay" aria-hidden="true"><div class="dnd-box"><div class="dnd-ico">🖼️</div>Lepas gambar di sini untuk dijadikan stiker<small>Dialog kirim / simpan ke koleksi akan muncul</small></div></div>
+
+<script id="dnd-sticker-script">
+(function () {
+  // Seret & lepas gambar ke halaman -> perilaku sama seperti menempel gambar di kolom teks:
+  // dialog "Kirim sebagai stiker?" (Kirim / Simpan ke koleksi). Memakai fungsi stiker asli Pesaner.
+  var ov = document.getElementById("dnd-sticker-overlay"), depth = 0;
+  function hasFiles(e) {
+    var t = e.dataTransfer && e.dataTransfer.types;
+    if (!t) return false;
+    for (var i = 0; i < t.length; i++) if (t[i] === "Files") return true;
+    return false;
+  }
+  function isImg(f) { return /^image\//.test(f.type) || (!f.type && /\.(png|jpe?g|gif|webp)$/i.test(f.name || "")); }
+  function hide() { depth = 0; ov.classList.remove("show"); }
+  function chatCtx() {
+    var g = document.getElementById("group-thread-view"), c = document.getElementById("chat-thread-view");
+    if (g && !g.classList.contains("hidden") && typeof activeGroupId !== "undefined" && activeGroupId) return "group";
+    if (c && !c.classList.contains("hidden") && typeof activeChatUsername !== "undefined" && activeChatUsername) return "chat";
+    return null;
+  }
+  function toast(m, t) { if (typeof showToast === "function") showToast(m, t); }
+
+  document.addEventListener("dragenter", function (e) {
+    if (!hasFiles(e)) return;
+    e.preventDefault(); depth++; ov.classList.add("show");
+  });
+  document.addEventListener("dragover", function (e) {
+    if (!hasFiles(e)) return;
+    e.preventDefault();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = "copy";
+  });
+  document.addEventListener("dragleave", function (e) {
+    if (!hasFiles(e)) return;
+    depth = Math.max(0, depth - 1);
+    if (!depth || (e.clientX <= 0 && e.clientY <= 0)) hide();
+  });
+  window.addEventListener("blur", hide);
+  document.addEventListener("dragend", hide);
+
+  document.addEventListener("drop", async function (e) {
+    if (!hasFiles(e)) return;
+    e.preventDefault(); hide();
+    var all = Array.prototype.slice.call(e.dataTransfer.files || []);
+    var imgs = all.filter(isImg);
+    if (!imgs.length) { toast("Hanya file gambar yang bisa dijadikan stiker", "error"); return; }
+    var kind = chatCtx();
+    if (imgs.length === 1 && kind) {
+      // sama seperti onStickerPaste: tawarkan kirim / simpan
+      stickerTarget = kind;
+      stickerPending = imgs[0];
+      document.getElementById("sticker-confirm-img").src = URL.createObjectURL(imgs[0]);
+      document.getElementById("sticker-confirm").classList.add("open");
+      return;
+    }
+    // banyak gambar, atau tidak sedang membuka chat -> langsung simpan ke koleksi
+    var ok = 0;
+    for (var i = 0; i < imgs.length; i++) { try { await stickerSave(imgs[i]); ok++; } catch (err) { console.error(err); } }
+    toast(ok ? ok + " stiker disimpan ke koleksi" : "Gagal menyimpan stiker", ok ? "success" : "error");
+    var sh = document.getElementById("sticker-sheet");
+    if (ok && sh && sh.classList.contains("open")) { try { renderStickerGrid(); } catch (err) {} }
+  });
+})();
+</script>
+
 </body>
 </html>
