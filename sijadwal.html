@@ -1678,30 +1678,71 @@
     }
 
     function exportSelectedToPDF() {
-      const text = document.getElementById('wa-preview-box').value;
+      const chosen = schedules
+        .filter(s => exportSelectedDates.has(s.date) && selectedExportIds.has(s.id))
+        .sort((a, b) => a.date.localeCompare(b.date) || a.timeStart.localeCompare(b.timeStart));
+
+      if (!chosen.length) {
+        showToast('Pilih minimal 1 jadwal terlebih dahulu.');
+        return;
+      }
+
       const datesLabel = [...exportSelectedDates].sort().join('_') || selectedDate;
-      const el = document.createElement('div');
-      el.style.padding = '28px';
-      el.style.fontFamily = 'Arial, sans-serif';
-      el.style.color = '#111';
-      el.style.lineHeight = '1.6';
-      el.innerHTML = `
-        <div style="border-bottom: 3px solid #161B2D; padding-bottom: 10px; margin-bottom: 18px;">
-          <h2 style="margin:0; font-size:18px; letter-spacing:0.5px;">REKAPITULASI JADWAL KEGIATAN</h2>
-          <p style="margin:4px 0 0; font-size:12px; color:#555;">Dicetak via SiJadwal Quest</p>
+
+      // Kelompokkan per tanggal agar tiap item rapi dan tidak terpotong di tengah halaman
+      const groups = {};
+      chosen.forEach(item => {
+        if (!groups[item.date]) groups[item.date] = [];
+        groups[item.date].push(item);
+      });
+
+      let bodyHTML = `
+        <div style="border-bottom: 2.5px solid #161B2D; padding-bottom: 8px; margin-bottom: 14px;">
+          <h2 style="margin:0; font-size:16px; font-weight:800; letter-spacing:0.5px;">JADWAL KEGIATAN</h2>
+          <p style="margin:3px 0 0; font-size:11px; color:#555;">Dicetak via SiJadwal Quest</p>
         </div>
-        <pre style="font-family: Arial, sans-serif; white-space: pre-wrap; font-size: 13px; margin: 0;">${escapeHTML(text)}</pre>
       `;
 
+      Object.keys(groups).sort().forEach((dateKey, gIdx) => {
+        if (gIdx > 0) {
+          bodyHTML += `<hr style="border:none; border-top:1px dashed #999; margin:14px 0;" />`;
+        }
+        bodyHTML += `<div style="font-size:13px; font-weight:700; margin-bottom:10px;">Hari ${escapeHTML(formatIndoDateFull(dateKey))}</div>`;
+
+        groups[dateKey].forEach((item, idx) => {
+          bodyHTML += `
+            <div style="page-break-inside: avoid; break-inside: avoid; margin-bottom: 12px; font-size: 12.5px; line-height: 1.55;">
+              <div style="font-weight:700;">${idx + 1}.${escapeHTML(item.title)}</div>
+              <div>Hari: ${escapeHTML(formatIndoDateShort(item.date))}</div>
+              <div>Tempat: ${escapeHTML(item.location)}</div>
+              <div>Pukul : ${escapeHTML(item.timeStart)} Wib ${escapeHTML(item.timeEnd)}</div>
+              <div>Acara : ${escapeHTML(item.eventDetail)}</div>
+              <div style="font-weight:700;">${escapeHTML(item.disposition)}</div>
+              ${item.notes ? `<div style="color:#444;">Catatan : ${escapeHTML(item.notes)}</div>` : ''}
+            </div>
+          `;
+        });
+      });
+
+      const el = document.createElement('div');
+      el.style.width = '100%';
+      el.style.padding = '4px 8px';
+      el.style.fontFamily = 'Arial, Helvetica, sans-serif';
+      el.style.color = '#111111';
+      el.style.backgroundColor = '#FFFFFF';
+      el.innerHTML = bodyHTML;
+
       html2pdf().set({
-        margin: 10,
+        margin: [14, 15, 14, 15],
         filename: `Jadwal_Kegiatan_${datesLabel}.pdf`,
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, scrollY: 0, scrollX: 0, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'] }
       }).from(el).save();
 
       addXP(20, 10);
-      showToast('Mengunduh file PDF...');
+      showToast('Mengunduh file PDF rapi...');
     }
 
     function exportSingleJSON(id) {
