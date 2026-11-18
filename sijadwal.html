@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>SiJadwal Quest — Agenda & Disposisi Pimpinan</title>
+  <meta name="description" content="Aplikasi Jadwal Kegiatan & Disposisi Pimpinan berbasis gamifikasi 3D Pocket Clay, offline-first dengan IndexedDB, Export PDF & WhatsApp." />
+  <meta property="og:title" content="SiJadwal Quest — Agenda & Disposisi Pimpinan" />
+  <meta property="og:description" content="Kelola jadwal kegiatan, disposisi pimpinan, reminder tanggal kosong, serta cetak PDF & kirim laporan WhatsApp dalam 1 klik." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23FFE600'/><circle cx='35' cy='42' r='6' fill='%23161B2D'/><circle cx='65' cy='42' r='6' fill='%23161B2D'/><path d='M35 60 Q50 75 65 60' stroke='%23FF599C' stroke-width='6' fill='none' stroke-linecap='round'/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,600,1,0" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Epilogue', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- html2pdf untuk Export PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    :root {
+      --bg-canvas: #F4F5FF;
+      --bg-card: #FFFFFF;
+      --bg-card-soft: #ECEEFF;
+      --bg-card-tint: #E2E5FF;
+      --text-main: #161B2D;
+      --text-muted: #525875;
+      --border-rim: rgba(255, 255, 255, 0.85);
+      --shadow-lip: #D4D8F0;
+    }
+
+    html.dark {
+      --bg-canvas: #141726;
+      --bg-card: #1E2235;
+      --bg-card-soft: #262B42;
+      --bg-card-tint: #2E3450;
+      --text-main: #F5F6FF;
+      --text-muted: #A4AAC9;
+      --border-rim: rgba(255, 255, 255, 0.12);
+      --shadow-lip: #0D0F1A;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overscroll-behavior-y: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Pocket Clay 3D Surfaces */
+    .clay-card {
+      background-color: var(--bg-card);
+      border-radius: 1.5rem;
+      box-shadow:
+        inset 0 3px 0 var(--border-rim),
+        0 4px 0 var(--shadow-lip),
+        0 10px 22px rgba(22, 27, 45, 0.08);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.25s ease;
+    }
+
+    .clay-soft {
+      background-color: var(--bg-card-soft);
+      border-radius: 1.5rem;
+      box-shadow:
+        inset 0 3px 0 var(--border-rim),
+        0 4px 0 var(--shadow-lip),
+        0 8px 18px rgba(22, 27, 45, 0.06);
+    }
+
+    .clay-input {
+      background-color: var(--bg-card-soft);
+      color: var(--text-main);
+      border-radius: 1rem;
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1), inset 0 -1px 0 var(--border-rim);
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .clay-input:focus {
+      outline: none;
+      border-color: #FFE600;
+      background-color: var(--bg-card);
+    }
+
+    /* Tactile 3D Buttons */
+    .btn-clay-yellow {
+      background: linear-gradient(180deg, #FFEE38 0%, #FFE600 100%);
+      color: #201C00;
+      box-shadow: inset 0 3px 0 rgba(255,255,255,0.75), 0 4px 0 #CBB700, 0 8px 16px rgba(255, 230, 0, 0.35);
+    }
+    .btn-clay-yellow:active {
+      transform: translateY(3px);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.6), 0 1px 0 #CBB700;
+    }
+
+    .btn-clay-pink {
+      background: linear-gradient(180deg, #FF70AC 0%, #FE589B 100%);
+      color: #FFFFFF;
+      box-shadow: inset 0 3px 0 rgba(255,255,255,0.55), 0 4px 0 #B41963, 0 8px 16px rgba(254, 88, 155, 0.35);
+    }
+    .btn-clay-pink:active {
+      transform: translateY(3px);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.4), 0 1px 0 #B41963;
+    }
+
+    .btn-clay-cyan {
+      background: linear-gradient(180deg, #3BE0FF 0%, #00C4EE 100%);
+      color: #002530;
+      box-shadow: inset 0 3px 0 rgba(255,255,255,0.65), 0 4px 0 #0086A3, 0 8px 16px rgba(0, 196, 238, 0.3);
+    }
+    .btn-clay-cyan:active {
+      transform: translateY(3px);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 1px 0 #0086A3;
+    }
+
+    .btn-clay-neutral {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      box-shadow: inset 0 2px 0 var(--border-rim), 0 3px 0 var(--shadow-lip);
+    }
+    .btn-clay-neutral:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 var(--shadow-lip);
+    }
+
+    /* Monster Animations */
+    @keyframes floatBounce {
+      0%, 100% { transform: translateY(0px) scale(1, 1); }
+      50% { transform: translateY(-6px) scale(0.97, 1.03); }
+    }
+    @keyframes celebrateJump {
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+      30% { transform: translateY(-14px) rotate(-8deg) scale(1.1); }
+      65% { transform: translateY(-10px) rotate(8deg) scale(1.08); }
+    }
+    @keyframes blinkEyes {
+      0%, 92%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+    .monster-idle { animation: floatBounce 2.6s ease-in-out infinite; }
+    .monster-celebrate { animation: celebrateJump 0.65s ease-in-out 2; }
+    .monster-eye { transform-origin: center; animation: blinkEyes 4s infinite; }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-[var(--bg-canvas)]/85 border-b border-black/5 dark:border-white/5">
+    <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-full btn-clay-pink flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-[22px]">smart_toy</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="font-display font-extrabold text-lg leading-none tracking-tight">SiJadwal</h1>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#FFE600] text-[#201C00]">QUEST</span>
+          </div>
+          <div class="flex items-center gap-1.5 mt-1">
+            <span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#FE589B]">
+              <span class="material-symbols-outlined text-[13px]">military_tech</span>
+              <span id="header-level">Lv.1</span>
+            </span>
+            <span class="text-xs opacity-30">•</span>
+            <span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-amber-600 dark:text-amber-300">
+              <span class="material-symbols-outlined text-[13px]">monetization_on</span>
+              <span id="header-coins">150</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openMonsterModal()" class="btn-clay-neutral h-10 px-3 rounded-full text-xs font-extrabold flex items-center gap-1" title="Ganti Karakter">
+          <span class="material-symbols-outlined text-[18px] text-[#FE589B]">pets</span>
+          <span class="hidden sm:inline" data-i18n="btn_avatar">Karakter</span>
+        </button>
+        <button onclick="toggleLanguage()" id="lang-btn" class="btn-clay-neutral w-10 h-10 rounded-full text-xs font-extrabold flex items-center justify-center">
+          ID
+        </button>
+        <button onclick="toggleDarkMode()" aria-label="Dark Mode" class="btn-clay-neutral w-10 h-10 rounded-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-[20px]" id="theme-icon">dark_mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 pt-4 pb-28 flex flex-col gap-5">
+
+    <!-- MONSTER GAMIFICATION BANNER -->
+    <section class="clay-soft p-4 relative overflow-hidden">
+      <div class="flex items-center gap-3.5 relative z-10">
+        <!-- Animated Full-Body SVG Monster Container -->
+        <button onclick="openMonsterModal()" class="relative shrink-0 group focus:outline-none" title="Klik untuk ganti & kustomisasi Monster">
+          <div id="monster-stage" class="w-24 h-24 rounded-3xl bg-gradient-to-b from-[#FFE600] to-[#FFD000] p-1.5 shadow-[inset_0_3px_0_rgba(255,255,255,0.8),0_4px_0_#CBB700] flex items-center justify-center overflow-visible">
+            <div id="monster-svg-wrap" class="w-full h-full monster-idle"></div>
+          </div>
+          <span id="monster-level-badge" class="absolute -bottom-1.5 -right-1.5 px-2.5 py-0.5 rounded-full bg-[#FE589B] text-white text-[11px] font-extrabold shadow-[0_2px_0_#B41963]">
+            Lv. 1
+          </span>
+        </button>
+
+        <!-- Stats & Speech Bubble -->
+        <div class="flex-1 min-w-0 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <h2 id="monster-name-display" class="font-display font-extrabold text-base sm:text-lg truncate">Pika-Spark</h2>
+              <span id="monster-rank-badge" class="px-2 py-0.5 rounded-full bg-[#BBECFF] text-[#004E60] text-[10px] font-extrabold shrink-0">
+                ⚡ Explorer
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--bg-card)] text-[11px] font-bold shadow-sm">
+                <span class="material-symbols-outlined text-[14px] text-[#FE589B]">local_fire_department</span>
+                <span id="streak-count">5</span> <span data-i18n="days">Hari</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- EXP Bar -->
+          <div>
+            <div class="flex justify-between text-[11px] font-bold mb-1 opacity-80">
+              <span data-i18n="quest_progress">Progress Quest</span>
+              <span id="xp-text">420 / 500 XP</span>
+            </div>
+            <div class="w-full h-3 rounded-full bg-black/10 dark:bg-white/10 p-0.5 overflow-hidden">
+              <div id="xp-bar" class="h-full rounded-full bg-gradient-to-r from-[#FE589B] via-[#FFE600] to-[#00D2FF] transition-all duration-500" style="width: 84%"></div>
+            </div>
+          </div>
+
+          <!-- Speech Bubble -->
+          <div class="mt-0.5 bg-[var(--bg-card)] rounded-2xl px-3 py-2 text-xs leading-relaxed shadow-sm flex items-start gap-2">
+            <span class="material-symbols-outlined text-[#FE589B] text-[16px] shrink-0 mt-0.5">chat_bubble</span>
+            <p id="monster-speech" class="font-medium">
+              Halo! Ada <strong class="text-[#FE589B]">6 jadwal</strong> pada Selasa, 17 Nov 2026. Cek 1 agenda yang belum didispo ya!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SMART EMPTY-DATE REMINDER BANNER -->
+    <section id="empty-reminder-banner" class="rounded-3xl bg-[#BBECFF] text-[#003542] p-3.5 shadow-[inset_0_3px_0_rgba(255,255,255,0.85),0_4px_0_#7ACCE8] flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-11 h-11 rounded-2xl bg-white text-[#00677F] flex items-center justify-center shrink-0 shadow-[0_3px_0_#96DCF5]">
+          <span class="material-symbols-outlined text-[24px]">notifications_active</span>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <h3 id="reminder-title" class="font-extrabold text-sm leading-tight truncate">Jadwal Rabu, 18 Nov 2026 Kosong!</h3>
+          </div>
+          <p id="reminder-desc" class="text-xs opacity-85 truncate mt-0.5">Belum ada agenda dibuat. Klik tombol di samping untuk isi cepat.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button onclick="quickFillReminderDate()" class="btn-clay-yellow px-3.5 py-2 rounded-full text-xs font-extrabold flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">add_circle</span>
+          <span data-i18n="quick_add">+ Isi</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: KALENDER OTOMATIS                  -->
+    <!-- ========================================== -->
+    <div id="view-kalender" class="view-section flex flex-col gap-5">
+      <!-- Interactive Calendar Box -->
+      <section class="clay-card p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-2xl bg-[#FFE600] text-[#201C00] flex items-center justify-center shadow-[0_3px_0_#CBB700]">
+              <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+            </div>
+            <div>
+              <h2 id="cal-month-label" class="font-display font-extrabold text-base leading-none">November 2026</h2>
+              <span class="text-[11px] font-bold opacity-60" data-i18n="cal_subtitle">Klik tanggal untuk lihat/edit jadwal</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="changeMonth(-1)" class="btn-clay-neutral w-9 h-9 rounded-full flex items-center justify-center">
+              <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+            </button>
+            <button onclick="goToTodaySeed()" class="btn-clay-neutral px-2.5 h-9 rounded-full text-[11px] font-extrabold">
+              17 Nov
+            </button>
+            <button onclick="changeMonth(1)" class="btn-clay-neutral w-9 h-9 rounded-full flex items-center justify-center">
+              <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Day Names -->
+        <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-extrabold opacity-70 mb-1.5">
+          <span class="text-[#FE589B]">Min</span>
+          <span>Sen</span>
+          <span>Sel</span>
+          <span>Rab</span>
+          <span>Kam</span>
+          <span>Jum</span>
+          <span>Sab</span>
+        </div>
+
+        <!-- Dynamic Calendar Grid -->
+        <div id="calendar-grid" class="grid grid-cols-7 gap-1.5"></div>
+
+        <!-- Legend -->
+        <div class="flex flex-wrap items-center justify-center gap-4 mt-3 pt-2.5 border-t border-black/5 dark:border-white/5 text-[11px] font-bold opacity-80">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Semua Terdispo</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#FE589B]"></span> Ada Belum Dispo</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600"></span> Kosong (Reminder)</span>
+        </div>
+      </section>
+
+      <!-- Selected Date Header & Summary -->
+      <section class="flex flex-col gap-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#FE589B] text-[22px]">event_available</span>
+            <h3 id="selected-date-heading" class="font-display font-extrabold text-base sm:text-lg">Selasa, 17 November 2026</h3>
+          </div>
+          <span id="selected-date-count" class="px-3 py-1 rounded-full bg-[#FFD9E2] text-[#8E004B] text-xs font-extrabold">
+            6 Agenda
+          </span>
+        </div>
+
+        <!-- Filter Pills -->
+        <div id="disposition-summary-pills" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+      </section>
+
+      <!-- Cards Container for Selected Date -->
+      <section id="calendar-date-cards" class="flex flex-col gap-3.5"></section>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: KARTU PER TANGGAL DIPILIH          -->
+    <!-- ========================================== -->
+    <div id="view-kartu" class="view-section hidden flex-col gap-4">
+      <div class="clay-card p-4 flex flex-col gap-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h2 class="font-display font-extrabold text-lg flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#FE589B]">view_carousel</span>
+              <span data-i18n="all_cards_title">Kartu Kegiatan per Tanggal</span>
+            </h2>
+            <p class="text-xs opacity-70">Pilih tanggal terlebih dahulu agar tampilan kartu rapi & fokus.</p>
+          </div>
+          <span id="total-cards-badge" class="px-3 py-1 rounded-full bg-[#FFE600] text-[#201C00] text-xs font-extrabold">Belum dipilih</span>
+        </div>
+
+        <!-- Date Selector Bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
+          <div class="sm:col-span-5">
+            <label class="block text-[11px] font-extrabold uppercase opacity-70 mb-1">1. Pilih Tanggal:</label>
+            <input type="date" id="cards-date-picker" onchange="onCardsDateChange(this.value)" class="clay-input w-full px-3 py-2 text-sm font-extrabold" />
+          </div>
+          <div class="sm:col-span-4">
+            <label class="block text-[11px] font-extrabold uppercase opacity-70 mb-1">2. Filter Disposisi:</label>
+            <select id="card-status-filter" onchange="renderAllCardsView()" class="clay-input w-full px-3 py-2 text-sm font-bold">
+              <option value="ALL">Semua Disposisi</option>
+              <option value="PENDING">⚠️ Belum di Dispo</option>
+              <option value="CAMAT">👔 Camat Hadir</option>
+              <option value="SEKCAM">📋 Sekcam Hadir</option>
+              <option value="OTHER">👥 Pejabat Lainnya</option>
+            </select>
+          </div>
+          <div class="sm:col-span-3 flex gap-1.5 sm:pt-5">
+            <button onclick="setCardsDateQuick(selectedDate)" class="btn-clay-yellow flex-1 py-2 px-2.5 rounded-xl text-xs font-extrabold">
+              Tgl Kalender
+            </button>
+            <button onclick="clearCardsDate()" class="btn-clay-neutral py-2 px-2.5 rounded-xl text-xs font-extrabold" title="Reset Pilihan">
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Available Date Chips -->
+        <div id="cards-available-dates" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1"></div>
+
+        <!-- Optional Keyword Search (shown when date selected) -->
+        <div id="cards-search-wrap" class="relative hidden">
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-[20px] opacity-50">search</span>
+          <input type="text" id="card-search-input" oninput="renderAllCardsView()" placeholder="Cari judul acara, tempat, atau catatan pada tanggal ini..." class="clay-input w-full pl-10 pr-4 py-2 text-sm font-medium" />
+        </div>
+      </div>
+
+      <div id="all-cards-list" class="flex flex-col gap-3.5"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: TABEL REKAPITULASI PER TANGGAL     -->
+    <!-- ========================================== -->
+    <div id="view-rekap" class="view-section hidden flex-col gap-4">
+      <div class="clay-card p-4 flex flex-col gap-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h2 class="font-display font-extrabold text-lg flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#0086A3]">table_chart</span>
+              <span data-i18n="recap_title">Tabel Rekapitulasi per Tanggal</span>
+            </h2>
+            <p class="text-xs opacity-70">Pilih tanggal untuk menampilkan tabel rekapitulasi kegiatan.</p>
+          </div>
+          <button onclick="openScheduleModal(null, recapSelectedDate || selectedDate)" class="btn-clay-yellow px-3.5 py-2 rounded-full text-xs font-extrabold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">add</span> Tambah Data
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end">
+          <div class="sm:col-span-5">
+            <label class="block text-[11px] font-extrabold uppercase opacity-70 mb-1">1. Pilih Tanggal Rekap:</label>
+            <input type="date" id="table-date-filter" onchange="onRecapDateChange(this.value)" class="clay-input w-full px-3 py-2 text-sm font-extrabold" />
+          </div>
+          <div class="sm:col-span-4">
+            <label class="block text-[11px] font-extrabold uppercase opacity-70 mb-1">2. Cari di Tanggal Ini:</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-2 text-[19px] opacity-50">search</span>
+              <input type="text" id="table-search-input" oninput="renderRecapTable()" placeholder="Kata kunci..." class="clay-input w-full pl-9 pr-3 py-2 text-sm font-medium" />
+            </div>
+          </div>
+          <div class="sm:col-span-3 flex gap-1.5">
+            <button onclick="setRecapDateQuick(selectedDate)" class="btn-clay-cyan flex-1 py-2 px-2.5 rounded-xl text-xs font-extrabold">
+              Tgl Kalender
+            </button>
+            <button onclick="clearRecapDate()" class="btn-clay-neutral py-2 px-2.5 rounded-xl text-xs font-extrabold">
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Available Date Chips -->
+        <div id="recap-available-dates" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1"></div>
+      </div>
+
+      <!-- Empty / Prompt State before Date Selected -->
+      <div id="recap-empty-prompt" class="clay-card p-8 text-center flex flex-col items-center gap-2.5">
+        <div class="w-14 h-14 rounded-3xl bg-[#BBECFF] text-[#00677F] flex items-center justify-center shadow-[0_4px_0_#7ACCE8]">
+          <span class="material-symbols-outlined text-3xl">date_range</span>
+        </div>
+        <h3 class="font-display font-extrabold text-base">Pilih Tanggal Terlebih Dahulu</h3>
+        <p class="text-xs opacity-75 max-w-sm">Silakan pilih tanggal pada kolom di atas atau klik salah satu tanggal tersedia untuk melihat tabel rekapitulasi.</p>
+      </div>
+
+      <!-- Table Wrapper (Hidden until Date Selected) -->
+      <div id="recap-table-wrapper" class="clay-card overflow-hidden hidden">
+        <div class="px-4 py-2.5 bg-[var(--bg-card-soft)] flex items-center justify-between border-b border-black/5 dark:border-white/5">
+          <span id="recap-active-date-title" class="font-display font-extrabold text-xs sm:text-sm"></span>
+          <span id="recap-row-count" class="px-2.5 py-0.5 rounded-full bg-[#FFE600] text-[#201C00] text-[11px] font-extrabold">0 Baris</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-[var(--bg-card-soft)]/60 border-b border-black/10 dark:border-white/10 font-extrabold uppercase text-[11px] tracking-wider">
+                <th class="p-3">No</th>
+                <th class="p-3">Hari & Tanggal</th>
+                <th class="p-3">Pukul</th>
+                <th class="p-3">Judul & Acara</th>
+                <th class="p-3">Tempat</th>
+                <th class="p-3">Disposisi</th>
+                <th class="p-3">Catatan</th>
+                <th class="p-3 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="recap-table-body" class="divide-y divide-black/5 dark:divide-white/5"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: EKSPOR WA, PDF & BACKUP/RESTORE    -->
+    <!-- ========================================== -->
+    <div id="view-ekspor" class="view-section hidden flex-col gap-4">
+      <!-- Generator WhatsApp & PDF -->
+      <section class="clay-card p-4 flex flex-col gap-3.5">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-[0_3px_0_#047857]">
+            <span class="material-symbols-outlined text-[22px]">share</span>
+          </div>
+          <div>
+            <h2 class="font-display font-extrabold text-base sm:text-lg leading-tight">Export WhatsApp & PDF</h2>
+            <p class="text-xs opacity-70">Pilih satu atau lebih tanggal terlebih dahulu untuk menyiapkan format WA & PDF.</p>
+          </div>
+        </div>
+
+        <!-- Step 1: Pilih Tanggal untuk Ekspor (Bisa > 1 tanggal) -->
+        <div class="clay-soft p-3 flex flex-col gap-2.5">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <span class="text-xs font-extrabold uppercase tracking-wider">1. Pilih Tanggal Ekspor (Bisa lebih dari 1):</span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="addExportDate(selectedDate)" class="btn-clay-yellow px-2.5 py-1 rounded-full text-[11px] font-extrabold">
+                + Tgl Kalender (<span id="export-active-date-lbl">17 Nov</span>)
+              </button>
+              <button onclick="clearExportDates()" class="btn-clay-neutral px-2.5 py-1 rounded-full text-[11px] font-extrabold">
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input type="date" id="export-date-adder" onchange="if(this.value){ addExportDate(this.value); this.value=''; }" class="clay-input px-3 py-1.5 text-xs font-extrabold" />
+            <span class="text-[11px] opacity-70">atau klik tanggal tersedia di bawah:</span>
+          </div>
+
+          <!-- Available Date Chips -->
+          <div id="export-available-dates" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <!-- Empty State jika belum ada tanggal dipilih di Ekspor -->
+        <div id="export-empty-prompt" class="clay-soft p-6 text-center flex flex-col items-center gap-2">
+          <span class="material-symbols-outlined text-3xl text-[#FE589B]">event_note</span>
+          <p class="font-extrabold text-sm">Belum Ada Tanggal Dipilih</p>
+          <p class="text-xs opacity-75">Klik salah satu tanggal di atas untuk menampilkan jadwal dan membuat teks WhatsApp / PDF.</p>
+        </div>
+
+        <!-- Step 2 & 3: Checklist & Preview (Shown ONLY when >=1 date selected) -->
+        <div id="export-content-area" class="hidden flex-col gap-3.5">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-extrabold uppercase tracking-wider opacity-75">2. Jadwal pada Tanggal Terpilih:</span>
+              <span id="export-selected-count" class="text-xs font-extrabold text-[#FE589B]">0 dipilih</span>
+            </div>
+            <div class="clay-soft p-3 max-h-52 overflow-y-auto flex flex-col gap-2" id="export-checklist"></div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-extrabold uppercase tracking-wider opacity-75">3. Preview Teks WhatsApp (Siap Edit & Kirim):</label>
+            </div>
+            <textarea id="wa-preview-box" rows="11" class="clay-input w-full p-3 text-xs font-mono leading-relaxed"></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <button onclick="copyWhatsAppText()" class="btn-clay-yellow py-3 px-4 rounded-full text-xs font-extrabold flex items-center justify-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]">content_copy</span>
+              <span>Salin Teks WA</span>
+            </button>
+            <button onclick="shareToWhatsApp()" class="py-3 px-4 rounded-full text-xs font-extrabold text-white bg-emerald-500 shadow-[inset_0_3px_0_rgba(255,255,255,0.4),0_4px_0_#047857] active:translate-y-1 flex items-center justify-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]">send</span>
+              <span>Kirim ke WhatsApp</span>
+            </button>
+            <button onclick="exportSelectedToPDF()" class="btn-clay-pink py-3 px-4 rounded-full text-xs font-extrabold flex items-center justify-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+              <span>Download PDF</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Backup, Restore & Import Satuan -->
+      <section class="clay-card p-4 flex flex-col gap-3">
+        <h3 class="font-display font-extrabold text-base flex items-center gap-2">
+          <span class="material-symbols-outlined text-[#0086A3]">cloud_sync</span>
+          <span>Backup, Restore & Impor Satuan (.JSON)</span>
+        </h3>
+        <p class="text-xs opacity-75">
+          Simpan cadangan seluruh database ke file JSON, pulihkan data, atau impor 1 jadwal kiriman rekan kerja tanpa menghapus jadwal yang sudah ada.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <button onclick="exportFullBackupJSON()" class="btn-clay-cyan py-3 px-4 rounded-full text-xs font-extrabold flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px]">download</span>
+            <span>Backup Keseluruhan (.JSON)</span>
+          </button>
+
+          <label class="btn-clay-neutral py-3 px-4 rounded-full text-xs font-extrabold flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-[18px] text-[#FE589B]">upload_file</span>
+            <span>Restore / Impor File JSON</span>
+            <input type="file" accept=".json" onchange="handleJSONFileImport(event)" class="hidden" />
+          </label>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- FLOATING ADD BUTTON (Always Accessible) -->
+  <button onclick="openScheduleModal()" aria-label="Tambah Jadwal" class="fixed bottom-24 right-4 sm:right-8 z-40 h-13 px-4 py-3 rounded-full btn-clay-pink font-extrabold text-xs sm:text-sm flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-[22px]">add_circle</span>
+    <span data-i18n="fab_add">Tambah Jadwal</span>
+  </button>
+
+  <!-- BOTTOM NAVIGATION DOCK -->
+  <nav class="fixed bottom-0 inset-x-0 z-40 pb-3 px-4 pointer-events-none">
+    <div class="pointer-events-auto max-w-md mx-auto p-1.5 rounded-full bg-[var(--bg-card)]/95 backdrop-blur-xl shadow-[0_10px_28px_rgba(22,27,45,0.16),inset_0_2px_0_var(--border-rim)] flex items-center justify-between gap-1">
+      <button onclick="switchTab('kalender')" id="nav-kalender" class="nav-btn flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5 transition-all btn-clay-yellow font-extrabold">
+        <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+        <span class="text-[11px]" data-i18n="nav_cal">Kalender</span>
+      </button>
+      <button onclick="switchTab('kartu')" id="nav-kartu" class="nav-btn flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5 transition-all opacity-75 font-bold">
+        <span class="material-symbols-outlined text-[20px]">view_carousel</span>
+        <span class="text-[11px]" data-i18n="nav_cards">Kartu</span>
+      </button>
+      <button onclick="switchTab('rekap')" id="nav-rekap" class="nav-btn flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5 transition-all opacity-75 font-bold">
+        <span class="material-symbols-outlined text-[20px]">table_chart</span>
+        <span class="text-[11px]" data-i18n="nav_recap">Rekap</span>
+      </button>
+      <button onclick="switchTab('ekspor')" id="nav-ekspor" class="nav-btn flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5 transition-all opacity-75 font-bold">
+        <span class="material-symbols-outlined text-[20px]">ios_share</span>
+        <span class="text-[11px]" data-i18n="nav_export">Ekspor</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========================================== -->
+  <!-- MODAL 1: TAMBAH / EDIT JADWAL & DISPOSISI  -->
+  <!-- ========================================== -->
+  <div id="schedule-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="clay-card w-full max-w-lg rounded-b-none sm:rounded-3xl p-5 max-h-[92vh] overflow-y-auto flex flex-col gap-3.5">
+      <div class="flex items-center justify-between">
+        <h3 id="modal-form-title" class="font-display font-extrabold text-lg">Tambah Jadwal Kegiatan</h3>
+        <button onclick="closeScheduleModal()" class="btn-clay-neutral w-9 h-9 rounded-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <form id="schedule-form" onsubmit="saveScheduleForm(event)" class="flex flex-col gap-3">
+        <input type="hidden" id="form-id" />
+
+        <div>
+          <label class="block text-xs font-extrabold mb-1">Judul Undangan / Kegiatan *</label>
+          <input type="text" id="form-title" required placeholder="Contoh: Undangan Senam Sparko" class="clay-input w-full px-3.5 py-2.5 text-sm font-semibold" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div>
+            <label class="block text-xs font-extrabold mb-1">Tanggal *</label>
+            <input type="date" id="form-date" required class="clay-input w-full px-3 py-2 text-sm font-bold" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold mb-1">Pukul Mulai *</label>
+            <input type="text" id="form-time-start" required placeholder="07.00" class="clay-input w-full px-3 py-2 text-sm font-bold" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold mb-1">Selesai</label>
+            <input type="text" id="form-time-end" value="s.d selesai" placeholder="s.d selesai" class="clay-input w-full px-3 py-2 text-sm font-semibold" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold mb-1">Tempat / Lokasi *</label>
+          <input type="text" id="form-location" required placeholder="Contoh: Halaman Plaza Pemkot" class="clay-input w-full px-3.5 py-2.5 text-sm font-semibold" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold mb-1">Acara (Detail Kegiatan) *</label>
+          <input type="text" id="form-event" required placeholder="Contoh: Senam Sparko" class="clay-input w-full px-3.5 py-2.5 text-sm font-semibold" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold mb-1">Disposisi / Kehadiran *</label>
+          <input type="text" id="form-disposition" required placeholder="Contoh: Camat Hadir / Belum di dispo" class="clay-input w-full px-3.5 py-2.5 text-sm font-bold" />
+          <!-- Quick Presets -->
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <button type="button" onclick="setDispositionPreset('Camat Hadir')" class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[#FFD9E2] text-[#8E004B]">Camat Hadir</button>
+            <button type="button" onclick="setDispositionPreset('Sekcam hadir')" class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[#BBECFF] text-[#004E60]">Sekcam hadir</button>
+            <button type="button" onclick="setDispositionPreset('Kasi Kesos Hadir')" class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[#FFE600] text-[#201C00]">Kasi Kesos Hadir</button>
+            <button type="button" onclick="setDispositionPreset('Kasubag Tu Hadir bersama 1 orang staff')" class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-800">Kasubag TU + Staff</button>
+            <button type="button" onclick="setDispositionPreset('Belum di dispo')" class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[#FE589B] text-white">Belum di dispo</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold mb-1">Catatan Tambahan (Opsional)</label>
+          <textarea id="form-notes" rows="2" placeholder="Pakaian dinas, bahan paparan, link zoom, dll..." class="clay-input w-full px-3.5 py-2 text-xs font-medium"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeScheduleModal()" class="btn-clay-neutral px-4 py-2.5 rounded-full text-xs font-extrabold">Batal</button>
+          <button type="submit" class="btn-clay-yellow px-5 py-2.5 rounded-full text-xs font-extrabold flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px]">save</span>
+            <span>Simpan (+25 XP)</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 2: PILIH KARAKTER MONSTER (CUTE-ROCK)-->
+  <!-- ========================================== -->
+  <div id="monster-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="clay-card w-full max-w-md p-5 flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display font-extrabold text-lg">Pilih & Kustomisasi Partner</h3>
+        <button onclick="closeMonsterModal()" class="btn-clay-neutral w-9 h-9 rounded-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div>
+        <label class="block text-xs font-extrabold mb-1">Nama Panggilan Monster Kamu</label>
+        <input type="text" id="custom-monster-name" class="clay-input w-full px-3.5 py-2 text-sm font-bold" />
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="monster-picker-grid"></div>
+
+      <button onclick="saveMonsterCustomization()" class="btn-clay-pink w-full py-3 rounded-full text-xs font-extrabold">
+        Gunakan Karakter Ini
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 hidden px-4 py-2.5 rounded-full bg-[#161B2D] text-white text-xs font-extrabold shadow-xl flex items-center gap-2">
+    <span class="material-symbols-outlined text-[#FFE600] text-[18px]">auto_awesome</span>
+    <span id="toast-msg">Berhasil!</span>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. MONSTER CHARACTERS (FULL-BODY SVG)
+    // ==========================================
+    const MONSTERS = [
+      {
+        id: 'mochi',
+        name: 'Mochi-Mon',
+        style: 'Cute',
+        rank: '🌸 Cute Helper',
+        bg: 'from-pink-300 to-rose-400',
+        svg: `<svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-md">
+          <ellipse cx="60" cy="108" rx="30" ry="6" fill="rgba(0,0,0,0.15)"/>
+          <circle cx="36" cy="34" r="12" fill="#FF85B3"/>
+          <circle cx="84" cy="34" r="12" fill="#FF85B3"/>
+          <rect x="28" y="32" width="64" height="62" rx="30" fill="#FFB3D1"/>
+          <rect x="33" y="36" width="54" height="24" rx="12" fill="rgba(255,255,255,0.35)"/>
+          <ellipse cx="32" cy="88" rx="10" ry="7" fill="#FF66A3"/>
+          <ellipse cx="88" cy="88" rx="10" ry="7" fill="#FF66A3"/>
+          <g class="monster-eye">
+            <circle cx="46" cy="60" r="6" fill="#161B2D"/><circle cx="48" cy="58" r="2" fill="#FFF"/>
+            <circle cx="74" cy="60" r="6" fill="#161B2D"/><circle cx="76" cy="58" r="2" fill="#FFF"/>
+          </g>
+          <ellipse cx="38" cy="68" rx="5" ry="3" fill="#FF599C" opacity="0.6"/>
+          <ellipse cx="82" cy="68" rx="5" ry="3" fill="#FF599C" opacity="0.6"/>
+          <path d="M53 68 Q60 75 67 68" stroke="#161B2D" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        </svg>`
+      },
+      {
+        id: 'pika',
+        name: 'Pika-Spark',
+        style: 'Energetic',
+        rank: '⚡ Explorer',
+        bg: 'from-[#FFE600] to-amber-400',
+        svg: `<svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-md">
+          <ellipse cx="60" cy="108" rx="30" ry="6" fill="rgba(0,0,0,0.15)"/>
+          <polygon points="32,42 20,14 46,32" fill="#FFE600" stroke="#D4BF00" stroke-width="2"/>
+          <polygon points="20,14 27,26 35,22" fill="#161B2D"/>
+          <polygon points="88,42 100,14 74,32" fill="#FFE600" stroke="#D4BF00" stroke-width="2"/>
+          <polygon points="100,14 93,26 85,22" fill="#161B2D"/>
+          <rect x="30" y="32" width="60" height="64" rx="28" fill="#FFE600"/>
+          <ellipse cx="34" cy="92" rx="11" ry="7" fill="#F59E0B"/>
+          <ellipse cx="86" cy="92" rx="11" ry="7" fill="#F59E0B"/>
+          <g class="monster-eye">
+            <circle cx="46" cy="58" r="6.5" fill="#161B2D"/><circle cx="48" cy="56" r="2.2" fill="#FFF"/>
+            <circle cx="74" cy="58" r="6.5" fill="#161B2D"/><circle cx="76" cy="56" r="2.2" fill="#FFF"/>
+          </g>
+          <circle cx="37" cy="68" r="6" fill="#FE589B"/>
+          <circle cx="83" cy="68" r="6" fill="#FE589B"/>
+          <path d="M54 67 Q60 73 66 67" stroke="#161B2D" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        </svg>`
+      },
+      {
+        id: 'aqua',
+        name: 'Aqua-Bubbles',
+        style: 'Calm',
+        rank: '💧 Tactician',
+        bg: 'from-cyan-300 to-sky-500',
+        svg: `<svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-md">
+          <ellipse cx="60" cy="108" rx="30" ry="6" fill="rgba(0,0,0,0.15)"/>
+          <path d="M60 14 Q70 28 60 34 Q50 28 60 14Z" fill="#00D2FF"/>
+          <circle cx="60" cy="64" r="34" fill="#38BDF8"/>
+          <ellipse cx="60" cy="72" rx="22" ry="18" fill="#BAE6FD"/>
+          <ellipse cx="32" cy="90" rx="10" ry="8" fill="#0284C7"/>
+          <ellipse cx="88" cy="90" rx="10" ry="8" fill="#0284C7"/>
+          <g class="monster-eye">
+            <circle cx="47" cy="55" r="6" fill="#161B2D"/><circle cx="49" cy="53" r="2" fill="#FFF"/>
+            <circle cx="73" cy="55" r="6" fill="#161B2D"/><circle cx="75" cy="53" r="2" fill="#FFF"/>
+          </g>
+          <path d="M53 64 Q60 71 67 64" stroke="#161B2D" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        </svg>`
+      },
+      {
+        id: 'magma',
+        name: 'Magma-Rex',
+        style: 'Bold',
+        rank: '🔥 Commander',
+        bg: 'from-orange-400 to-red-500',
+        svg: `<svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-md">
+          <ellipse cx="60" cy="108" rx="30" ry="6" fill="rgba(0,0,0,0.15)"/>
+          <polygon points="44,32 50,16 56,32" fill="#FFE600"/>
+          <polygon points="64,32 70,16 76,32" fill="#FFE600"/>
+          <rect x="28" y="30" width="64" height="66" rx="26" fill="#FF7A30"/>
+          <ellipse cx="60" cy="74" rx="20" ry="16" fill="#FDE047"/>
+          <ellipse cx="34" cy="92" rx="11" ry="7" fill="#EA580C"/>
+          <ellipse cx="86" cy="92" rx="11" ry="7" fill="#EA580C"/>
+          <g class="monster-eye">
+            <circle cx="46" cy="54" r="6" fill="#161B2D"/><circle cx="48" cy="52" r="2" fill="#FFF"/>
+            <circle cx="74" cy="54" r="6" fill="#161B2D"/><circle cx="76" cy="52" r="2" fill="#FFF"/>
+          </g>
+          <path d="M50 64 L55 68 L60 64 L65 68 L70 64" stroke="#161B2D" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>`
+      },
+      {
+        id: 'rocker',
+        name: 'Rocker-Bolt',
+        style: 'Rock',
+        rank: '🎸 Rock Star',
+        bg: 'from-purple-500 to-indigo-700',
+        svg: `<svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-md">
+          <ellipse cx="60" cy="108" rx="30" ry="6" fill="rgba(0,0,0,0.2)"/>
+          <polygon points="60,10 48,32 62,28 56,42 74,24 60,26" fill="#FFE600"/>
+          <rect x="28" y="32" width="64" height="64" rx="24" fill="#8F43EE"/>
+          <ellipse cx="34" cy="92" rx="11" ry="7" fill="#5B21B6"/>
+          <ellipse cx="86" cy="92" rx="11" ry="7" fill="#5B21B6"/>
+          <polygon points="32,48 56,52 52,64 34,62" fill="#161B2D"/>
+          <polygon points="88,48 64,52 68,64 86,62" fill="#161B2D"/>
+          <line x1="56" y1="54" x2="64" y2="54" stroke="#FFE600" stroke-width="3"/>
+          <path d="M50 74 Q60 82 70 72" stroke="#FFE600" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        </svg>`
+      }
+    ];
+
+    // ==========================================
+    // 2. SEED DATA (6 JADWAL SELASA 17 NOV 2026)
+    // ==========================================
+    const SEED_SCHEDULES = [
+      {
+        id: 'sch-1',
+        title: 'Undangan Senam Sparko',
+        date: '2026-11-17',
+        timeStart: '07.00',
+        timeEnd: 's.d selesai',
+        location: 'Halaman Plaza Pemkot',
+        eventDetail: 'Senam Sparko',
+        disposition: 'Camat Hadir',
+        notes: 'Pakaian olahraga lengkap'
+      },
+      {
+        id: 'sch-2',
+        title: 'Undangan Rapat Persiapan Penyaluran BLT DBHCHT 2025',
+        date: '2026-11-17',
+        timeStart: '09.30',
+        timeEnd: 's.d selesai',
+        location: 'Ruang Rapat Dinsos Kota Bekasi',
+        eventDetail: 'Rapat Persiapan Penyaluran BLT DBHCHT Tahun 2026',
+        disposition: 'Kasi Kesos Hadir',
+        notes: 'Membawa data rekap KPM kecamatan'
+      },
+      {
+        id: 'sch-3',
+        title: 'Undangan Workshop Penguatan Agen Perubahan',
+        date: '2026-11-17',
+        timeStart: '08.30',
+        timeEnd: 's.d selesai',
+        location: 'Ruang Rapat Pendopo walikota',
+        eventDetail: 'Workshop Penguatan Agen perubahan',
+        disposition: 'Belum di dispo',
+        notes: 'Segera konfirmasi penunjukan perwakilan'
+      },
+      {
+        id: 'sch-4',
+        title: 'Pembahasan management Layanan pemerintah Berbasis Digital',
+        date: '2026-11-17',
+        timeStart: '09.00',
+        timeEnd: 's.d selesai',
+        location: 'Ruang Rapat Diskomintostandi kota Bekasi',
+        eventDetail: 'Pembahasan management Layanan pemerintah Berbasis Digital',
+        disposition: 'Kasubag Tu Hadir bersama 1 orang staff',
+        notes: ''
+      },
+      {
+        id: 'sch-5',
+        title: 'Pembahasan Rapat Tindak Lanjut Kedua penyeragaman template',
+        date: '2026-11-17',
+        timeStart: '09.00',
+        timeEnd: 's.d selesai',
+        location: 'Ruang Rapat Bagian Organisasi Setda',
+        eventDetail: 'Tindak Lanjut Kedua penyeragaman template',
+        disposition: 'Sekcam hadir',
+        notes: ''
+      },
+      {
+        id: 'sch-6',
+        title: 'Undangan Validasi Kompetisi Inovasi sehati Jawabarat Tahun 2026',
+        date: '2026-11-17',
+        timeStart: '08.00',
+        timeEnd: 's.d selesai',
+        location: 'Aula RSUD Jatisampurna',
+        eventDetail: 'Validasi Kompetisi Inovasi sehati Jawabarat Tahun 2026',
+        disposition: 'Camat hadir',
+        notes: 'Presentasi inovasi kecamatan'
+      }
+    ];
+
+    // ==========================================
+    // 3. STATE & INDEXEDDB ENGINE
+    // ==========================================
+    const DB_NAME = 'SiJadwalQuestDB';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'schedules';
+
+    let db = null;
+    let schedules = [];
+    let selectedDate = '2026-11-17'; // Tanggal aktif di Kalender
+    let viewYear = 2026;
+    let viewMonth = 10; // November
+
+    // State terpisah: Belum dipilih saat pertama masuk tab Kartu, Rekap, & Ekspor
+    let cardsSelectedDate = '';
+    let recapSelectedDate = '';
+    let exportSelectedDates = new Set();
+    let selectedExportIds = new Set();
+
+    let currentLang = localStorage.getItem('sj_lang') || 'ID';
+
+    let profile = JSON.parse(localStorage.getItem('sj_profile') || 'null') || {
+      monsterId: 'pika',
+      monsterName: 'Pika-Spark',
+      xp: 420,
+      coins: 150,
+      streak: 5
+    };
+
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e) => {
+          const database = e.target.result;
+          if (!database.objectStoreNames.contains(STORE_NAME)) {
+            database.createObjectStore(STORE_NAME, { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = () => {
+          db = req.result;
+          resolve(db);
+        };
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function dbGetAll() {
+      return new Promise((resolve) => {
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.getAll();
+        req.onsuccess = () => resolve(req.result || []);
+      });
+    }
+
+    function dbPut(item) {
+      return new Promise((resolve) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).put(item);
+        tx.oncomplete = () => resolve();
+      });
+    }
+
+    function dbDelete(id) {
+      return new Promise((resolve) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).delete(id);
+        tx.oncomplete = () => resolve();
+      });
+    }
+
+    function dbClear() {
+      return new Promise((resolve) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).clear();
+        tx.oncomplete = () => resolve();
+      });
+    }
+
+    // ==========================================
+    // 4. DATE & FORMAT HELPERS
+    // ==========================================
+    const DAYS_ID = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const MONTHS_ID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+    function formatIndoDateFull(isoStr) {
+      if (!isoStr) return '';
+      const [y, m, d] = isoStr.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      return `${DAYS_ID[dt.getDay()]}, ${d} ${MONTHS_ID[m - 1]} ${y}`;
+    }
+
+    function formatIndoDateShort(isoStr) {
+      if (!isoStr) return '';
+      const [y, m, d] = isoStr.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      return `${DAYS_ID[dt.getDay()]} , ${d} ${MONTHS_ID[m - 1]} ${y}`;
+    }
+
+    function formatChipDate(isoStr) {
+      const [y, m, d] = isoStr.split('-').map(Number);
+      return `${d} ${MONTHS_SHORT[m - 1]} ${y}`;
+    }
+
+    function getUniqueSortedDates() {
+      return [...new Set(schedules.map(s => s.date))].sort();
+    }
+
+    function isPendingDispo(dispo) {
+      return (dispo || '').toLowerCase().includes('belum');
+    }
+
+    function getDispoBadgeStyle(dispo) {
+      const lower = (dispo || '').toLowerCase();
+      if (lower.includes('belum')) return 'bg-[#FE589B] text-white shadow-[0_2px_0_#B41963]';
+      if (lower.includes('camat') && !lower.includes('sekcam')) return 'bg-[#FFD9E2] text-[#8E004B]';
+      if (lower.includes('sekcam')) return 'bg-[#BBECFF] text-[#004E60]';
+      return 'bg-[#FFE600] text-[#201C00]';
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      t.classList.remove('hidden');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.classList.add('hidden'), 2600);
+    }
+
+    // ==========================================
+    // 5. GAMIFICATION & MONSTER ENGINE
+    // ==========================================
+    function addXP(amount, coinsAmount = 10) {
+      profile.xp += amount;
+      profile.coins += coinsAmount;
+      localStorage.setItem('sj_profile', JSON.stringify(profile));
+      renderGamificationHeader();
+      const wrap = document.getElementById('monster-svg-wrap');
+      wrap.classList.remove('monster-celebrate');
+      void wrap.offsetWidth;
+      wrap.classList.add('monster-celebrate');
+    }
+
+    function renderGamificationHeader() {
+      const m = MONSTERS.find(x => x.id === profile.monsterId) || MONSTERS[1];
+      const level = Math.floor(profile.xp / 500) + 1;
+      const currentLevelXP = profile.xp % 500;
+      const pct = Math.min(100, Math.round((currentLevelXP / 500) * 100));
+
+      document.getElementById('header-level').textContent = `Lv.${level}`;
+      document.getElementById('header-coins').textContent = profile.coins;
+      document.getElementById('monster-level-badge').textContent = `Lv. ${level}`;
+      document.getElementById('monster-name-display').textContent = profile.monsterName || m.name;
+      document.getElementById('monster-rank-badge').textContent = m.rank;
+      document.getElementById('streak-count').textContent = profile.streak;
+      document.getElementById('xp-text').textContent = `${currentLevelXP} / 500 XP`;
+      document.getElementById('xp-bar').style.width = `${pct}%`;
+
+      const stage = document.getElementById('monster-stage');
+      stage.className = `w-24 h-24 rounded-3xl bg-gradient-to-b ${m.bg} p-1.5 shadow-[inset_0_3px_0_rgba(255,255,255,0.8),0_4px_0_rgba(0,0,0,0.18)] flex items-center justify-center`;
+      document.getElementById('monster-svg-wrap').innerHTML = m.svg;
+
+      const dayItems = schedules.filter(s => s.date === selectedDate);
+      const pendingCount = dayItems.filter(s => isPendingDispo(s.disposition)).length;
+      const speechEl = document.getElementById('monster-speech');
+
+      if (dayItems.length === 0) {
+        speechEl.innerHTML = `Wah, tanggal <strong>${formatIndoDateFull(selectedDate)}</strong> masih kosong! Yuk isi agenda supaya streak tetap menyala!`;
+      } else if (pendingCount > 0) {
+        speechEl.innerHTML = `Ada <strong class="text-[#FE589B]">${dayItems.length} jadwal</strong> di ${formatIndoDateFull(selectedDate)}, dan <strong>${pendingCount} belum di dispo</strong>!`;
+      } else {
+        speechEl.innerHTML = `Mantap! Semua <strong class="text-emerald-600 dark:text-emerald-400">${dayItems.length} jadwal</strong> di ${formatIndoDateFull(selectedDate)} sudah terdisposisi lengkap!`;
+      }
+
+      checkEmptyDateReminder();
+    }
+
+    function checkEmptyDateReminder() {
+      const [y, m, d] = selectedDate.split('-').map(Number);
+      const nextDt = new Date(y, m - 1, d + 1);
+      const nextIso = `${nextDt.getFullYear()}-${String(nextDt.getMonth() + 1).padStart(2, '0')}-${String(nextDt.getDate()).padStart(2, '0')}`;
+      const nextItems = schedules.filter(s => s.date === nextIso);
+      const banner = document.getElementById('empty-reminder-banner');
+
+      if (nextItems.length === 0) {
+        banner.classList.remove('hidden');
+        banner.dataset.targetDate = nextIso;
+        document.getElementById('reminder-title').textContent = `Jadwal ${formatIndoDateFull(nextIso)} Kosong!`;
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+
+    function quickFillReminderDate() {
+      const target = document.getElementById('empty-reminder-banner').dataset.targetDate || '2026-11-18';
+      openScheduleModal(null, target);
+    }
+
+    // ==========================================
+    // 6. VIEW 1: RENDER CALENDAR VIEW
+    // ==========================================
+    function renderCalendar() {
+      document.getElementById('cal-month-label').textContent = `${MONTHS_ID[viewMonth]} ${viewYear}`;
+      const grid = document.getElementById('calendar-grid');
+      grid.innerHTML = '';
+
+      const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+      const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+      for (let i = 0; i < firstDay; i++) {
+        grid.innerHTML += `<div class="h-14"></div>`;
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const iso = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const items = schedules.filter(s => s.date === iso);
+        const hasPending = items.some(s => isPendingDispo(s.disposition));
+        const isSelected = iso === selectedDate;
+        const isSunday = new Date(viewYear, viewMonth, d).getDay() === 0;
+
+        let btnClass = 'bg-[var(--bg-card-soft)] text-[var(--text-main)] shadow-[0_2px_0_var(--shadow-lip)]';
+        if (isSelected) {
+          btnClass = 'btn-clay-yellow -translate-y-0.5 ring-2 ring-[#FE589B]';
+        }
+
+        let indicatorHTML = `<span class="text-[9px] font-bold opacity-45 mt-0.5">Kosong</span>`;
+        if (items.length > 0) {
+          const dotColor = hasPending ? 'bg-[#FE589B]' : 'bg-emerald-500';
+          indicatorHTML = `
+            <div class="flex items-center gap-0.5 mt-1">
+              <span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>
+              <span class="text-[10px] font-extrabold">${items.length}</span>
+            </div>
+          `;
+        }
+
+        const alertBadge = hasPending
+          ? `<span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#FE589B] text-white text-[9px] font-extrabold flex items-center justify-center animate-bounce">!</span>`
+          : '';
+
+        grid.innerHTML += `
+          <button onclick="selectCalendarDate('${iso}')" class="relative h-14 rounded-2xl flex flex-col items-center justify-center transition-all ${btnClass}">
+            ${alertBadge}
+            <span class="text-xs sm:text-sm font-extrabold ${isSunday && !isSelected ? 'text-[#FE589B]' : ''}">${d}</span>
+            ${indicatorHTML}
+          </button>
+        `;
+      }
+
+      renderSelectedDateSection();
+    }
+
+    function selectCalendarDate(iso) {
+      selectedDate = iso;
+      renderCalendar();
+      renderGamificationHeader();
+    }
+
+    function changeMonth(delta) {
+      viewMonth += delta;
+      if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+      if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+      renderCalendar();
+    }
+
+    function goToTodaySeed() {
+      viewYear = 2026;
+      viewMonth = 10;
+      selectCalendarDate('2026-11-17');
+    }
+
+    function renderSelectedDateSection() {
+      const items = schedules
+        .filter(s => s.date === selectedDate)
+        .sort((a, b) => a.timeStart.localeCompare(b.timeStart));
+
+      document.getElementById('selected-date-heading').textContent = formatIndoDateFull(selectedDate);
+      document.getElementById('selected-date-count').textContent = `${items.length} Agenda`;
+
+      const pending = items.filter(i => isPendingDispo(i.disposition)).length;
+      const camat = items.filter(i => i.disposition.toLowerCase().includes('camat') && !i.disposition.toLowerCase().includes('sekcam')).length;
+      const sekcam = items.filter(i => i.disposition.toLowerCase().includes('sekcam')).length;
+
+      document.getElementById('disposition-summary-pills').innerHTML = `
+        <span class="shrink-0 px-3 py-1 rounded-full bg-[var(--bg-card)] text-xs font-extrabold shadow-sm">👔 ${camat} Camat</span>
+        <span class="shrink-0 px-3 py-1 rounded-full bg-[var(--bg-card)] text-xs font-extrabold shadow-sm">📋 ${sekcam} Sekcam</span>
+        ${pending > 0 ? `<span class="shrink-0 px-3 py-1 rounded-full bg-[#FE589B] text-white text-xs font-extrabold">⚠️ ${pending} Belum di Dispo</span>` : ''}
+      `;
+
+      const container = document.getElementById('calendar-date-cards');
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="clay-card p-6 text-center flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-4xl text-[#0086A3]">event_busy</span>
+            <p class="font-extrabold text-sm">Belum ada jadwal kegiatan pada tanggal ini.</p>
+            <button onclick="openScheduleModal(null, '${selectedDate}')" class="btn-clay-yellow mt-1 px-4 py-2 rounded-full text-xs font-extrabold">
+              + Buat Jadwal Pertama
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = items.map((item, idx) => buildScheduleCardHTML(item, idx + 1)).join('');
+    }
+
+    function buildScheduleCardHTML(item, number) {
+      const pending = isPendingDispo(item.disposition);
+      const badgeStyle = getDispoBadgeStyle(item.disposition);
+
+      return `
+        <article class="clay-card p-4 flex flex-col gap-2.5 relative overflow-hidden ${pending ? 'ring-2 ring-[#FE589B]' : ''}">
+          ${pending ? '<div class="absolute top-0 inset-x-0 h-1.5 bg-[#FE589B]"></div>' : ''}
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-start gap-2.5 min-w-0">
+              <div class="w-8 h-8 rounded-full btn-clay-yellow font-display font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                ${number}
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 text-xs font-extrabold text-[#0086A3] dark:text-[#3BE0FF]">
+                  <span class="material-symbols-outlined text-[15px]">schedule</span>
+                  <span>${item.timeStart} Wib ${item.timeEnd}</span>
+                </div>
+                <h4 class="font-extrabold text-sm sm:text-base leading-snug mt-0.5">${escapeHTML(item.title)}</h4>
+              </div>
+            </div>
+            <span class="shrink-0 px-2.5 py-1 rounded-full text-[11px] font-extrabold ${badgeStyle}">
+              ${escapeHTML(item.disposition)}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs opacity-85 bg-[var(--bg-card-soft)] p-2.5 rounded-2xl">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-[#FE589B]">location_on</span>
+              <span class="font-semibold">${escapeHTML(item.location)}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-amber-500">flag</span>
+              <span class="font-semibold">${escapeHTML(item.eventDetail)}</span>
+            </div>
+          </div>
+
+          ${item.notes ? `
+            <div class="text-xs px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-800 dark:text-amber-200 font-medium flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[15px]">sticky_note_2</span>
+              <span>${escapeHTML(item.notes)}</span>
+            </div>
+          ` : ''}
+
+          <div class="flex items-center justify-between pt-1 border-t border-black/5 dark:border-white/5">
+            <span class="text-[11px] font-bold opacity-60">${formatIndoDateShort(item.date)}</span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="shareSingleWhatsApp('${item.id}')" class="btn-clay-neutral w-8 h-8 rounded-full flex items-center justify-center text-emerald-600" title="Kirim Satuan ke WhatsApp">
+                <span class="material-symbols-outlined text-[17px]">share</span>
+              </button>
+              <button onclick="exportSingleJSON('${item.id}')" class="btn-clay-neutral w-8 h-8 rounded-full flex items-center justify-center text-[#0086A3]" title="Ekspor Satuan (.JSON)">
+                <span class="material-symbols-outlined text-[17px]">file_download</span>
+              </button>
+              <button onclick="openScheduleModal('${item.id}')" class="btn-clay-yellow px-3 h-8 rounded-full text-[11px] font-extrabold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[15px]">edit</span>
+                <span>Edit</span>
+              </button>
+              <button onclick="deleteSchedule('${item.id}')" class="btn-clay-neutral w-8 h-8 rounded-full flex items-center justify-center text-rose-500" title="Hapus">
+                <span class="material-symbols-outlined text-[17px]">delete</span>
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    // ==========================================
+    // 7. VIEW 2: KARTU PER TANGGAL DIPILIH
+    // ==========================================
+    function onCardsDateChange(val) {
+      cardsSelectedDate = val;
+      renderAllCardsView();
+    }
+
+    function setCardsDateQuick(iso) {
+      cardsSelectedDate = iso;
+      document.getElementById('cards-date-picker').value = iso;
+      renderAllCardsView();
+    }
+
+    function clearCardsDate() {
+      cardsSelectedDate = '';
+      document.getElementById('cards-date-picker').value = '';
+      document.getElementById('card-search-input').value = '';
+      renderAllCardsView();
+    }
+
+    function renderAllCardsView() {
+      const availableDates = getUniqueSortedDates();
+      const chipsWrap = document.getElementById('cards-available-dates');
+      chipsWrap.innerHTML = availableDates.length
+        ? `<span class="text-[11px] font-bold opacity-60 shrink-0">Tanggal tersedia:</span>` + availableDates.map(d => `
+            <button onclick="setCardsDateQuick('${d}')" class="shrink-0 px-3 py-1 rounded-full text-[11px] font-extrabold transition-all ${cardsSelectedDate === d ? 'btn-clay-pink' : 'btn-clay-neutral'}">
+              ${formatChipDate(d)}
+            </button>
+          `).join('')
+        : '';
+
+      const list = document.getElementById('all-cards-list');
+      const searchWrap = document.getElementById('cards-search-wrap');
+      const badge = document.getElementById('total-cards-badge');
+
+      // JIKA BELUM DIPILIH TANGGAL -> JANGAN TAMPILKAN KARTU DULU
+      if (!cardsSelectedDate) {
+        badge.textContent = 'Belum dipilih';
+        searchWrap.classList.add('hidden');
+        list.innerHTML = `
+          <div class="clay-card p-8 text-center flex flex-col items-center gap-2.5">
+            <div class="w-14 h-14 rounded-3xl bg-[#FFD9E2] text-[#8E004B] flex items-center justify-center shadow-[0_4px_0_#FFB1C8]">
+              <span class="material-symbols-outlined text-3xl">touch_app</span>
+            </div>
+            <h3 class="font-display font-extrabold text-base">Pilih Tanggal Terlebih Dahulu</h3>
+            <p class="text-xs opacity-75 max-w-sm">Silakan pilih tanggal pada kalender di atas atau klik salah satu tanggal tersedia untuk menampilkan kartu kegiatan.</p>
+          </div>
+        `;
+        return;
+      }
+
+      searchWrap.classList.remove('hidden');
+      const q = (document.getElementById('card-search-input').value || '').toLowerCase();
+      const filter = document.getElementById('card-status-filter').value;
+
+      const filtered = schedules.filter(item => {
+        if (item.date !== cardsSelectedDate) return false;
+        const matchText = [item.title, item.location, item.eventDetail, item.disposition, item.notes]
+          .join(' ').toLowerCase().includes(q);
+        if (!matchText) return false;
+        const d = item.disposition.toLowerCase();
+        if (filter === 'PENDING') return d.includes('belum');
+        if (filter === 'CAMAT') return d.includes('camat') && !d.includes('sekcam');
+        if (filter === 'SEKCAM') return d.includes('sekcam');
+        if (filter === 'OTHER') return !d.includes('belum') && !d.includes('camat');
+        return true;
+      }).sort((a, b) => a.timeStart.localeCompare(b.timeStart));
+
+      badge.textContent = `${formatChipDate(cardsSelectedDate)} (${filtered.length})`;
+      list.innerHTML = filtered.length
+        ? filtered.map((item, i) => buildScheduleCardHTML(item, i + 1)).join('')
+        : `
+          <div class="clay-card p-6 text-center flex flex-col items-center gap-2">
+            <p class="font-extrabold text-sm">Tidak ada jadwal pada ${formatIndoDateFull(cardsSelectedDate)}.</p>
+            <button onclick="openScheduleModal(null, '${cardsSelectedDate}')" class="btn-clay-yellow px-4 py-2 rounded-full text-xs font-extrabold">
+              + Tambah Jadwal di Tanggal Ini
+            </button>
+          </div>
+        `;
+    }
+
+    // ==========================================
+    // 8. VIEW 3: TABEL REKAPITULASI PER TANGGAL
+    // ==========================================
+    function onRecapDateChange(val) {
+      recapSelectedDate = val;
+      renderRecapTable();
+    }
+
+    function setRecapDateQuick(iso) {
+      recapSelectedDate = iso;
+      document.getElementById('table-date-filter').value = iso;
+      renderRecapTable();
+    }
+
+    function clearRecapDate() {
+      recapSelectedDate = '';
+      document.getElementById('table-date-filter').value = '';
+      document.getElementById('table-search-input').value = '';
+      renderRecapTable();
+    }
+
+    function renderRecapTable() {
+      const availableDates = getUniqueSortedDates();
+      const chipsWrap = document.getElementById('recap-available-dates');
+      chipsWrap.innerHTML = availableDates.length
+        ? `<span class="text-[11px] font-bold opacity-60 shrink-0">Tanggal tersedia:</span>` + availableDates.map(d => `
+            <button onclick="setRecapDateQuick('${d}')" class="shrink-0 px-3 py-1 rounded-full text-[11px] font-extrabold transition-all ${recapSelectedDate === d ? 'btn-clay-cyan' : 'btn-clay-neutral'}">
+              ${formatChipDate(d)}
+            </button>
+          `).join('')
+        : '';
+
+      const emptyPrompt = document.getElementById('recap-empty-prompt');
+      const tableWrapper = document.getElementById('recap-table-wrapper');
+
+      // JIKA BELUM DIPILIH TANGGAL -> JANGAN TAMPILKAN TABEL DULU
+      if (!recapSelectedDate) {
+        emptyPrompt.classList.remove('hidden');
+        tableWrapper.classList.add('hidden');
+        return;
+      }
+
+      emptyPrompt.classList.add('hidden');
+      tableWrapper.classList.remove('hidden');
+
+      const q = (document.getElementById('table-search-input').value || '').toLowerCase();
+      const filtered = schedules.filter(item => {
+        if (item.date !== recapSelectedDate) return false;
+        return [item.title, item.location, item.eventDetail, item.disposition, item.notes]
+          .join(' ').toLowerCase().includes(q);
+      }).sort((a, b) => a.timeStart.localeCompare(b.timeStart));
+
+      document.getElementById('recap-active-date-title').textContent = `Rekap: ${formatIndoDateFull(recapSelectedDate)}`;
+      document.getElementById('recap-row-count').textContent = `${filtered.length} Jadwal`;
+
+      const tbody = document.getElementById('recap-table-body');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="p-6 text-center font-bold opacity-70">
+              Tidak ada data jadwal pada tanggal ${formatIndoDateFull(recapSelectedDate)}.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((item, idx) => `
+        <tr class="hover:bg-black/5 dark:hover:bg-white/5">
+          <td class="p-3 font-extrabold">${idx + 1}</td>
+          <td class="p-3 font-bold whitespace-nowrap">${formatIndoDateFull(item.date)}</td>
+          <td class="p-3 whitespace-nowrap">${escapeHTML(item.timeStart)} Wib ${escapeHTML(item.timeEnd)}</td>
+          <td class="p-3">
+            <div class="font-extrabold">${escapeHTML(item.title)}</div>
+            <div class="text-[11px] opacity-70">Acara: ${escapeHTML(item.eventDetail)}</div>
+          </td>
+          <td class="p-3 font-semibold">${escapeHTML(item.location)}</td>
+          <td class="p-3">
+            <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${getDispoBadgeStyle(item.disposition)}">
+              ${escapeHTML(item.disposition)}
+            </span>
+          </td>
+          <td class="p-3 text-xs opacity-80">${escapeHTML(item.notes || '-')}</td>
+          <td class="p-3 text-center whitespace-nowrap">
+            <button onclick="openScheduleModal('${item.id}')" class="px-2.5 py-1 rounded-full bg-[#FFE600] text-[#201C00] text-[11px] font-extrabold mr-1">Edit</button>
+            <button onclick="deleteSchedule('${item.id}')" class="px-2 py-1 rounded-full bg-rose-500 text-white text-[11px] font-extrabold">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // ==========================================
+    // 9. CRUD MODAL HANDLERS
+    // ==========================================
+    function openScheduleModal(id = null, defaultDate = null) {
+      const modal = document.getElementById('schedule-modal');
+      modal.classList.remove('hidden');
+
+      if (id) {
+        const item = schedules.find(s => s.id === id);
+        document.getElementById('modal-form-title').textContent = 'Edit & Lengkapi Jadwal';
+        document.getElementById('form-id').value = item.id;
+        document.getElementById('form-title').value = item.title;
+        document.getElementById('form-date').value = item.date;
+        document.getElementById('form-time-start').value = item.timeStart;
+        document.getElementById('form-time-end').value = item.timeEnd;
+        document.getElementById('form-location').value = item.location;
+        document.getElementById('form-event').value = item.eventDetail;
+        document.getElementById('form-disposition').value = item.disposition;
+        document.getElementById('form-notes').value = item.notes || '';
+      } else {
+        document.getElementById('modal-form-title').textContent = 'Tambah Jadwal Kegiatan';
+        document.getElementById('schedule-form').reset();
+        document.getElementById('form-id').value = '';
+        document.getElementById('form-date').value = defaultDate || selectedDate;
+        document.getElementById('form-time-end').value = 's.d selesai';
+      }
+    }
+
+    function closeScheduleModal() {
+      document.getElementById('schedule-modal').classList.add('hidden');
+    }
+
+    function setDispositionPreset(val) {
+      document.getElementById('form-disposition').value = val;
+    }
+
+    async function saveScheduleForm(e) {
+      e.preventDefault();
+      const id = document.getElementById('form-id').value || ('sch-' + Date.now());
+      const item = {
+        id,
+        title: document.getElementById('form-title').value.trim(),
+        date: document.getElementById('form-date').value,
+        timeStart: document.getElementById('form-time-start').value.trim(),
+        timeEnd: document.getElementById('form-time-end').value.trim() || 's.d selesai',
+        location: document.getElementById('form-location').value.trim(),
+        eventDetail: document.getElementById('form-event').value.trim(),
+        disposition: document.getElementById('form-disposition').value.trim(),
+        notes: document.getElementById('form-notes').value.trim()
+      };
+
+      await dbPut(item);
+      schedules = await dbGetAll();
+      selectedDate = item.date;
+      const [y, m] = item.date.split('-').map(Number);
+      viewYear = y;
+      viewMonth = m - 1;
+
+      if (exportSelectedDates.has(item.date)) {
+        selectedExportIds.add(item.id);
+      }
+
+      closeScheduleModal();
+      refreshAllViews();
+      addXP(25, 15);
+      showToast('Jadwal berhasil disimpan! +25 XP');
+    }
+
+    async function deleteSchedule(id) {
+      if (!confirm('Hapus jadwal kegiatan ini?')) return;
+      await dbDelete(id);
+      schedules = await dbGetAll();
+      selectedExportIds.delete(id);
+      refreshAllViews();
+      showToast('Jadwal dihapus.');
+    }
+
+    // ==========================================
+    // 10. VIEW 4: EXPORT WHATSAPP, PDF & JSON
+    // ==========================================
+    function toggleExportDate(iso) {
+      if (exportSelectedDates.has(iso)) {
+        exportSelectedDates.delete(iso);
+        schedules.filter(s => s.date === iso).forEach(s => selectedExportIds.delete(s.id));
+      } else {
+        exportSelectedDates.add(iso);
+        schedules.filter(s => s.date === iso).forEach(s => selectedExportIds.add(s.id));
+      }
+      renderExportView();
+    }
+
+    function addExportDate(iso) {
+      if (!iso) return;
+      exportSelectedDates.add(iso);
+      schedules.filter(s => s.date === iso).forEach(s => selectedExportIds.add(s.id));
+      renderExportView();
+    }
+
+    function clearExportDates() {
+      exportSelectedDates.clear();
+      selectedExportIds.clear();
+      renderExportView();
+    }
+
+    function renderExportView() {
+      document.getElementById('export-active-date-lbl').textContent = formatChipDate(selectedDate);
+
+      // Render chips of all dates that exist in schedules + any custom picked dates
+      const allDates = [...new Set([...getUniqueSortedDates(), ...exportSelectedDates])].sort();
+      const dateChipsWrap = document.getElementById('export-available-dates');
+      dateChipsWrap.innerHTML = allDates.map(d => {
+        const isChecked = exportSelectedDates.has(d);
+        const count = schedules.filter(s => s.date === d).length;
+        return `
+          <button onclick="toggleExportDate('${d}')" class="px-3 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-1 transition-all ${isChecked ? 'btn-clay-pink' : 'btn-clay-neutral'}">
+            <span class="material-symbols-outlined text-[15px]">${isChecked ? 'check_circle' : 'radio_button_unchecked'}</span>
+            <span>${formatChipDate(d)} (${count})</span>
+          </button>
+        `;
+      }).join('');
+
+      const emptyPrompt = document.getElementById('export-empty-prompt');
+      const contentArea = document.getElementById('export-content-area');
+
+      // JIKA BELUM ADA TANGGAL DIPILIH -> JANGAN TAMPILKAN DAFTAR & PREVIEW DULU
+      if (exportSelectedDates.size === 0) {
+        emptyPrompt.classList.remove('hidden');
+        contentArea.classList.add('hidden');
+        contentArea.classList.remove('flex');
+        return;
+      }
+
+      emptyPrompt.classList.add('hidden');
+      contentArea.classList.remove('hidden');
+      contentArea.classList.add('flex');
+
+      const matchingSchedules = schedules
+        .filter(s => exportSelectedDates.has(s.date))
+        .sort((a, b) => a.date.localeCompare(b.date) || a.timeStart.localeCompare(b.timeStart));
+
+      const checklist = document.getElementById('export-checklist');
+      if (matchingSchedules.length === 0) {
+        checklist.innerHTML = `<p class="text-xs font-bold opacity-70 p-2">Tidak ada jadwal pada tanggal yang dipilih.</p>`;
+      } else {
+        checklist.innerHTML = matchingSchedules.map(item => `
+          <label class="flex items-center gap-2.5 p-2 rounded-xl bg-[var(--bg-card)] cursor-pointer text-xs">
+            <input type="checkbox" ${selectedExportIds.has(item.id) ? 'checked' : ''} onchange="toggleExportItem('${item.id}')" class="w-4 h-4 accent-[#FE589B]" />
+            <div class="min-w-0 flex-1">
+              <div class="font-extrabold truncate">${escapeHTML(item.title)}</div>
+              <div class="text-[11px] opacity-70">${formatIndoDateFull(item.date)} • ${item.timeStart} Wib • ${escapeHTML(item.disposition)}</div>
+            </div>
+          </label>
+        `).join('');
+      }
+
+      updateWhatsAppPreview();
+    }
+
+    function toggleExportItem(id) {
+      if (selectedExportIds.has(id)) selectedExportIds.delete(id);
+      else selectedExportIds.add(id);
+      updateWhatsAppPreview();
+    }
+
+    function formatSchedulesToWhatsAppText(items) {
+      if (!items.length) return 'Belum ada jadwal yang dicentang.';
+
+      const groups = {};
+      items.forEach(item => {
+        if (!groups[item.date]) groups[item.date] = [];
+        groups[item.date].push(item);
+      });
+
+      let lines = ['JADWAL KEGIATAN', ''];
+      Object.keys(groups).sort().forEach((dateKey, gIdx) => {
+        if (gIdx > 0) lines.push('', '--------------------------------', '');
+        lines.push(`Hari ${formatIndoDateFull(dateKey)}`, '');
+
+        groups[dateKey]
+          .sort((a, b) => a.timeStart.localeCompare(b.timeStart))
+          .forEach((item, idx) => {
+            lines.push(`${idx + 1}.${item.title}`);
+            lines.push(`Hari: ${formatIndoDateShort(item.date)}`);
+            lines.push(`Tempat: ${item.location} `);
+            lines.push(`Pukul : ${item.timeStart} Wib ${item.timeEnd}`);
+            lines.push(`Acara : ${item.eventDetail} `);
+            lines.push(`${item.disposition}`);
+            if (item.notes) lines.push(`Catatan : ${item.notes}`);
+            lines.push('');
+          });
+      });
+
+      return lines.join('\n').trim();
+    }
+
+    function updateWhatsAppPreview() {
+      const chosen = schedules.filter(s => exportSelectedDates.has(s.date) && selectedExportIds.has(s.id));
+      document.getElementById('export-selected-count').textContent = `${chosen.length} jadwal dipilih`;
+      document.getElementById('wa-preview-box').value = formatSchedulesToWhatsAppText(chosen);
+    }
+
+    function copyWhatsAppText() {
+      const text = document.getElementById('wa-preview-box').value;
+      navigator.clipboard.writeText(text);
+      addXP(10, 5);
+      showToast('Teks jadwal disalin! Siap paste ke WA.');
+    }
+
+    function shareToWhatsApp() {
+      const text = document.getElementById('wa-preview-box').value;
+      addXP(15, 10);
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function shareSingleWhatsApp(id) {
+      const item = schedules.find(s => s.id === id);
+      if (!item) return;
+      const text = formatSchedulesToWhatsAppText([item]);
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function exportSelectedToPDF() {
+      const text = document.getElementById('wa-preview-box').value;
+      const datesLabel = [...exportSelectedDates].sort().join('_') || selectedDate;
+      const el = document.createElement('div');
+      el.style.padding = '28px';
+      el.style.fontFamily = 'Arial, sans-serif';
+      el.style.color = '#111';
+      el.style.lineHeight = '1.6';
+      el.innerHTML = `
+        <div style="border-bottom: 3px solid #161B2D; padding-bottom: 10px; margin-bottom: 18px;">
+          <h2 style="margin:0; font-size:18px; letter-spacing:0.5px;">REKAPITULASI JADWAL KEGIATAN</h2>
+          <p style="margin:4px 0 0; font-size:12px; color:#555;">Dicetak via SiJadwal Quest</p>
+        </div>
+        <pre style="font-family: Arial, sans-serif; white-space: pre-wrap; font-size: 13px; margin: 0;">${escapeHTML(text)}</pre>
+      `;
+
+      html2pdf().set({
+        margin: 10,
+        filename: `Jadwal_Kegiatan_${datesLabel}.pdf`,
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).from(el).save();
+
+      addXP(20, 10);
+      showToast('Mengunduh file PDF...');
+    }
+
+    function exportSingleJSON(id) {
+      const item = schedules.find(s => s.id === id);
+      if (!item) return;
+      downloadJSONFile({ type: 'sijadwal_single', item }, `Jadwal_${item.date}_${item.id}.json`);
+      showToast('File jadwal satuan (.json) diunduh!');
+    }
+
+    function exportFullBackupJSON() {
+      downloadJSONFile({ type: 'sijadwal_full_backup', exportedAt: new Date().toISOString(), profile, schedules }, `SiJadwal_FullBackup_${selectedDate}.json`);
+      showToast('Backup keseluruhan berhasil diunduh!');
+    }
+
+    function downloadJSONFile(dataObj, filename) {
+      const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function handleJSONFileImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed.type === 'sijadwal_single' && parsed.item) {
+            await dbPut(parsed.item);
+            schedules = await dbGetAll();
+            refreshAllViews();
+            showToast('1 Jadwal satuan berhasil digabungkan!');
+          } else if (Array.isArray(parsed.schedules)) {
+            const replace = confirm('Klik OK untuk MENGGANTI seluruh data lama, atau Cancel untuk MENGGABUNGKAN dengan data yang ada.');
+            if (replace) await dbClear();
+            for (const s of parsed.schedules) {
+              await dbPut(s);
+            }
+            schedules = await dbGetAll();
+            refreshAllViews();
+            showToast(`${parsed.schedules.length} jadwal berhasil diimpor!`);
+          } else {
+            alert('Format file JSON tidak dikenali.');
+          }
+        } catch (err) {
+          alert('File JSON rusak atau tidak valid.');
+        }
+        event.target.value = '';
+      };
+      reader.readAsText(file);
+    }
+
+    // ==========================================
+    // 11. NAVIGATION, THEME, LANGUAGE & MONSTER MODAL
+    // ==========================================
+    function switchTab(tabName) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`view-${tabName}`).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('btn-clay-yellow', 'font-extrabold');
+        btn.classList.add('opacity-75', 'font-bold');
+      });
+      const activeBtn = document.getElementById(`nav-${tabName}`);
+      activeBtn.classList.add('btn-clay-yellow', 'font-extrabold');
+      activeBtn.classList.remove('opacity-75', 'font-bold');
+
+      if (tabName === 'kartu') renderAllCardsView();
+      if (tabName === 'rekap') renderRecapTable();
+      if (tabName === 'ekspor') renderExportView();
+    }
+
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      localStorage.setItem('sj_theme', isDark ? 'dark' : 'light');
+      document.getElementById('theme-icon').textContent = isDark ? 'light_mode' : 'dark_mode';
+    }
+
+    const I18N = {
+      ID: {
+        btn_avatar: 'Karakter',
+        days: 'Hari',
+        quest_progress: 'Progress Quest',
+        quick_add: '+ Isi',
+        cal_subtitle: 'Klik tanggal untuk lihat/edit jadwal',
+        all_cards_title: 'Kartu Kegiatan per Tanggal',
+        recap_title: 'Tabel Rekapitulasi per Tanggal',
+        fab_add: 'Tambah Jadwal',
+        nav_cal: 'Kalender',
+        nav_cards: 'Kartu',
+        nav_recap: 'Rekap',
+        nav_export: 'Ekspor'
+      },
+      EN: {
+        btn_avatar: 'Character',
+        days: 'Days',
+        quest_progress: 'Quest Progress',
+        quick_add: '+ Fill',
+        cal_subtitle: 'Tap a date to view or edit schedules',
+        all_cards_title: 'Activity Cards by Date',
+        recap_title: 'Recapitulation Table by Date',
+        fab_add: 'Add Schedule',
+        nav_cal: 'Calendar',
+        nav_cards: 'Cards',
+        nav_recap: 'Recap',
+        nav_export: 'Export'
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'ID' ? 'EN' : 'ID';
+      localStorage.setItem('sj_lang', currentLang);
+      applyLanguage();
+    }
+
+    function applyLanguage() {
+      document.getElementById('lang-btn').textContent = currentLang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (I18N[currentLang][key]) el.textContent = I18N[currentLang][key];
+      });
+    }
+
+    function openMonsterModal() {
+      document.getElementById('monster-modal').classList.remove('hidden');
+      document.getElementById('custom-monster-name').value = profile.monsterName;
+      renderMonsterPicker();
+    }
+
+    function closeMonsterModal() {
+      document.getElementById('monster-modal').classList.add('hidden');
+    }
+
+    function renderMonsterPicker() {
+      const grid = document.getElementById('monster-picker-grid');
+      grid.innerHTML = MONSTERS.map(m => `
+        <button type="button" onclick="selectMonsterChoice('${m.id}')" class="p-2.5 rounded-2xl flex flex-col items-center gap-1 transition-all ${profile.monsterId === m.id ? 'btn-clay-yellow ring-2 ring-[#FE589B]' : 'clay-soft'}">
+          <div class="w-16 h-16">${m.svg}</div>
+          <span class="text-xs font-extrabold">${m.name}</span>
+          <span class="text-[10px] font-bold opacity-70">${m.style}</span>
+        </button>
+      `).join('');
+    }
+
+    function selectMonsterChoice(id) {
+      profile.monsterId = id;
+      const found = MONSTERS.find(m => m.id === id);
+      if (found) document.getElementById('custom-monster-name').value = found.name;
+      renderMonsterPicker();
+    }
+
+    function saveMonsterCustomization() {
+      const customName = document.getElementById('custom-monster-name').value.trim();
+      if (customName) profile.monsterName = customName;
+      localStorage.setItem('sj_profile', JSON.stringify(profile));
+      renderGamificationHeader();
+      closeMonsterModal();
+      showToast('Partner monster diperbarui!');
+    }
+
+    function escapeHTML(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function refreshAllViews() {
+      renderGamificationHeader();
+      renderCalendar();
+      renderAllCardsView();
+      renderRecapTable();
+      renderExportView();
+    }
+
+    // ==========================================
+    // 12. BOOTSTRAP APP
+    // ==========================================
+    (async function initApp() {
+      if (localStorage.getItem('sj_theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.getElementById('theme-icon').textContent = 'light_mode';
+      }
+      applyLanguage();
+
+      await openDB();
+      schedules = await dbGetAll();
+
+      if (schedules.length === 0) {
+        for (const item of SEED_SCHEDULES) {
+          await dbPut(item);
+        }
+        schedules = await dbGetAll();
+      }
+
+      refreshAllViews();
+    })();
+  </script>
+</body>
+</html>
