@@ -9,9 +9,19 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" name="viewport"/>
 <title>Pesaner</title>
+<link rel="manifest" href="/pesaner.webmanifest"/>
+<meta name="theme-color" content="#1546BE"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Pesaner"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="application-name" content="Pesaner"/>
+<link rel="icon" type="image/png" href="/pesaner-icons/icon-192.png"/>
+<link rel="apple-touch-icon" href="/pesaner-icons/apple-touch-icon.png"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script>if(window.Chart){Chart.defaults.color="#D9E6FF";Chart.defaults.borderColor="rgba(255,255,255,.16)";}</script>
@@ -615,6 +625,241 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
 .fx-sheet .fx-bar{height:7px;border-radius:999px;background:#F1F5F9;overflow:hidden;margin-top:4px}
 .fx-sheet .fx-bar>i{display:block;height:100%;border-radius:999px;background:var(--c,#00D084)}
 @media(max-width:380px){#tab-finance .fx-hero-amount{font-size:26px}#tab-finance .fx-acc-grid,#tab-finance .fx-insights{gap:8px}}
+</style>
+<style id="journal-upgrade-css">
+/* ===== JURNAL: tampilan ala Aura (code.html) + dikte suara + ekspor PDF. Scope: #tab-journal + modal jurnal ===== */
+#tab-journal{--jr-amber:#FFB800;--jr-amber-d:#D99500;--jr-teal:#14b8a6;--jr-teal-d:#0d9488;--jr-ink:#091A4B;--jr-mut:#BCD3FF;--jr-rose:#FF6B8A}
+#tab-journal .hidden,#jr-pdf-modal .hidden{display:none!important}
+#tab-journal button{-webkit-tap-highlight-color:transparent}
+.jr-card{position:relative;background:var(--glass);border:1px solid var(--gb);border-radius:26px;padding:16px;margin-bottom:14px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 20px 40px -15px rgba(5,23,77,.5),inset 0 1px 2px rgba(255,255,255,.35);color:#fff}
+.jr-row-between{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.jr-row-end{display:flex;justify-content:flex-end;gap:8px}
+.jr-h3{margin:0;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#D9E6FF}
+
+/* hero */
+.jr-hero{overflow:hidden}
+.jr-hero::before{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(20,184,166,.28);filter:blur(28px);pointer-events:none}
+.jr-hero-top{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.jr-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.jr-logo{width:44px;height:44px;flex:none;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:21px;background:linear-gradient(135deg,#14b8a6,#2dd4bf 55%,#fbbf24);box-shadow:0 8px 18px -6px rgba(20,184,166,.7);animation:jrBob 4s ease-in-out infinite}
+.jr-title{margin:0;font-size:20px;line-height:1.15;color:#fff}
+.jr-greet{margin:2px 0 0;font-size:12px;font-weight:600;color:var(--jr-mut);line-height:1.3}
+.jr-streak{flex:none;display:flex;align-items:center;gap:4px;padding:6px 11px;border-radius:999px;font-size:12px;font-weight:800;color:#FFE9A3;background:rgba(255,184,0,.2);border:1px solid rgba(255,184,0,.45)}
+.jr-streak .material-symbols-outlined{font-size:18px;color:#FFB800}
+.jr-streak b{font-size:15px;color:#fff;font-family:'Fredoka',sans-serif}
+.jr-streak.hot{animation:jrPulse 1.6s ease-in-out infinite}
+.jr-spark{position:relative;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:20px;background:linear-gradient(120deg,rgba(20,184,166,.28),rgba(255,184,0,.2));border:1px solid rgba(255,255,255,.22)}
+.jr-spark-tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:8px;background:rgba(255,255,255,.9);color:#0d6b62}
+.jr-quote{margin:5px 0 0;font-family:'Caveat',cursive;font-size:19px;line-height:1.2;font-weight:700;color:#fff}
+.jr-spark-emoji{flex:none;font-size:32px;line-height:1;background:none;border:0;cursor:pointer;animation:jrPulse 3s ease-in-out infinite}
+.jr-spark-emoji:active{transform:rotate(25deg) scale(1.2)}
+
+/* mood */
+.jr-date-pill{font-size:11px;font-weight:700;color:#BCD3FF;white-space:nowrap}
+.jr-moods{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:10px}
+.jr-mood{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 2px 7px;border-radius:18px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;transition:transform .15s,background .15s,border-color .15s}
+.jr-mood .e{font-size:26px;line-height:1}
+.jr-mood .n{font-size:10px;font-weight:800;color:#D9E6FF}
+.jr-mood:hover{background:rgba(255,255,255,.18)}
+.jr-mood:hover .e{animation:jrWiggle .5s}
+.jr-mood.active{background:color-mix(in srgb,var(--mc) 28%,transparent);border-color:var(--mc);box-shadow:0 0 0 3px color-mix(in srgb,var(--mc) 25%,transparent);animation:jrPop .35s}
+.jr-mood.active .n{color:#fff}
+.jr-hint{margin:9px 2px 0;min-height:16px;font-size:12px;font-weight:600;color:#D9E6FF;line-height:1.4}
+
+/* dikte suara */
+.jr-stt{margin:12px 0;padding:12px;border-radius:22px;background:linear-gradient(135deg,#0d9488,#115e59);border:1px solid rgba(255,255,255,.22);box-shadow:0 12px 24px -12px rgba(13,148,136,.7)}
+.jr-stt-title{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#fff}
+.jr-stt-title .material-symbols-outlined{font-size:18px;color:#99f6e4}
+.jr-auto{font-size:9px;font-weight:800;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.18);color:#99f6e4;letter-spacing:.04em}
+.jr-lang{display:inline-flex;gap:2px;padding:2px;border-radius:999px;background:rgba(4,47,46,.45);border:1px solid rgba(153,246,228,.3)}
+.jr-lang button{border:0;background:transparent;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:800;color:#99f6e4;cursor:pointer}
+.jr-lang button.on{background:#2dd4bf;color:#042f2e}
+.jr-stt-idle{display:flex;align-items:center;gap:12px;margin-top:10px;padding:10px;border-radius:16px;background:rgba(255,255,255,.12)}
+.jr-stt-p1{margin:0;font-size:13px;font-weight:800;color:#fff}
+.jr-stt-p2{margin:1px 0 0;font-size:11px;color:#99f6e4;line-height:1.3}
+.jr-mic{position:relative;width:46px;height:46px;flex:none;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:linear-gradient(180deg,#FF8FA3,#F43F5E);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 5px 0 #BE123C,0 10px 18px rgba(244,63,94,.45);transition:transform .12s,box-shadow .12s}
+.jr-mic .material-symbols-outlined{font-size:24px}
+.jr-mic:active{transform:translateY(4px);box-shadow:0 1px 0 #BE123C,0 4px 8px rgba(244,63,94,.4)}
+.jr-stt-rec{margin-top:10px;padding:10px;border-radius:16px;background:rgba(255,255,255,.14);display:flex;flex-direction:column;gap:9px}
+.jr-listen{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#fff}
+.jr-dot{width:9px;height:9px;border-radius:50%;background:#FF6B8A;animation:jrPing 1s ease-out infinite}
+.jr-wave{display:inline-flex;align-items:center;gap:3px;height:20px}
+.jr-wave i{display:block;width:3px;height:5px;border-radius:2px;background:#99f6e4;animation:jrWave .7s ease-in-out infinite alternate}
+.jr-wave i:nth-child(2){animation-delay:.12s}.jr-wave i:nth-child(3){animation-delay:.24s}.jr-wave i:nth-child(4){animation-delay:.36s}.jr-wave i:nth-child(5){animation-delay:.48s}
+.jr-timer{font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:rgba(0,0,0,.25);color:#fff}
+.jr-live{margin:0;min-height:38px;padding:8px 10px;border-radius:12px;background:rgba(4,47,46,.4);font-size:13px;font-style:italic;line-height:1.4;color:#ecfeff;word-break:break-word}
+.jr-sbtn{border:0;cursor:pointer;padding:7px 14px;border-radius:12px;font-size:12px;font-weight:800;transition:transform .12s}
+.jr-sbtn:active{transform:scale(.94)}
+.jr-sbtn.ghost{background:rgba(255,255,255,.16);color:#fff}
+.jr-sbtn.go{background:#FFB800;color:#091A4B;box-shadow:0 3px 0 #D99500}
+.jr-stt-note{margin:8px 2px 0;font-size:11px;font-weight:600;color:#fde68a;line-height:1.4}
+
+/* composer */
+#journal-content{min-height:120px;font-size:15px;line-height:1.65;padding:12px 14px}
+.jr-meta{margin-top:8px;align-items:flex-start}
+.jr-tagrow{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.jr-chip{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:transform .12s,background .12s}
+.jr-chip:hover{background:rgba(255,255,255,.2)}
+.jr-chip:active{transform:scale(.92)}
+.jr-chip.on{background:#fff;color:#0F2C7A;border-color:#fff}
+.jr-count{flex:none;font-size:11px;font-weight:800;color:#BCD3FF;font-variant-numeric:tabular-nums}
+.jr-count.warn{color:#FFD76A}.jr-count.over{color:#FF8FA3}
+.jr-prompt{margin-top:8px;display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;background:rgba(255,184,0,.14);border:1px dashed rgba(255,184,0,.55);font-size:12px;font-weight:600;color:#FFE9A3}
+.jr-prompt span.t{flex:1;min-width:0;line-height:1.35}
+.jr-prompt button{flex:none;border:0;background:#FFB800;color:#091A4B;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;cursor:pointer}
+.jr-save-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.jr-dice{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-weight:800;padding:8px 13px;border-radius:999px;cursor:pointer}
+.jr-dice .material-symbols-outlined{font-size:18px}
+.jr-dice:active{transform:rotate(-8deg) scale(.94)}
+
+/* insight */
+.jr-collapse{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:0;color:#fff;cursor:pointer;padding:0}
+.jr-collapse .material-symbols-outlined{transition:transform .2s}
+.jr-collapse.closed .material-symbols-outlined{transform:rotate(-90deg)}
+.jr-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.jr-stat{text-align:center;padding:10px 4px;border-radius:18px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.18)}
+.jr-stat b{display:block;font-family:'Fredoka',sans-serif;font-size:24px;line-height:1.1;color:var(--c,#fff)}
+.jr-stat span{display:block;margin-top:2px;font-size:10px;font-weight:800;color:#D9E6FF}
+.jr-sub{margin:14px 0 6px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#BCD3FF}
+.jr-week{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.jr-day{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;border-radius:14px;background:rgba(255,255,255,.08);font-size:10px;font-weight:800;color:#BCD3FF}
+.jr-day .m{font-size:19px;line-height:1.2;min-height:23px;display:flex;align-items:center}
+.jr-day.today{background:rgba(255,184,0,.2);box-shadow:inset 0 0 0 1.5px #FFB800;color:#FFE9A3}
+.jr-day .m.none{opacity:.35;font-size:14px}
+.jr-mix{display:flex;flex-direction:column;gap:6px}
+.jr-mixrow{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;color:#D9E6FF}
+.jr-mixrow .l{width:78px;display:flex;align-items:center;gap:5px;flex:none}
+.jr-mixrow .bar{flex:1;height:9px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+.jr-mixrow .bar i{display:block;height:100%;border-radius:999px;background:var(--mc);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.jr-mixrow .c{width:22px;text-align:right;font-variant-numeric:tabular-nums}
+.jr-note{margin:10px 0 0;font-size:10px;font-weight:600;color:#8EB6FF;line-height:1.4}
+.jr-linkbtn{background:none;border:0;padding:0;color:#FFD76A;font-weight:800;font-size:inherit;text-decoration:underline;cursor:pointer}
+
+/* toolbar */
+.jr-toolbar{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+.jr-searchrow{display:flex;gap:8px}
+.jr-searchwrap{position:relative;flex:1;min-width:0}
+.jr-searchwrap .material-symbols-outlined{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:18px;color:#8EB6FF;pointer-events:none}
+#jr-search{padding-left:36px!important;padding-top:9px!important;padding-bottom:9px!important;font-size:13px!important}
+#jr-period{width:auto!important;flex:none;padding:8px 10px!important;font-size:12px!important;font-weight:700}
+.jr-fscroll{display:flex;gap:6px;overflow-x:auto;padding:1px 0 3px}
+.jr-fscroll .jr-chip{flex:none}
+.jr-tl-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.jr-tl-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#D9E6FF}
+.jr-tl-title small{font-size:11px;font-weight:700;letter-spacing:0;text-transform:none;color:#8EB6FF}
+.jr-pdfall{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,138,163,.55);background:rgba(255,107,138,.2);color:#FFD6DE;font-size:12px;font-weight:800;padding:7px 13px;border-radius:999px;cursor:pointer}
+.jr-pdfall .material-symbols-outlined{font-size:17px}
+.jr-pdfall:active{transform:scale(.94)}
+
+/* entry */
+.jr-entry{position:relative;margin-bottom:12px;padding:14px 14px 12px 16px;border-radius:24px;background:var(--glass);border:1px solid var(--gb);border-left:5px solid var(--mc,#BCD3FF);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 16px 32px -14px rgba(5,23,77,.5),inset 0 1px 2px rgba(255,255,255,.3);color:#fff;transition:transform .2s,box-shadow .2s;animation:jrIn .35s cubic-bezier(.2,.8,.2,1)}
+.jr-entry:hover{transform:translateY(-2px)}
+.jr-entry-head{display:flex;align-items:center;gap:10px}
+.jr-emoji{width:40px;height:40px;flex:none;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:22px;background:color-mix(in srgb,var(--mc) 25%,transparent);border:1px solid color-mix(in srgb,var(--mc) 55%,transparent)}
+.jr-edate{font-size:13px;font-weight:800;color:#fff;line-height:1.25}
+.jr-etime{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;font-weight:600;color:#BCD3FF}
+.jr-etime em{font-style:italic;opacity:.85}
+.jr-eact{margin-left:auto;display:flex;align-items:center;gap:2px;flex:none}
+.jr-ib{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:transparent;color:#D9E6FF;cursor:pointer;transition:background .15s,transform .12s}
+.jr-ib:hover{background:rgba(255,255,255,.18)}.jr-ib:active{transform:scale(.88)}
+.jr-ib.del:hover{color:#FFA0A0;background:rgba(255,122,122,.2)}
+.jr-ib .material-symbols-outlined{font-size:18px}
+.jr-ib.pdf{width:auto;padding:0 10px;gap:3px;font-size:11px;font-weight:800;color:#FFD6DE;background:rgba(255,107,138,.2);border:1px solid rgba(255,138,163,.45);border-radius:999px;margin-right:3px}
+.jr-ebody{margin:10px 0 0;font-size:14px;line-height:1.65;color:#fff;white-space:pre-wrap;word-break:break-word}
+.jr-ebody.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.jr-more{margin-top:4px}
+.jr-hash{display:inline;background:rgba(255,184,0,.2);border:0;color:#FFE08A;font:inherit;font-weight:800;padding:0 6px;border-radius:8px;cursor:pointer}
+.jr-efoot{margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;font-weight:700;color:#8EB6FF}
+.jr-empty-box{text-align:center;padding:36px 16px;border-radius:26px;border:1.5px dashed rgba(255,255,255,.3);background:rgba(255,255,255,.07);color:#D9E6FF}
+.jr-empty-box .big{font-size:44px;line-height:1;animation:jrBob 3.5s ease-in-out infinite}
+
+/* edit modal */
+.jr-edit-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px}
+.jr-edit-mic{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:6px 12px 6px 8px;font-size:12px;font-weight:800;color:#fff;background:linear-gradient(180deg,#14b8a6,#0d9488);cursor:pointer;box-shadow:0 3px 0 #0b6b63}
+.jr-edit-mic .material-symbols-outlined{font-size:20px}
+.jr-edit-mic.rec{background:linear-gradient(180deg,#FF8FA3,#F43F5E);box-shadow:0 3px 0 #BE123C;animation:jrPulse 1.2s ease-in-out infinite}
+.jr-edit-status{margin:6px 2px 0;min-height:16px;font-size:11px;font-style:italic;font-weight:600;color:#99f6e4}
+#edit-journal-mood-picker.jr-moods{margin-top:12px}
+
+/* pdf modal */
+.jr-modal{max-width:460px!important;width:94%;max-height:92vh;display:flex!important;flex-direction:column;padding:20px!important}
+.jr-modal-body{flex:1;min-height:0;overflow-y:auto;padding-right:2px}
+.jr-mhead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.18);margin-bottom:12px}
+.jr-mico{width:38px;height:38px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,107,138,.25);color:#FFD6DE;flex:none}
+.jr-opts{display:grid;gap:8px;padding:11px;border-radius:18px;background:rgba(255,255,255,.1);margin-top:10px}
+.jr-opt{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;user-select:none}
+.jr-opt input[type=checkbox]{width:18px;height:18px;accent-color:#FFB800;flex:none}
+.jr-lbl{display:block;margin-bottom:4px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#BCD3FF}
+.jr-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.jr-theme{display:flex;align-items:center;gap:6px;padding:9px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);font-size:12px;font-weight:800;color:#FFE08A}
+.jr-pv{margin-top:12px;border-radius:16px;overflow:hidden;background:#fff;max-height:40vh;overflow-y:auto;box-shadow:0 10px 24px -10px rgba(0,0,0,.5)}
+.jr-progress{height:8px;border-radius:999px;background:rgba(255,255,255,.18);overflow:hidden;margin-top:12px}
+.jr-progress i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#FFB800,#FCD34D);transition:width .25s}
+.jr-progress-t{margin:5px 0 0;font-size:11px;font-weight:700;color:#D9E6FF;text-align:center}
+.jr-mfoot{display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.18)}
+.jr-mfoot .btn-outline,.jr-mfoot .btn-primary{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;font-size:13px;padding:9px 8px}
+.jr-mfoot .material-symbols-outlined{font-size:18px}
+.jr-mfoot button:disabled{opacity:.55;pointer-events:none}
+
+/* konfeti */
+#jr-confetti{position:fixed;inset:0;z-index:120;pointer-events:none;overflow:hidden}
+.jr-confetto{position:absolute;left:50%;top:62%;font-size:24px;animation:jrConf 1.15s cubic-bezier(.15,.7,.3,1) forwards}
+
+/* kertas PDF (dipakai pratinjau & render html2canvas — warna lewat class agar tidak kena remap tema gelap) */
+.jr-pdf-stage{position:absolute;left:-10000px;top:0;width:720px;pointer-events:none}
+.jr-pdf{width:720px;box-sizing:border-box;background:#ffffff;color:#1e293b;font-family:'Plus Jakarta Sans',sans-serif;padding:0 6px;text-align:left}
+.jr-pdf *{box-sizing:border-box;margin:0;padding:0;text-shadow:none;animation:none!important;transition:none!important}
+.jr-pdf .ph{position:relative;padding:20px 4px 16px;border-bottom:3px solid #1546BE}
+.jr-pdf .ph::after{content:"";position:absolute;left:0;bottom:-3px;width:90px;height:3px;background:#FFB800}
+.jr-pdf .ph-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.jr-pdf .ph-brand{display:flex;align-items:center;gap:12px}
+.jr-pdf .ph-logo{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#FFD76A;background:linear-gradient(135deg,#1D5CE5,#0F2C7A)}
+.jr-pdf .ph-name{font-size:24px;font-weight:800;letter-spacing:.04em;color:#0F2C7A;line-height:1.1}
+.jr-pdf .ph-sub{margin-top:3px;font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#D99500}
+.jr-pdf .ph-meta{text-align:right}
+.jr-pdf .ph-user{font-size:13px;font-weight:800;color:#0F172A}
+.jr-pdf .ph-date{margin-top:2px;font-size:11px;color:#64748B}
+.jr-pdf .ph-sum{margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.jr-pdf .ph-sum .big{font-size:13px;font-weight:700;color:#334155;margin-right:6px}
+.jr-pdf .ph-chip{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:#FFF6DB;color:#7A5200}
+.jr-pdf .pe{background:#ffffff;border-left:6px solid var(--mc,#FFB800);padding:18px 22px 16px 24px;margin:6px 0}
+.jr-pdf .pe-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.jr-pdf .pe-date{font-size:14px;font-weight:800;color:#0F172A}
+.jr-pdf .pe-time{margin-top:2px;font-size:11px;color:#64748B}
+.jr-pdf .pe-mood{flex:none;font-size:13px;font-weight:800;padding:4px 12px;border-radius:999px;background:#FFF6DB;color:#7A5200;border:1px solid #FDE29A}
+.jr-pdf .pe-body{font-family:'Newsreader',Georgia,serif;font-size:16px;line-height:1.8;color:#334155;white-space:pre-wrap;word-break:break-word}
+.jr-pdf .pe-hash{color:#1D5CE5;font-weight:700}
+.jr-pdf .pe-tags{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.jr-pdf .pe-tag{font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;background:#EEF4FF;color:#1546BE}
+.jr-pdf .pe-foot{margin-top:12px;padding-top:8px;border-top:1px solid #E2E8F0;font-size:10px;color:#94A3B8;display:flex;justify-content:space-between}
+.jr-pdf .pq{padding:18px 8px 10px;text-align:center;font-family:'Caveat',cursive;font-size:20px;font-weight:600;color:#94A3B8}
+.jr-pdf .pmore{padding:10px;text-align:center;font-size:12px;font-weight:700;color:#64748B}
+
+@keyframes jrIn{from{opacity:0;transform:translateY(12px) scale(.98)}}
+@keyframes jrBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(3deg)}}
+@keyframes jrPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes jrPop{0%{transform:scale(.86)}60%{transform:scale(1.14)}100%{transform:scale(1.04)}}
+@keyframes jrWiggle{25%{transform:rotate(-14deg) scale(1.15)}75%{transform:rotate(12deg) scale(1.15)}}
+@keyframes jrPing{0%{box-shadow:0 0 0 0 rgba(255,107,138,.8)}100%{box-shadow:0 0 0 9px rgba(255,107,138,0)}}
+@keyframes jrWave{from{height:4px}to{height:18px}}
+@keyframes jrConf{0%{opacity:1;transform:translate(0,0) rotate(0) scale(.6)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1.1)}}
+@media (prefers-reduced-motion:reduce){.jr-logo,.jr-spark-emoji,.jr-streak.hot,.jr-entry,.jr-wave i,.jr-dot,.jr-empty-box .big,.jr-edit-mic.rec{animation:none!important}}
+@media (max-width:380px){.jr-mood .n{font-size:9px}.jr-mixrow .l{width:64px}}
+</style>
+<style id="pwa-css">
+.pwa-card{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));width:min(94vw,440px);z-index:90;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:22px;background:linear-gradient(135deg,rgba(21,70,190,.96),rgba(15,44,122,.96));border:1px solid rgba(255,255,255,.28);box-shadow:0 18px 40px -12px rgba(5,23,77,.7),inset 0 1px 2px rgba(255,255,255,.3);color:#fff;animation:pwaUp .4s cubic-bezier(.2,.8,.2,1)}
+.pwa-card.hidden{display:none}
+.pwa-card img{width:46px;height:46px;border-radius:14px;flex:none;background:#fff}
+.pwa-card .ico{width:46px;height:46px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(255,184,0,.22);border:1px solid rgba(255,184,0,.5)}
+.pwa-card .tx{flex:1;min-width:0}
+.pwa-card b{display:block;font-size:13px;font-weight:800;line-height:1.2}
+.pwa-card p{margin:2px 0 0;font-size:11px;font-weight:600;line-height:1.35;color:#D9E6FF}
+.pwa-card .act{display:flex;flex-direction:column;gap:4px;flex:none}
+.pwa-card button{border:0;cursor:pointer;font-weight:800;font-size:12px;border-radius:12px;padding:7px 12px;white-space:nowrap}
+.pwa-card .go{background:#FFB800;color:#091A4B;box-shadow:0 3px 0 #D99500}
+.pwa-card .no{background:transparent;color:#BCD3FF;padding:3px 12px;font-size:11px}
+@keyframes pwaUp{from{opacity:0;transform:translate(-50%,16px)}}
+@media (min-width:768px){.pwa-card{bottom:20px;left:auto;right:20px;transform:none}@keyframes pwaUp{from{opacity:0;transform:translateY(16px)}}}
 </style>
 </head>
 <body class="text-on-surface">
@@ -1434,26 +1679,134 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
       <!-- ===== ADMIN TAB ===== -->
 
       <!-- ===== JURNAL TAB ===== -->
-      <div id="tab-journal" class="hidden max-w-[600px] mx-auto px-3 py-6">
-        <h2 class="text-xl font-black text-on-surface mb-4" data-i18n="journal_title">Jurnal Harian</h2>
+      <div id="tab-journal" class="hidden max-w-[600px] mx-auto px-3 py-6 pb-24">
+        <div id="jr-confetti" aria-hidden="true"></div>
 
-        <div class="post-card mb-5">
-          <textarea id="journal-content" rows="4" placeholder="Tulis catatan harianmu... apa yang kamu rasakan atau alami hari ini?" data-i18n-placeholder="journal_placeholder"></textarea>
-          <div class="flex justify-between items-center mt-2">
-            <div class="flex gap-1" id="journal-mood-picker"></div>
+        <!-- Hero: sapaan, streak, percikan harian -->
+        <div class="jr-card jr-hero">
+          <div class="jr-hero-top">
+            <div class="jr-brand">
+              <div class="jr-logo">✨</div>
+              <div class="min-w-0">
+                <h2 class="jr-title" data-i18n="journal_title">Jurnal Harian</h2>
+                <p class="jr-greet" id="jr-greeting"></p>
+              </div>
+            </div>
+            <div class="jr-streak" id="jr-streak">
+              <span class="material-symbols-outlined fill-icon">local_fire_department</span>
+              <b id="jr-streak-n">0</b><span data-i18n="jr_days">hari</span>
+            </div>
+          </div>
+          <div class="jr-spark">
+            <div class="min-w-0">
+              <span class="jr-spark-tag" data-i18n="jr_spark">Percikan Hari Ini</span>
+              <p class="jr-quote" id="jr-quote"></p>
+            </div>
+            <button type="button" class="jr-spark-emoji" onclick="jrNextQuote()" aria-label="Quote">🌸</button>
+          </div>
+        </div>
+
+        <!-- Composer -->
+        <div class="jr-card">
+          <div class="jr-row-between">
+            <h3 class="jr-h3" data-i18n="jr_mood_title">Gimana perasaanmu hari ini?</h3>
+            <span class="jr-date-pill" id="jr-today"></span>
+          </div>
+          <div class="jr-moods" id="journal-mood-picker"></div>
+          <p class="jr-hint" id="jr-mood-hint"></p>
+
+          <!-- Dikte suara (speech to text) -->
+          <div class="jr-stt">
+            <div class="jr-row-between">
+              <span class="jr-stt-title"><span class="material-symbols-outlined">graphic_eq</span><span data-i18n="jr_dictate">Dikte Suara</span><span class="jr-auto">STT</span></span>
+              <div class="jr-lang" id="jr-lang">
+                <button type="button" data-l="id-ID" onclick="jrSetSttLang('id-ID')">🇮🇩 ID</button>
+                <button type="button" data-l="en-US" onclick="jrSetSttLang('en-US')">🇺🇸 EN</button>
+              </div>
+            </div>
+            <div class="jr-stt-idle" id="jr-stt-idle">
+              <button type="button" class="jr-mic" onclick="jrStartSpeech('journal-content')" aria-label="Mic"><span class="material-symbols-outlined">mic</span></button>
+              <div class="min-w-0">
+                <p class="jr-stt-p1" data-i18n="jr_dictate_idle">Ketuk mikrofon lalu bicara</p>
+                <p class="jr-stt-p2" data-i18n="jr_dictate_idle_sub">Suaramu langsung jadi teks di catatan</p>
+              </div>
+            </div>
+            <div class="jr-stt-rec hidden" id="jr-stt-rec">
+              <div class="jr-row-between">
+                <span class="jr-listen"><i class="jr-dot"></i><span data-i18n="jr_listening">Mendengarkan…</span></span>
+                <span class="jr-wave"><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="jr-timer" id="jr-stt-timer">00:00</span>
+              </div>
+              <p class="jr-live" id="jr-live"></p>
+              <div class="jr-row-end">
+                <button type="button" class="jr-sbtn ghost" onclick="jrStopSpeech(true)" data-i18n="jr_stt_cancel">Batal</button>
+                <button type="button" class="jr-sbtn go" onclick="jrStopSpeech(false)" data-i18n="jr_stt_done_btn">Selesai</button>
+              </div>
+            </div>
+            <p class="jr-stt-note hidden" id="jr-stt-note" data-i18n="jr_stt_support_note"></p>
+          </div>
+
+          <textarea id="journal-content" rows="5" placeholder="Tulis catatan harianmu... apa yang kamu rasakan atau alami hari ini?" data-i18n-placeholder="journal_placeholder" oninput="jrOnInput(this)"></textarea>
+          <div class="jr-row-between jr-meta">
+            <div class="jr-tagrow" id="jr-quicktags"></div>
+            <span class="jr-count" id="jr-count">0/5000</span>
+          </div>
+          <div class="jr-prompt hidden" id="jr-prompt">
+            <span class="t" id="jr-prompt-text"></span>
+            <button type="button" onclick="jrUsePrompt()" data-i18n="jr_prompt_use">Pakai</button>
+          </div>
+          <div class="jr-save-row">
+            <button type="button" class="jr-dice" onclick="jrDice()"><span class="material-symbols-outlined">casino</span><span data-i18n="jr_dice">Ide tulisan</span></button>
             <button onclick="submitJournalEntry()" id="btn-save-journal-new" class="btn-primary text-sm py-2 px-5" data-i18n="btn_save">Simpan</button>
           </div>
           <div id="journal-new-loading" class="hidden flex justify-center mt-2"><div class="spinner"></div></div>
         </div>
 
+        <!-- Insight -->
+        <div class="jr-card" id="jr-insight">
+          <button type="button" class="jr-collapse" id="jr-insight-toggle" onclick="jrToggleInsight()">
+            <span class="jr-h3" data-i18n="jr_pulse">Denyut Jurnalmu</span>
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
+          <div id="jr-insight-body"></div>
+        </div>
+
+        <!-- Toolbar: cari & filter -->
+        <div class="jr-toolbar">
+          <div class="jr-searchrow">
+            <div class="jr-searchwrap">
+              <span class="material-symbols-outlined">search</span>
+              <input id="jr-search" type="text" placeholder="Cari kenangan, #tag, kata…" data-i18n-placeholder="jr_search" oninput="jrOnSearch(this.value)" autocomplete="off"/>
+            </div>
+            <select id="jr-period" onchange="jrSetPeriod(this.value)">
+              <option value="all" data-i18n="jr_period_all">Semua waktu</option>
+              <option value="7" data-i18n="jr_period_7">7 hari terakhir</option>
+              <option value="30" data-i18n="jr_period_30">30 hari terakhir</option>
+            </select>
+          </div>
+          <div class="jr-fscroll" id="jr-moodfilter"></div>
+          <div class="jr-fscroll" id="jr-tagbar"></div>
+        </div>
+
+        <div class="jr-tl-head">
+          <div class="jr-tl-title"><span data-i18n="jr_timeline">Lini Masa</span><small id="jr-count-label"></small></div>
+          <button type="button" class="jr-pdfall" onclick="jrOpenPdfAll()"><span class="material-symbols-outlined">picture_as_pdf</span><span data-i18n="jr_export_all">Ekspor PDF</span></button>
+        </div>
+
         <div id="journal-loading" class="flex justify-center py-8"><div class="spinner"></div></div>
-        <div id="journal-list" class="space-y-3"></div>
+        <div id="journal-list"></div>
+        <p class="jr-note hidden" id="jr-filter-hint" style="text-align:center"></p>
         <div class="flex justify-center mt-2 mb-4">
           <button onclick="loadMoreJournal()" id="btn-load-more-journal" class="btn-outline text-sm py-2 px-6 hidden" data-i18n="btn_load_more_journal">Muat 10 Catatan Lagi</button>
         </div>
-        <div id="journal-empty" class="hidden text-center py-14 text-on-surface-muted">
-          <span class="material-symbols-outlined text-5xl mb-3 opacity-30">edit_note</span>
-          <p class="text-sm" data-i18n="journal_empty">Belum ada catatan. Mulai tulis hari ini!</p>
+        <div id="journal-empty" class="hidden jr-empty-box">
+          <div class="big">📖</div>
+          <p class="text-sm font-bold mt-3" data-i18n="journal_empty">Belum ada catatan. Mulai tulis hari ini!</p>
+        </div>
+        <div id="jr-noresult" class="hidden jr-empty-box">
+          <div class="big">🔎</div>
+          <p class="text-sm font-bold mt-3" data-i18n="jr_no_result">Tidak ada catatan yang cocok</p>
+          <button type="button" class="btn-outline text-sm mt-3" onclick="jrResetFilters()" data-i18n="jr_clear_filter">Reset filter</button>
         </div>
       </div>
 
@@ -2268,13 +2621,62 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
         <span class="material-symbols-outlined">close</span>
       </button>
     </div>
-    <textarea id="edit-journal-content" rows="5" placeholder="Tulis catatan..." data-i18n-placeholder="journal_edit_placeholder"></textarea>
-    <div class="flex gap-1 mt-2" id="edit-journal-mood-picker"></div>
+    <textarea id="edit-journal-content" rows="5" placeholder="Tulis catatan..." data-i18n-placeholder="journal_edit_placeholder" oninput="jrOnEditInput()"></textarea>
+    <div class="jr-edit-tools">
+      <button type="button" class="jr-edit-mic" id="jr-edit-mic" onclick="jrToggleEditSpeech()"><span class="material-symbols-outlined">mic</span><span id="jr-edit-mic-t" data-i18n="jr_dictate">Dikte Suara</span></button>
+      <span class="jr-count" id="jr-edit-count">0/5000</span>
+    </div>
+    <p class="jr-edit-status" id="jr-edit-status"></p>
+    <div class="jr-moods" id="edit-journal-mood-picker"></div>
     <div class="flex justify-end gap-2 mt-4">
       <button onclick="closeEditJournalModal()" class="btn-outline text-sm" data-i18n="btn_cancel">Batal</button>
       <button onclick="saveEditJournalEntry()" id="btn-save-journal-edit" class="btn-primary text-sm" data-i18n="btn_save">Simpan</button>
     </div>
     <div id="edit-journal-loading" class="hidden flex justify-center mt-3"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- Jurnal: modal ekspor PDF (1 catatan / seluruh jurnal) -->
+<div id="jr-pdf-modal" class="modal-overlay hidden" onclick="if(event.target===this)jrClosePdfModal()">
+  <div class="modal jr-modal">
+    <div class="jr-mhead">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="jr-mico"><span class="material-symbols-outlined">picture_as_pdf</span></div>
+        <div class="min-w-0">
+          <h3 class="font-black text-base" id="jr-pdf-title">Ekspor Catatan ke PDF</h3>
+          <p class="text-xs" style="color:#BCD3FF" id="jr-pdf-sub">Jadikan kenang-kenangan yang rapi</p>
+        </div>
+      </div>
+      <button onclick="jrClosePdfModal()" class="text-on-surface-muted hover:text-on-surface p-1 rounded-full flex-none"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <div class="jr-modal-body">
+      <div class="jr-grid2">
+        <div>
+          <label class="jr-lbl" for="jr-pdf-paper" data-i18n="jr_pdf_paper">Ukuran Kertas</label>
+          <select id="jr-pdf-paper"><option value="a4">A4</option><option value="letter">US Letter</option></select>
+        </div>
+        <div>
+          <span class="jr-lbl" data-i18n="jr_pdf_theme">Tema</span>
+          <div class="jr-theme"><span class="material-symbols-outlined" style="font-size:17px">auto_awesome</span><span data-i18n="jr_pdf_theme_name">Kenangan Pesaner</span></div>
+        </div>
+      </div>
+      <div class="jr-opts">
+        <label class="jr-opt"><span data-i18n="jr_pdf_opt_mood">Sertakan mood</span><input type="checkbox" id="jr-pdf-opt-mood" checked onchange="jrRefreshPdfPreview()"/></label>
+        <label class="jr-opt"><span data-i18n="jr_pdf_opt_time">Sertakan jam</span><input type="checkbox" id="jr-pdf-opt-time" checked onchange="jrRefreshPdfPreview()"/></label>
+        <label class="jr-opt"><span data-i18n="jr_pdf_opt_tags">Sertakan #tag</span><input type="checkbox" id="jr-pdf-opt-tags" checked onchange="jrRefreshPdfPreview()"/></label>
+      </div>
+      <span class="jr-lbl" style="margin-top:12px" data-i18n="jr_pdf_preview">Pratinjau</span>
+      <div class="jr-pv" id="jr-pdf-preview"><div id="jr-pdf-preview-inner"></div></div>
+      <div id="jr-pdf-progress-wrap" class="hidden">
+        <div class="jr-progress"><i id="jr-pdf-progress-bar"></i></div>
+        <p class="jr-progress-t" id="jr-pdf-progress-t"></p>
+      </div>
+    </div>
+    <div class="jr-mfoot">
+      <button type="button" class="btn-outline" onclick="jrClosePdfModal()" id="jr-pdf-close"><span data-i18n="jr_close">Tutup</span></button>
+      <button type="button" class="btn-outline" onclick="jrGeneratePdf(true)" id="jr-pdf-share"><span class="material-symbols-outlined">share</span><span data-i18n="jr_share">Bagikan</span></button>
+      <button type="button" class="btn-primary" onclick="jrGeneratePdf(false)" id="jr-pdf-dl"><span class="material-symbols-outlined">download</span><span data-i18n="jr_download">Unduh PDF</span></button>
+    </div>
   </div>
 </div>
 
@@ -3631,6 +4033,77 @@ const I18N = {
     btn_register: 'Sign Up'
   }
 };
+
+// ---- Teks tambahan menu Jurnal (ID/EN) — digabung ke I18N tanpa mengubah kamus asli ----
+Object.assign(I18N.id, {
+  jr_greet_morning: 'Selamat pagi, {name} ☀️ Gimana perasaanmu?', jr_greet_noon: 'Selamat siang, {name} 🌤️ Gimana perasaanmu?',
+  jr_greet_afternoon: 'Selamat sore, {name} 🌇 Gimana perasaanmu?', jr_greet_evening: 'Selamat malam, {name} 🌙 Gimana perasaanmu?',
+  jr_days: 'hari', jr_spark: 'Percikan Hari Ini', jr_mood_title: 'Gimana perasaanmu hari ini?',
+  jr_mood_happy: 'Senang', jr_mood_okay: 'Biasa', jr_mood_sad: 'Sedih', jr_mood_angry: 'Marah', jr_mood_tired: 'Lelah',
+  jr_hint_none: 'Pilih mood-mu, lalu tuangkan ceritamu 💛',
+  jr_hint_happy: 'Wah, lagi senang! Apa yang bikin harimu cerah?', jr_hint_okay: 'Hari yang biasa pun layak dicatat. Ada hal kecil yang menarik?',
+  jr_hint_sad: 'Tidak apa-apa merasa sedih. Tuangkan di sini, pelan-pelan saja 🫶', jr_hint_angry: 'Keluarkan semua uneg-unegnya di sini, tidak ada yang menghakimi.',
+  jr_hint_tired: 'Kamu sudah berusaha keras. Apa yang paling menguras energi hari ini?',
+  jr_dictate: 'Dikte Suara', jr_dictate_idle: 'Ketuk mikrofon lalu bicara', jr_dictate_idle_sub: 'Suaramu langsung jadi teks di catatan',
+  jr_listening: 'Mendengarkan…', jr_listening_hint: 'Silakan mulai bicara…', jr_stt_cancel: 'Batal', jr_stt_done_btn: 'Selesai',
+  jr_stt_done: 'Dikte masuk ke catatan ✨',
+  jr_stt_unsupported: 'Dikte suara belum didukung di sini. Pakai ikon mikrofon di keyboard (Gboard) sebagai gantinya.',
+  jr_stt_support_note: 'Dikte bawaan belum didukung di perangkat/peramban ini. Pakai ikon 🎙️ di keyboard — hasilnya tetap masuk ke catatan.',
+  jr_stt_perm: 'Izin mikrofon ditolak. Aktifkan izin mikrofon lalu coba lagi.', jr_stt_net: 'Dikte suara butuh koneksi internet.',
+  jr_stt_nomic: 'Mikrofon tidak ditemukan.', jr_stt_stopped: 'Dikte berhenti. Ketuk mikrofon lagi untuk lanjut.', jr_stt_limit: 'Batas dikte 3 menit tercapai.',
+  jr_dice: 'Ide tulisan', jr_prompt_use: 'Pakai',
+  jr_prompts: ['Apa satu hal kecil yang bikin kamu tersenyum hari ini?', 'Siapa yang ingin kamu ucapkan terima kasih, dan kenapa?', 'Apa yang kamu pelajari hari ini?', 'Kalau hari ini jadi judul film, apa judulnya?', 'Apa yang ingin kamu lepaskan sebelum tidur?', 'Tulis 3 hal yang kamu syukuri sekarang.'],
+  jr_quotes: ['Langkah kecil tiap hari membawa tenang di kepalamu.', 'Tulis dulu, rapikan nanti. Perasaan tidak perlu sempurna.', 'Hari ini tidak harus hebat, cukup jujur.', 'Satu kalimat pun sudah cukup jadi kenangan.', 'Tarik napas dalam, hembuskan syukur.', 'Ceritamu penting, bahkan yang cuma soal kopi pagi ☕', 'Pelan-pelan juga maju, kok.', 'Kamu sudah sejauh ini. Bangga sedikit boleh!'],
+  jr_quick_tags: ['Syukur', 'Kerja', 'Pribadi', 'Ide', 'Mimpi'],
+  jr_pulse: 'Denyut Jurnalmu', jr_stat_entries: 'Catatan', jr_stat_streak: 'Hari Beruntun', jr_stat_words: 'Kata',
+  jr_week: 'Seminggu terakhir', jr_mood_mix: 'Komposisi mood', jr_stats_note: 'Dihitung dari {n} catatan yang sudah dimuat.', jr_load_all: 'Muat semua',
+  jr_search: 'Cari kenangan, #tag, kata…', jr_all: 'Semua', jr_period_all: 'Semua waktu', jr_period_7: '7 hari terakhir', jr_period_30: '30 hari terakhir',
+  jr_timeline: 'Lini Masa', jr_notes_count: '{n} catatan', jr_export_all: 'Ekspor PDF', jr_no_result: 'Tidak ada catatan yang cocok', jr_clear_filter: 'Reset filter',
+  jr_filter_hint: 'Pencarian hanya mencakup catatan yang sudah dimuat.', jr_read_more: 'Baca selengkapnya', jr_read_less: 'Ringkas', jr_words: 'kata',
+  jr_today: 'Hari ini', jr_yesterday: 'Kemarin', jr_pdf_btn: 'PDF', jr_pdf_title: 'Ekspor Catatan ke PDF', jr_pdf_title_all: 'Ekspor Jurnal ke PDF',
+  jr_pdf_sub: 'Jadikan kenang-kenangan yang rapi', jr_pdf_sub_all: '{n} catatan akan dimasukkan', jr_pdf_paper: 'Ukuran Kertas', jr_pdf_theme: 'Tema', jr_pdf_theme_name: 'Kenangan Pesaner',
+  jr_pdf_opt_mood: 'Sertakan mood', jr_pdf_opt_time: 'Sertakan jam', jr_pdf_opt_tags: 'Sertakan #tag', jr_pdf_preview: 'Pratinjau',
+  jr_close: 'Tutup', jr_share: 'Bagikan', jr_download: 'Unduh PDF', jr_pdf_making: 'Menyusun PDF…', jr_pdf_page_n: 'Merender {i} dari {n}…',
+  jr_pdf_saved: 'PDF berhasil dibuat 🎉', jr_pdf_shared: 'PDF siap dibagikan 🎉', jr_pdf_fail: 'Gagal membuat PDF. Cek koneksi internet lalu coba lagi.',
+  jr_loading_all: 'Memuat semua catatan…', jr_nothing_export: 'Tidak ada catatan untuk diekspor', jr_pdf_more: '…dan {n} catatan lainnya',
+  jr_pdf_brand_sub: 'Jurnal Harian · Kenangan', jr_pdf_exported: 'Diekspor', jr_pdf_footer: 'Pesaner - Jurnal Harian', jr_pdf_page: 'Halaman', jr_pdf_range: '{n} catatan · {from} – {to}',
+  jr_pdf_closing: 'Tulis hari ini, tersenyum di kemudian hari.', jr_draft_restored: 'Draf terakhirmu dipulihkan ✍️'
+});
+Object.assign(I18N.en, {
+  jr_greet_morning: 'Good morning, {name} ☀️ How is your heart?', jr_greet_noon: 'Good day, {name} 🌤️ How is your heart?',
+  jr_greet_afternoon: 'Good afternoon, {name} 🌇 How is your heart?', jr_greet_evening: 'Good evening, {name} 🌙 How is your heart?',
+  jr_days: 'days', jr_spark: 'Daily Spark', jr_mood_title: 'How are you feeling today?',
+  jr_mood_happy: 'Happy', jr_mood_okay: 'Okay', jr_mood_sad: 'Sad', jr_mood_angry: 'Angry', jr_mood_tired: 'Tired',
+  jr_hint_none: 'Pick your mood, then pour out your story 💛',
+  jr_hint_happy: 'Yay, feeling good! What made your day bright?', jr_hint_okay: 'Ordinary days deserve a note too. Anything small that stood out?',
+  jr_hint_sad: 'It is okay to feel sad. Let it out here, take your time 🫶', jr_hint_angry: 'Let it all out here — nobody is judging.',
+  jr_hint_tired: 'You have been working hard. What drained you most today?',
+  jr_dictate: 'Voice Dictation', jr_dictate_idle: 'Tap the mic and speak', jr_dictate_idle_sub: 'Your voice becomes text in the entry',
+  jr_listening: 'Listening…', jr_listening_hint: 'Go ahead, start speaking…', jr_stt_cancel: 'Cancel', jr_stt_done_btn: 'Done',
+  jr_stt_done: 'Dictation added to your entry ✨',
+  jr_stt_unsupported: 'Voice dictation is not supported here. Use the microphone icon on your keyboard (Gboard) instead.',
+  jr_stt_support_note: 'Built-in dictation is not supported on this device/browser. Use the 🎙️ icon on your keyboard — the text still lands in your entry.',
+  jr_stt_perm: 'Microphone permission denied. Enable it and try again.', jr_stt_net: 'Voice dictation needs an internet connection.',
+  jr_stt_nomic: 'No microphone found.', jr_stt_stopped: 'Dictation stopped. Tap the mic again to continue.', jr_stt_limit: '3-minute dictation limit reached.',
+  jr_dice: 'Writing idea', jr_prompt_use: 'Use',
+  jr_prompts: ['What is one small thing that made you smile today?', 'Who do you want to thank, and why?', 'What did you learn today?', 'If today were a movie, what would its title be?', 'What do you want to let go of before sleep?', 'Write 3 things you are grateful for right now.'],
+  jr_quotes: ['Small steps every day bring calm to your mind.', 'Write first, tidy up later. Feelings do not have to be perfect.', 'Today does not have to be great, just honest.', 'Even one sentence is enough to become a memory.', 'Breathe in calm, breathe out gratitude.', 'Your story matters, even if it is just about morning coffee ☕', 'Slow progress is still progress.', 'Look how far you have come. A little pride is allowed!'],
+  jr_quick_tags: ['Gratitude', 'Work', 'Personal', 'Idea', 'Dream'],
+  jr_pulse: 'Your Journal Pulse', jr_stat_entries: 'Entries', jr_stat_streak: 'Day Streak', jr_stat_words: 'Words',
+  jr_week: 'Last 7 days', jr_mood_mix: 'Mood mix', jr_stats_note: 'Based on {n} loaded entries.', jr_load_all: 'Load all',
+  jr_search: 'Search memories, #tags, words…', jr_all: 'All', jr_period_all: 'All time', jr_period_7: 'Last 7 days', jr_period_30: 'Last 30 days',
+  jr_timeline: 'Timeline', jr_notes_count: '{n} entries', jr_export_all: 'Export PDF', jr_no_result: 'No matching entries', jr_clear_filter: 'Reset filters',
+  jr_filter_hint: 'Search only covers entries that are already loaded.', jr_read_more: 'Read more', jr_read_less: 'Show less', jr_words: 'words',
+  jr_today: 'Today', jr_yesterday: 'Yesterday', jr_pdf_btn: 'PDF', jr_pdf_title: 'Export Entry to PDF', jr_pdf_title_all: 'Export Journal to PDF',
+  jr_pdf_sub: 'Turn it into a tidy keepsake', jr_pdf_sub_all: '{n} entries will be included', jr_pdf_paper: 'Paper Size', jr_pdf_theme: 'Theme', jr_pdf_theme_name: 'Pesaner Keepsake',
+  jr_pdf_opt_mood: 'Include mood', jr_pdf_opt_time: 'Include time', jr_pdf_opt_tags: 'Include #tags', jr_pdf_preview: 'Preview',
+  jr_close: 'Close', jr_share: 'Share', jr_download: 'Download PDF', jr_pdf_making: 'Building PDF…', jr_pdf_page_n: 'Rendering {i} of {n}…',
+  jr_pdf_saved: 'PDF created 🎉', jr_pdf_shared: 'PDF ready to share 🎉', jr_pdf_fail: 'Could not create the PDF. Check your connection and try again.',
+  jr_loading_all: 'Loading all entries…', jr_nothing_export: 'Nothing to export', jr_pdf_more: '…and {n} more entries',
+  jr_pdf_brand_sub: 'Daily Journal · Keepsake', jr_pdf_exported: 'Exported', jr_pdf_footer: 'Pesaner - Daily Journal', jr_pdf_page: 'Page', jr_pdf_range: '{n} entries · {from} – {to}',
+  jr_pdf_closing: 'Write today, smile later.', jr_draft_restored: 'Your last draft was restored ✍️'
+});
+
 let currentLang = localStorage.getItem('pesaner_lang') || 'id';
 
 function t(key) {
@@ -4057,6 +4530,7 @@ function switchTab(tab) {
 
   // Hentikan polling chat thread kalau pindah dari tab chat
   if (tab !== 'chat') stopChatThreadPolling();
+  if (tab !== 'journal' && typeof jrStopSpeech === 'function') jrStopSpeech(false);
 
   if (tab === 'feed') loadFeed();
   if (tab === 'profile') loadProfile();
@@ -4328,6 +4802,8 @@ function setPostPrivacy(value) {
 }
 
 // ======= JURNAL HARIAN =======
+// Backend (GAS) TIDAK berubah: tetap getJournalEntries / createJournalEntry / updateJournalEntry / deleteJournalEntry
+// dengan field { username, content, mood }. Semua fitur baru (tag #, filter, insight, dikte suara, PDF) berjalan di sisi client.
 const JOURNAL_PAGE_SIZE = 10;
 const JOURNAL_MOODS = ['😊', '😐', '😢', '😡', '😴'];
 let journalEntries = [];
@@ -4337,16 +4813,73 @@ let selectedJournalMood = '';
 let editJournalMood = '';
 let editingJournalId = null;
 
+const JR_MOOD_META = { '😊': { k: 'happy', c: '#FFB800' }, '😐': { k: 'okay', c: '#8EB6FF' }, '😢': { k: 'sad', c: '#38BDF8' }, '😡': { k: 'angry', c: '#FF7A7A' }, '😴': { k: 'tired', c: '#A78BFA' } };
+const JR_MAX_CHARS = 5000;
+const JR_STT_LIMIT = 180; // detik
+const JR_SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+let jrFilter = { q: '', mood: '', period: 'all', tag: '' };
+let jrInsightOpen = true;
+let jrQuoteIdx = -1;
+let jrPromptIdx = -1;
+let jrPromptText = '';
+let jrSttLang = (function () { try { return localStorage.getItem('pesaner_jr_stt_lang'); } catch (e) { return null; } })() || (currentLang === 'en' ? 'en-US' : 'id-ID');
+let jrSpeech = { active: false };
+let jrDraftTimer = null;
+let jrPdfMode = 'single';
+let jrPdfEntries = [];
+let jrPdfBusy = false;
+const jrScriptCache = {};
+
+// ---------- util ----------
+function jrT(key, vars) {
+  let s = t(key);
+  if (vars) Object.keys(vars).forEach(k => { s = String(s).split('{' + k + '}').join(vars[k]); });
+  return s;
+}
+function jrMoodName(m) { const x = JR_MOOD_META[m]; return x ? t('jr_mood_' + x.k) : ''; }
+function jrMoodColor(m) { return (JR_MOOD_META[m] || {}).c || '#BCD3FF'; }
+function jrLoc() { return currentLang === 'en' ? 'en-US' : 'id-ID'; }
+function jrParseDate(s) { const d = new Date(s); return isNaN(d.getTime()) ? null : d; }
+function jrDayKey(d) { return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+function jrTime(d) { return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+function jrLongDate(d) { return d.toLocaleDateString(jrLoc(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+function jrDayLabel(d) {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const x = new Date(d); x.setHours(0, 0, 0, 0);
+  const diff = Math.round((today - x) / 86400000);
+  if (diff === 0) return t('jr_today');
+  if (diff === 1) return t('jr_yesterday');
+  return jrLongDate(d);
+}
+function jrWords(s) { return ((s || '').trim().match(/\S+/g) || []).length; }
+function jrTags(content) {
+  const out = []; const seen = {};
+  const re = /(?:^|[\s(])#([\p{L}\p{N}_]{2,30})/gu; let m;
+  while ((m = re.exec(content || ''))) { const k = m[1].toLowerCase(); if (!seen[k]) { seen[k] = 1; out.push(m[1]); } }
+  return out;
+}
+function jrRich(content) {
+  const html = linkifyContent(content);
+  return html.split(/(<a [^>]*>[\s\S]*?<\/a>)/g).map((seg, i) => i % 2 ? seg :
+    seg.replace(/(^|[\s(])#([\p{L}\p{N}_]{2,30})/gu, '$1<button type="button" class="jr-hash" onclick="jrSetTagFilter(\'$2\')">#$2</button>')).join('');
+}
+function jrRichPlain(content) {
+  return escHtml(content).replace(/(^|[\s(])#([\p{L}\p{N}_]{2,30})/gu, '$1<span class="pe-hash">#$2</span>');
+}
+
+// ---------- mood picker (signature asli dipertahankan) ----------
 function renderMoodPicker(containerId, selectedMood, handlerName) {
   const el = document.getElementById(containerId);
+  if (!el) return;
   el.innerHTML = JOURNAL_MOODS.map(m =>
-    `<button type="button" onclick="${handlerName}('${m}')" class="journal-mood-btn ${selectedMood === m ? 'active' : ''}">${m}</button>`
+    `<button type="button" onclick="${handlerName}('${m}')" class="jr-mood ${selectedMood === m ? 'active' : ''}" style="--mc:${jrMoodColor(m)}" aria-pressed="${selectedMood === m}"><span class="e">${m}</span><span class="n">${jrMoodName(m)}</span></button>`
   ).join('');
 }
 
 function selectJournalMood(m) {
   selectedJournalMood = (selectedJournalMood === m) ? '' : m;
   renderMoodPicker('journal-mood-picker', selectedJournalMood, 'selectJournalMood');
+  jrUpdateMoodHint();
 }
 
 function selectEditJournalMood(m) {
@@ -4354,8 +4887,17 @@ function selectEditJournalMood(m) {
   renderMoodPicker('edit-journal-mood-picker', editJournalMood, 'selectEditJournalMood');
 }
 
+function jrUpdateMoodHint() {
+  const el = document.getElementById('jr-mood-hint');
+  if (!el) return;
+  const meta = JR_MOOD_META[selectedJournalMood];
+  el.textContent = meta ? t('jr_hint_' + meta.k) : t('jr_hint_none');
+}
+
+// ---------- muat data (logika asli dipertahankan) ----------
 async function loadJournal() {
   renderMoodPicker('journal-mood-picker', selectedJournalMood, 'selectJournalMood');
+  jrInitComposer();
   const cacheKey = userCacheKey('journal');
   const cached = cacheGet(cacheKey);
   document.getElementById('journal-empty').classList.add('hidden');
@@ -4390,6 +4932,7 @@ async function loadJournal() {
     if (!cached) showToast(t('toast_journal_load_fail'), 'error');
   }
   document.getElementById('journal-loading').classList.add('hidden');
+  jrRefreshChrome();
 }
 
 async function loadMoreJournal() {
@@ -4411,33 +4954,283 @@ async function loadMoreJournal() {
   btn.textContent = t('btn_load_more_journal');
 }
 
+// Muat sisa halaman lewat endpoint yang sama (dipakai ekspor PDF & statistik lengkap)
+async function jrLoadAllEntries() {
+  let guard = 0;
+  while (journalHasMore && guard++ < 80) {
+    const res = await apiCall('getJournalEntries', { username: currentUser.username, offset: journalOffset, limit: JOURNAL_PAGE_SIZE });
+    const more = res.entries || [];
+    if (!more.length) { journalHasMore = false; break; }
+    journalEntries = journalEntries.concat(more);
+    journalOffset += more.length;
+    journalHasMore = !!res.hasMore;
+  }
+  document.getElementById('btn-load-more-journal').classList.toggle('hidden', !journalHasMore);
+}
+async function jrLoadAllClick() {
+  showToast(t('jr_loading_all'));
+  try { await jrLoadAllEntries(); renderJournalList(); } catch (e) { showToast(t('toast_journal_more_fail'), 'error'); }
+}
+
+// ---------- filter ----------
+function jrFilterActive() { return !!(jrFilter.q || jrFilter.mood || jrFilter.tag || jrFilter.period !== 'all'); }
+function jrFilteredEntries() {
+  const q = jrFilter.q.trim().toLowerCase();
+  const days = jrFilter.period === 'all' ? 0 : parseInt(jrFilter.period, 10);
+  const since = days ? Date.now() - days * 86400000 : 0;
+  return journalEntries.filter(e => {
+    if (jrFilter.mood && e.mood !== jrFilter.mood) return false;
+    if (q && !(String(e.content || '').toLowerCase().includes(q))) return false;
+    if (jrFilter.tag && !jrTags(e.content).some(x => x.toLowerCase() === jrFilter.tag.toLowerCase())) return false;
+    if (since) { const d = jrParseDate(e.createdAt); if (!d || d.getTime() < since) return false; }
+    return true;
+  });
+}
+function jrOnSearch(v) { jrFilter.q = v || ''; renderJournalList(); }
+function jrSetPeriod(v) { jrFilter.period = v || 'all'; renderJournalList(); }
+function jrSetMoodFilter(m) { jrFilter.mood = (jrFilter.mood === m) ? '' : m; renderJournalList(); }
+function jrSetTagFilter(tag) { jrFilter.tag = (jrFilter.tag.toLowerCase() === String(tag).toLowerCase()) ? '' : tag; renderJournalList(); }
+function jrResetFilters() {
+  jrFilter = { q: '', mood: '', period: 'all', tag: '' };
+  const s = document.getElementById('jr-search'); if (s) s.value = '';
+  const p = document.getElementById('jr-period'); if (p) p.value = 'all';
+  renderJournalList();
+}
+function jrRenderFilters() {
+  const mf = document.getElementById('jr-moodfilter');
+  if (mf) {
+    mf.innerHTML = `<button type="button" class="jr-chip ${jrFilter.mood ? '' : 'on'}" onclick="jrSetMoodFilter('')">${t('jr_all')}</button>` +
+      JOURNAL_MOODS.map(m => `<button type="button" class="jr-chip ${jrFilter.mood === m ? 'on' : ''}" onclick="jrSetMoodFilter('${m}')">${m} ${jrMoodName(m)}</button>`).join('');
+  }
+  const tb = document.getElementById('jr-tagbar');
+  if (tb) {
+    const count = {};
+    journalEntries.forEach(e => jrTags(e.content).forEach(x => { const k = x.toLowerCase(); count[k] = count[k] || { n: 0, label: x }; count[k].n++; }));
+    const top = Object.values(count).sort((a, b) => b.n - a.n).slice(0, 12);
+    tb.innerHTML = top.map(x => `<button type="button" class="jr-chip ${jrFilter.tag.toLowerCase() === x.label.toLowerCase() ? 'on' : ''}" onclick="jrSetTagFilter('${x.label}')">#${escHtml(x.label)} · ${x.n}</button>`).join('');
+    tb.classList.toggle('hidden', !top.length);
+  }
+}
+
+// ---------- kartu & daftar ----------
 function journalCard(e) {
   const edited = e.updatedAt && e.updatedAt !== e.createdAt;
-  return `<div class="post-card" id="journal-${e.id}">
-    <div class="flex justify-between items-start gap-2 mb-2">
-      <div class="flex items-center gap-2 flex-wrap">
-        ${e.mood ? `<span style="font-size:19px">${e.mood}</span>` : ''}
-        <span class="text-xs text-on-surface-muted font-semibold">${formatDateTime(e.createdAt)}</span>
-        ${edited ? '<span class="text-[10px] text-on-surface-muted italic">' + t('edited_tag') + '</span>' : ''}
+  const d = jrParseDate(e.createdAt);
+  const dateLine = d ? jrDayLabel(d) : formatDateTime(e.createdAt);
+  const timeLine = d ? jrTime(d) : '';
+  const content = String(e.content || '');
+  const long = content.length > 220 || content.split('\n').length > 4;
+  const tags = jrTags(content);
+  const mc = jrMoodColor(e.mood);
+  return `<div class="jr-entry" id="journal-${e.id}" style="--mc:${mc}">
+    <div class="jr-entry-head">
+      <span class="jr-emoji">${e.mood || '📝'}</span>
+      <div class="min-w-0">
+        <div class="jr-edate">${escHtml(dateLine)}</div>
+        <div class="jr-etime"><span>${escHtml(timeLine)}${e.mood ? ' · ' + escHtml(jrMoodName(e.mood)) : ''}</span>${edited ? '<em>' + t('edited_tag') + '</em>' : ''}</div>
       </div>
-      <div class="flex gap-1 flex-shrink-0">
-        <button onclick="openEditJournalModal('${e.id}')" class="p-1.5 rounded-full hover:bg-gray-100 text-on-surface-muted" title="Edit">
-          <span class="material-symbols-outlined" style="font-size:17px">edit</span>
-        </button>
-        <button onclick="deleteJournalEntryConfirm('${e.id}')" class="p-1.5 rounded-full hover:bg-gray-100 text-on-surface-muted hover:text-red-500" title="Hapus">
-          <span class="material-symbols-outlined" style="font-size:17px">delete</span>
-        </button>
+      <div class="jr-eact">
+        <button onclick="jrOpenPdf('${e.id}')" class="jr-ib pdf" title="PDF"><span class="material-symbols-outlined">picture_as_pdf</span>${t('jr_pdf_btn')}</button>
+        <button onclick="openEditJournalModal('${e.id}')" class="jr-ib" title="Edit"><span class="material-symbols-outlined">edit</span></button>
+        <button onclick="deleteJournalEntryConfirm('${e.id}')" class="jr-ib del" title="Hapus"><span class="material-symbols-outlined">delete</span></button>
       </div>
     </div>
-    <p class="text-sm text-on-surface leading-relaxed" style="white-space:pre-wrap;">${linkifyContent(e.content)}</p>
+    <p class="jr-ebody ${long ? 'clamp' : ''}" id="jr-body-${e.id}">${jrRich(content)}</p>
+    ${long ? `<button type="button" class="jr-linkbtn jr-more" id="jr-more-${e.id}" onclick="jrToggleBody('${e.id}')">${t('jr_read_more')}</button>` : ''}
+    <div class="jr-efoot"><span>${jrWords(content)} ${t('jr_words')}</span><span>${tags.slice(0, 3).map(x => '#' + escHtml(x)).join(' ')}</span></div>
   </div>`;
 }
 
-function renderJournalList() {
-  document.getElementById('journal-list').innerHTML = journalEntries.map(journalCard).join('');
+function jrToggleBody(id) {
+  const p = document.getElementById('jr-body-' + id), b = document.getElementById('jr-more-' + id);
+  if (!p || !b) return;
+  const open = p.classList.toggle('clamp') === false;
+  b.textContent = open ? t('jr_read_less') : t('jr_read_more');
 }
 
+function renderJournalList() {
+  const list = jrFilteredEntries();
+  document.getElementById('journal-list').innerHTML = list.map(journalCard).join('');
+  jrRefreshChrome(list);
+}
+
+function jrRefreshChrome(list) {
+  list = list || jrFilteredEntries();
+  const lbl = document.getElementById('jr-count-label');
+  if (lbl) lbl.textContent = jrT('jr_notes_count', { n: list.length });
+  const nr = document.getElementById('jr-noresult');
+  if (nr) nr.classList.toggle('hidden', !(journalEntries.length > 0 && list.length === 0));
+  const hint = document.getElementById('jr-filter-hint');
+  if (hint) { hint.textContent = t('jr_filter_hint'); hint.classList.toggle('hidden', !(jrFilterActive() && journalHasMore)); }
+  jrRenderFilters();
+  jrRenderInsight();
+  jrUpdateHero();
+  jrRenderQuickTags();
+  jrUpdateMoodHint();
+}
+
+// ---------- hero / quote ----------
+function jrGreeting() {
+  const h = new Date().getHours();
+  const k = h < 11 ? 'morning' : h < 15 ? 'noon' : h < 18 ? 'afternoon' : 'evening';
+  const name = (currentUser && (currentUser.name || currentUser.username)) || '';
+  return jrT('jr_greet_' + k, { name });
+}
+function jrUpdateHero() {
+  const g = document.getElementById('jr-greeting'); if (g) g.textContent = jrGreeting();
+  const td = document.getElementById('jr-today'); if (td) td.textContent = new Date().toLocaleDateString(jrLoc(), { weekday: 'short', day: 'numeric', month: 'short' });
+  const st = jrCalcStreak(journalEntries);
+  const n = document.getElementById('jr-streak-n'); if (n) n.textContent = st;
+  const box = document.getElementById('jr-streak'); if (box) box.classList.toggle('hot', st >= 3);
+  jrShowQuote();
+}
+function jrShowQuote() {
+  const qs = t('jr_quotes'); if (!Array.isArray(qs) || !qs.length) return;
+  if (jrQuoteIdx < 0) jrQuoteIdx = Math.floor(Date.now() / 86400000) % qs.length;
+  const el = document.getElementById('jr-quote'); if (el) el.textContent = '“' + qs[jrQuoteIdx % qs.length] + '”';
+}
+function jrNextQuote() {
+  const qs = t('jr_quotes'); if (!Array.isArray(qs)) return;
+  jrQuoteIdx = (jrQuoteIdx + 1) % qs.length; jrShowQuote();
+}
+
+// ---------- statistik / insight ----------
+function jrCalcStreak(entries) {
+  const days = new Set();
+  entries.forEach(e => { const d = jrParseDate(e.createdAt); if (d) days.add(jrDayKey(d)); });
+  const d = new Date(); d.setHours(0, 0, 0, 0);
+  if (!days.has(jrDayKey(d))) d.setDate(d.getDate() - 1);
+  let n = 0;
+  while (days.has(jrDayKey(d))) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
+function jrStats(entries) {
+  const moodCount = {}; JOURNAL_MOODS.forEach(m => moodCount[m] = 0);
+  let words = 0;
+  entries.forEach(e => { words += jrWords(e.content); if (moodCount[e.mood] !== undefined) moodCount[e.mood]++; });
+  const week = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i);
+    const key = jrDayKey(d);
+    const hit = entries.find(e => { const x = jrParseDate(e.createdAt); return x && jrDayKey(x) === key; });
+    week.push({ d, mood: hit ? hit.mood : null, has: !!hit, today: i === 0 });
+  }
+  return { words, moodCount, week, streak: jrCalcStreak(entries) };
+}
+function jrToggleInsight() {
+  jrInsightOpen = !jrInsightOpen;
+  jrRenderInsight();
+}
+function jrRenderInsight() {
+  const body = document.getElementById('jr-insight-body'), tg = document.getElementById('jr-insight-toggle');
+  if (!body || !tg) return;
+  tg.classList.toggle('closed', !jrInsightOpen);
+  if (!jrInsightOpen) { body.innerHTML = ''; return; }
+  const s = jrStats(journalEntries);
+  const max = Math.max(1, ...JOURNAL_MOODS.map(m => s.moodCount[m]));
+  const wd = { weekday: 'narrow' };
+  body.innerHTML = `
+    <div class="jr-stats">
+      <div class="jr-stat" style="--c:#FFE08A"><b>${journalEntries.length}${journalHasMore ? '+' : ''}</b><span>${t('jr_stat_entries')}</span></div>
+      <div class="jr-stat" style="--c:#FFB800"><b>${s.streak}</b><span>${t('jr_stat_streak')}</span></div>
+      <div class="jr-stat" style="--c:#99f6e4"><b>${s.words}</b><span>${t('jr_stat_words')}</span></div>
+    </div>
+    <p class="jr-sub">${t('jr_week')}</p>
+    <div class="jr-week">${s.week.map(w => `<div class="jr-day ${w.today ? 'today' : ''}"><span>${w.d.toLocaleDateString(jrLoc(), wd)}</span><span class="m ${w.has ? '' : 'none'}">${w.has ? (w.mood || '📝') : '·'}</span></div>`).join('')}</div>
+    <p class="jr-sub">${t('jr_mood_mix')}</p>
+    <div class="jr-mix">${JOURNAL_MOODS.map(m => `<div class="jr-mixrow" style="--mc:${jrMoodColor(m)}"><span class="l">${m} ${jrMoodName(m)}</span><span class="bar"><i style="width:${Math.round(s.moodCount[m] / max * 100)}%"></i></span><span class="c">${s.moodCount[m]}</span></div>`).join('')}</div>
+    <p class="jr-note">${jrT('jr_stats_note', { n: journalEntries.length })}${journalHasMore ? ' <button type="button" class="jr-linkbtn" onclick="jrLoadAllClick()">' + t('jr_load_all') + '</button>' : ''}</p>`;
+}
+
+// ---------- composer ----------
+function jrDraftKey() { return 'pesaner_jr_draft_' + (currentUser ? currentUser.username : 'anon'); }
+function jrSaveDraft(v) { try { if (v) localStorage.setItem(jrDraftKey(), v); else localStorage.removeItem(jrDraftKey()); } catch (e) { } }
+function jrClearDraft() { try { localStorage.removeItem(jrDraftKey()); } catch (e) { } }
+function jrInitComposer() {
+  jrRenderSttLang();
+  jrRenderSttUi();
+  jrUpdateHero();
+  jrRenderQuickTags();
+  jrUpdateMoodHint();
+  const ta = document.getElementById('journal-content');
+  if (ta && !ta.value) {
+    let d = null; try { d = localStorage.getItem(jrDraftKey()); } catch (e) { }
+    if (d) { ta.value = d; jrOnInput(ta, true); showToast(t('jr_draft_restored')); }
+  }
+  const note = document.getElementById('jr-stt-note'); if (note) note.classList.toggle('hidden', !!JR_SR);
+}
+function jrOnInput(ta, skipSave) {
+  ta = ta || document.getElementById('journal-content'); if (!ta) return;
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(Math.max(ta.scrollHeight, 120), 320) + 'px';
+  const c = document.getElementById('jr-count');
+  if (c) {
+    const n = ta.value.length;
+    c.textContent = n + '/' + JR_MAX_CHARS;
+    c.classList.toggle('warn', n > 4500 && n <= JR_MAX_CHARS);
+    c.classList.toggle('over', n > JR_MAX_CHARS);
+  }
+  if (!skipSave) { clearTimeout(jrDraftTimer); jrDraftTimer = setTimeout(() => jrSaveDraft(ta.value), 400); }
+}
+function jrOnEditInput() {
+  const ta = document.getElementById('edit-journal-content'), c = document.getElementById('jr-edit-count');
+  if (!ta || !c) return;
+  const n = ta.value.length;
+  c.textContent = n + '/' + JR_MAX_CHARS;
+  c.classList.toggle('warn', n > 4500 && n <= JR_MAX_CHARS);
+  c.classList.toggle('over', n > JR_MAX_CHARS);
+}
+function jrRenderQuickTags() {
+  const box = document.getElementById('jr-quicktags'); if (!box) return;
+  const tags = t('jr_quick_tags'); if (!Array.isArray(tags)) return;
+  box.innerHTML = tags.map(x => `<button type="button" class="jr-chip" onclick="jrInsertTag('${x}')">#${x}</button>`).join('');
+}
+function jrInsertText(ta, text) {
+  if (!ta || ta.readOnly) return;
+  const s = ta.selectionStart == null ? ta.value.length : ta.selectionStart;
+  const e = ta.selectionEnd == null ? s : ta.selectionEnd;
+  const before = ta.value.slice(0, s), after = ta.value.slice(e);
+  const pad = before && !/\s$/.test(before) ? ' ' : '';
+  ta.value = before + pad + text + after;
+  const pos = (before + pad + text).length;
+  try { ta.focus(); ta.setSelectionRange(pos, pos); } catch (err) { }
+  jrOnInput(ta);
+}
+function jrInsertTag(tag) { jrInsertText(document.getElementById('journal-content'), '#' + tag + ' '); }
+function jrDice() {
+  const ps = t('jr_prompts'); if (!Array.isArray(ps) || !ps.length) return;
+  let i; do { i = Math.floor(Math.random() * ps.length); } while (ps.length > 1 && i === jrPromptIdx);
+  jrPromptIdx = i; jrPromptText = ps[i];
+  const row = document.getElementById('jr-prompt'), tx = document.getElementById('jr-prompt-text');
+  if (tx) tx.textContent = '💭 ' + jrPromptText;
+  if (row) row.classList.remove('hidden');
+}
+function jrUsePrompt() {
+  const ta = document.getElementById('journal-content'); if (!ta || !jrPromptText || ta.readOnly) return;
+  ta.value = (ta.value ? ta.value.replace(/\s+$/, '') + '\n\n' : '') + jrPromptText + '\n';
+  jrOnInput(ta);
+  try { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } catch (e) { }
+  document.getElementById('jr-prompt').classList.add('hidden');
+}
+function jrConfetti(emoji) {
+  const host = document.getElementById('jr-confetti'); if (!host) return;
+  const set = [emoji || '😊', '✨', '🎉', '💛', '🌸', '⭐'];
+  for (let i = 0; i < 18; i++) {
+    const s = document.createElement('span');
+    s.className = 'jr-confetto'; s.textContent = set[i % set.length];
+    const a = (Math.random() * Math.PI) + Math.PI; const dist = 90 + Math.random() * 190;
+    s.style.setProperty('--x', Math.round(Math.cos(a) * dist) + 'px');
+    s.style.setProperty('--y', Math.round(Math.sin(a) * dist - 40) + 'px');
+    s.style.setProperty('--r', Math.round(Math.random() * 540 - 270) + 'deg');
+    s.style.left = (38 + Math.random() * 24) + '%';
+    host.appendChild(s);
+    setTimeout(() => s.remove(), 1300);
+  }
+}
+
+// ---------- simpan / edit / hapus (logika asli dipertahankan) ----------
 async function submitJournalEntry() {
+  if (jrSpeech.active) { jrStopSpeech(false); await jrSpeech.done; }
   const textarea = document.getElementById('journal-content');
   const content = textarea.value.trim();
   if (!content) { showToast(t('toast_write_something'), 'error'); return; }
@@ -4446,12 +5239,15 @@ async function submitJournalEntry() {
   document.getElementById('journal-new-loading').classList.remove('hidden');
   document.getElementById('btn-save-journal-new').disabled = true;
   try {
+    const moodNow = selectedJournalMood;
     const res = await apiCall('createJournalEntry', { username: currentUser.username, content, mood: selectedJournalMood });
     if (res.success) {
       textarea.value = '';
       selectedJournalMood = '';
       renderMoodPicker('journal-mood-picker', selectedJournalMood, 'selectJournalMood');
+      jrClearDraft(); jrOnInput(textarea, true); jrUpdateMoodHint();
       showToast(t('toast_journal_saved'));
+      jrConfetti(moodNow);
       loadJournal();
     } else {
       showToast(translateServerMsg(res.message) || t('toast_save_fail'), 'error');
@@ -4470,15 +5266,19 @@ function openEditJournalModal(id) {
   editJournalMood = entry.mood || '';
   document.getElementById('edit-journal-content').value = entry.content;
   renderMoodPicker('edit-journal-mood-picker', editJournalMood, 'selectEditJournalMood');
+  jrOnEditInput();
+  jrRenderSttUi();
   document.getElementById('edit-journal-modal').classList.remove('hidden');
 }
 
 function closeEditJournalModal() {
+  if (jrSpeech.active && jrSpeech.targetId === 'edit-journal-content') jrStopSpeech(false);
   document.getElementById('edit-journal-modal').classList.add('hidden');
   editingJournalId = null;
 }
 
 async function saveEditJournalEntry() {
+  if (jrSpeech.active && jrSpeech.targetId === 'edit-journal-content') { jrStopSpeech(false); await jrSpeech.done; }
   const content = document.getElementById('edit-journal-content').value.trim();
   if (!content) { showToast(t('toast_journal_empty'), 'error'); return; }
   if (content.length > 5000) { showToast(t('toast_max_5000'), 'error'); return; }
@@ -4519,12 +5319,425 @@ async function deleteJournalEntryConfirm(id) {
       document.getElementById('journal-empty').classList.toggle('hidden', journalEntries.length > 0);
       showToast(t('toast_journal_deleted'));
       cacheInvalidate(userCacheKey('journal'));
+      jrRefreshChrome();
     } else {
       showToast(translateServerMsg(res.message) || t('toast_delete_fail'), 'error');
     }
   } catch (e) {
     showToast(t('toast_journal_delete_fail'), 'error');
   }
+}
+
+// ---------- DIKTE SUARA (speech to text) ----------
+// Memakai Web Speech API (SpeechRecognition). Hasil dikte masuk ke textarea target (catatan baru atau modal edit).
+// Kalau engine tidak tersedia (mis. sebagian WebView Android), user diarahkan ke mikrofon keyboard.
+function jrSetSttLang(lang) {
+  jrSttLang = lang;
+  try { localStorage.setItem('pesaner_jr_stt_lang', lang); } catch (e) { }
+  jrRenderSttLang();
+  if (jrSpeech.active && jrSpeech.rec) { // ganti bahasa saat merekam: restart sesi otomatis lewat onend
+    try { jrSpeech.rec.lang = lang; jrSpeech.rec.stop(); } catch (e) { }
+  }
+}
+function jrRenderSttLang() {
+  document.querySelectorAll('#jr-lang button').forEach(b => b.classList.toggle('on', b.getAttribute('data-l') === jrSttLang));
+}
+function jrFmtClock(sec) { return String(Math.floor(sec / 60)).padStart(2, '0') + ':' + String(sec % 60).padStart(2, '0'); }
+
+function jrRenderSttUi() {
+  const s = jrSpeech;
+  const mainRec = !!(s && s.active && s.targetId === 'journal-content');
+  const editRec = !!(s && s.active && s.targetId === 'edit-journal-content');
+  const idle = document.getElementById('jr-stt-idle'), rec = document.getElementById('jr-stt-rec');
+  if (idle) idle.classList.toggle('hidden', mainRec);
+  if (rec) rec.classList.toggle('hidden', !mainRec);
+  const em = document.getElementById('jr-edit-mic');
+  if (em) em.classList.toggle('rec', editRec);
+  const et = document.getElementById('jr-edit-mic-t');
+  if (et) et.textContent = editRec ? t('jr_stt_done_btn') : t('jr_dictate');
+  const ic = em && em.querySelector('.material-symbols-outlined');
+  if (ic) ic.textContent = editRec ? 'stop' : 'mic';
+  if (!editRec) { const st = document.getElementById('jr-edit-status'); if (st) st.textContent = ''; }
+  jrTickUi();
+}
+function jrTickUi() {
+  const s = jrSpeech; if (!s || !s.active) return;
+  const tm = document.getElementById('jr-stt-timer');
+  if (tm) tm.textContent = jrFmtClock(s.seconds) + ' / ' + jrFmtClock(JR_STT_LIMIT);
+  jrSetLive(s.interim);
+}
+function jrSetLive(text) {
+  const s = jrSpeech; if (!s) return;
+  const msg = text || t('jr_listening_hint');
+  if (s.targetId === 'journal-content') { const el = document.getElementById('jr-live'); if (el) el.textContent = msg; }
+  else { const el = document.getElementById('jr-edit-status'); if (el) el.textContent = text ? '“' + text + '”' : t('jr_listening') ; }
+}
+
+function jrCapFirst(spoken, base) {
+  if (!spoken) return spoken;
+  if (!base || /[.!?\n]\s*$/.test(base)) return spoken.charAt(0).toUpperCase() + spoken.slice(1);
+  return spoken;
+}
+function jrApplySpeechText() {
+  const s = jrSpeech; if (!s) return;
+  const ta = document.getElementById(s.targetId); if (!ta) return;
+  const spoken = [s.prior, s.session].filter(Boolean).join(' ').trim();
+  const base = s.snapshot;
+  const sep = (base && spoken && !/\s$/.test(base)) ? ' ' : '';
+  ta.value = base + (spoken ? sep + jrCapFirst(spoken, base) : '');
+  if (ta.value.length > JR_MAX_CHARS) { ta.value = ta.value.slice(0, JR_MAX_CHARS); s.hitLimit = true; }
+  try { ta.scrollTop = ta.scrollHeight; } catch (e) { }
+  if (s.targetId === 'journal-content') jrOnInput(ta, true); else jrOnEditInput();
+}
+
+function jrStartSpeech(targetId) {
+  if (!JR_SR) { showToast(t('jr_stt_unsupported'), 'error'); const n = document.getElementById('jr-stt-note'); if (n) n.classList.remove('hidden'); return; }
+  if (jrSpeech.active) { jrStopSpeech(false); jrFinishSpeech(jrSpeech); }
+  const ta = document.getElementById(targetId); if (!ta) return;
+  let rec;
+  try { rec = new JR_SR(); } catch (e) { showToast(t('jr_stt_unsupported'), 'error'); return; }
+  rec.lang = jrSttLang; rec.continuous = true; rec.interimResults = true; rec.maxAlternatives = 1;
+  const s = { active: true, rec, targetId, snapshot: ta.value, prior: '', session: '', interim: '', seconds: 0, timer: null, wantRestart: true, fatal: false, cancel: false, finished: false, restarts: [], hitLimit: false, fallback: null };
+  s.done = new Promise(res => { s.resolve = res; });
+  jrSpeech = s;
+  ta.readOnly = true;
+
+  rec.onresult = (ev) => {
+    let fin = '', itm = '';
+    for (let i = 0; i < ev.results.length; i++) {
+      const r = ev.results[i];
+      if (r.isFinal) fin += r[0].transcript + ' '; else itm += r[0].transcript;
+    }
+    s.session = fin.trim(); s.interim = itm.trim();
+    jrApplySpeechText(); jrSetLive(s.interim);
+    if (s.hitLimit && !s.finished && s.wantRestart) { showToast(t('toast_max_5000'), 'error'); jrStopSpeech(false); }
+  };
+  rec.onerror = (ev) => {
+    const err = ev && ev.error;
+    if (err === 'no-speech' || err === 'aborted') return; // wajar: sesi berakhir lalu di-restart
+    s.fatal = true; s.wantRestart = false;
+    if (err === 'not-allowed' || err === 'service-not-allowed') showToast(t('jr_stt_perm'), 'error');
+    else if (err === 'network') showToast(t('jr_stt_net'), 'error');
+    else if (err === 'audio-capture') showToast(t('jr_stt_nomic'), 'error');
+    else showToast(t('jr_stt_stopped'), 'error');
+  };
+  rec.onend = () => {
+    if (s.finished) return;
+    if (s.session) { s.prior = [s.prior, s.session].filter(Boolean).join(' '); s.session = ''; }
+    s.interim = '';
+    if (s.wantRestart && !s.fatal && s.seconds < JR_STT_LIMIT) {
+      const now = Date.now();
+      s.restarts = s.restarts.filter(x => now - x < 4000); s.restarts.push(now);
+      if (s.restarts.length > 5) { showToast(t('jr_stt_stopped'), 'error'); jrFinishSpeech(s); return; }
+      setTimeout(() => { if (jrSpeech === s && !s.finished && s.wantRestart) { try { rec.lang = jrSttLang; rec.start(); } catch (e) { } } }, 250);
+    } else {
+      jrFinishSpeech(s);
+    }
+  };
+
+  try { rec.start(); } catch (e) { showToast(t('jr_stt_unsupported'), 'error'); jrFinishSpeech(s); return; }
+  s.timer = setInterval(() => {
+    s.seconds++;
+    if (s.seconds >= JR_STT_LIMIT) { showToast(t('jr_stt_limit')); jrStopSpeech(false); return; }
+    jrTickUi();
+  }, 1000);
+  jrRenderSttUi();
+}
+
+function jrStopSpeech(cancel) {
+  const s = jrSpeech; if (!s || !s.active || s.finished) return;
+  s.wantRestart = false; s.cancel = !!cancel;
+  clearInterval(s.timer);
+  try { cancel ? s.rec.abort() : s.rec.stop(); } catch (e) { }
+  clearTimeout(s.fallback);
+  s.fallback = setTimeout(() => jrFinishSpeech(s), 900); // jaga-jaga kalau onend tidak terpanggil
+}
+
+function jrFinishSpeech(s) {
+  if (!s || s.finished) return;
+  s.finished = true; s.active = false;
+  clearInterval(s.timer); clearTimeout(s.fallback);
+  const ta = document.getElementById(s.targetId);
+  let changed = false;
+  if (ta) {
+    ta.readOnly = false;
+    if (s.cancel) { ta.value = s.snapshot; }
+    else { jrApplySpeechText(); changed = ta.value !== s.snapshot; }
+    if (s.targetId === 'journal-content') { jrOnInput(ta); } else { jrOnEditInput(); }
+  }
+  jrRenderSttUi();
+  if (changed && !s.fatal) showToast(t('jr_stt_done'));
+  if (s.resolve) s.resolve();
+}
+
+function jrToggleEditSpeech() {
+  if (jrSpeech.active && jrSpeech.targetId === 'edit-journal-content') jrStopSpeech(false);
+  else jrStartSpeech('edit-journal-content');
+}
+
+// ---------- EKSPOR PDF ----------
+// PDF dibuat langsung di perangkat: kertas HTML (font Newsreader/Plus Jakarta) -> html2canvas -> jsPDF.
+// Library dimuat sekali saat pertama kali dibutuhkan, supaya aplikasi tidak bertambah berat.
+const JR_H2C_URL = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+const JR_JSPDF_URL = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+
+function jrLoadScript(src) {
+  if (jrScriptCache[src]) return jrScriptCache[src];
+  const p = new Promise((ok, no) => {
+    const s = document.createElement('script');
+    s.src = src; s.async = true; s.onload = ok;
+    s.onerror = () => { delete jrScriptCache[src]; no(new Error('gagal memuat ' + src)); };
+    document.head.appendChild(s);
+  });
+  jrScriptCache[src] = p;
+  return p;
+}
+async function jrEnsurePdfLibs() {
+  if (!window.html2canvas) await jrLoadScript(JR_H2C_URL);
+  if (!(window.jspdf && window.jspdf.jsPDF)) await jrLoadScript(JR_JSPDF_URL);
+  try {
+    await Promise.all([
+      document.fonts.load('600 16px "Newsreader"'), document.fonts.load('italic 400 16px "Newsreader"'),
+      document.fonts.load('700 20px "Caveat"'), document.fonts.load('800 16px "Plus Jakarta Sans"')
+    ]);
+    await document.fonts.ready;
+  } catch (e) { }
+}
+
+function jrOpenPdf(id) {
+  const e = journalEntries.find(x => String(x.id) === String(id));
+  if (!e) return;
+  jrPdfMode = 'single'; jrPdfEntries = [e];
+  jrShowPdfModal();
+}
+async function jrOpenPdfAll() {
+  if (journalHasMore) {
+    showToast(t('jr_loading_all'));
+    try { await jrLoadAllEntries(); renderJournalList(); }
+    catch (e) { showToast(t('toast_journal_more_fail'), 'error'); return; }
+  }
+  const list = jrFilteredEntries();
+  if (!list.length) { showToast(t('jr_nothing_export'), 'error'); return; }
+  jrPdfMode = 'all'; jrPdfEntries = list.slice();
+  jrShowPdfModal();
+}
+function jrShowPdfModal() {
+  const all = jrPdfMode === 'all';
+  document.getElementById('jr-pdf-title').textContent = all ? t('jr_pdf_title_all') : t('jr_pdf_title');
+  document.getElementById('jr-pdf-sub').textContent = all ? jrT('jr_pdf_sub_all', { n: jrPdfEntries.length }) : t('jr_pdf_sub');
+  document.getElementById('jr-pdf-progress-wrap').classList.add('hidden');
+  jrSetPdfBusy(false);
+  jrRefreshPdfPreview();
+  document.getElementById('jr-pdf-modal').classList.remove('hidden');
+  setTimeout(jrRefreshPdfPreview, 60); // ukur ulang lebar setelah modal tampil
+}
+function jrClosePdfModal() {
+  if (jrPdfBusy) return;
+  document.getElementById('jr-pdf-modal').classList.add('hidden');
+}
+function jrSetPdfBusy(b) {
+  jrPdfBusy = b;
+  ['jr-pdf-close', 'jr-pdf-share', 'jr-pdf-dl'].forEach(id => { const el = document.getElementById(id); if (el) el.disabled = b; });
+}
+function jrPdfOpts() {
+  const c = id => { const el = document.getElementById(id); return !el || el.checked; };
+  const paper = (document.getElementById('jr-pdf-paper') || {}).value;
+  return { mood: c('jr-pdf-opt-mood'), time: c('jr-pdf-opt-time'), tags: c('jr-pdf-opt-tags'), paper: paper === 'letter' ? 'letter' : 'a4' };
+}
+
+function jrPdfHeaderHtml(entries, opts, mode) {
+  const u = (currentUser && (currentUser.name || currentUser.username)) || '';
+  const now = new Date().toLocaleDateString(jrLoc(), { day: 'numeric', month: 'long', year: 'numeric' });
+  let sum = '';
+  if (mode === 'all') {
+    const ds = entries.map(e => jrParseDate(e.createdAt)).filter(Boolean).sort((a, b) => a - b);
+    const fmt = d => d.toLocaleDateString(jrLoc(), { day: 'numeric', month: 'short', year: 'numeric' });
+    const range = ds.length ? jrT('jr_pdf_range', { n: entries.length, from: fmt(ds[0]), to: fmt(ds[ds.length - 1]) }) : jrT('jr_notes_count', { n: entries.length });
+    const mc = {}; entries.forEach(e => { if (JR_MOOD_META[e.mood]) mc[e.mood] = (mc[e.mood] || 0) + 1; });
+    sum = `<div class="ph-sum"><span class="big">${escHtml(range)}</span>${opts.mood ? JOURNAL_MOODS.filter(m => mc[m]).map(m => `<span class="ph-chip">${m} ${mc[m]}</span>`).join('') : ''}</div>`;
+  }
+  return `<div class="ph"><div class="ph-row"><div class="ph-brand"><div class="ph-logo">✦</div><div><div class="ph-name">PESANER</div><div class="ph-sub">${escHtml(t('jr_pdf_brand_sub'))}</div></div></div><div class="ph-meta"><div class="ph-user">${escHtml(u)}</div><div class="ph-date">${escHtml(t('jr_pdf_exported'))} ${escHtml(now)}</div></div></div>${sum}</div>`;
+}
+function jrPdfEntryHtml(e, opts) {
+  const d = jrParseDate(e.createdAt);
+  const dateStr = d ? jrLongDate(d) : formatDateTime(e.createdAt);
+  const edited = e.updatedAt && e.updatedAt !== e.createdAt;
+  const timeBits = [];
+  if (opts.time && d) timeBits.push(jrTime(d));
+  if (edited) timeBits.push(t('edited_tag'));
+  const tags = opts.tags ? jrTags(e.content) : [];
+  return `<div class="pe" style="--mc:${jrMoodColor(e.mood)}">
+    <div class="pe-top"><div><div class="pe-date">${escHtml(dateStr)}</div>${timeBits.length ? `<div class="pe-time">${escHtml(timeBits.join(' · '))}</div>` : ''}</div>
+    ${opts.mood && e.mood ? `<span class="pe-mood">${e.mood} ${escHtml(jrMoodName(e.mood))}</span>` : ''}</div>
+    <div class="pe-body">${jrRichPlain(String(e.content || ''))}</div>
+    ${tags.length ? `<div class="pe-tags">${tags.map(x => `<span class="pe-tag">#${escHtml(x)}</span>`).join('')}</div>` : ''}
+    <div class="pe-foot"><span>${jrWords(e.content)} ${escHtml(t('jr_words'))}</span><span>Pesaner</span></div>
+  </div>`;
+}
+function jrPdfClosingHtml() { return `<div class="pq">“${escHtml(t('jr_pdf_closing'))}”</div>`; }
+
+function jrRefreshPdfPreview() {
+  const inner = document.getElementById('jr-pdf-preview-inner'), box = document.getElementById('jr-pdf-preview');
+  if (!inner || !box || !jrPdfEntries.length) return;
+  const opts = jrPdfOpts();
+  const shown = jrPdfEntries.slice(0, jrPdfMode === 'all' ? 2 : 1);
+  const rest = jrPdfEntries.length - shown.length;
+  inner.className = 'jr-pdf';
+  inner.innerHTML = jrPdfHeaderHtml(jrPdfEntries, opts, jrPdfMode) + shown.map(e => jrPdfEntryHtml(e, opts)).join('') +
+    (rest > 0 ? `<div class="pmore">${escHtml(jrT('jr_pdf_more', { n: rest }))}</div>` : '') + jrPdfClosingHtml();
+  const w = box.clientWidth || 360;
+  inner.style.zoom = Math.min(1, (w - 2) / 732);
+}
+
+function jrProgress(frac, text) {
+  const wrap = document.getElementById('jr-pdf-progress-wrap'), bar = document.getElementById('jr-pdf-progress-bar'), tx = document.getElementById('jr-pdf-progress-t');
+  if (wrap) wrap.classList.remove('hidden');
+  if (bar) bar.style.width = Math.max(4, Math.min(100, Math.round(frac * 100))) + '%';
+  if (tx) tx.textContent = text || '';
+}
+
+// cari baris kosong (celah antar baris teks) dekat posisi potong supaya teks tidak terbelah di tengah huruf
+function jrFindCutRow(canvas, target, searchPx) {
+  try {
+    const ctx = canvas.getContext('2d');
+    const x0 = 40, w = Math.max(10, canvas.width - 80);
+    const y1 = Math.min(canvas.height - 1, target), y0 = Math.max(1, target - searchPx);
+    if (y1 <= y0) return target;
+    const data = ctx.getImageData(x0, y0, w, y1 - y0).data;
+    for (let row = (y1 - y0) - 1; row >= 0; row--) {
+      let clean = true;
+      for (let x = 0; x < w; x += 3) {
+        const i = (row * w + x) * 4;
+        if (data[i] < 244 || data[i + 1] < 244 || data[i + 2] < 244) { clean = false; break; }
+      }
+      if (clean) return y0 + row;
+    }
+  } catch (e) { }
+  return target;
+}
+
+async function jrBuildPdfBlob(entries, opts, mode, onProgress) {
+  const { jsPDF } = window.jspdf;
+  const paper = opts.paper === 'letter' ? [215.9, 279.4] : [210, 297];
+  const PW = paper[0], PH = paper[1], M = 14, BOTTOM = 18;
+  const CW = PW - 2 * M, PAGE_BOTTOM = PH - BOTTOM, USABLE = PAGE_BOTTOM - M;
+  const doc = new jsPDF({ unit: 'mm', format: paper, orientation: 'portrait', compress: true });
+
+  const stage = document.createElement('div');
+  stage.id = 'jr-pdf-stage'; stage.className = 'jr-pdf-stage';
+  document.body.appendChild(stage);
+
+  const blocks = [jrPdfHeaderHtml(entries, opts, mode)].concat(entries.map(e => jrPdfEntryHtml(e, opts)), [jrPdfClosingHtml()]);
+  let y = M, firstBlock = true;
+  const addCanvas = (cv, sy, sh, yy) => {
+    let src = cv;
+    if (sy !== 0 || sh !== cv.height) {
+      src = document.createElement('canvas'); src.width = cv.width; src.height = sh;
+      const c = src.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, src.width, src.height);
+      c.drawImage(cv, 0, sy, cv.width, sh, 0, 0, cv.width, sh);
+    }
+    const hmm = sh * CW / cv.width;
+    doc.addImage(src.toDataURL('image/jpeg', 0.92), 'JPEG', M, yy, CW, hmm);
+    return hmm;
+  };
+
+  try {
+    for (let i = 0; i < blocks.length; i++) {
+      onProgress && onProgress((i + 0.3) / blocks.length, jrT('jr_pdf_page_n', { i: i + 1, n: blocks.length }));
+      const el = document.createElement('div');
+      el.className = 'jr-pdf'; el.innerHTML = blocks[i];
+      stage.appendChild(el);
+      const cv = await window.html2canvas(el, {
+        scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false,
+        onclone: (d) => { const st = d.getElementById('jr-pdf-stage'); if (st) { st.style.left = '0px'; st.style.top = '0px'; } }
+      });
+      stage.removeChild(el);
+
+      const pxPerMm = cv.width / CW;
+      const totalMm = cv.height / pxPerMm;
+      if (!firstBlock) y += 2.5;
+      const remaining = PAGE_BOTTOM - y;
+      if (totalMm <= remaining) {
+        y += addCanvas(cv, 0, cv.height, y);
+      } else if (totalMm <= USABLE) {
+        doc.addPage(); y = M;
+        y += addCanvas(cv, 0, cv.height, y);
+      } else {
+        // blok lebih tinggi dari 1 halaman: potong di celah antar baris
+        if (remaining < 40) { doc.addPage(); y = M; }
+        let srcY = 0;
+        while (srcY < cv.height) {
+          const availPx = Math.floor((PAGE_BOTTOM - y) * pxPerMm);
+          let end = Math.min(cv.height, srcY + availPx);
+          if (end < cv.height) end = jrFindCutRow(cv, end, Math.floor(availPx * 0.22));
+          if (end <= srcY + 20) end = Math.min(cv.height, srcY + availPx);
+          y += addCanvas(cv, srcY, end - srcY, y);
+          srcY = end;
+          if (srcY < cv.height) { doc.addPage(); y = M; }
+        }
+      }
+      firstBlock = false;
+      onProgress && onProgress((i + 1) / blocks.length, jrT('jr_pdf_page_n', { i: i + 1, n: blocks.length }));
+      await new Promise(r => setTimeout(r, 0)); // beri napas ke UI
+    }
+  } finally {
+    stage.remove();
+  }
+
+  const n = doc.getNumberOfPages();
+  for (let p = 1; p <= n; p++) {
+    doc.setPage(p);
+    doc.setDrawColor(226, 232, 240); doc.setLineWidth(0.2);
+    doc.line(M, PH - 12, PW - M, PH - 12);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(120, 130, 150);
+    doc.text(t('jr_pdf_footer'), M, PH - 7.5);
+    doc.text(t('jr_pdf_page') + ' ' + p + ' / ' + n, PW - M, PH - 7.5, { align: 'right' });
+  }
+  return doc.output('blob');
+}
+
+function jrPdfFileName() {
+  const pad = n => String(n).padStart(2, '0');
+  const f = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  if (jrPdfMode === 'single') { const d = jrParseDate(jrPdfEntries[0] && jrPdfEntries[0].createdAt) || new Date(); return 'pesaner-jurnal-' + f(d) + '.pdf'; }
+  return 'pesaner-jurnal-semua-' + f(new Date()) + '.pdf';
+}
+
+async function jrDownloadBlob(blob, filename) {
+  let url, revoke = false;
+  if (window.AndroidBridge) { // di dalam APK: pakai data URI (sama seperti ekspor gambar WA Status) agar ditangani WebView
+    url = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = rej; fr.readAsDataURL(blob); });
+  } else { url = URL.createObjectURL(blob); revoke = true; }
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+  if (revoke) setTimeout(() => URL.revokeObjectURL(url), 15000);
+}
+
+async function jrGeneratePdf(share) {
+  if (jrPdfBusy || !jrPdfEntries.length) return;
+  jrSetPdfBusy(true);
+  jrProgress(0.04, t('jr_pdf_making'));
+  try {
+    await jrEnsurePdfLibs();
+    const blob = await jrBuildPdfBlob(jrPdfEntries, jrPdfOpts(), jrPdfMode, jrProgress);
+    const fname = jrPdfFileName();
+    jrProgress(1, '✓');
+    if (share && navigator.share && navigator.canShare) {
+      const file = new File([blob], fname, { type: 'application/pdf' });
+      if (navigator.canShare({ files: [file] })) {
+        try { await navigator.share({ files: [file], title: 'Pesaner - Jurnal' }); showToast(t('jr_pdf_shared')); jrSetPdfBusy(false); return; }
+        catch (err) { if (err && err.name === 'AbortError') { jrSetPdfBusy(false); return; } }
+      }
+    }
+    await jrDownloadBlob(blob, fname);
+    showToast(t('jr_pdf_saved'));
+    jrConfetti('📄');
+  } catch (err) {
+    console.error('Jurnal PDF:', err);
+    showToast(t('jr_pdf_fail'), 'error');
+  }
+  jrSetPdfBusy(false);
 }
 
 // ======= NOTIFIKASI SUARA CHAT =======
@@ -4616,6 +5829,7 @@ async function updateChatBadge() {
     if (total > lastKnownUnreadTotal) {
       playChatNotificationSound();
     }
+    try { if (typeof pwaOnUnread === 'function') pwaOnUnread(total, total - lastKnownUnreadTotal); } catch (e) {}
     lastKnownUnreadTotal = total;
 
     ['chat-badge-side', 'chat-badge-mobile'].forEach(id => {
@@ -9180,7 +10394,8 @@ window.onload = function() {
   function systemNotify(r) {
     try {
       if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification('Pesaner ⏰ ' + r.title, { body: r.chatName ? ('💬 ' + r.chatName + ' · ' + r.time) : r.time });
+        var _nt = 'Pesaner ⏰ ' + r.title, _no = { body: r.chatName ? ('💬 ' + r.chatName + ' · ' + r.time) : r.time, tag: 'rem-' + (r.id || r.title), data: r.chatKey ? { chatType: r.chatType, chatKey: r.chatKey, chatName: r.chatName } : { tab: 'chat' } };
+        if (typeof window.pwaNotify === 'function') window.pwaNotify(_nt, _no); else new Notification(_nt, _no);
       }
     } catch (e) {}
   }
@@ -9917,5 +11132,179 @@ var SPECIAL_FLAGS = "🏁 bendera kotak-kotak|🚩 bendera segitiga|🎌 bendera
 })();
 </script>
 
+<script id="pwa-js">
+/* ======= PWA: pasang aplikasi, izin notifikasi, media latar belakang ======= */
+(function () {
+  'use strict';
+  var L = {
+    id: { it: 'Pasang Pesaner', ib: 'Tambahkan ke layar utama: buka lebih cepat, layar penuh, dan bisa menerima notifikasi.', ii: 'Di iPhone/iPad: ketuk ikon Bagikan lalu pilih “Tambah ke Layar Utama”.',
+      go: 'Pasang', later: 'Nanti saja', nt: 'Aktifkan notifikasi', nb: 'Dapat pengingat dan pesan baru walau Pesaner di latar belakang.', ng: 'Aktifkan',
+      on: 'Notifikasi aktif ✅', off: 'Izin notifikasi ditolak. Aktifkan lewat pengaturan situs/aplikasi di perangkatmu.', test: 'Notifikasi Pesaner sudah aktif 🎉',
+      inst: 'Pesaner terpasang 🎉', unread: 'Pesan baru', unreadB: '{n} pesan baru · {t} belum dibaca', voice: 'Pesan suara', noSupport: 'Perangkat ini belum mendukung notifikasi web.' },
+    en: { it: 'Install Pesaner', ib: 'Add to your home screen: faster launch, full screen, and notifications.', ii: 'On iPhone/iPad: tap the Share icon, then “Add to Home Screen”.',
+      go: 'Install', later: 'Not now', nt: 'Turn on notifications', nb: 'Get reminders and new messages even when Pesaner is in the background.', ng: 'Enable',
+      on: 'Notifications enabled ✅', off: 'Notification permission denied. Enable it in your device site/app settings.', test: 'Pesaner notifications are on 🎉',
+      inst: 'Pesaner installed 🎉', unread: 'New messages', unreadB: '{n} new · {t} unread', voice: 'Voice message', noSupport: 'This device does not support web notifications.' }
+  };
+  function tx(k, v) {
+    var lang = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'en' : 'id';
+    var s = L[lang][k] || L.id[k] || k;
+    if (v) Object.keys(v).forEach(function (x) { s = s.split('{' + x + '}').join(v[x]); });
+    return s;
+  }
+  function toast(m, ty) { try { if (typeof showToast === 'function') showToast(m, ty); } catch (e) {} }
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+
+  var isStandalone = function () { return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; };
+  var isNativeApk = function () { try { return !!(window.AndroidBridge && typeof window.AndroidBridge.isNativeApp === 'function' && window.AndroidBridge.isNativeApp()); } catch (e) { return false; } };
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var secure = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  var swReg = null, deferred = null;
+
+  /* ---- Service worker ---- */
+  if ('serviceWorker' in navigator && secure && !isNativeApk()) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/pesaner-sw.js', { scope: '/' }).then(function (r) { swReg = r; }).catch(function () {});
+    });
+    navigator.serviceWorker.addEventListener('message', function (ev) {
+      if (ev.data && ev.data.type === 'pesaner-open') openFromNotification(ev.data.data || {});
+    });
+  }
+  function getReg() {
+    if (swReg) return Promise.resolve(swReg);
+    if (navigator.serviceWorker && secure) return navigator.serviceWorker.ready.then(function (r) { swReg = r; return r; }).catch(function () { return null; });
+    return Promise.resolve(null);
+  }
+
+  /* ---- Buka layar tertentu dari notifikasi / shortcut ---- */
+  function openFromNotification(d) {
+    try {
+      if (!d) return;
+      if (d.chatKey && typeof switchTab === 'function') {
+        switchTab('chat');
+        if (d.chatType === 'group' && typeof openGroupThread === 'function') openGroupThread(d.chatKey, d.chatName || '');
+        else if (typeof openChatThread === 'function') openChatThread(d.chatKey, d.chatName || d.chatKey, '');
+      } else if (d.tab && typeof switchTab === 'function') switchTab(d.tab);
+    } catch (e) {}
+  }
+  var pendingLink = (function () { try { return new URLSearchParams(location.search).get('pwa'); } catch (e) { return null; } })();
+
+  /* ---- Notifikasi sistem (lewat service worker, wajib di Android) ---- */
+  function notifGranted() { return 'Notification' in window && Notification.permission === 'granted'; }
+  window.pwaNotify = function (title, opts) {
+    opts = opts || {};
+    if (!notifGranted()) return Promise.resolve(false);
+    var o = Object.assign({ icon: '/pesaner-icons/icon-192.png', badge: '/pesaner-icons/badge-96.png', vibrate: [120, 60, 120] }, opts);
+    return getReg().then(function (reg) {
+      if (reg && reg.showNotification) return reg.showNotification(title, o).then(function () { return true; });
+      try { new Notification(title, o); return true; } catch (e) { return false; }
+    }).catch(function () { return false; });
+  };
+  window.pwaOnUnread = function (total, delta) {
+    try {
+      if (navigator.setAppBadge) { if (total > 0) navigator.setAppBadge(total).catch(function () {}); else if (navigator.clearAppBadge) navigator.clearAppBadge().catch(function () {}); }
+    } catch (e) {}
+    if (delta > 0 && (document.hidden || !document.hasFocus())) {
+      window.pwaNotify(tx('unread'), { body: tx('unreadB', { n: delta, t: total }), tag: 'chat-unread', renotify: true, data: { tab: 'chat' } });
+    }
+  };
+
+  /* ---- Kartu: pasang aplikasi & izin notifikasi ---- */
+  function mkCard(id, html) {
+    var el = document.getElementById(id);
+    if (!el) { el = document.createElement('div'); el.id = id; el.className = 'pwa-card hidden'; document.body.appendChild(el); }
+    el.innerHTML = html; return el;
+  }
+  function hide(id) { var e = document.getElementById(id); if (e) e.classList.add('hidden'); }
+  function showInstall(ios) {
+    var el = mkCard('pwa-install', '<img src="/pesaner-icons/icon-192.png" alt="Pesaner"/><div class="tx"><b>' + tx('it') + '</b><p>' + (ios ? tx('ii') : tx('ib')) + '</p></div><div class="act">' +
+      (ios ? '' : '<button class="go" id="pwa-go">' + tx('go') + '</button>') + '<button class="no" id="pwa-no">' + tx('later') + '</button></div>');
+    el.classList.remove('hidden');
+    document.getElementById('pwa-no').onclick = function () { ls('pesaner_pwa_install_dismiss', String(Date.now())); hide('pwa-install'); };
+    var g = document.getElementById('pwa-go'); if (g) g.onclick = window.pwaInstall;
+  }
+  window.pwaInstall = function () {
+    if (!deferred) { if (isIOS) showInstall(true); return; }
+    hide('pwa-install');
+    deferred.prompt();
+    deferred.userChoice.then(function (c) { if (c && c.outcome !== 'accepted') ls('pesaner_pwa_install_dismiss', String(Date.now())); deferred = null; }).catch(function () {});
+  };
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; });
+  window.addEventListener('appinstalled', function () {
+    deferred = null; hide('pwa-install'); toast(tx('inst'));
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
+  });
+
+  function showNotif() {
+    var el = mkCard('pwa-notif', '<div class="ico">🔔</div><div class="tx"><b>' + tx('nt') + '</b><p>' + tx('nb') + '</p></div><div class="act"><button class="go" id="pwa-ng">' + tx('ng') + '</button><button class="no" id="pwa-nn">' + tx('later') + '</button></div>');
+    el.classList.remove('hidden');
+    document.getElementById('pwa-nn').onclick = function () { ls('pesaner_pwa_notif_dismiss', String(Date.now())); hide('pwa-notif'); };
+    document.getElementById('pwa-ng').onclick = window.pwaEnableNotifications;
+  }
+  window.pwaEnableNotifications = function () {
+    hide('pwa-notif');
+    if (!('Notification' in window)) { toast(tx('noSupport'), 'error'); return; }
+    var done = function (p) {
+      if (p === 'granted') { toast(tx('on')); window.pwaNotify('Pesaner', { body: tx('test'), tag: 'pesaner-welcome' }); }
+      else if (p === 'denied') toast(tx('off'), 'error');
+    };
+    try {
+      var r = Notification.requestPermission(done); // varian callback (lama)
+      if (r && r.then) r.then(done);
+    } catch (e) { toast(tx('noSupport'), 'error'); }
+  };
+
+  function recent(key, days) { var v = parseInt(ls(key) || '0', 10); return v && (Date.now() - v) < days * 86400000; }
+  function tick() {
+    if (isNativeApk()) return;
+    if (typeof currentUser === 'undefined' || !currentUser) return;
+    if (pendingLink && typeof switchTab === 'function') { var p = pendingLink; pendingLink = null; try { switchTab(p); history.replaceState(null, '', location.pathname); } catch (e) {} }
+    var installShown = !!document.querySelector('#pwa-install:not(.hidden)');
+    var notifShown = !!document.querySelector('#pwa-notif:not(.hidden)');
+    if (installShown || notifShown) return;
+    // 1) ajak pasang aplikasi (Android/desktop: setelah event browser; iOS: panduan manual)
+    if (!isStandalone() && !recent('pesaner_pwa_install_dismiss', 7)) {
+      if (deferred) { showInstall(false); return; }
+      if (isIOS && !ls('pesaner_pwa_ios_seen')) { ls('pesaner_pwa_ios_seen', '1'); showInstall(true); return; }
+    }
+    // 2) ajak aktifkan notifikasi
+    if ('Notification' in window && Notification.permission === 'default' && !recent('pesaner_pwa_notif_dismiss', 3)) { showNotif(); return; }
+    if (isStandalone()) { try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {} }
+  }
+  setInterval(tick, 6000);
+
+  /* ---- Pemutar di latar belakang: Media Session (kontrol layar kunci/notifikasi) ---- */
+  var ms = ('mediaSession' in navigator) ? navigator.mediaSession : null;
+  var art = [{ src: '/pesaner-icons/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/pesaner-icons/icon-512.png', sizes: '512x512', type: 'image/png' }];
+  var current = null;
+  function setPos(a) {
+    try { if (ms && ms.setPositionState && isFinite(a.duration) && a.duration > 0) ms.setPositionState({ duration: a.duration, playbackRate: a.playbackRate || 1, position: Math.min(a.currentTime, a.duration) }); } catch (e) {}
+  }
+  function label(a) {
+    try { var box = a.closest('.att-media, .msg-bubble, [data-sender]'); var s = box && box.getAttribute && box.getAttribute('data-sender'); if (s) return s; } catch (e) {}
+    return 'Pesaner';
+  }
+  document.addEventListener('play', function (e) {
+    var a = e.target; if (!a || a.tagName !== 'AUDIO') return;
+    // satu pemutar aktif saja
+    document.querySelectorAll('audio').forEach(function (o) { if (o !== a && !o.paused) { try { o.pause(); } catch (x) {} } });
+    current = a;
+    if (!ms) return;
+    try { ms.metadata = new MediaMetadata({ title: tx('voice'), artist: label(a), album: 'Pesaner', artwork: art }); ms.playbackState = 'playing'; } catch (x) {}
+    var h = function (n, f) { try { ms.setActionHandler(n, f); } catch (x) {} };
+    h('play', function () { if (current) current.play(); });
+    h('pause', function () { if (current) current.pause(); });
+    h('stop', function () { if (current) { current.pause(); current.currentTime = 0; } });
+    h('seekbackward', function (d) { if (current) current.currentTime = Math.max(0, current.currentTime - ((d && d.seekOffset) || 10)); });
+    h('seekforward', function (d) { if (current) current.currentTime = Math.min(current.duration || 1e9, current.currentTime + ((d && d.seekOffset) || 10)); });
+    h('seekto', function (d) { if (current && d && d.seekTime != null) current.currentTime = d.seekTime; });
+    setPos(a);
+  }, true);
+  document.addEventListener('pause', function (e) { if (ms && e.target === current) { try { ms.playbackState = 'paused'; } catch (x) {} } }, true);
+  document.addEventListener('ended', function (e) { if (ms && e.target === current) { try { ms.playbackState = 'none'; } catch (x) {} } }, true);
+  document.addEventListener('timeupdate', function (e) { if (e.target === current) setPos(current); }, true);
+  document.addEventListener('ratechange', function (e) { if (e.target === current) setPos(current); }, true);
+})();
+</script>
 </body>
 </html>
