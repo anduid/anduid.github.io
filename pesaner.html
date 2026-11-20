@@ -861,6 +861,8 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
 @keyframes pwaUp{from{opacity:0;transform:translate(-50%,16px)}}
 @media (min-width:768px){.pwa-card{bottom:20px;left:auto;right:20px;transform:none}@keyframes pwaUp{from{opacity:0;transform:translateY(16px)}}}
 </style>
+<script>try{if(localStorage.getItem('pesaner_user'))document.documentElement.classList.add('has-session');}catch(e){}</script>
+<style id="session-early">html.has-session #app-login{display:none!important}html.has-session #app-main{display:block!important}</style>
 </head>
 <body class="text-on-surface">
 <!-- andu:topbar:mulai -->
@@ -4477,7 +4479,8 @@ function handleLogout() {
   stopChatThreadPolling();
   stopChatListPolling();
   if (chatBadgePollInterval) { clearInterval(chatBadgePollInterval); chatBadgePollInterval = null; }
-  localStorage.removeItem('pesaner_user');
+  try { localStorage.removeItem('pesaner_user'); } catch (e) {}
+  document.documentElement.classList.remove('has-session');
   document.getElementById('app-main').style.display = 'none';
   document.getElementById('app-login').style.display = 'flex';
 }
@@ -4486,8 +4489,8 @@ function handleLogout() {
 function _initAppOrig() {
   applyTranslations();
   const saved = localStorage.getItem('pesaner_user');
-  if (saved) currentUser = JSON.parse(saved);
-  if (!currentUser) return;
+  if (saved) { try { currentUser = JSON.parse(saved); } catch (e) { currentUser = null; localStorage.removeItem('pesaner_user'); } }
+  if (!currentUser) { document.documentElement.classList.remove('has-session'); return; }
 
   document.getElementById('app-login').style.display = 'none';
   document.getElementById('app-main').style.display = 'block';
@@ -4505,7 +4508,28 @@ function _initAppOrig() {
     document.getElementById('nav-admin-side').style.display = 'flex';
   }
 
-  switchTab('feed');
+  // Pulihkan layar terakhir (atau tujuan dari notifikasi/shortcut ?pwa=) agar refresh tidak selalu kembali ke Feed
+  const VALID_TABS = ['feed', 'profile', 'admin', 'chat', 'journal', 'finance', 'p2p'];
+  let startTab = 'feed', fromLink = false;
+  try {
+    const link = new URLSearchParams(location.search).get('pwa');
+    if (link && VALID_TABS.includes(link)) {
+      startTab = link; fromLink = true; window.__pesanerPwaConsumed = true;
+      history.replaceState(null, '', location.pathname);
+    } else {
+      const sv = localStorage.getItem('pesaner_last_tab_' + currentUser.username);
+      if (sv && VALID_TABS.includes(sv) && sv !== 'p2p' && !(sv === 'admin' && currentUser.role !== 'admin')) startTab = sv;
+    }
+  } catch (e) {}
+  switchTab(startTab);
+  if (startTab === 'chat' && !fromLink) {
+    try {
+      const lc = JSON.parse(localStorage.getItem('pesaner_last_chat_' + currentUser.username) || 'null');
+      if (lc && lc.key && Date.now() - (lc.t || 0) < 12 * 3600 * 1000) {
+        setTimeout(() => { try { if (lc.type === 'group') openGroupThread(lc.key, lc.name || ''); else openChatThread(lc.key, lc.name || lc.key, ''); } catch (e) {} }, 350);
+      }
+    } catch (e) {}
+  }
   startChatBadgePolling();
 
   // Beritahu shell Android (kalau berjalan sebagai APK) bahwa user ini sudah
@@ -4520,6 +4544,12 @@ function initApp() { _initAppOrig(); if (currentUser && window.Mon) Mon.init(cur
 
 // ======= TABS =======
 function switchTab(tab) {
+  try {
+    if (currentUser) {
+      localStorage.setItem('pesaner_last_tab_' + currentUser.username, tab);
+      if (tab !== 'chat') localStorage.removeItem('pesaner_last_chat_' + currentUser.username);
+    }
+  } catch (e) {}
   ['feed','profile','admin','chat','journal','finance','p2p'].forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('hidden', t !== tab);
   });
@@ -5811,6 +5841,7 @@ function startChatBadgePolling() {
 }
 
 let lastKnownUnreadTotal = 0;
+let unreadBaselineLoaded = false;
 
 async function updateChatBadge() {
   if (!currentUser) return;
@@ -5822,6 +5853,10 @@ async function updateChatBadge() {
     const convTotal = (convRes.conversations || []).reduce((s, c) => s + (c.unread || 0), 0);
     const groupTotal = (groupRes.groups || []).reduce((s, g) => s + (g.unread || 0), 0);
     const total = convTotal + groupTotal;
+    if (!unreadBaselineLoaded) {
+      unreadBaselineLoaded = true;
+      try { lastKnownUnreadTotal = parseInt(localStorage.getItem('pesaner_unread_' + currentUser.username) || '0', 10) || 0; } catch (e) {}
+    }
 
     // Kalau total unread bertambah dibanding sebelumnya, artinya ada pesan
     // baru masuk (dari percakapan mana pun, bahkan saat user tidak sedang
@@ -5831,6 +5866,7 @@ async function updateChatBadge() {
     }
     try { if (typeof pwaOnUnread === 'function') pwaOnUnread(total, total - lastKnownUnreadTotal); } catch (e) {}
     lastKnownUnreadTotal = total;
+    try { localStorage.setItem('pesaner_unread_' + currentUser.username, String(total)); } catch (e) {}
 
     ['chat-badge-side', 'chat-badge-mobile'].forEach(id => {
       const el = document.getElementById(id);
@@ -6104,6 +6140,9 @@ function chatBubbleContent(m) {
 
   if (type === 'video' || type === 'audio' || type === 'voice') {
     const url = escHtml(m.fileUrl);
+    const fid = attDriveId(m.fileUrl);
+    const pu = escHtml(fid ? (ATT_BLOB_CACHE[fid] || attDirectUrl(fid)) : m.fileUrl);
+    const fa = fid ? ` data-fid="${fid}"` : '';
     const caption = (type === 'video' && m.content) ? `<div class="mt-1.5">${linkifyContent(m.content)}</div>` : '';
     const sizeTxt = m.fileSize ? formatFileSize(Number(m.fileSize)) : '';
     const isNote = type === 'video' && /^videonote_/i.test(m.fileName || '');
@@ -6114,11 +6153,11 @@ function chatBubbleContent(m) {
     const fallback = `<a class="att-fallback items-center gap-2" href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;"><span class="material-symbols-outlined" style="font-size:28px;">${isAud ? 'audio_file' : 'movie'}</span><div class="min-w-0"><div class="text-xs font-bold truncate" style="max-width:160px;">${label}</div><div class="text-[11px] opacity-80">${isAud ? (m.duration ? escHtml(String(m.duration)) + 's · ' : '') : (sizeTxt ? sizeTxt + ' · ' : '')}Ketuk untuk buka/unduh</div></div></a>`;
     let player;
     if (isNote) {
-      player = `<div class="att-note" onclick="attToggleNote(this)"><video src="${url}#t=0.1" preload="metadata" playsinline loop onerror="attMediaFailed(this)" onplay="this.parentNode.classList.add('playing')" onpause="this.parentNode.classList.remove('playing')"></video><span class="att-play"><span class="material-symbols-outlined" style="font-size:52px;">play_circle</span></span></div><div class="text-[11px] opacity-80 text-center" style="margin-top:3px;">⭕ Video Note${dur}</div>`;
+      player = `<div class="att-note" onclick="attToggleNote(this)"><video src="${pu}#t=0.1"${fa} preload="metadata" playsinline loop onerror="attMediaFailed(this)" onplay="this.parentNode.classList.add('playing')" onpause="this.parentNode.classList.remove('playing')"></video><span class="att-play"><span class="material-symbols-outlined" style="font-size:52px;">play_circle</span></span></div><div class="text-[11px] opacity-80 text-center" style="margin-top:3px;">⭕ Video Note${dur}</div>`;
     } else if (isAud) {
-      player = `<div class="text-[11px] font-bold" style="margin-bottom:4px;">${label}${dur}</div><audio class="att-player" src="${url}" controls preload="metadata" onerror="attMediaFailed(this)" style="width:230px;max-width:100%;height:40px;display:block;"></audio>`;
+      player = `<div class="text-[11px] font-bold" style="margin-bottom:4px;">${label}${dur}</div><audio class="att-player" src="${pu}"${fa} controls preload="metadata" onerror="attMediaFailed(this)" style="width:230px;max-width:100%;height:40px;display:block;"></audio>`;
     } else {
-      player = `<video class="att-player" src="${url}#t=0.1" controls preload="metadata" playsinline onerror="attMediaFailed(this)" style="max-width:240px;max-height:300px;border-radius:12px;display:block;background:#000;"></video>`;
+      player = `<video class="att-player" src="${pu}#t=0.1"${fa} controls preload="metadata" playsinline onerror="attMediaFailed(this)" style="max-width:240px;max-height:300px;border-radius:12px;display:block;background:#000;"></video>`;
     }
     return `<div class="att-media">${player}${fallback}</div>${caption}`;
   }
@@ -7222,9 +7261,41 @@ async function sendChatContactShare() {
 }
 
 // ======= PEMUTAR MEDIA LANGSUNG DI CHAT =======
-function attMediaFailed(el) {
+// Ambil ID file Drive dari URL viewer (…/file/d/ID/view) atau (…?id=ID).
+function attDriveId(url) {
+  const u = String(url || '');
+  const m = u.match(/\/d\/([\w-]+)/) || u.match(/[?&]id=([\w-]+)/);
+  return m ? m[1] : '';
+}
+const ATT_BLOB_CACHE = {};
+function attDirectUrl(fid) {
+  return 'https://drive.usercontent.google.com/download?id=' + fid + '&export=download&confirm=t';
+}
+// Tingkat 1: URL unduh langsung Drive. Tingkat 2 (bila gagal): ambil isi file lewat
+// Apps Script (action getChatFileData) lalu putar dari Blob. Tingkat 3: kartu tautan.
+async function attMediaFailed(el) {
   const w = el.closest('.att-media');
-  if (w) w.classList.add('failed');
+  if (!w) return;
+  const fid = el.dataset.fid;
+  if (fid && el.dataset.stage !== 'blob') {
+    el.dataset.stage = 'blob';
+    try {
+      let u = ATT_BLOB_CACHE[fid];
+      if (!u) {
+        const res = await apiPostJson('getChatFileData', { username: currentUser.username, fileId: fid });
+        if (!res || !res.success || !res.base64Data) throw new Error('tidak ada data');
+        const bin = atob(res.base64Data);
+        const arr = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+        u = URL.createObjectURL(new Blob([arr], { type: res.mimeType || '' }));
+        ATT_BLOB_CACHE[fid] = u;
+      }
+      el.src = u;
+      el.load();
+      return;
+    } catch (e) { /* lanjut ke kartu tautan */ }
+  }
+  w.classList.add('failed');
 }
 function attToggleNote(box) {
   const v = box.querySelector('video');
@@ -10158,17 +10229,31 @@ function renderFinanceReport() {
 }
 
 // ======= STARTUP =======
-window.onload = function() {
-  const saved = localStorage.getItem('pesaner_user');
-  if (saved) {
-    currentUser = JSON.parse(saved);
-    initApp();
+(function () {
+  // Simpan thread chat yang terakhir dibuka (untuk dipulihkan saat refresh)
+  const _oc = window.openChatThread, _og = window.openGroupThread, _bk = window.backToChatList;
+  const lcKey = () => 'pesaner_last_chat_' + (currentUser && currentUser.username);
+  window.openChatThread = function (u, n) { try { localStorage.setItem(lcKey(), JSON.stringify({ type: 'user', key: u, name: n, t: Date.now() })); } catch (e) {} return _oc.apply(this, arguments); };
+  window.openGroupThread = function (g, n) { try { localStorage.setItem(lcKey(), JSON.stringify({ type: 'group', key: g, name: n, t: Date.now() })); } catch (e) {} return _og.apply(this, arguments); };
+  window.backToChatList = function () { try { localStorage.removeItem(lcKey()); } catch (e) {} return _bk.apply(this, arguments); };
+
+  // Pulihkan sesi segera setelah DOM siap (tanpa menunggu semua gambar/CDN selesai dimuat seperti window.onload)
+  function boot() {
+    const saved = localStorage.getItem('pesaner_user');
+    if (saved) {
+      try { currentUser = JSON.parse(saved); } catch (e) { currentUser = null; localStorage.removeItem('pesaner_user'); }
+      if (currentUser) initApp(); else document.documentElement.classList.remove('has-session');
+    }
+    const pw = document.getElementById('login-password');
+    if (pw) pw.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
   }
-  // Enter key on login
-  document.getElementById('login-password').addEventListener('keydown', e => {
-    if (e.key === 'Enter') handleLogin();
-  });
-};
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(boot, 0));
+  else setTimeout(boot, 0);
+
+  // Segarkan badge/notifikasi begitu aplikasi kembali terlihat atau dipulihkan dari cache browser
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && currentUser && typeof updateChatBadge === 'function') updateChatBadge(); });
+  window.addEventListener('pageshow', e => { if (e.persisted && currentUser && typeof updateChatBadge === 'function') updateChatBadge(); });
+})();
 </script>
 <!-- ===================== PENGINGAT CHAT (IndexedDB: PesanerRemindersDB) ===================== -->
 <style id="rem-css">
@@ -11227,11 +11312,11 @@ var SPECIAL_FLAGS = "🏁 bendera kotak-kotak|🚩 bendera segitiga|🎌 bendera
     if (!deferred) { if (isIOS) showInstall(true); return; }
     hide('pwa-install');
     deferred.prompt();
-    deferred.userChoice.then(function (c) { if (c && c.outcome !== 'accepted') ls('pesaner_pwa_install_dismiss', String(Date.now())); deferred = null; }).catch(function () {});
+    deferred.userChoice.then(function (c) { if (c && c.outcome === 'accepted') ls('pesaner_pwa_installed', '1'); else ls('pesaner_pwa_install_dismiss', String(Date.now())); deferred = null; }).catch(function () {});
   };
   window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; });
   window.addEventListener('appinstalled', function () {
-    deferred = null; hide('pwa-install'); toast(tx('inst'));
+    deferred = null; hide('pwa-install'); ls('pesaner_pwa_installed', '1'); toast(tx('inst'));
     try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
   });
 
@@ -11241,10 +11326,16 @@ var SPECIAL_FLAGS = "🏁 bendera kotak-kotak|🚩 bendera segitiga|🎌 bendera
     document.getElementById('pwa-nn').onclick = function () { ls('pesaner_pwa_notif_dismiss', String(Date.now())); hide('pwa-notif'); };
     document.getElementById('pwa-ng').onclick = window.pwaEnableNotifications;
   }
+  var notifAsking = false;  // true selama popup izin browser masih terbuka
   window.pwaEnableNotifications = function () {
     hide('pwa-notif');
     if (!('Notification' in window)) { toast(tx('noSupport'), 'error'); return; }
+    if (notifAsking) return;
+    notifAsking = true;
+    ls('pesaner_pwa_notif_dismiss', String(Date.now()));  // jangan tampilkan banner lagi sebelum ada keputusan
     var done = function (p) {
+      notifAsking = false;
+      hide('pwa-notif');
       if (p === 'granted') { toast(tx('on')); window.pwaNotify('Pesaner', { body: tx('test'), tag: 'pesaner-welcome' }); }
       else if (p === 'denied') toast(tx('off'), 'error');
     };
@@ -11258,20 +11349,31 @@ var SPECIAL_FLAGS = "🏁 bendera kotak-kotak|🚩 bendera segitiga|🎌 bendera
   function tick() {
     if (isNativeApk()) return;
     if (typeof currentUser === 'undefined' || !currentUser) return;
-    if (pendingLink && typeof switchTab === 'function') { var p = pendingLink; pendingLink = null; try { switchTab(p); history.replaceState(null, '', location.pathname); } catch (e) {} }
+    // File lokal (file://) / HTTP biasa: PWA, service worker & izin notifikasi tidak bisa tersimpan -> jangan ganggu pengguna.
+    if (!secure) return;
+    if (isStandalone()) ls('pesaner_pwa_installed', '1');
+    // Kartu yang sudah tidak relevan disembunyikan (sudah terpasang / izin sudah diputuskan).
+    if (ls('pesaner_pwa_installed') === '1' || isStandalone()) hide('pwa-install');
+    if (!('Notification' in window) || Notification.permission !== 'default') hide('pwa-notif');
+    if (notifAsking) return;
+    if (pendingLink && typeof switchTab === 'function') { var p = pendingLink; pendingLink = null; if (!window.__pesanerPwaConsumed) { try { switchTab(p); history.replaceState(null, '', location.pathname); } catch (e) {} } }
     var installShown = !!document.querySelector('#pwa-install:not(.hidden)');
     var notifShown = !!document.querySelector('#pwa-notif:not(.hidden)');
     if (installShown || notifShown) return;
     // 1) ajak pasang aplikasi (Android/desktop: setelah event browser; iOS: panduan manual)
-    if (!isStandalone() && !recent('pesaner_pwa_install_dismiss', 7)) {
+    if (!isStandalone() && ls('pesaner_pwa_installed') !== '1' && !recent('pesaner_pwa_install_dismiss', 14)) {
       if (deferred) { showInstall(false); return; }
       if (isIOS && !ls('pesaner_pwa_ios_seen')) { ls('pesaner_pwa_ios_seen', '1'); showInstall(true); return; }
     }
     // 2) ajak aktifkan notifikasi
-    if ('Notification' in window && Notification.permission === 'default' && !recent('pesaner_pwa_notif_dismiss', 3)) { showNotif(); return; }
+    if ('Notification' in window && Notification.permission === 'default' && !recent('pesaner_pwa_notif_dismiss', 14)) { showNotif(); return; }
     if (isStandalone()) { try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {} }
   }
+  try {
+    if (navigator.getInstalledRelatedApps) navigator.getInstalledRelatedApps().then(function (a) { if (a && a.length) ls('pesaner_pwa_installed', '1'); }).catch(function () {});
+  } catch (e) {}
   setInterval(tick, 6000);
+  setTimeout(tick, 1500);
 
   /* ---- Pemutar di latar belakang: Media Session (kontrol layar kunci/notifikasi) ---- */
   var ms = ('mediaSession' in navigator) ? navigator.mediaSession : null;
