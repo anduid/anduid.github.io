@@ -865,6 +865,30 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
 <style id="session-early">html.has-session #app-login{display:none!important}html.has-session #app-main{display:block!important}</style>
 </head>
 <body class="text-on-surface">
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCVrVcLvFvVqJnduIFj-tVqjZE1or4D1Vc",
+    authDomain: "pesaner-996bc.firebaseapp.com",
+    databaseURL: "https://pesaner-996bc-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "pesaner-996bc",
+    storageBucket: "pesaner-996bc.firebasestorage.app",
+    messagingSenderId: "1030452407807",
+    appId: "1:1030452407807:web:7d2b21f75953540046cbca",
+    measurementId: "G-G5WKD4D39H"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 <!-- andu:topbar:mulai -->
 <link rel="stylesheet" href="/assets/css/topbar.css?v=1">
 <nav id="andu-topbar" aria-label="Ekosistem andu.my.id"><div class="atb-isi"><span class="atb-merek">andu<span>.my.id</span></span><a class="atb-link" href="https://andu.my.id/">Studio</a><a class="atb-link" href="https://andu.my.id/pesaner" aria-current="page">Pesaner</a><a class="atb-link" href="https://andu.my.id/market/">Market</a><a class="atb-link" href="https://andu.my.id/portal/">Portal</a><a class="atb-link" href="https://andu.my.id/blog/">Blog</a><a class="atb-link" href="https://andu.my.id/profil/">Profil</a></div></nav>
@@ -4472,6 +4496,7 @@ function showRegisterError(msg) {
 
 function handleLogout() {
   if (window.Mon) Mon.logout();
+  try { if (window.pwaUnregisterFcm && currentUser) window.pwaUnregisterFcm(currentUser.username); } catch (e) {}
   if (window.AndroidBridge && typeof window.AndroidBridge.notifyLoggedOut === 'function') {
     window.AndroidBridge.notifyLoggedOut();
   }
@@ -6059,6 +6084,7 @@ async function pollNewChatMessages() {
       const fresh = latestById[m.id];
       if (fresh) {
         if (m.read !== fresh.read) { m.read = fresh.read; changed = true; }
+        if (fresh.viewOnceState && m.viewOnceState !== fresh.viewOnceState) { m.viewOnceState = fresh.viewOnceState; changed = true; }
         if (m.status !== 'sent') { m.status = 'sent'; changed = true; }
       }
     });
@@ -6104,8 +6130,28 @@ function chatStatusHtml(m) {
 // Google). Daripada menampilkan ikon gambar patah selamanya, kita ganti
 // jadi kotak "Ketuk untuk buka gambar" yang mengarah ke halaman Drive-nya,
 // dengan id file diambil dari URL yang gagal tadi.
-function handleChatImageError(imgEl) {
+async function handleChatImageError(imgEl) {
   const failedUrl = imgEl.src;
+  // Tahap 2: ambil isi gambar lewat Apps Script (getChatFileData) lalu tampilkan dari Blob,
+  // sama seperti video/voice note, supaya gambar tetap tampil langsung di bubble.
+  const bfid = imgEl.dataset.fid || attDriveId(failedUrl);
+  if (bfid && imgEl.dataset.stage !== 'blob' && !/^blob:/.test(failedUrl)) {
+    imgEl.dataset.stage = 'blob';
+    try {
+      let u = ATT_BLOB_CACHE[bfid];
+      if (!u) {
+        const res = await apiPostJson('getChatFileData', { username: currentUser.username, fileId: bfid });
+        if (!res || !res.success || !res.base64Data) throw new Error('tidak ada data');
+        const bin = atob(res.base64Data);
+        const arr = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+        u = URL.createObjectURL(new Blob([arr], { type: res.mimeType || 'image/jpeg' }));
+        ATT_BLOB_CACHE[bfid] = u;
+      }
+      imgEl.src = u;
+      return;
+    } catch (e) { /* lanjut ke kartu tautan */ }
+  }
   const idMatch = failedUrl.match(/[?&]id=([^&]+)/);
   const fileId = idMatch ? idMatch[1] : null;
   const fallbackHref = fileId ? ('https://drive.google.com/file/d/' + fileId + '/view') : failedUrl;
@@ -6133,9 +6179,10 @@ function chatBubbleContent(m) {
   }
 
   if (type === 'image') {
-    return `<a href="${escHtml(m.fileUrl)}" target="_blank" rel="noopener noreferrer">
-      <img src="${escHtml(m.fileUrl)}" style="max-width:220px;max-height:280px;border-radius:12px;display:block;object-fit:cover;" onerror="handleChatImageError(this)"/>
-    </a>${m.content ? `<div class="mt-1.5">${linkifyContent(m.content)}</div>` : ''}`;
+    if (isViewOnceMsg(m)) return viewOnceBubble(m);
+    const ifid = attDriveId(m.fileUrl);
+    const isrc = (ifid && ATT_BLOB_CACHE[ifid]) ? ATT_BLOB_CACHE[ifid] : m.fileUrl;
+    return `<img class="chat-img" src="${escHtml(isrc)}"${ifid ? ` data-fid="${ifid}"` : ''} alt="Foto" loading="lazy" onclick="openImageViewer(this)" onerror="handleChatImageError(this)"/>${m.content ? `<div class="mt-1.5">${linkifyContent(m.content)}</div>` : ''}`;
   }
 
   if (type === 'video' || type === 'audio' || type === 'voice') {
@@ -6752,6 +6799,13 @@ async function handleChatFileSelected(event, kind) {
     return;
   }
 
+  if (kind === 'image') {
+    const opt = await pickImageSendOptions(file);
+    if (!opt) return;
+    const ext = /png/i.test(file.type) ? '.png' : (/webp/i.test(file.type) ? '.webp' : '.jpg');
+    await uploadThenSendChatFile(file, kind, opt.viewOnce ? ('viewonce_' + Date.now() + ext) : (file.name || ''), '');
+    return;
+  }
   await uploadThenSendChatFile(file, kind, kind === 'document' ? file.name : (file.name || ''), '');
 }
 
@@ -11217,6 +11271,119 @@ var SPECIAL_FLAGS = "🏁 bendera kotak-kotak|🚩 bendera segitiga|🎌 bendera
 })();
 </script>
 
+<style id="vo-css">
+.chat-img{max-width:220px;max-height:280px;border-radius:12px;display:block;object-fit:cover;cursor:zoom-in;background:rgba(0,0,0,.06);min-width:90px;min-height:90px}
+.vo-chip{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:rgba(0,0,0,.08);color:inherit;border:1.5px dashed currentColor;min-width:190px;text-align:left;font:inherit}
+.vo-chip .material-symbols-outlined{font-size:28px}
+.vo-chip b{display:block;font-size:13px}.vo-chip small{display:block;font-size:11px;opacity:.75}
+.vo-chip.done{opacity:.6;border-style:solid}
+button.vo-btn{cursor:pointer}
+#img-viewer{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+#img-viewer img{max-width:96vw;max-height:84vh;object-fit:contain;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#img-viewer .iv-top{position:absolute;top:env(safe-area-inset-top);left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;color:#fff;font-size:13px}
+#img-viewer button,#img-viewer a{color:#fff;background:rgba(255,255,255,.16);border:0;border-radius:999px;padding:8px 14px;font-size:13px;text-decoration:none;cursor:pointer}
+#img-viewer .iv-wm{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.12);font-size:22px;font-weight:700;transform:rotate(-20deg);text-align:center}
+#vo-picker{position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+#vo-picker .card{background:#16224a;color:#fff;border-radius:18px;max-width:360px;width:100%;padding:14px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#vo-picker img{width:100%;max-height:50vh;object-fit:contain;border-radius:12px;background:#000}
+#vo-picker label{display:flex;align-items:center;gap:10px;margin:12px 2px;font-size:14px;cursor:pointer}
+#vo-picker .row{display:flex;gap:8px;justify-content:flex-end}
+#vo-picker button{border:0;border-radius:10px;padding:9px 16px;font-weight:700;cursor:pointer}
+#vo-picker .ok{background:#1E78FF;color:#fff}#vo-picker .no{background:rgba(255,255,255,.14);color:#fff}
+</style>
+<script id="viewonce-js">
+// ======= GAMBAR LANGSUNG DI CHAT + FOTO SEKALI LIHAT (1x) =======
+function isViewOnceMsg(m) { return (m.type || 'text') === 'image' && /^viewonce_/i.test(m.fileName || ''); }
+
+function viewOnceBubble(m) {
+  const isMe = m.fromUsername === currentUser.username;
+  const opened = m.viewOnceState === 'opened';
+  if (isMe) {
+    return '<div class="vo-chip' + (opened ? ' done' : '') + '"><span class="material-symbols-outlined">' + (opened ? 'task_alt' : 'filter_1') + '</span><div><b>Foto sekali lihat</b><small>' + (opened ? 'Sudah dibuka' : 'Belum dibuka') + '</small></div></div>';
+  }
+  if (opened) {
+    return '<div class="vo-chip done"><span class="material-symbols-outlined">task_alt</span><div><b>Foto</b><small>Sudah dibuka</small></div></div>';
+  }
+  return '<button type="button" class="vo-chip vo-btn" onclick="openViewOnce(\'' + escHtml(m.id) + '\')"><span class="material-symbols-outlined">filter_1</span><div><b>Foto</b><small>Ketuk untuk membuka (hanya 1×)</small></div></button>';
+}
+
+function closeImageViewer() {
+  const v = document.getElementById('img-viewer');
+  if (!v) return;
+  const img = v.querySelector('img');
+  if (v.dataset.revoke && img && /^blob:/.test(img.src)) { try { URL.revokeObjectURL(img.src); } catch (e) {} }
+  v.remove();
+  document.removeEventListener('keydown', ivKey);
+}
+function ivKey(e) { if (e.key === 'Escape') closeImageViewer(); }
+
+// opts: { revoke:true } untuk foto 1x (Blob dibuang saat ditutup), { watermark:'teks' }
+function showImageViewer(src, opts) {
+  opts = opts || {};
+  closeImageViewer();
+  const v = document.createElement('div');
+  v.id = 'img-viewer';
+  if (opts.revoke) v.dataset.revoke = '1';
+  v.oncontextmenu = function () { return false; };
+  v.innerHTML = '<div class="iv-top"><span>' + (opts.note || '') + '</span><span style="display:flex;gap:8px">' +
+    (opts.link ? '<a href="' + opts.link + '" target="_blank" rel="noopener noreferrer">Buka asli</a>' : '') +
+    '<button type="button" id="iv-close">Tutup ✕</button></span></div>' +
+    '<img alt="Foto" draggable="false"/>' + (opts.watermark ? '<div class="iv-wm">' + opts.watermark + '</div>' : '');
+  v.querySelector('img').src = src;
+  v.addEventListener('click', function (e) { if (e.target === v || e.target.id === 'iv-close') closeImageViewer(); });
+  document.body.appendChild(v);
+  document.addEventListener('keydown', ivKey);
+}
+
+function openImageViewer(imgEl) {
+  const src = imgEl.currentSrc || imgEl.src;
+  const fid = imgEl.dataset.fid || '';
+  showImageViewer(src, { link: fid ? ('https://drive.google.com/file/d/' + fid + '/view') : '' });
+}
+
+let _voBusy = false;
+async function openViewOnce(messageId) {
+  if (_voBusy) return;
+  const list = (typeof chatMessages !== 'undefined') ? chatMessages : [];
+  const m = list.find(x => x.id === messageId);
+  if (!m || m.viewOnceState === 'opened') return;
+  _voBusy = true;
+  try {
+    showToast('Membuka foto...');
+    const res = await apiPostJson('openViewOnce', { username: currentUser.username, messageId: messageId });
+    if (!res || !res.success || !res.base64Data) {
+      if (res && /sudah dibuka/i.test(res.message || '')) { m.viewOnceState = 'opened'; renderChatMessages(); }
+      showToast((res && res.message) || 'Gagal membuka foto', 'error');
+      return;
+    }
+    const bin = atob(res.base64Data);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([arr], { type: res.mimeType || 'image/jpeg' }));
+    m.viewOnceState = 'opened';
+    renderChatMessages();
+    showImageViewer(url, { revoke: true, note: 'Foto sekali lihat — hanya bisa dibuka 1×', watermark: '@' + currentUser.username });
+  } catch (e) {
+    showToast('Gagal membuka foto: ' + ((e && e.message) || 'koneksi bermasalah'), 'error');
+  } finally { _voBusy = false; }
+}
+
+// Pratinjau sebelum kirim foto + pilihan "Sekali lihat". Resolve {viewOnce} atau null (batal).
+function pickImageSendOptions(file) {
+  return new Promise(function (resolve) {
+    const url = URL.createObjectURL(file);
+    const d = document.createElement('div');
+    d.id = 'vo-picker';
+    d.innerHTML = '<div class="card"><img src="' + url + '" alt="Pratinjau"/>' +
+      '<label><input type="checkbox" id="vo-check" style="width:18px;height:18px"/> <span><b>Sekali lihat (1×)</b><br><small style="opacity:.75">Penerima hanya bisa membuka foto ini satu kali</small></span></label>' +
+      '<div class="row"><button type="button" class="no">Batal</button><button type="button" class="ok">Kirim</button></div></div>';
+    const done = function (v) { try { URL.revokeObjectURL(url); } catch (e) {} d.remove(); resolve(v); };
+    d.querySelector('.no').onclick = function () { done(null); };
+    d.querySelector('.ok').onclick = function () { done({ viewOnce: d.querySelector('#vo-check').checked }); };
+    document.body.appendChild(d);
+  });
+}
+</script>
 <script id="pwa-js">
 /* ======= PWA: pasang aplikasi, izin notifikasi, media latar belakang ======= */
 (function () {
@@ -11336,7 +11503,7 @@ var SPECIAL_FLAGS = "🏁 bendera kotak-kotak|🚩 bendera segitiga|🎌 bendera
     var done = function (p) {
       notifAsking = false;
       hide('pwa-notif');
-      if (p === 'granted') { toast(tx('on')); window.pwaNotify('Pesaner', { body: tx('test'), tag: 'pesaner-welcome' }); }
+      if (p === 'granted') { if (window.pwaSyncFcm) window.pwaSyncFcm(true); toast(tx('on')); window.pwaNotify('Pesaner', { body: tx('test'), tag: 'pesaner-welcome' }); }
       else if (p === 'denied') toast(tx('off'), 'error');
     };
     try {
@@ -11351,6 +11518,7 @@ var SPECIAL_FLAGS = "🏁 bendera kotak-kotak|🚩 bendera segitiga|🎌 bendera
     if (typeof currentUser === 'undefined' || !currentUser) return;
     // File lokal (file://) / HTTP biasa: PWA, service worker & izin notifikasi tidak bisa tersimpan -> jangan ganggu pengguna.
     if (!secure) return;
+    if (window.pwaSyncFcm) window.pwaSyncFcm();
     if (isStandalone()) ls('pesaner_pwa_installed', '1');
     // Kartu yang sudah tidak relevan disembunyikan (sudah terpasang / izin sudah diputuskan).
     if (ls('pesaner_pwa_installed') === '1' || isStandalone()) hide('pwa-install');
@@ -11372,6 +11540,70 @@ var SPECIAL_FLAGS = "🏁 bendera kotak-kotak|🚩 bendera segitiga|🎌 bendera
   try {
     if (navigator.getInstalledRelatedApps) navigator.getInstalledRelatedApps().then(function (a) { if (a && a.length) ls('pesaner_pwa_installed', '1'); }).catch(function () {});
   } catch (e) {}
+  /* ---- Web Push (Firebase Cloud Messaging): notifikasi saat aplikasi DITUTUP ---- */
+  // ISI 4 nilai di bawah dari Firebase Console > Project settings:
+  //  - General > Your apps > Web app > SDK setup and configuration (apiKey, messagingSenderId, appId)
+  //  - Cloud Messaging > Web configuration > Web Push certificates > Key pair (VAPID)
+  var FCM_CFG = {
+    apiKey: 'AIzaSyCVrVcLvFvVqJnduIFj-tVqjZE1or4D1Vc',
+    authDomain: 'pesaner-996bc.firebaseapp.com',
+    projectId: 'pesaner-996bc',
+    messagingSenderId: '1030452407807',
+    appId: '1:1030452407807:web:7d2b21f75953540046cbca'
+  };
+  var FCM_VAPID = 'BAEH3quYyIOW7JNJFd4wUDouxcUp45duekqNHO-gtle4x7UB3G7nptyY8F7Ym7IftgFoHpz7eYfqO1KD71cSKrE';
+  var FCM_VER = '10.12.2';
+  var fcmBusy = false, fcmSyncedFor = null;
+  function fcmConfigured() {
+    return [FCM_CFG.apiKey, FCM_CFG.messagingSenderId, FCM_CFG.appId, FCM_VAPID].every(function (v) { return v && v.indexOf('ISI_') !== 0; });
+  }
+  function loadScriptOnce(src) {
+    return new Promise(function (ok, fail) {
+      var ex = document.querySelector('script[data-fcm="' + src + '"]');
+      if (ex) { if (ex.dataset.done) ok(); else { ex.addEventListener('load', ok); ex.addEventListener('error', fail); } return; }
+      var s = document.createElement('script'); s.src = src; s.dataset.fcm = src;
+      s.onload = function () { s.dataset.done = '1'; ok(); }; s.onerror = fail;
+      document.head.appendChild(s);
+    });
+  }
+  function fcmLoadSdk() {
+    if (window.firebase && firebase.messaging) return Promise.resolve();
+    var base = 'https://www.gstatic.com/firebasejs/' + FCM_VER + '/';
+    return loadScriptOnce(base + 'firebase-app-compat.js').then(function () { return loadScriptOnce(base + 'firebase-messaging-compat.js'); });
+  }
+  // force=true dipakai tepat setelah izin diberikan; selain itu cukup sekali per sesi per user.
+  window.pwaSyncFcm = function (force) {
+    try {
+      if (isNativeApk() || !secure || !notifGranted() || !fcmConfigured() || fcmBusy) return;
+      if (typeof currentUser === 'undefined' || !currentUser) return;
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+      var uname = currentUser.username;
+      if (!force && fcmSyncedFor === uname) return;
+      fcmBusy = true;
+      Promise.all([fcmLoadSdk(), navigator.serviceWorker.ready]).then(function (r) {
+        if (!firebase.apps.length) firebase.initializeApp(FCM_CFG);
+        return firebase.messaging().getToken({ vapidKey: FCM_VAPID, serviceWorkerRegistration: r[1] });
+      }).then(function (token) {
+        if (!token) return;
+        var key = uname + '|' + token, last = parseInt(ls('pesaner_web_fcm_at') || '0', 10);
+        // Kirim ke server kalau token/user berubah, atau sudah >7 hari (server bisa saja sudah membersihkannya).
+        if (ls('pesaner_web_fcm') === key && last && (Date.now() - last) < 7 * 86400000) { fcmSyncedFor = uname; return; }
+        return apiCall('updateWebFcmToken', { username: uname, token: token }).then(function (res) {
+          if (res && res.success) { ls('pesaner_web_fcm', key); ls('pesaner_web_fcm_at', String(Date.now())); ls('pesaner_web_fcm_token', token); fcmSyncedFor = uname; }
+        });
+      }).catch(function () {}).then(function () { fcmBusy = false; });
+    } catch (e) { fcmBusy = false; }
+  };
+  // Dipanggil saat logout: lepas token browser ini dari akun supaya tidak menerima notifikasi akun lama.
+  window.pwaUnregisterFcm = function (uname) {
+    try {
+      var token = ls('pesaner_web_fcm_token');
+      fcmSyncedFor = null;
+      if (uname && token) apiCall('updateWebFcmToken', { username: uname, token: token, remove: '1' }).catch(function () {});
+      try { localStorage.removeItem('pesaner_web_fcm'); localStorage.removeItem('pesaner_web_fcm_at'); localStorage.removeItem('pesaner_web_fcm_token'); } catch (e) {}
+    } catch (e) {}
+  };
+
   setInterval(tick, 6000);
   setTimeout(tick, 1500);
 
