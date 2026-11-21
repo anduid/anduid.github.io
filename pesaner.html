@@ -945,8 +945,10 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
         <span class="text-xl font-black text-primary tracking-tight">Pesaner</span>
       </div>
       <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-on-surface-muted">
-        <button onclick="switchTab('feed')" class="hover:text-primary transition-colors" data-i18n="nav_feed">Feed</button>
-        <button onclick="goToOwnProfile()" class="hover:text-primary transition-colors" data-i18n="nav_profile">Profil</button>
+        <div id="pn-hs" style="position:relative">
+          <input id="pn-hs-in" type="text" placeholder="Cari nama atau username..." data-i18n-placeholder="chat_search_placeholder" autocomplete="off" oninput="pnHS()" onfocus="pnHS()" onblur="setTimeout(pnHSclose,200)" onkeydown="if(event.key==='Enter')pnHSgo(0);if(event.key==='Escape')pnHSclose()"/>
+          <div id="pn-hs-dd" class="hidden"></div>
+        </div>
         <button onclick="switchTab('admin')" id="nav-admin" class="hidden hover:text-primary transition-colors" data-i18n="nav_admin">Admin</button>
       </div>
       <div class="flex items-center gap-2">
@@ -954,8 +956,9 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
           <button onclick="setLang('id')" id="lang-btn-id" class="px-2.5 py-1.5">ID</button>
           <button onclick="setLang('en')" id="lang-btn-en" class="px-2.5 py-1.5">EN</button>
         </div>
+        <button id="pn-hs-btn" class="sfx-btn" title="Cari" aria-label="Cari" onclick="openNewChatModal()"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button id="pn-hbtn" class="sfx-btn" title="Musik" aria-label="Musik" onclick="PN.power()">🎵</button>
         <button id="sfx-btn" class="sfx-btn" title="Sound FX" onclick="toggleSfx()"><i class="fa-solid fa-volume-high" id="sfx-icon"></i></button>
-        <button onclick="openPostModal()" class="btn-primary text-sm py-2 px-4 hidden md:block" data-i18n="btn_post">+ Post</button>
         <img id="header-avatar" src="data:image/svg+xml;charset=utf-8,%3Csvg viewBox='-12 -2 224 214' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='-12' y='-2' width='224' height='214' fill='%232A66F6'/%3E%3Ccircle cx='100' cy='115' r='65' fill='%23FFC837'/%3E%3Ccircle cx='75' cy='105' r='11' fill='%231E293B'/%3E%3Ccircle cx='125' cy='105' r='11' fill='%231E293B'/%3E%3C/svg%3E" class="avatar w-8 h-8 cursor-pointer" onclick="goToOwnProfile()"/>
       </div>
     </div>
@@ -984,18 +987,10 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
         <span class="material-symbols-outlined text-lg">wifi_tethering</span> <span>Offline P2P</span>
         <span id="p2p-badge-side" class="hidden" style="position:absolute; right:10px; top:8px; background:#F59E0B; color:#fff; font-size:10px; font-weight:700; min-width:16px; height:16px; border-radius:999px; display:flex; align-items:center; justify-content:center; padding:0 4px;">0</span>
       </div>
-      <div class="nav-link" id="nav-profile-side" onclick="goToOwnProfile()">
-        <span class="material-symbols-outlined text-lg">person</span> <span data-i18n="nav_profile">Profil</span>
-      </div>
-      <div class="nav-link" id="nav-monster-side" onclick="openMonsterHub()">
-        <span class="material-symbols-outlined text-lg">pets</span> <span>Monster Hub</span>
-      </div>
       <div class="nav-link" id="nav-admin-side" onclick="switchTab('admin')" style="display:none">
         <span class="material-symbols-outlined text-lg">admin_panel_settings</span> <span data-i18n="nav_admin">Admin</span>
       </div>
       <div class="mt-auto">
-        <button onclick="openPostModal()" class="btn-primary w-full text-sm py-2 mb-3" data-i18n="btn_buat_post">+ Buat Post</button>
-        <button onclick="openWaStatusModal()" class="w-full text-sm py-2 mb-2 rounded-full font-bold transition-all" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;cursor:pointer;" data-i18n="btn_wa_status_side">📱 Status WA Mood</button>
         <div class="nav-link text-red-500 hover:bg-red-50" onclick="handleLogout()">
           <span class="material-symbols-outlined text-lg">logout</span> <span data-i18n="nav_logout">Keluar</span>
         </div>
@@ -1011,7 +1006,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
           <div class="mascot-body" id="mascot-body" title="Elus aku! (+8 XP)" onclick="Mon.petPartner()"><div id="mascot-svg" style="width:100%;height:100%"></div><i class="fa-solid fa-heart mascot-heart" id="mascot-heart"></i></div>
           <div style="position:relative;min-width:0;flex:1"><span class="mascot-lvl"><i class="fa-solid fa-crown"></i><span id="mascot-lvl">LVL 4</span></span>
             <h3 class="text-lg font-bold mt-1 truncate" id="mascot-name">Voltkit</h3>
-            <p class="text-xs text-on-surface-muted"><i class="fa-solid fa-hand-sparkles" style="color:#FFB800"></i> <span id="mascot-pets">0</span> elusan &bull; <a href="javascript:void(0)" onclick="openMonsterHub()" style="color:#FFD76A;font-weight:700;text-decoration:underline">Buka Monster Hub</a></p>
+            <p class="text-xs text-on-surface-muted"><i class="fa-solid fa-hand-sparkles" style="color:#FFB800"></i> <span id="mascot-pets">0</span> elusan &bull; <a href="javascript:void(0)" onclick="openMonsterHub()" style="color:#FFD76A;font-weight:700;text-decoration:underline"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px">pets</span> Monster Hub</a></p>
             <div class="mascot-tabs" id="mascot-tabs"></div></div></div>
         <!-- Create post box -->
         <div class="card p-4 mb-5">
@@ -1029,12 +1024,18 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
           </div>
         </div>
         <!-- Posts list -->
+        <div id="pn-filter">
+  <div class="pn-types" id="pn-types"></div>
+  <div class="pn-chips hidden" id="pn-chips"></div>
+  <div id="pn-rail-wrap" class="hidden"><div class="pn-rail" id="pn-rail"></div></div>
+  <div id="pn-empty" class="hidden pn-none"></div>
+</div>
         <div id="feed-loading" class="flex justify-center py-10">
           <div class="spinner"></div>
         </div>
         <div id="posts-container"></div>
         <div class="flex justify-center mt-2 mb-4">
-          <button onclick="loadMoreFeed()" id="btn-load-more-feed" class="btn-outline text-sm py-2 px-6 hidden" data-i18n="btn_load_more_feed">Muat 10 Post Lagi</button>
+          <button onclick="loadMoreFeed()" id="btn-load-more-feed" class="btn-outline text-sm py-2 px-6 hidden" data-i18n="btn_load_more_feed">Muat Post Lainnya</button>
         </div>
         <div id="feed-empty" class="hidden text-center py-14 text-on-surface-muted">
           <span class="material-symbols-outlined text-5xl mb-3 opacity-30">feed</span>
@@ -1536,6 +1537,10 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
               <button onclick="openNewGroupModal()" class="btn-outline text-sm py-2 px-3">+ Grup</button>
               <button onclick="openNewChatModal()" class="btn-primary text-sm py-2 px-4" data-i18n="btn_new_chat">+ Chat Baru</button>
             </div>
+          </div>
+          <div class="pn-types" id="pn-chat-tabs" style="margin-bottom:12px">
+            <button type="button" data-k="user" onclick="pnChatTab('user')">💬 Personal<span class="pn-bdg hidden"></span></button>
+            <button type="button" data-k="group" onclick="pnChatTab('group')">👥 Grup<span class="pn-bdg hidden"></span></button>
           </div>
           <div id="chat-list-loading" class="flex justify-center py-10"><div class="spinner"></div></div>
           <div id="chat-list-container" class="space-y-1"></div>
@@ -2469,6 +2474,12 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
       <textarea id="post-content" rows="4" placeholder="Apa yang ingin kamu bagikan hari ini?" data-i18n-placeholder="post_modal_ph"></textarea>
     </div>
     <p class="text-xs text-on-surface-muted mb-3" style="margin-top:-8px" data-i18n="post_modal_yt_hint">Tempel link YouTube di teks untuk otomatis di-embed sebagai video yang bisa diputar.</p>
+    <div id="pn-cc" class="hidden pn-chips" style="margin:-4px 0 12px"></div>
+    <div style="display:flex;gap:10px;align-items:center;margin:0 0 12px">
+      <button type="button" class="btn-outline text-xs py-1.5 px-3" onclick="document.getElementById('pn-img-in').click()">🖼 <span id="pn-img-l">Gambar</span></button>
+      <input id="pn-img-in" type="file" accept="image/*" hidden onchange="PN.pick_(this)">
+      <div id="pn-img-pv" class="hidden" style="position:relative"><img alt="" style="width:56px;height:56px;object-fit:cover;border-radius:12px;border:2px solid #FFB800"><button type="button" onclick="PN.unpick()" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:#EF4444;color:#fff;font-size:11px">✕</button></div>
+    </div>
     <div class="flex justify-between items-center mb-3">
       <span class="text-xs font-semibold text-on-surface-muted" data-i18n="post_privacy_label">Privasi post:</span>
       <div class="flex gap-2">
@@ -3810,7 +3821,7 @@ const I18N = {
     fx_report_top_cats: "Kategori Pengeluaran Terbesar",
     btn_post: '+ Post', btn_buat_post: '+ Buat Post', btn_wa_status_side: '📱 Status WA Mood', btn_wa_status: 'Buat Status WA Mood 🔥',
     feed_composer_placeholder: 'Apa yang ingin kamu bagikan?', feed_empty: 'Belum ada post. Jadilah yang pertama!',
-    btn_load_more_feed: 'Muat 10 Post Lagi',
+    btn_load_more_feed: 'Muat Post Lainnya',
     btn_edit_profile: 'Edit Profil', btn_follow: 'Follow', btn_following: 'Mengikuti', btn_chat: 'Chat',
     label_posts: 'Posts', label_following: 'Mengikuti', label_followers: 'Pengikut', profile_no_posts: 'Belum ada post',
     chat_title: 'Pesan', btn_new_chat: '+ Chat Baru', chat_empty: 'Belum ada percakapan. Mulai chat baru!',
@@ -3983,7 +3994,7 @@ const I18N = {
     fx_report_top_cats: "Top Spending Categories",
     btn_post: '+ Post', btn_buat_post: '+ New Post', btn_wa_status_side: '📱 WA Mood Status', btn_wa_status: 'Create WA Mood Status 🔥',
     feed_composer_placeholder: "What's on your mind?", feed_empty: 'No posts yet. Be the first!',
-    btn_load_more_feed: 'Load 10 More Posts',
+    btn_load_more_feed: 'Load More Posts',
     btn_edit_profile: 'Edit Profile', btn_follow: 'Follow', btn_following: 'Following', btn_chat: 'Chat',
     label_posts: 'Posts', label_following: 'Following', label_followers: 'Followers', profile_no_posts: 'No posts yet',
     chat_title: 'Messages', btn_new_chat: '+ New Chat', chat_empty: 'No conversations yet. Start a new chat!',
@@ -4672,7 +4683,7 @@ async function loadMoreFeed() {
     feedOffset += newPosts.length;
     feedHasMore = !!res.hasMore;
     const container = document.getElementById('posts-container');
-    container.insertAdjacentHTML('beforeend', newPosts.map(p => postCard(p)).join(''));
+    renderPosts(allPosts, 'posts-container');
     btn.classList.toggle('hidden', !feedHasMore);
   } catch(e) {
     showToast(t('toast_feed_more_fail'), 'error');
@@ -4736,35 +4747,20 @@ function postCard(p) {
   const liked = p.likedBy && p.likedBy.includes(currentUser.username);
   const isOwner = p.authorUsername === currentUser.username || currentUser.role === 'admin';
   const isPrivate = p.privacy === 'private';
-  return `<div class="post-card" id="post-${p.id}">
-    <div class="flex gap-3">
-      <img src="${av}" class="avatar w-10 h-10 flex-shrink-0" style="cursor:pointer" onclick="viewUserProfile('${p.authorUsername}')" title="Lihat profil ${escHtml(p.authorName)}"/>
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center justify-between gap-2">
-          <div>
-            <span class="font-bold text-sm hover:underline" style="cursor:pointer" onclick="viewUserProfile('${p.authorUsername}')" title="Lihat profil ${escHtml(p.authorName)}">${escHtml(p.authorName)}</span>
-            <span class="text-on-surface-muted text-xs ml-1" style="cursor:pointer" onclick="viewUserProfile('${p.authorUsername}')">@${escHtml(p.authorUsername)}</span>
-            <span class="privacy-badge ml-1">
-              <span class="material-symbols-outlined" style="font-size:13px">${isPrivate ? 'lock' : 'public'}</span>${isPrivate ? t('privacy_private') : t('privacy_public')}
-            </span>
-            <div class="text-on-surface-muted text-xs mt-0.5" title="${formatDateTime(p.createdAt)}">
-              ${formatDateTime(p.createdAt)} · ${timeAgo(p.createdAt)}
-            </div>
-          </div>
-          ${isOwner ? `<button onclick="deletePost('${p.id}')" class="text-on-surface-muted hover:text-red-500 transition-colors p-1 rounded-full" title="Hapus">
-            <span class="material-symbols-outlined" style="font-size:18px">delete</span>
-          </button>` : ''}
-        </div>
-        <p class="text-sm mt-1 mb-3 leading-relaxed">${linkifyContent(p.content)}</p>
-        ${youtubeEmbedHtml(p.content)}
-        <div class="flex gap-1 items-center">
-          <button onclick="toggleLike('${p.id}')" class="action-btn ${liked?'liked':''}">
-            <span class="material-symbols-outlined ${liked?'fill-icon':''}" style="font-size:18px">favorite</span>
-            <span id="like-count-${p.id}">${p.likes||0}</span>
-          </button>
-          ${contactButtonsRow(p)}
-        </div>
-      </div>
+  return `<div class="post-card pn-post" id="post-${p.id}">
+    <div class="pn-ph">
+      <img src="${av}" class="pn-av" onclick="viewUserProfile('${p.authorUsername}')" alt=""/>
+      <div class="pn-who" onclick="viewUserProfile('${p.authorUsername}')"><b>${escHtml(p.authorName)}</b><small>${formatDateTime(p.createdAt)} · ${timeAgo(p.createdAt)}${isPrivate ? ' 🔒' : ''}${pnBadge(p)}</small></div>
+      ${isOwner ? `<button onclick="deletePost('${p.id}')" class="pn-x" aria-label="Hapus">🗑</button>` : ''}
+    </div>
+    <p class="pn-tx">${linkifyContent(pnTxt(p))}</p>
+    ${youtubeEmbedHtml(p.content)}${pnImg(p)}
+    <div class="pn-ac">
+      <button onclick="toggleLike('${p.id}')" class="action-btn ${liked?'liked':''}">
+        <span class="material-symbols-outlined ${liked?'fill-icon':''}" style="font-size:20px">favorite</span>
+        <span id="like-count-${p.id}">${p.likes||0}</span>
+      </button>
+      ${contactButtonsRow(p)}${pnMusicBtn(p)}
     </div>
   </div>`;
 }
@@ -5942,7 +5938,9 @@ async function loadChatList() {
     ]);
     const conversations = (convRes.conversations || []).map(c => Object.assign({ kind: 'user' }, c));
     const groups = (groupRes.groups || []).map(g => Object.assign({ kind: 'group' }, g));
-    const list = conversations.concat(groups).sort((a, b) => new Date(b.lastAt || 0) - new Date(a.lastAt || 0));
+    const full = conversations.concat(groups).sort((a, b) => new Date(b.lastAt || 0) - new Date(a.lastAt || 0));
+    const list = full.filter(i => i.kind === pnChat.f);
+    pnChatUI(full);
 
     container.dataset.loaded = '1';
     empty.classList.toggle('hidden', list.length > 0);
@@ -5956,7 +5954,7 @@ async function loadChatList() {
           <div class="flex-1 min-w-0">
             <div class="flex justify-between items-baseline gap-2">
               <p class="font-bold text-sm truncate">${escHtml(item.name)} <span class="text-[10px] font-normal text-on-surface-muted">· Grup</span></p>
-              <span class="text-[11px] text-on-surface-muted flex-shrink-0">${item.lastAt ? timeAgo(item.lastAt) : ''}</span>
+              <span class="text-[11px] text-on-surface-muted flex-shrink-0">${item.lastAt ? formatDateTime(item.lastAt) : ''}</span>
             </div>
             <p class="text-xs ${item.unread > 0 ? 'text-on-surface font-semibold' : 'text-on-surface-muted'} truncate">${escHtml(preview)}</p>
           </div>
@@ -5968,7 +5966,7 @@ async function loadChatList() {
         <div class="flex-1 min-w-0">
           <div class="flex justify-between items-baseline gap-2">
             <p class="font-bold text-sm truncate">${escHtml(item.name)}</p>
-            <span class="text-[11px] text-on-surface-muted flex-shrink-0">${item.lastAt ? timeAgo(item.lastAt) : ''}</span>
+            <span class="text-[11px] text-on-surface-muted flex-shrink-0">${item.lastAt ? formatDateTime(item.lastAt) : ''}</span>
           </div>
           <p class="text-xs ${item.unread > 0 ? 'text-on-surface font-semibold' : 'text-on-surface-muted'} truncate">${escHtml(preview)}</p>
         </div>
@@ -8256,6 +8254,7 @@ function searchNewChatUsers() {
 
 function startChatWithUser(username, name, avUrl) {
   closeNewChatModal();
+  if (document.getElementById('tab-chat').classList.contains('hidden')) switchTab('chat');
   openChatThread(username, name, avUrl);
 }
 
@@ -8844,7 +8843,8 @@ async function loadUserPostsForWa() {
   hideWaPostDropdown();
   try {
     const res = await apiCall('getUserPosts', { username: currentUser.username });
-    waUserPosts = res.posts || [];
+    // Hanya post teks murni: lewati post yang mengandung link/URL (YouTube dll.)
+    waUserPosts = (res.posts || []).filter(p => !/https?:\/\/|www\.|youtu\.?be|\.(com|id|net|org|co)\b\//i.test(String(p.content || '')));
     emptyMsg.classList.toggle('hidden', waUserPosts.length > 0);
   } catch (e) {
     showToast(t('toast_myposts_fail'), 'error');
@@ -11639,6 +11639,282 @@ function pickImageSendOptions(file) {
   document.addEventListener('timeupdate', function (e) { if (e.target === current) setPos(current); }, true);
   document.addEventListener('ratechange', function (e) { if (e.target === current) setPos(current); }, true);
 })();
+</script>
+
+<style id="pn-css">
+#pn-filter{margin-bottom:14px}
+.pn-types{display:flex;gap:6px;margin-bottom:10px}
+.pn-types button{flex:1;padding:8px 10px;border-radius:999px;font-weight:700;font-size:13px;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
+.pn-types button.on{background:#FFB800;color:#091A4B;border-color:#FFB800}
+.pn-chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.pn-chips button{flex:none;padding:6px 13px;border-radius:999px;font-size:12px;font-weight:700;color:#fff;background:rgba(100,116,139,.55);border:1px solid rgba(255,255,255,.2)}
+.pn-chips button.on{background:#fff;color:#0F2C7A}
+.pn-rt{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 8px;font-size:13px}
+.pn-rt span{opacity:.7;font-size:12px}
+.pn-rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:none}
+.pn-card{position:relative;flex:none;width:150px;height:210px;border-radius:16px;overflow:hidden;scroll-snap-align:start;cursor:pointer;background:#000;box-shadow:0 8px 20px rgba(5,23,77,.5);transition:transform .15s}
+.pn-card:hover{transform:scale(1.04)}
+.pn-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pn-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1) 30%,rgba(0,0,0,.88))}
+.pn-bd{position:absolute;top:8px;left:8px;z-index:2;font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px;color:#fff}
+.pn-pl{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-70%);width:44px;height:44px;border-radius:50%;background:#FFB800;color:#091A4B;font-size:18px;display:flex;align-items:center;justify-content:center}
+.pn-ct{position:absolute;z-index:2;left:10px;right:10px;bottom:9px;font-size:12px;line-height:1.25}
+.pn-ct b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pn-ct small{opacity:.75;font-size:11px}
+.pn-none{text-align:center;padding:26px 10px;opacity:.8;font-size:13px}
+.pn-tag{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;color:#fff;margin-left:4px;vertical-align:middle}
+.pn-mbtn{font-size:12px!important;font-weight:700}
+#pn-bar{position:fixed;left:0;right:0;bottom:56px;z-index:60;background:#0F1F55;border-top:2px solid #FFB800;border-radius:18px 18px 0 0;padding:10px 12px;display:flex;gap:10px;align-items:center;box-shadow:0 -8px 30px rgba(0,0,0,.45);color:#fff}
+@media(min-width:768px){#pn-bar{bottom:0;left:224px}}
+#pn-vid{flex:none;width:96px;height:54px;border-radius:8px;overflow:hidden;background:#000;position:relative;cursor:pointer}
+#pn-vid.big{position:fixed;left:12px;right:12px;bottom:134px;width:auto;max-width:380px;height:auto;aspect-ratio:16/9;z-index:61;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+#pn-bar iframe,#pn-yt{width:100%;height:100%;border:0}
+.pn-in{flex:1;min-width:0}
+.pn-ti{font-size:13px;line-height:1.25}.pn-ti b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pn-ti small{opacity:.7;font-size:11px}
+.pn-row{display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.pn-row button{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:14px}
+.pn-row button.main{background:#FFB800;color:#091A4B}
+.pn-row .txt{width:auto;border-radius:999px;padding:0 12px;font-size:11px;font-weight:700}
+.pn-row label{font-size:11px;display:flex;gap:4px;align-items:center}
+.pn-li{display:flex;gap:8px;align-items:center;padding:8px;border-radius:12px;background:rgba(255,255,255,.08);margin-bottom:6px;font-size:12px}
+.pn-li.now{border:1px solid #FFB800;background:rgba(255,184,0,.14)}
+.pn-li img{width:56px;height:36px;object-fit:cover;border-radius:6px}
+.pn-li .t{flex:1;min-width:0}.pn-li .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-li button{width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.14);color:#fff;font-size:12px}
+body.pn-playing #tab-feed{padding-bottom:150px}
+.pn-types{background:rgba(15,44,122,.55);padding:5px;border-radius:20px;border:1px solid rgba(255,255,255,.2)}
+.pn-types button{padding:11px 8px;font-size:15px;border-radius:16px;border:0;background:transparent}
+.pn-types button.on{box-shadow:0 4px 0 #D99500}
+.pn-post{border-radius:24px!important;padding:14px!important}
+.pn-ph{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.pn-av{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #FFB800;cursor:pointer;flex:none}
+.pn-who{flex:1;min-width:0;cursor:pointer}.pn-who b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pn-who small{opacity:.75;font-size:12px}
+.pn-x{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);font-size:15px;flex:none;opacity:.7}.pn-x:hover{opacity:1;background:rgba(255,80,80,.35)}
+.pn-tx{font-size:16px;line-height:1.5;margin:4px 0 10px;word-break:break-word}
+.pn-ac{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.pn-ac .action-btn{background:rgba(255,255,255,.12);border-radius:999px;padding:6px 14px;font-weight:700}
+.pn-ac .action-btn.liked{background:rgba(255,80,110,.3)}
+#btn-load-more-feed{display:block;width:100%;padding:16px 20px;border-radius:22px;font-size:17px;font-weight:800;color:#fff!important;background:linear-gradient(180deg,#2f55c4,#1c3a94)!important;border:2px solid #FFB800!important;box-shadow:0 8px 22px rgba(5,23,77,.5);transition:transform .12s}
+#btn-load-more-feed.hidden{display:none}
+#btn-load-more-feed:before{content:"⬇️  "}
+#btn-load-more-feed:active{transform:scale(.97)}#btn-load-more-feed:disabled{opacity:.7}
+#tab-feed .flex.justify-center.mt-2.mb-4{display:block}
+body.pn-yt #btn-load-more-feed{display:none!important}
+#pn-bar.hidden,#pn-filter .hidden,#pn-cc.hidden{display:none!important}
+#pn-hbtn{font-size:16px;line-height:1}#pn-hbtn.on{background:#FFB800!important;color:#091A4B!important}
+.pn-card.sel{outline:3px solid #FFB800;outline-offset:-3px}
+.pn-ic{background:#143BA2 center/cover no-repeat}
+.pn-ic.miss:before{content:"🖼";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:40px;opacity:.5}
+.pn-pic{width:100%;aspect-ratio:4/3;margin:6px 0 10px;border-radius:16px;background:rgba(0,0,0,.25) center/contain no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;padding:12px}
+.pn-pic.has{cursor:zoom-in}.pn-pic.has:after{content:""}
+.pn-pic.miss:after{content:"🖼 Gambar tersimpan di perangkat pengunggah";opacity:.7}
+.pn-tc{padding:12px;display:flex;flex-direction:column;gap:8px;color:#fff}
+.pn-tc:after{display:none}
+.pn-th{display:flex;align-items:center;gap:6px;min-width:0}
+.pn-th img{position:static;width:24px;height:24px;border-radius:50%;object-fit:cover;border:2px solid #fff;flex:none}
+.pn-th small{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-tc p{font-size:14px;font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.pn-card.pn-more{background:linear-gradient(180deg,#2f55c4,#1c3a94);border:2px dashed #FFB800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:14px;text-align:center}
+.pn-card.pn-more:after{display:none}
+#pn-bar.min{left:auto;right:10px;top:84px;bottom:auto;width:auto;padding:6px 10px 6px 6px;border-radius:999px;border:2px solid #FFB800;gap:6px}
+#pn-bar.min .pn-ti{display:none}#pn-bar.min .pn-in{flex:none}
+#pn-bar.min .pn-row{margin-top:0;flex-wrap:nowrap}#pn-bar.min .pn-row>*:not(.keep){display:none}
+#pn-bar.min #pn-vid{width:64px;height:36px}
+
+</style>
+<div id="pn-bar" class="hidden">
+  <div id="pn-vid" onclick="PN.big()"><div id="pn-yt"></div></div>
+  <div class="pn-in">
+    <div class="pn-ti"><b id="pn-t">-</b><small id="pn-s"></small></div>
+    <div class="pn-row">
+      <button class="keep" onclick="PN.step(-1)" aria-label="Prev">⏮</button>
+      <button class="main keep" id="pn-pp" onclick="PN.toggle()" aria-label="Play/Pause">▶</button>
+      <button class="keep" onclick="PN.step(1)" aria-label="Next">⏭</button>
+      <label><input type="checkbox" id="pn-auto" onchange="PN.setAuto(this.checked)"> Auto</label>
+      <button class="txt" onclick="PN.open_()" id="pn-list-btn">📋</button>
+      <button class="keep" id="pn-mn" onclick="PN.min()" aria-label="Minimize">⌄</button>
+      <button onclick="PN.close()" aria-label="Close">✕</button>
+    </div>
+  </div>
+</div>
+<div id="pn-modal" class="modal-overlay hidden" onclick="if(event.target===this)PN.shut()">
+  <div class="modal" style="max-height:88vh;overflow-y:auto">
+    <div class="flex items-center justify-between mb-2"><h3 class="font-black text-lg">🎵 <span id="pn-mt">Playlist Musik</span></h3><button onclick="PN.shut()" class="p-1">✕</button></div>
+    <p class="text-xs mb-3" id="pn-mc" style="opacity:.75"></p>
+    <div class="flex gap-2 mb-2"><input id="pn-url" type="text" placeholder="https://youtu.be/..." class="flex-1"><button class="btn-primary text-sm px-4" onclick="PN.add()" id="pn-addb">Tambah</button></div>
+    <label class="text-xs flex gap-2 items-center mb-3"><input type="checkbox" id="pn-share" checked> <span id="pn-sl">Bagikan ke Feed</span></label>
+    <div class="flex gap-2 mb-3"><button class="btn-outline text-xs" onclick="PN.shuf()">🔀 <span id="pn-shl">Acak</span></button><button class="btn-outline text-xs" onclick="PN.clear()" style="color:#FF9AA2!important">🗑 <span id="pn-cl">Hapus semua</span></button></div>
+    <div id="pn-list"></div>
+  </div>
+</div>
+<style>
+#pn-lb{position:fixed;inset:0;z-index:200;background:rgba(5,12,40,.92);display:flex;align-items:center;justify-content:center;padding:16px}
+#pn-lb.hidden{display:none!important}
+#pn-lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+#pn-lb button{position:fixed;top:14px;right:14px;width:44px;height:44px;border-radius:50%;background:#FFB800;color:#091A4B;font-size:20px;font-weight:900;box-shadow:0 4px 0 #D99500}
+</style>
+<div id="pn-lb" class="hidden" onclick="if(event.target===this)PN.unzoom()"><img id="pn-lb-img" alt=""><button type="button" onclick="PN.unzoom()" aria-label="Close">✕</button></div>
+<script id="pn-js">
+(function(){
+const EN=()=>typeof currentLang!=='undefined'&&currentLang==='en',L=(a,b)=>EN()?b:a;
+const CATS=[['musik','Musik','Music','#E11D48'],['film','Film','Film','#6366F1'],['podcast','Podcast','Podcast','#0EA5E9'],['tutorial','Tutorial','Tutorial','#10B981'],['hiburan','Hiburan','Entertainment','#F97316'],['iklan','Iklan','Ads','#CA8A04'],['lainnya','Lainnya','Other','#64748B']];
+const CAT=Object.fromEntries(CATS.map(c=>[c[0],c]));
+const catRe=/#(musik|music|film|podcast|tutorial|hiburan|iklan|ads|lainnya)\b/i;
+const $=id=>document.getElementById(id);
+const ls={g(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},s(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const uk=b=>'pesaner_'+b+'_'+((typeof currentUser!=='undefined'&&currentUser)?currentUser.username:'x');
+const F=Object.assign({type:'text',cat:'all'},ls.g('pesaner_feedfilter',{}));if(F.type!=='yt'&&F.type!=='img')F.type='text';
+let tries=0,PL=null,RM=[],cur=-1,yp=null,errs=0;
+const nm=c=>L(CAT[c][1],CAT[c][2]);
+const imgRe=/\s*\[img:([a-z0-9]+)\]/i;
+function info(p){const id=extractYoutubeId(p.content);if(!id){const m=String(p.content).match(imgRe);return m?{yt:false,img:true,id:m[1]}:{yt:false}}let c=(String(p.content).match(catRe)||[])[1];c=c?c.toLowerCase():'lainnya';if(c==='music')c='musik';if(c==='ads')c='iklan';return{yt:true,id,cat:c}}
+const snip=c=>String(c).replace(/https?:\/\/\S+|www\.\S+/g,'').replace(/#\w+/g,'').trim().slice(0,70)||'Video YouTube';
+function load(){if(PL)return;PL=ls.g(uk('pl'),[]);RM=ls.g(uk('plrm'),[]);$('pn-auto').checked=ls.g(uk('auto'),true)}
+function save(){ls.s(uk('pl'),PL);ls.s(uk('plrm'),RM)}
+// ---------- filter + rail ----------
+function types(){const T=[['text','💬 '+L('Teks','Text')],['img','🖼 '+L('Gambar','Images')],['yt','▶ YouTube']];
+  $('pn-types').innerHTML=T.map(t=>`<button class="${F.type===t[0]?'on':''}" onclick="PN.type('${t[0]}')">${t[1]}</button>`).join('');
+  const ch=$('pn-chips');ch.classList.toggle('hidden',F.type!=='yt');
+  ch.innerHTML=[['all',L('Semua','All')]].concat(CATS.map(c=>[c[0],nm(c[0])])).map(c=>`<button class="${F.cat===c[0]?'on':''}" onclick="PN.cat('${c[0]}')">${c[1]}</button>`).join('')}
+const GR=['#EC4899,#F97316','#6366F1,#06B6D4','#10B981,#3B82F6','#F59E0B,#EF4444','#8B5CF6,#EC4899','#0EA5E9,#10B981'];
+const hs=x=>{let h=0;for(const c of String(x))h=(h*31+c.charCodeAt(0))>>>0;return h};
+const dbo=()=>new Promise((res,rej)=>{const r=indexedDB.open('pesaner_img',1);r.onupgradeneeded=()=>r.result.createObjectStore('imgs',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+async function idbPut(id,blob){const d=await dbo();return new Promise((res,rej)=>{const t=d.transaction('imgs','readwrite');t.objectStore('imgs').put({id,blob});t.oncomplete=res;t.onerror=()=>rej(t.error)})}
+async function idbGet(id){try{const d=await dbo();return await new Promise(res=>{const q=d.transaction('imgs').objectStore('imgs').get(id);q.onsuccess=()=>res(q.result?q.result.blob:null);q.onerror=()=>res(null)})}catch(e){return null}}
+const URLS={};async function imgUrl(id){if(URLS[id]!==undefined)return URLS[id];const b=await idbGet(id);return URLS[id]=b?URL.createObjectURL(b):null}
+function hydrate(){document.querySelectorAll('[data-iid]:not([data-ok])').forEach(async el=>{el.dataset.ok=1;const u=await imgUrl(el.dataset.iid);if(u){el.style.backgroundImage='url('+u+')';el.classList.add('has')}else el.classList.add('miss')})}
+window.pnImg=p=>{const i=info(p);return i.img?`<div class="pn-pic" data-iid="${i.id}" onclick="PN.zoom('${i.id}')"></div>`:''};
+function icard(p,sel){const i=info(p),t=pnTxt(p);
+  return `<div class="pn-card pn-ic${sel&&sel.id===p.id?' sel':''}" data-iid="${i.id}" onclick="PN.go('${p.id}')"><div class="pn-ct"><b>${escHtml(t.slice(0,60))}</b><small>@${escHtml(p.authorUsername)}</small></div></div>`}
+let pend=null;
+function shrink(f){return new Promise((res,rej)=>{const im=new Image(),u=URL.createObjectURL(f);im.onload=()=>{const k=Math.min(1,1280/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?res(b):rej(),'image/jpeg',.82)};im.onerror=rej;im.src=u})}
+function ycard(p,sel){const i=info(p),c=CAT[i.cat],it=PL.find(x=>x.id===i.id);
+  return `<div class="pn-card${sel&&sel.id===p.id?' sel':''}" onclick="PN.go('${p.id}')"><img loading="lazy" src="https://img.youtube.com/vi/${i.id}/hqdefault.jpg" alt=""><span class="pn-bd" style="background:${c[3]}">${nm(i.cat)}</span><span class="pn-pl">▶</span><div class="pn-ct"><b>${escHtml(it&&it.n?it.t:snip(p.content))}</b><small>@${escHtml(p.authorUsername)}</small></div></div>`}
+function tcard(p,sel){const t=String(p.content||'').trim();
+  return `<div class="pn-card pn-tc${sel&&sel.id===p.id?' sel':''}" style="background:linear-gradient(160deg,${GR[hs(p.id)%GR.length]})" onclick="PN.go('${p.id}')"><div class="pn-th"><img src="${resolveAvatarUrl({name:p.authorName,avatarUrl:p.authorAvatarUrl})}" alt=""><small>${escHtml(p.authorName)}</small></div><p>${escHtml(t.length>140?t.slice(0,140)+'…':t)}</p></div>`}
+function draw(){
+  load();types();document.body.classList.add('pn-yt');
+  const all=allPosts||[],isY=F.type==='yt',isI=F.type==='img';
+  const src=isY?all.filter(p=>{const i=info(p);return i.yt&&(F.cat==='all'||i.cat===F.cat)}):isI?all.filter(p=>info(p).img):all.filter(p=>!info(p).yt&&!info(p).img);
+  const selP=src.find(p=>p.id===F.sel)||src[0];
+  $('posts-container').innerHTML=selP?postCard(selP):'';
+  $('pn-rail-wrap').classList.toggle('hidden',!src.length);
+  const rl=$('pn-rail'),sl=rl.scrollLeft,hm=typeof feedHasMore!=='undefined'&&feedHasMore;
+  rl.innerHTML=src.map(p=>isY?ycard(p,selP):isI?icard(p,selP):tcard(p,selP)).join('')+(hm?`<div class="pn-card pn-more" onclick="loadMoreFeed()"><span style="font-size:30px">⬇️</span><b>${L('Muat Lainnya','Load more')}</b></div>`:'');rl.scrollLeft=sl;
+  const em=$('pn-empty'),none=!src.length;
+  if(none&&hm&&tries<5){tries++;em.classList.remove('hidden');em.textContent='⏳';loadMoreFeed();}
+  else{em.classList.toggle('hidden',!none);em.textContent=isY?'🎬':isI?'🖼':'💬'}
+  sync(all);bar();hydrate();
+}
+const _rp=window.renderPosts;
+window.renderPosts=function(posts,cid){if(cid!=='posts-container')return _rp(posts,cid);draw()};
+const stripRe=/\s*#(musik|music|film|podcast|tutorial|hiburan|iklan|ads|lainnya)\b/ig;window.pnTxt=p=>{let c=String(p.content).replace(imgRe,'');return info(p).yt?c.replace(stripRe,'').trim():c.trim()};
+window.pnBadge=p=>{const i=info(p);return i.yt?`<span class="pn-tag" style="background:${CAT[i.cat][3]}">${nm(i.cat)}</span>`:''};
+window.pnMusicBtn=p=>{const i=info(p);return i.yt&&i.cat==='musik'?`<button class="action-btn pn-mbtn" onclick="PN.go('${p.id}')">🎵</button>`:''};
+// ---------- playlist ----------
+function sync(posts){let ch=false;posts.forEach(p=>{const i=info(p);if(i.yt&&i.cat==='musik'&&!PL.some(x=>x.id===i.id)&&!RM.includes(i.id)){PL.push({id:i.id,by:p.authorUsername,t:snip(p.content)});ch=true}});if(ch)save();
+  PL.filter(x=>!x.n&&!x.f).slice(0,6).forEach(meta)}
+function meta(x){x.f=1;fetch('https://www.youtube.com/oembed?format=json&url='+encodeURIComponent('https://youtu.be/'+x.id)).then(r=>r.ok?r.json():null).then(j=>{if(j){x.t=j.title;x.by=x.by||j.author_name;x.n=1;save();bar();if(!$('pn-modal').classList.contains('hidden'))lst()}}).catch(()=>{})}
+function bar(){const b=$('pn-bar');if(!PL||!PL.length||cur<0){return}
+  const x=PL[cur];if(!x)return;$('pn-t').textContent=x.t;$('pn-s').textContent=(cur+1)+'/'+PL.length+' · @'+(x.by||'');
+  $('pn-pp').textContent=yp&&yp.getPlayerState&&yp.getPlayerState()===1?'⏸':'▶';
+  if('mediaSession' in navigator&&window.MediaMetadata){navigator.mediaSession.metadata=new MediaMetadata({title:x.t,artist:x.by||'Pesaner',artwork:[{src:`https://img.youtube.com/vi/${x.id}/hqdefault.jpg`,sizes:'480x360',type:'image/jpeg'}]})}}
+let last=0;
+function hb(on){const b=$('pn-hbtn');if(b){b.classList.toggle('on',on);b.textContent=on?'⏹':'🎵';b.title=on?'Stop':'Musik'}}
+function applyMin(m){$('pn-bar').classList.toggle('min',m);document.body.classList.toggle('pn-playing',!m&&cur>=0);$('pn-mn').textContent=m?'⌃':'⌄';if(m)$('pn-vid').classList.remove('big')}
+function api(cb){if(window.YT&&YT.Player)return cb();window.onYouTubeIframeAPIReady=cb;if(!$('pn-yta')){const s=document.createElement('script');s.id='pn-yta';s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s)}}
+function play(i){if(!PL.length)return;cur=((i%PL.length)+PL.length)%PL.length;last=cur;hb(true);$('pn-bar').classList.remove('hidden');applyMin(ls.g('pesaner_pn_min',true));bar();
+  api(()=>{const id=PL[cur].id;if(yp&&yp.loadVideoById)yp.loadVideoById(id);else yp=new YT.Player('pn-yt',{width:'100%',height:'100%',videoId:id,playerVars:{autoplay:1,playsinline:1,rel:0},events:{onReady:e=>e.target.playVideo(),
+   onStateChange:e=>{if(e.data===1)errs=0;if(e.data===0&&$('pn-auto').checked)play(cur+1);bar()},
+   onError:()=>{if(++errs<PL.length){showToast(L('Video tidak bisa di-embed, lanjut ke lagu berikutnya','Video not embeddable, skipping'),'error');if($('pn-auto').checked)play(cur+1)}}}})})}
+function lst(){load();$('pn-mc').textContent='';
+  $('pn-list').innerHTML=PL.map((x,i)=>`<div class="pn-li ${i===cur?'now':''}"><img src="https://img.youtube.com/vi/${x.id}/default.jpg" alt=""><div class="t"><b>${escHtml(x.t)}</b><span style="opacity:.7">@${escHtml(x.by||'')}${i===cur?' ▶':''}</span></div><button onclick="PN.mv(${i},-1)">▲</button><button onclick="PN.mv(${i},1)">▼</button><button onclick="PN.play(${i})">▶</button><button onclick="PN.rm(${i})">✕</button></div>`).join('')||`<p class="pn-none">🎵</p>`}
+function composer(){const ta=$('post-content'),row=$('pn-cc');if(!ta)return;const has=!!extractYoutubeId(ta.value),m=(ta.value.match(catRe)||[])[1];
+  row.classList.toggle('hidden',!has);let cc=m?m.toLowerCase():'lainnya';if(cc==='music')cc='musik';if(cc==='ads')cc='iklan';
+  row.innerHTML=CATS.map(c=>`<button type="button" class="${cc===c[0]?'on':''}" onclick="PN.pick('${c[0]}')">${nm(c[0])}</button>`).join('')}
+window.PN={
+ type(t){F.type=t;tries=0;ls.s('pesaner_feedfilter',F);draw()},
+ cat(c){F.cat=c;tries=0;ls.s('pesaner_feedfilter',F);draw()},
+ go(pid){const p=(allPosts||[]).find(x=>x.id===pid);if(!p)return;const i=info(p);load();F.sel=pid;draw();
+  if(i.cat==='musik'){sync([p]);play(PL.findIndex(x=>x.id===i.id))}
+  const w=document.querySelector('#post-'+pid+' .yt-embed-wrap');if(w){if(i.cat!=='musik')playYoutubeEmbed(w.id,i.id);w.scrollIntoView({behavior:'smooth',block:'center'})}else{const c=document.getElementById('post-'+pid);if(c)c.scrollIntoView({behavior:'smooth',block:'nearest'})}},
+ play,step(d){play(cur+d)},
+ toggle(){if(!yp)return;yp.getPlayerState()===1?yp.pauseVideo():yp.playVideo();setTimeout(bar,300)},
+ setAuto(v){ls.s(uk('auto'),v)},big(){if(!$('pn-bar').classList.contains('min'))$('pn-vid').classList.toggle('big')},
+ min(){const m=!$('pn-bar').classList.contains('min');ls.s('pesaner_pn_min',m);applyMin(m)},
+ power(){if(cur>=0)return PN.close();load();if(!PL.length){PN.open_();return}play(last)},
+ close(){hb(false);if(yp&&yp.stopVideo)yp.stopVideo();cur=-1;$('pn-vid').classList.remove('big');$('pn-bar').classList.add('hidden');document.body.classList.remove('pn-playing')},
+ open_(){load();lst();$('pn-modal').classList.remove('hidden')},shut(){$('pn-modal').classList.add('hidden')},
+ mv(i,d){const j=i+d;if(j<0||j>=PL.length)return;const c=PL[cur];[PL[i],PL[j]]=[PL[j],PL[i]];cur=c?PL.indexOf(c):-1;save();lst()},
+ rm(i){RM.push(PL[i].id);PL.splice(i,1);if(i<cur)cur--;else if(i===cur)cur=-1;save();lst()},
+ shuf(){const c=PL[cur];for(let i=PL.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[PL[i],PL[j]]=[PL[j],PL[i]]}cur=c?PL.indexOf(c):-1;save();lst()},
+ clear(){if(!confirm(L('Kosongkan playlist?','Clear playlist?')))return;PL.forEach(x=>RM.push(x.id));PL=[];save();PN.close();lst()},
+ async add(){const u=$('pn-url').value.trim(),id=extractYoutubeId(u);if(!id){showToast(L('Link YouTube tidak valid','Invalid YouTube link'),'error');return}
+  load();RM=RM.filter(x=>x!==id);if(!PL.some(x=>x.id===id)){const x={id,t:'Video YouTube',by:currentUser.username};PL.push(x);meta(x)}save();
+  if($('pn-share').checked){const b=$('pn-addb');b.disabled=true;try{const r=await apiCall('createPost',{username:currentUser.username,content:('https://youtu.be/'+id+' #musik'),privacy:'public'});if(r.success){cacheInvalidate([userCacheKey('feed')]);loadFeed()}}catch(e){}b.disabled=false}
+  $('pn-url').value='';lst();showToast(L('Ditambahkan ke playlist','Added to playlist'))},
+ async pick_(inp){const f=inp.files&&inp.files[0];if(!f)return;try{pend=await shrink(f);const pv=$('pn-img-pv');pv.querySelector('img').src=URL.createObjectURL(pend);pv.classList.remove('hidden')}catch(e){showToast(L('Gambar tidak bisa dibaca','Cannot read image'),'error')}inp.value=''},
+ unpick(){pend=null;$('pn-img-pv').classList.add('hidden')},
+ async zoom(id){const u=await imgUrl(id);if(!u)return;$('pn-lb-img').src=u;$('pn-lb').classList.remove('hidden')},
+ unzoom(){$('pn-lb').classList.add('hidden');$('pn-lb-img').removeAttribute('src')},
+ pick(c){const ta=$('post-content');ta.value=ta.value.replace(/\s*#(musik|music|film|podcast|tutorial|hiburan|iklan|ads|lainnya)\b/ig,'').trimEnd()+' #'+c;ta.dispatchEvent(new Event('input'));composer()}};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('pn-lb').classList.contains('hidden'))PN.unzoom()});
+document.addEventListener('input',e=>{if(e.target&&e.target.id==='post-content')composer()});
+const _op=window.openPostModal;window.openPostModal=function(){_op.apply(this,arguments);PN.unpick();composer()};
+const _sp=window.submitPost;window.submitPost=async function(){
+ if(pend){try{const id='i'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);await idbPut(id,pend);const ta=$('post-content');ta.value=(ta.value.trim()+' [img:'+id+']').trim();ta.dispatchEvent(new Event('input'));PN.unpick()}catch(e){showToast(L('Gagal menyimpan gambar','Failed to save image'),'error');return}}
+ return _sp.apply(this,arguments)};
+document.addEventListener('DOMContentLoaded',()=>{types()});
+})();
+</script>
+<style>
+#pn-chat-tabs button{position:relative}
+.pn-bdg{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;margin-left:6px;border-radius:999px;background:#EF4444;color:#fff;font-size:11px;font-weight:800}
+.pn-bdg.hidden{display:none!important}
+</style>
+<script>
+var pnChat={f:(function(){try{return localStorage.getItem('pesaner_chatfilter')==='group'?'group':'user'}catch(e){return 'user'}})()};
+function pnChatUI(full){
+  var un={user:0,group:0};(full||[]).forEach(function(i){if(i.unread>0)un[i.kind]+=i.unread});
+  document.querySelectorAll('#pn-chat-tabs button').forEach(function(b){
+    var k=b.dataset.k,bd=b.querySelector('.pn-bdg');b.classList.toggle('on',pnChat.f===k);
+    bd.textContent=un[k]>99?'99+':un[k];bd.classList.toggle('hidden',!(un[k]>0)&&true)});
+}
+function pnChatTab(k){pnChat.f=k;try{localStorage.setItem('pesaner_chatfilter',k)}catch(e){}pnChatUI();loadChatList()}
+document.addEventListener('DOMContentLoaded',function(){pnChatUI()});
+</script>
+<style>
+#pn-hs-in{width:280px!important;padding:8px 16px 8px 38px!important;border-radius:999px!important;font-size:13px!important;font-weight:600;color:#fff!important;background:rgba(255,255,255,.14) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round'><circle cx='11' cy='11' r='7'/><path d='M20 20l-4-4'/></svg>") no-repeat 13px center!important;border:1px solid rgba(255,255,255,.3)!important}
+#pn-hs-in::placeholder{color:#BCD3FF}
+#pn-hs-dd{position:absolute;top:calc(100% + 8px);left:0;width:340px;max-height:340px;overflow-y:auto;background:#143BA2;border:1px solid rgba(255,255,255,.3);border-radius:16px;padding:6px;box-shadow:0 12px 30px rgba(5,23,77,.6);z-index:80}
+#pn-hs-dd.hidden{display:none!important}
+.pn-hs-h{text-align:center;font-size:12px;opacity:.8;padding:14px 8px;color:#fff}
+@media(min-width:768px){#pn-hs-btn{display:none!important}}
+</style>
+<script>
+var pnHT=null,pnHSu=[];
+function pnHSclose(){var d=document.getElementById('pn-hs-dd');if(d)d.classList.add('hidden')}
+function pnHS(){
+  clearTimeout(pnHT);
+  var inp=document.getElementById('pn-hs-in'),dd=document.getElementById('pn-hs-dd'),q=inp.value.trim();
+  if(!q.length){dd.classList.add('hidden');return}
+  dd.classList.remove('hidden');
+  if(q.length<3){pnHSu=[];dd.innerHTML='<p class="pn-hs-h">Ketik minimal 3 huruf nama atau username untuk mencari.</p>';return}
+  dd.innerHTML='<p class="pn-hs-h">⏳</p>';
+  pnHT=setTimeout(async function(){
+    try{
+      var r=await apiCall('searchUsers',{query:q,excludeUsername:currentUser.username});
+      if(inp.value.trim()!==q)return;
+      pnHSu=r.users||[];
+      dd.innerHTML=pnHSu.length?pnHSu.map(function(u,i){return '<div class="chat-list-item" onmousedown="pnHSgo('+i+')"><img src="'+resolveAvatarUrl({name:u.name,avatarUrl:u.avatarUrl})+'" class="avatar w-10 h-10 flex-shrink-0"/><div class="flex-1 min-w-0"><p class="font-bold text-sm truncate">'+escHtml(u.name)+'</p><p class="text-xs truncate" style="opacity:.75">@'+escHtml(u.username)+'</p></div></div>'}).join(''):'<p class="pn-hs-h">'+t('chat_no_user_found')+'</p>';
+    }catch(e){showToast(t('toast_search_user_fail'),'error');pnHSclose()}
+  },300);
+}
+function pnHSgo(i){
+  var u=pnHSu[i];if(!u)return;
+  document.getElementById('pn-hs-in').value='';pnHSclose();pnHSu=[];
+  switchTab('chat');openChatThread(u.username,u.name,u.avatarUrl||'');
+}
 </script>
 </body>
 </html>
