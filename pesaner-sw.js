@@ -8,7 +8,7 @@
 const VERSION = 'pesaner-v2';
 const APP_PATHS = ['/pesaner', '/pesaner.html', '/pesaner/'];  // hanya halaman Pesaner yang disentuh SW; blog & halaman lain andu.my.id lewat normal
 const CORE = ['/pesaner', '/pesaner.webmanifest', '/pesaner-icons/icon-192.png', '/pesaner-icons/icon-512.png', '/pesaner-icons/badge-96.png'];
-const CDN_HOSTS = ['cdn.tailwindcss.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+const CDN_HOSTS = ['cdn.tailwindcss.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com', 'unpkg.com'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
