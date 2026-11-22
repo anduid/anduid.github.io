@@ -1027,6 +1027,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:non
         <div id="pn-filter">
   <div class="pn-types" id="pn-types"></div>
   <div class="pn-chips hidden" id="pn-chips"></div>
+  <div class="pn-lockbar hidden" id="pn-lockbar"><button type="button" id="pn-lock-btn" onclick="PN.lock()"></button><small id="pn-lock-hint"></small></div>
   <div id="pn-rail-wrap" class="hidden"><div class="pn-rail" id="pn-rail"></div></div>
   <div id="pn-empty" class="hidden pn-none"></div>
 </div>
@@ -11283,6 +11284,13 @@ button.vo-btn{cursor:pointer}
 #img-viewer .iv-top{position:absolute;top:env(safe-area-inset-top);left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;color:#fff;font-size:13px}
 #img-viewer button,#img-viewer a{color:#fff;background:rgba(255,255,255,.16);border:0;border-radius:999px;padding:8px 14px;font-size:13px;text-decoration:none;cursor:pointer}
 #img-viewer .iv-wm{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.12);font-size:22px;font-weight:700;transform:rotate(-20deg);text-align:center}
+#img-viewer.iv-secure{touch-action:none;-webkit-touch-callout:none;overflow:hidden}
+#img-viewer.iv-hidden img{visibility:hidden}
+#img-viewer .iv-hint{display:none;position:absolute;left:0;right:0;bottom:12%;text-align:center;color:#fff;font-size:15px;pointer-events:none;padding:0 24px}
+#img-viewer.iv-hidden .iv-hint{display:block}
+#img-viewer .iv-wm2{position:absolute;inset:-50%;pointer-events:none;display:flex;flex-wrap:wrap;gap:34px 46px;align-content:flex-start;transform:rotate(-20deg);animation:ivdrift 14s linear infinite alternate;color:rgba(255,255,255,.17);font-size:15px;font-weight:700;white-space:nowrap}
+#img-viewer.iv-hidden .iv-wm2{display:none}
+@keyframes ivdrift{from{transform:rotate(-20deg) translate(0,0)}to{transform:rotate(-20deg) translate(60px,40px)}}
 #vo-picker{position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px}
 #vo-picker .card{background:#16224a;color:#fff;border-radius:18px;max-width:360px;width:100%;padding:14px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
 #vo-picker img{width:100%;max-height:50vh;object-fit:contain;border-radius:12px;background:#000}
@@ -11307,9 +11315,11 @@ function viewOnceBubble(m) {
   return '<button type="button" class="vo-chip vo-btn" onclick="openViewOnce(\'' + escHtml(m.id) + '\')"><span class="material-symbols-outlined">filter_1</span><div><b>Foto</b><small>Ketuk untuk membuka (hanya 1×)</small></div></button>';
 }
 
+let _ivCleanup = null;
 function closeImageViewer() {
   const v = document.getElementById('img-viewer');
   if (!v) return;
+  if (_ivCleanup) { try { _ivCleanup(); } catch (e) {} _ivCleanup = null; }
   const img = v.querySelector('img');
   if (v.dataset.revoke && img && /^blob:/.test(img.src)) { try { URL.revokeObjectURL(img.src); } catch (e) {} }
   v.remove();
@@ -11317,7 +11327,8 @@ function closeImageViewer() {
 }
 function ivKey(e) { if (e.key === 'Escape') closeImageViewer(); }
 
-// opts: { revoke:true } untuk foto 1x (Blob dibuang saat ditutup), { watermark:'teks' }
+// opts: { revoke:true } Blob dibuang saat ditutup; { secure:true } mode foto 1x (tahan untuk melihat, anti-tangkapan layar);
+//       { watermark:'teks' }
 function showImageViewer(src, opts) {
   opts = opts || {};
   closeImageViewer();
@@ -11325,14 +11336,65 @@ function showImageViewer(src, opts) {
   v.id = 'img-viewer';
   if (opts.revoke) v.dataset.revoke = '1';
   v.oncontextmenu = function () { return false; };
+  let wm = '';
+  if (opts.secure) {
+    const d = new Date(), hh = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    let spans = '';
+    for (let i = 0; i < 60; i++) spans += '<span>' + (opts.watermark || '') + ' · ' + hh + '</span>';
+    wm = '<div class="iv-wm2">' + spans + '</div><div class="iv-hint">Tahan layar untuk melihat foto</div>';
+  } else if (opts.watermark) {
+    wm = '<div class="iv-wm">' + opts.watermark + '</div>';
+  }
   v.innerHTML = '<div class="iv-top"><span>' + (opts.note || '') + '</span><span style="display:flex;gap:8px">' +
     (opts.link ? '<a href="' + opts.link + '" target="_blank" rel="noopener noreferrer">Buka asli</a>' : '') +
     '<button type="button" id="iv-close">Tutup ✕</button></span></div>' +
-    '<img alt="Foto" draggable="false"/>' + (opts.watermark ? '<div class="iv-wm">' + opts.watermark + '</div>' : '');
+    '<img alt="Foto" draggable="false"/>' + wm;
   v.querySelector('img').src = src;
-  v.addEventListener('click', function (e) { if (e.target === v || e.target.id === 'iv-close') closeImageViewer(); });
+  v.addEventListener('click', function (e) {
+    if (e.target.id === 'iv-close' || (!opts.secure && e.target === v)) closeImageViewer();
+  });
   document.body.appendChild(v);
   document.addEventListener('keydown', ivKey);
+  if (opts.secure) setupSecureViewer(v);
+}
+
+// Perlakuan khusus HANYA untuk foto sekali lihat: foto tampil selama layar ditekan, langsung
+// disembunyikan saat jendela/tab kehilangan fokus atau tombol tangkapan layar ditekan.
+// Catatan: di web tidak ada cara memblokir screenshot sepenuhnya; ini pencegah, bukan jaminan.
+function setupSecureViewer(v) {
+  v.classList.add('iv-secure', 'iv-hidden');
+  const hide = function () { v.classList.add('iv-hidden'); };
+  const show = function () {
+    if (document.visibilityState === 'visible' && (!document.hasFocus || document.hasFocus())) v.classList.remove('iv-hidden');
+  };
+  const down = function (e) { if (e.target.closest && e.target.closest('button,a')) return; show(); };
+  const vis = function () { if (document.visibilityState !== 'visible') hide(); };
+  const key = function (e) {
+    const k = e.key;
+    const combo = (e.metaKey || e.ctrlKey) && e.shiftKey && ['3', '4', '5', 's', 'S'].indexOf(k) !== -1;
+    if (k === 'PrintScreen' || combo || (e.ctrlKey && (k === 'p' || k === 'P'))) {
+      hide();
+      try { navigator.clipboard.writeText(''); } catch (x) {}
+    }
+  };
+  const noCtx = function (e) { e.preventDefault(); };
+  v.addEventListener('pointerdown', down);
+  v.addEventListener('pointerleave', hide);
+  v.addEventListener('contextmenu', noCtx);
+  window.addEventListener('pointerup', hide);
+  window.addEventListener('pointercancel', hide);
+  window.addEventListener('blur', hide);
+  document.addEventListener('visibilitychange', vis);
+  document.addEventListener('keydown', key, true);
+  document.addEventListener('keyup', key, true);
+  _ivCleanup = function () {
+    window.removeEventListener('pointerup', hide);
+    window.removeEventListener('pointercancel', hide);
+    window.removeEventListener('blur', hide);
+    document.removeEventListener('visibilitychange', vis);
+    document.removeEventListener('keydown', key, true);
+    document.removeEventListener('keyup', key, true);
+  };
 }
 
 function openImageViewer(imgEl) {
@@ -11362,7 +11424,7 @@ async function openViewOnce(messageId) {
     const url = URL.createObjectURL(new Blob([arr], { type: res.mimeType || 'image/jpeg' }));
     m.viewOnceState = 'opened';
     renderChatMessages();
-    showImageViewer(url, { revoke: true, note: 'Foto sekali lihat — hanya bisa dibuka 1×', watermark: '@' + currentUser.username });
+    showImageViewer(url, { revoke: true, secure: true, note: 'Foto sekali lihat — hanya bisa dibuka 1×', watermark: '@' + currentUser.username });
   } catch (e) {
     showToast('Gagal membuka foto: ' + ((e && e.message) || 'koneksi bermasalah'), 'error');
   } finally { _voBusy = false; }
@@ -11754,6 +11816,21 @@ body.pn-yt #btn-load-more-feed{display:none!important}
 #pn-lb button{position:fixed;top:14px;right:14px;width:44px;height:44px;border-radius:50%;background:#FFB800;color:#091A4B;font-size:20px;font-weight:900;box-shadow:0 4px 0 #D99500}
 </style>
 <div id="pn-lb" class="hidden" onclick="if(event.target===this)PN.unzoom()"><img id="pn-lb-img" alt=""><button type="button" onclick="PN.unzoom()" aria-label="Close">✕</button></div>
+<style id="pn-lock-css">
+.pn-lockbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:0 0 8px}
+.pn-lockbar.hidden{display:none!important}
+.pn-lockbar button,#pn-lock-pill button{position:relative;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;font-weight:800}
+.pn-lockbar button{padding:7px 14px;border-radius:999px;font-size:12px;color:#0F2C7A;background:#FBBF24;border:1px solid rgba(255,255,255,.35)}
+.pn-lockbar small{color:#fff;opacity:.85;font-size:11px}
+body.pn-locked #pn-lock-btn{background:#EF4444;color:#fff}
+body.pn-locked::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:99990;box-shadow:inset 0 0 0 3px #FBBF24}
+#pn-lock-pill{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:100000}
+#pn-lock-pill.hidden{display:none!important}
+#pn-lock-pill button{padding:10px 18px;border-radius:999px;font-size:13px;color:#fff;background:rgba(15,23,42,.94);border:1px solid rgba(251,191,36,.95);box-shadow:0 6px 20px rgba(0,0,0,.45)}
+#pn-lock-pill i,#pn-lock-btn i{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(251,191,36,.5);pointer-events:none}
+#pn-lock-pill span,#pn-lock-btn span{position:relative}
+.pn-holding i{width:100%!important;transition:width .8s linear!important}
+</style>
 <script id="pn-js">
 (function(){
 const EN=()=>typeof currentLang!=='undefined'&&currentLang==='en',L=(a,b)=>EN()?b:a;
@@ -11764,7 +11841,7 @@ const $=id=>document.getElementById(id);
 const ls={g(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},s(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const uk=b=>'pesaner_'+b+'_'+((typeof currentUser!=='undefined'&&currentUser)?currentUser.username:'x');
 const F=Object.assign({type:'text',cat:'all'},ls.g('pesaner_feedfilter',{}));if(F.type!=='yt'&&F.type!=='img')F.type='text';
-let tries=0,PL=null,RM=[],cur=-1,yp=null,errs=0;
+let tries=0,PL=null,RM=[],cur=-1,yp=null,errs=0,locked=false;
 const nm=c=>L(CAT[c][1],CAT[c][2]);
 const imgRe=/\s*\[img:([a-z0-9]+)\]/i;
 function info(p){const id=extractYoutubeId(p.content);if(!id){const m=String(p.content).match(imgRe);return m?{yt:false,img:true,id:m[1]}:{yt:false}}let c=(String(p.content).match(catRe)||[])[1];c=c?c.toLowerCase():'lainnya';if(c==='music')c='musik';if(c==='ads')c='iklan';return{yt:true,id,cat:c}}
@@ -11774,7 +11851,7 @@ function save(){ls.s(uk('pl'),PL);ls.s(uk('plrm'),RM)}
 // ---------- filter + rail ----------
 function types(){const T=[['text','💬 '+L('Teks','Text')],['img','🖼 '+L('Gambar','Images')],['yt','▶ YouTube']];
   $('pn-types').innerHTML=T.map(t=>`<button class="${F.type===t[0]?'on':''}" onclick="PN.type('${t[0]}')">${t[1]}</button>`).join('');
-  const ch=$('pn-chips');ch.classList.toggle('hidden',F.type!=='yt');
+  const ch=$('pn-chips');ch.classList.toggle('hidden',F.type!=='yt');const lb=$('pn-lockbar');if(lb)lb.classList.toggle('hidden',F.type!=='yt'&&!locked);
   ch.innerHTML=[['all',L('Semua','All')]].concat(CATS.map(c=>[c[0],nm(c[0])])).map(c=>`<button class="${F.cat===c[0]?'on':''}" onclick="PN.cat('${c[0]}')">${c[1]}</button>`).join('')}
 const GR=['#EC4899,#F97316','#6366F1,#06B6D4','#10B981,#3B82F6','#F59E0B,#EF4444','#8B5CF6,#EC4899','#0EA5E9,#10B981'];
 const hs=x=>{let h=0;for(const c of String(x))h=(h*31+c.charCodeAt(0))>>>0;return h};
@@ -11797,7 +11874,7 @@ function draw(){
   const all=allPosts||[],isY=F.type==='yt',isI=F.type==='img';
   const src=isY?all.filter(p=>{const i=info(p);return i.yt&&(F.cat==='all'||i.cat===F.cat)}):isI?all.filter(p=>info(p).img):all.filter(p=>!info(p).yt&&!info(p).img);
   const selP=src.find(p=>p.id===F.sel)||src[0];
-  $('posts-container').innerHTML=selP?postCard(selP):'';
+  {const pc=$('posts-container'),keep=locked&&selP&&pc.querySelector('#post-'+selP.id+' .yt-embed-wrap iframe');if(!keep)pc.innerHTML=selP?postCard(selP):''}
   $('pn-rail-wrap').classList.toggle('hidden',!src.length);
   const rl=$('pn-rail'),sl=rl.scrollLeft,hm=typeof feedHasMore!=='undefined'&&feedHasMore;
   rl.innerHTML=src.map(p=>isY?ycard(p,selP):isI?icard(p,selP):tcard(p,selP)).join('')+(hm?`<div class="pn-card pn-more" onclick="loadMoreFeed()"><span style="font-size:30px">⬇️</span><b>${L('Muat Lainnya','Load more')}</b></div>`:'');rl.scrollLeft=sl;
@@ -11865,6 +11942,42 @@ const _sp=window.submitPost;window.submitPost=async function(){
  if(pend){try{const id='i'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);await idbPut(id,pend);const ta=$('post-content');ta.value=(ta.value.trim()+' [img:'+id+']').trim();ta.dispatchEvent(new Event('input'));PN.unpick()}catch(e){showToast(L('Gagal menyimpan gambar','Failed to save image'),'error');return}}
  return _sp.apply(this,arguments)};
 document.addEventListener('DOMContentLoaded',()=>{types()});
+// ---------- kunci layar (khusus filter YouTube) ----------
+// Saat terkunci, semua klik/ketukan di luar pemutar video, bar musik, dan tombol buka-kunci diabaikan.
+// Scroll tetap jalan. Buka kunci: TAHAN tombol 0,8 detik (supaya tidak terbuka tanpa sengaja).
+// Status kunci hanya di memori halaman: minimize/maximize tidak mengubahnya dan tidak menyentuh pemutaran video.
+const LOK='.yt-embed-wrap,#pn-bar,#pn-lock-btn,#pn-lock-pill';
+const pill=document.createElement('div');pill.id='pn-lock-pill';pill.className='hidden';pill.innerHTML='<button type="button"><i></i><span></span></button>';document.body.appendChild(pill);
+let holdT=null,holdEl=null;
+function lockUI(){const b=$('pn-lock-btn'),h=$('pn-lock-hint');if(!b)return;
+  b.innerHTML='<i></i><span>'+(locked?L('🔒 Terkunci · tahan untuk membuka','🔒 Locked · hold to unlock'):L('🔓 Kunci Layar','🔓 Lock Screen'))+'</span>';
+  if(h)h.textContent=locked?L('Hanya pemutar video yang bisa disentuh','Only the video player is touchable'):L('Cegah menu lain terpencet saat menonton','Prevent accidental taps while watching');
+  pill.querySelector('span').textContent=L('🔒 Layar terkunci · tahan untuk membuka','🔒 Screen locked · hold to unlock');
+  pill.classList.toggle('hidden',!locked);document.body.classList.toggle('pn-locked',locked);
+  const lb=$('pn-lockbar');if(lb)lb.classList.toggle('hidden',F.type!=='yt'&&!locked)}
+function holdEnd(){clearTimeout(holdT);holdT=null;if(holdEl){holdEl.classList.remove('pn-holding');holdEl=null}}
+function holdStart(el){holdEnd();holdEl=el;void el.offsetWidth;el.classList.add('pn-holding');holdT=setTimeout(()=>{holdEnd();PN.unlock()},800)}
+function guard(e){
+  if(!locked)return;
+  const t=e.target;
+  if(t&&t.closest){
+    const hb=t.closest('#pn-lock-btn,#pn-lock-pill button');
+    if(hb){if(e.type==='pointerdown')holdStart(hb);return}
+    if(t.closest(LOK))return;
+  }
+  e.stopPropagation();e.stopImmediatePropagation();
+  if(e.type==='click'||e.type==='submit'||e.type==='contextmenu'||e.type==='auxclick')e.preventDefault();
+}
+['pointerup','pointercancel','blur'].forEach(n=>window.addEventListener(n,holdEnd,true));
+['click','dblclick','auxclick','mousedown','mouseup','pointerdown','pointerup','touchstart','touchend','submit','contextmenu'].forEach(n=>window.addEventListener(n,guard,true));
+// jaga-jaga: pastikan penanda kunci tetap menempel setelah minimize/maximize/ubah ukuran jendela
+['visibilitychange','focus','resize','pageshow'].forEach(n=>window.addEventListener(n,()=>{if(locked)document.body.classList.add('pn-locked')}));
+PN.lock=function(){if(locked){showToast(L('Tahan tombol selama 1 detik untuk membuka kunci','Hold the button for 1 second to unlock'));return}
+  locked=true;lockUI();showToast(L('Layar dikunci. Tahan tombol untuk membuka.','Screen locked. Hold the button to unlock.'))};
+PN.unlock=function(){if(!locked)return;locked=false;lockUI();showToast(L('Kunci dibuka','Unlocked'))};
+lockUI();
+document.addEventListener('DOMContentLoaded',lockUI);
+
 })();
 </script>
 <style>
