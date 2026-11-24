@@ -91,7 +91,7 @@ news_description: Portal berita Indonesia dengan teman monster 3D, XP literasi, 
 news_base: /news
 # URL Web App Apps Script untuk dashboard berita (backend/andu-news-Code.gs). Kosong = mode offline (hanya IndexedDB).
 # Ini deployment TERPISAH dari gas_url portal di bawah, karena daftar action-nya berbeda.
-gas_webapp_url: ""
+gas_webapp_url: "https://script.google.com/macros/s/AKfycbyT6pjDqwyxdmz4hAgxfNIbrMiFdaQSygV88pRV107UDXj3McDbP-PF1hgB8YXWXIY11g/exec"
 
 # ====== TEKNIS ======
 markdown: kramdown
