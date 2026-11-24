@@ -41,6 +41,7 @@ nav:
   - { judul: Market, url: /market/ }
   - { judul: Portal, url: /portal/ }
   - { judul: Blog, url: /blog/ }
+  - { judul: News, url: /news/ }
   - { judul: Profil, url: /profil/ }
 
 # Bilah ekosistem (topbar) di paling atas semua halaman, sama dengan repo anduid/market.
@@ -52,10 +53,12 @@ ekosistem:
   - { nama: Market, url: "https://andu.my.id/market/", kunci: market }
   - { nama: Portal, url: "https://andu.my.id/portal/", kunci: portal }
   - { nama: Blog, url: "https://andu.my.id/blog/", kunci: blog }
+  - { nama: News, url: "https://andu.my.id/news/", kunci: news }
   - { nama: Profil, url: "https://andu.my.id/profil/", kunci: profil }
 
 # Menu di footer
 nav_footer:
+  - { judul: Andu News, url: /news/ }
   - { judul: Arsip Blog, url: /blog/arsip/ }
   - { judul: Topik Blog, url: /blog/topik/ }
   - { judul: Tentang Blog, url: /blog/tentang/ }
@@ -78,6 +81,17 @@ giscus:
   repo_id: ""
   category: "Announcements"
   category_id: ""
+
+# ====== ANDU NEWS (portal berita, tampil di /news/) ======
+# Berita ada di koleksi _news/ (bukan _posts/, supaya tidak bercampur dengan blog). Satu file per berita:
+# _news/YYYY-MM-DD-judul.md dengan categories: [slug] dari _data/categories.yml.
+news_title: ANDU NEWS
+news_tagline: Berita terpercaya, belajar seru
+news_description: Portal berita Indonesia dengan teman monster 3D, XP literasi, kalender baca, dan ekspor digest.
+news_base: /news
+# URL Web App Apps Script untuk dashboard berita (backend/andu-news-Code.gs). Kosong = mode offline (hanya IndexedDB).
+# Ini deployment TERPISAH dari gas_url portal di bawah, karena daftar action-nya berbeda.
+gas_webapp_url: ""
 
 # ====== TEKNIS ======
 markdown: kramdown
@@ -103,6 +117,9 @@ collections:
   apps:
     output: true
     permalink: /aplikasi/:name/
+  news:
+    output: true
+    permalink: /news/:categories/:year/:month/:day/:title/
 
 defaults:
   - scope: { path: "", type: "apps" }
@@ -114,6 +131,10 @@ defaults:
       bahasa: id
       schema_kategori: UtilitiesApplication
       noads: true
+  - scope: { path: "", type: "news" }
+    values:
+      layout: news-post
+      image: /assets/news/img/og-default.png
 
 # ====== PORTAL ANDU (aplikasi, kelas, layanan) ======
 # URL Web App Apps Script dari backend/Code.gs. Kosong = portal berjalan sebagai demo lokal.
@@ -125,6 +146,7 @@ exclude:
   - PANDUAN-PORTAL.md
   - README.md
   - PANDUAN-MIGRASI.md
+
   - Gemfile
   - Gemfile.lock
   - vendor

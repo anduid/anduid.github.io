@@ -1,0 +1,40 @@
+- slug: pemerintahan
+  gas: Pemerintahan
+  id: Pemerintahan & Layanan
+  en: Government & Services
+  c1: "#2563EB"
+  c0: "#1E40AF"
+  c2: "#93C5FD"
+  icon: "🏛️"
+- slug: teknologi
+  gas: Teknologi
+  id: Teknologi & AI
+  en: Technology & AI
+  c1: "#0D9488"
+  c0: "#0F766E"
+  c2: "#5EEAD4"
+  icon: "🤖"
+- slug: ekonomi
+  gas: Ekonomi
+  id: Ekonomi & UMKM
+  en: Economy & MSMEs
+  c1: "#D97706"
+  c0: "#B45309"
+  c2: "#FCD34D"
+  icon: "💰"
+- slug: budaya
+  gas: Berita Daerah
+  id: Budaya & Komunitas
+  en: Culture & Community
+  c1: "#E11D48"
+  c0: "#BE123C"
+  c2: "#FDA4AF"
+  icon: "🎭"
+- slug: gaya-hidup
+  gas: Gaya Hidup
+  id: Gaya Hidup & ASN
+  en: Lifestyle & Civil Service
+  c1: "#6D28D9"
+  c0: "#5B21B6"
+  c2: "#C4B5FD"
+  icon: "🌿"

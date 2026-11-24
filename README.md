@@ -90,3 +90,13 @@ bundle exec jekyll build && python3 tools/sinkron_app.py pasca && python3 tools/
 Buka tab **Actions** di GitHub, klik run terbaru. Pesan merah/kuning dari "Periksa konsistensi situs" menyebut
 persis berkas dan penyebabnya (tautan patah, `apps:` salah ketik, halaman aplikasi tidak terbentuk, dst.).
 Situs lama tetap online selama build baru belum berhasil.
+
+## Andu News (/news/)
+
+Portal berita (monster 3D, XP literasi, kalender baca, ekspor digest) kini bagian dari situs ini.
+
+- Berita: satu berkas per berita di `_news/YYYY-MM-DD-judul.md` (bukan `_posts/`, yang khusus blog), dengan `categories: [slug]` dari `_data/categories.yml` dan dua blok `<div data-lang="id" markdown="1">` / `<div data-lang="en" markdown="1">`.
+- Alamat berita: `/news/KATEGORI/TAHUN/BULAN/TANGGAL/judul/`. Halaman lain: `/news/kalender/`, `/news/monster/`, `/news/ekspor/`, `/news/dashboard-pembaca|penulis|superadmin/`. Umpan RSS: `/news/feed.xml`.
+- Layout/include berita memakai awalan `news-`; aset di `assets/news/`.
+- Dashboard butuh backend `backend/andu-news-Code.gs` (deploy sebagai Web App), lalu isi `gas_webapp_url` di `_config.yml`. Kosong = mode offline (IndexedDB).
+

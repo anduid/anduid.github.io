@@ -1,0 +1,31 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="andu-base" content="{{ site.news_base }}">
+<meta name="theme-color" content="#1546BE">
+{%- assign nh_url = page.url | replace: 'index.html', '' | absolute_url -%}
+{%- assign nh_desc = page.description | default: page.excerpt_id | default: site.news_description | strip_html | strip_newlines | truncate: 200 -%}
+{%- if page.layout == 'news-post' -%}{%- assign nh_title = page.title | append: ' | ' | append: site.news_title -%}{%- else -%}{%- assign nh_title = page.title | default: site.news_title -%}{%- endif -%}
+{%- assign nh_img = page.image | default: '/assets/news/img/og-default.png' | absolute_url -%}
+<title>{{ nh_title | escape }}</title>
+<meta name="description" content="{{ nh_desc | escape }}">
+<link rel="canonical" href="{{ nh_url }}">
+<meta property="og:site_name" content="{{ site.news_title | escape }}">
+<meta property="og:locale" content="id_ID">
+<meta property="og:type" content="{% if page.layout == 'news-post' %}article{% else %}website{% endif %}">
+<meta property="og:title" content="{{ nh_title | escape }}">
+<meta property="og:description" content="{{ nh_desc | escape }}">
+<meta property="og:url" content="{{ nh_url }}">
+<meta property="og:image" content="{{ nh_img }}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="{{ site.news_title | escape }}" href="{{ '/news/feed.xml' | absolute_url }}">
+<link rel="alternate" hreflang="id" href="{{ nh_url }}">
+<link rel="alternate" hreflang="en" href="{{ nh_url }}?lang=en">
+<link rel="alternate" hreflang="x-default" href="{{ nh_url }}">
+<link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ '/assets/news/css/news.css' | relative_url }}">
+<style>[data-cat]{--c:#475569;--cd:#334155;--cl:#CBD5E1}{% for c in site.data.categories %}[data-cat="{{ c.slug }}"]{--c:{{ c.c1 }};--cd:{{ c.c0 }};--cl:{{ c.c2 }}}{% endfor %}</style>
+<script>(function(){try{var q=new URLSearchParams(location.search).get('lang'),l=q||localStorage.getItem('andu_lang')||'id';if(l!=='en')l='id';document.documentElement.lang=l;if(q)localStorage.setItem('andu_lang',l);document.documentElement.dataset.theme=localStorage.getItem('andu_theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.style.setProperty('--rfs',[0.95,1.05,1.2,1.35][+(localStorage.getItem('andu_fs')||1)]||1.05)}catch(e){}})()</script>
+
+{% if page.noindex %}<meta name="robots" content="noindex,nofollow">{% endif %}

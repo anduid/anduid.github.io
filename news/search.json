@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /news/search.json
+---
+[{% for p in site.news %}{"id":"p-{{ p.slug }}","slug":"{{ p.slug }}","categories":{{ p.categories | jsonify }},"cat":{{ p.categories.first | jsonify }},"title":{{ p.title | jsonify }},"title_en":{{ p.title_en | jsonify }},"lang_id":{"title":{{ p.title | jsonify }},"excerpt":{{ p.excerpt_id | jsonify }}},"lang_en":{"title":{{ p.title_en | jsonify }},"excerpt":{{ p.excerpt_en | jsonify }}},"tags":{{ p.tags | jsonify }},"author":{{ p.author | jsonify }},"featured":{{ p.featured | default: false }},"reading_time":{{ p.reading_time_id | default: 3 }},"reading_time_en":{{ p.reading_time_en | default: 3 }},"reads":{{ p.reads | default: 10 }},"image":{{ p.image | default: '/assets/news/img/og-default.png' | relative_url | jsonify }},"date":"{{ p.date | date_to_xmlschema }}","url":{{ p.url | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]

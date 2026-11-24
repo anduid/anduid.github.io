@@ -39,7 +39,7 @@ MULAI = "<!-- andu:seo:mulai -->"
 SELESAI = "<!-- andu:seo:selesai -->"
 
 # Nama berkas HTML di root yang BUKAN aplikasi, atau bentrok dengan folder/URL situs.
-RESERVED = {"index", "404", "blog", "aplikasi", "assets", "sitemap", "robots", "feed",
+RESERVED = {"index", "404", "blog", "news", "aplikasi", "assets", "sitemap", "robots", "feed",
             "search", "tools", "tentang", "kontak", "privasi", "cari", "arsip", "topik"}
 
 LOCALE = {"id": "id_ID", "en": "en_US"}

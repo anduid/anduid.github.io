@@ -24,4 +24,7 @@ sitemap: false
   {%- if tulisan.sitemap == false or tulisan.noindex -%}{%- continue -%}{%- endif -%}
   <url><loc>{{ tulisan.url | absolute_url }}</loc><lastmod>{{ tulisan.last_modified_at | default: tulisan.date | date_to_xmlschema }}</lastmod></url>
 {%- endfor -%}
+{%- for b in site.news -%}
+  <url><loc>{{ b.url | absolute_url }}</loc><lastmod>{{ b.last_modified_at | default: b.date | date_to_xmlschema }}</lastmod></url>
+{%- endfor -%}
 </urlset>

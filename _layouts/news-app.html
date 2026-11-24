@@ -1,0 +1,28 @@
+---
+layout: news-default
+---
+{% if page.view == 'home' %}
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"NewsMediaOrganization","name":{{ site.title | jsonify }},"url":"{{ site.url }}{{ site.baseurl }}/news/","logo":"{{ '/assets/news/img/og-default.png' | absolute_url }}","inLanguage":["id","en"]},{"@type":"WebSite","name":{{ site.title | jsonify }},"url":"{{ site.url }}{{ site.baseurl }}/news/","potentialAction":{"@type":"SearchAction","target":"{{ site.url }}{{ site.baseurl }}/news/?q={q}","query-input":"required name=q"}}]}</script>
+{% endif %}
+<main class="wrap" id="app" tabindex="-1">
+{% if page.view == 'home' %}
+<section class="hero" id="hero" aria-label="Headline"></section>
+<section class="blk"><div class="blk-h"><h2 data-i18n="spotlight"></h2></div><div class="rail" id="rail"></div></section>
+<div class="cols" id="jelajah">
+<section class="stream">
+<div class="tabs" id="tabs" role="tablist"></div>
+<div id="filters" class="filters"></div>
+<div class="grid" id="feed"></div>
+<nav class="pager" id="pager" aria-label="Paginasi"></nav>
+<noscript><ul>{% for p in site.news %}<li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>{% endfor %}</ul></noscript>
+</section>
+{% include sidebar.html %}
+</div>
+{% elsif page.view == 'cal' %}
+<section class="panel"><h1 data-i18n="cal_title"></h1><div class="two"><div id="bigcal"></div><div><h3 data-i18n="day_news"></h3><div id="dayfeed" class="list"></div><h3 data-i18n="reminders"></h3><form id="rem-form" class="row"><input id="rem-t" required maxlength="80" data-i18n-ph="rem_ph"><input id="rem-d" type="datetime-local" required><button class="btn" type="submit" data-i18n="add"></button></form><ul id="rem-list" class="list"></ul></div></div></section>
+{% elsif page.view == 'mon' %}
+<section class="panel"><h1 data-i18n="mon_title"></h1><div class="two"><div class="mon-stage"><div id="mon-big"></div><div id="mon-stats" class="stats"></div></div><div><h3 data-i18n="choose"></h3><div id="mon-pick" class="picks"></div><label class="fl"><span data-i18n="mon_name"></span><input id="mon-name" maxlength="16"></label><label class="fl"><span data-i18n="hue"></span><input id="mon-hue" type="range" min="-180" max="180" step="5"></label><p id="mon-bio" class="mut"></p></div></div></section>
+{% elsif page.view == 'exp' %}
+<section class="panel"><h1 data-i18n="exp_title"></h1><p class="mut" data-i18n="exp_desc"></p><label class="fl"><span data-i18n="scope"></span><select id="exp-scope"></select></label><div id="exp-list" class="list"></div><div class="row wrapr"><button class="btn" data-exp="pdf">PDF</button><button class="btn" data-exp="txt">TXT</button><button class="btn" data-exp="wa">WhatsApp</button><button class="btn" data-exp="rss">RSS XML</button></div></section>
+{% endif %}
+</main>

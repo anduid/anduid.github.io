@@ -1,0 +1,32 @@
+- key: piko
+  name: Piko
+  c1: "#7DD3FC"
+  c2: "#0EA5E9"
+  c3: "#0369A1"
+  accent: "#FFB800"
+  id: "Si biru penasaran. Suka bertanya dan paling cepat menemukan berita baru."
+  en: "The curious blue one. Loves questions and spots fresh news first."
+- key: mochi
+  name: Mochi
+  c1: "#FBCFE8"
+  c2: "#F472B6"
+  c3: "#BE185D"
+  accent: "#FFFFFF"
+  id: "Si empuk penyayang. Menemani kamu membaca pelan-pelan sampai tuntas."
+  en: "The soft, caring one. Keeps you company until the last paragraph."
+- key: blaze
+  name: Blaze
+  c1: "#FDBA74"
+  c2: "#F97316"
+  c3: "#C2410C"
+  accent: "#FDE047"
+  id: "Si semangat membara. Mengejar streak harian tanpa kenal lelah."
+  en: "The fiery go-getter. Chases daily streaks without ever tiring."
+- key: rockerz
+  name: Rockerz
+  c1: "#DDD6FE"
+  c2: "#8B5CF6"
+  c3: "#5B21B6"
+  accent: "#22D3EE"
+  id: "Si gaya band. Suka berita budaya dan musik, apa pun genrenya."
+  en: "The band-style one. Into culture and music news, whatever the genre."

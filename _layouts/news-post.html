@@ -1,0 +1,28 @@
+---
+layout: news-default
+---
+{% assign cat = site.data.categories | where: "slug", page.categories.first | first %}
+{% assign rel = site.news | where_exp: "x", "x.url != page.url" | sort: "date" | reverse %}
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[
+{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Beranda","item":"{{ site.url }}{{ site.baseurl }}/news/"},{"@type":"ListItem","position":2,"name":{{ cat.id | jsonify }}},{"@type":"ListItem","position":3,"name":{{ page.title | jsonify }}}]},
+{"@type":"NewsArticle","headline":{{ page.title | jsonify }},"alternativeHeadline":{{ page.title_en | jsonify }},"image":["{{ page.image | default: '/assets/news/img/og-default.png' | absolute_url }}"],"datePublished":"{{ page.date | date_to_xmlschema }}","dateModified":"{{ page.last_modified_at | default: page.date | date_to_xmlschema }}","author":{"@type":"Person","name":{{ page.author | jsonify }}},"publisher":{"@type":"NewsMediaOrganization","name":{{ site.title | jsonify }},"logo":{"@type":"ImageObject","url":"{{ '/assets/news/img/og-default.png' | absolute_url }}"}},"articleSection":{{ cat.id | jsonify }},"inLanguage":"id","mainEntityOfPage":"{{ page.url | absolute_url }}"}]}</script>
+<div class="rbar" id="rbar" aria-hidden="true"><i id="rbar-i"></i></div>
+<main class="wrap narrow" id="app" tabindex="-1">
+<article class="read" data-cat="{{ page.categories.first }}" data-id="p-{{ page.slug }}" data-title="{{ page.title | escape }}" data-title-en="{{ page.title_en | escape }}" data-cat-slug="{{ page.categories.first }}">
+<nav class="crumb" aria-label="Breadcrumb"><a href="{{ '/news/' | relative_url }}" data-i18n="n_home">Beranda</a><span>›</span><a href="{{ '/news/' | relative_url }}?cat={{ page.categories.first }}"><span data-lang="id">{{ cat.id }}</span><span data-lang="en">{{ cat.en }}</span></a><span>›</span><b><span data-lang="id">{{ page.title }}</span><span data-lang="en">{{ page.title_en }}</span></b></nav>
+<span class="chip">{{ cat.icon }} <span data-lang="id">{{ cat.id }}</span><span data-lang="en">{{ cat.en }}</span></span>
+<h1><span data-lang="id">{{ page.title }}</span><span data-lang="en">{{ page.title_en }}</span></h1>
+<p class="meta">{{ page.author }} • <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d/%m/%Y" }}</time> • <span data-lang="id">{{ page.reading_time_id }} mnt baca</span><span data-lang="en">{{ page.reading_time_en }} min read</span> • <b class="xp">+25 XP</b></p>
+<div class="tools" role="toolbar" aria-label="Kenyamanan baca">
+<span class="seg"><button type="button" data-fs="-1" aria-label="A-">A-</button><button type="button" data-fs="0" aria-label="A">A</button><button type="button" data-fs="1" aria-label="A+">A+</button></span>
+<span class="seg"><button type="button" id="tts-play" aria-label="Dengarkan">▶ <span data-i18n="listen"></span></button><button type="button" id="tts-pause" aria-label="Jeda">⏸</button><button type="button" id="tts-stop" aria-label="Berhenti">⏹</button></span>
+<button type="button" class="btn sm ghost" id="bm-btn" aria-pressed="false">🔖 <span data-i18n="bookmark"></span></button>
+</div>
+<div class="postbody" id="postbody">{{ content }}</div>
+<div class="claim" id="claim"><span id="claim-t" data-i18n="claim_hint"></span></div>
+<section class="blk" id="notes-sec"><h3 data-i18n="notes"></h3><textarea id="note" rows="3" data-i18n-ph="notes_ph"></textarea></section>
+<section class="blk" id="comments-sec"><h3 data-i18n="comments"></h3><div id="clist" class="list"></div><form id="cform" class="row"><input id="ctext" maxlength="1000" required data-i18n-ph="c_ph"><button class="btn" type="submit" data-i18n="send"></button></form></section>
+<section class="blk"><h3 data-i18n="read_next"></h3><div class="rail next">
+{% for x in rel limit: 3 %}{% assign xc = site.data.categories | where: "slug", x.categories.first | first %}<a class="tcard" data-cat="{{ x.categories.first }}" href="{{ x.url | relative_url }}"><span class="art">{{ xc.icon }}</span><span class="chip">{{ xc.id }}</span><b><span data-lang="id">{{ x.title }}</span><span data-lang="en">{{ x.title_en }}</span></b><small class="xp">+25 XP</small></a>{% endfor %}
+</div></section>
+</article></main>

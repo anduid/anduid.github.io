@@ -48,6 +48,8 @@ def kunci_halaman(rel):
         return "portal"
     if rel.startswith("blog/"):
         return "blog"
+    if rel.startswith("news/"):
+        return "news"
     if rel.startswith("profil/"):
         return "profil"
     return ""

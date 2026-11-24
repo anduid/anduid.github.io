@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang }}" data-theme="light"><head>
+{% include news-seo-head.html %}
+</head><body data-view="{{ page.view | default: 'page' }}">
+{% include topbar.html %}
+{% include news-utility.html %}
+{% include news-header.html %}
+{{ content }}
+{% include news-modals.html %}
+{% include news-scripts.html %}
+</body></html>

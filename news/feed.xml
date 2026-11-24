@@ -1,0 +1,17 @@
+---
+layout: null
+permalink: /news/feed.xml
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<title>{{ site.news_title | xml_escape }}</title>
+<link>{{ '/news/' | absolute_url }}</link>
+<atom:link href="{{ '/news/feed.xml' | absolute_url }}" rel="self" type="application/rss+xml"/>
+<description>{{ site.news_description | xml_escape }}</description>
+<language>id</language>
+{%- assign semua = site.news | sort: 'date' | reverse -%}
+{%- for p in semua limit: 20 %}
+<item><title>{{ p.title | xml_escape }}</title><link>{{ p.url | absolute_url }}</link><guid isPermaLink="true">{{ p.url | absolute_url }}</guid><pubDate>{{ p.date | date_to_rfc822 }}</pubDate><description>{{ p.excerpt_id | xml_escape }}</description></item>
+{%- endfor %}
+</channel></rss>

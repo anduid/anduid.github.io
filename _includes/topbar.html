@@ -10,6 +10,7 @@
 {%- if tb_url == '/' -%}{%- assign tb_aktif = 'studio' -%}
 {%- elsif tb_seg == 'blog' or page.layout == 'post' -%}{%- assign tb_aktif = 'blog' -%}
 {%- elsif tb_seg == 'portal' or tb_seg == 'terminal' or tb_seg == 'admin' -%}{%- assign tb_aktif = 'portal' -%}
+{%- elsif tb_seg == 'news' -%}{%- assign tb_aktif = 'news' -%}
 {%- elsif tb_seg == 'profil' -%}{%- assign tb_aktif = 'profil' -%}
 {%- elsif tb_seg == 'pesaner' -%}{%- assign tb_aktif = 'pesaner' -%}
 {%- endif -%}
