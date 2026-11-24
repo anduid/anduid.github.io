@@ -14,7 +14,7 @@ Setelah menguasai `add`, `commit`, dan `push`, pertanyaan berikutnya muncul: bag
 
 <!-- TAMBAHKAN (1-2 kalimat): pengalaman Anda dengan konflik atau kesalahan Git dan pelajaran yang diambil. -->
 
-Tulisan ini melanjutkan [Git dan GitHub untuk Pemula]({{ site.baseurl }}/2026/10/10/git-github-dasar-untuk-pemula/) dengan fokus pada alur kerja: feature branch, memilih antara merge dan rebase, serta cara memulihkan diri dari kesalahan. Semua perintah di bawah sudah saya jalankan di repositori percobaan.
+Tulisan ini melanjutkan [Git dan GitHub untuk Pemula]({{ site.baseurl }}/blog/2026/10/10/git-github-dasar-untuk-pemula/) dengan fokus pada alur kerja: feature branch, memilih antara merge dan rebase, serta cara memulihkan diri dari kesalahan. Semua perintah di bawah sudah saya jalankan di repositori percobaan.
 
 <!--more-->
 
@@ -155,12 +155,12 @@ Riwayat yang rapi memudahkan pencarian masalah di kemudian hari:
 
 - **Satu commit, satu perubahan logis.**
 - **Pesan dimulai dengan kata kerja** dan menjelaskan apa serta kenapa: "Perbaiki paginate_path agar beranda menampilkan tulisan".
-- **Jangan meng-commit berkas hasil build, rahasia, atau data pribadi.** Pakai `.gitignore`, dan lihat [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/2026/10/09/mengamankan-api-key-ai-di-aplikasi/) jika kunci pernah ikut ter-commit.
+- **Jangan meng-commit berkas hasil build, rahasia, atau data pribadi.** Pakai `.gitignore`, dan lihat [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/blog/2026/10/09/mengamankan-api-key-ai-di-aplikasi/) jika kunci pernah ikut ter-commit.
 - **Gunakan `git status` dan `git diff`** sebelum setiap commit untuk memastikan hanya perubahan yang Anda maksud yang masuk.
 
 ## Menandai rilis
 
-Beri tag pada commit yang menjadi rilis, seperti dibahas di [Semantic Versioning dan Changelog]({{ site.baseurl }}/2026/10/11/semantic-versioning-changelog-aplikasi/):
+Beri tag pada commit yang menjadi rilis, seperti dibahas di [Semantic Versioning dan Changelog]({{ site.baseurl }}/blog/2026/10/11/semantic-versioning-changelog-aplikasi/):
 
 ```bash
 git tag -a v1.3.2 -m "Rilis 1.3.2"

@@ -144,12 +144,12 @@ teks.match(/\b[\w.+-]+@[\w-]+\.[\w.-]+\b/g);
 '<b>tebal</b> dan <i>miring</i>'.replace(/<[^>]+>/g, '');   // 'tebal dan miring'
 ```
 
-Untuk contoh terakhir, ingat bahwa regex **bukan alat yang tepat untuk mengurai HTML sungguhan**. Untuk dokumen yang rumit, pakai pengurai HTML. Dan jangan pernah menganggap membuang tag dengan regex cukup untuk keamanan. Lihat [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
+Untuk contoh terakhir, ingat bahwa regex **bukan alat yang tepat untuk mengurai HTML sungguhan**. Untuk dokumen yang rumit, pakai pengurai HTML. Dan jangan pernah menganggap membuang tag dengan regex cukup untuk keamanan. Lihat [8 Kebiasaan Keamanan Aplikasi Web]({{ site.baseurl }}/blog/2026/10/10/delapan-kebiasaan-keamanan-aplikasi-web/).
 
 ## Validasi dengan regex: hati-hati
 
 - **Regex untuk email yang "sempurna" nyaris tidak ada.** Pola sederhana cukup untuk menyaring salah ketik, tetapi satu-satunya cara memastikan email valid adalah mengirim pesan verifikasi.
-- **Validasi di klien hanya kenyamanan.** Validasi yang sebenarnya ada di server, seperti di [REST API Dasar]({{ site.baseurl }}/2026/10/26/rest-api-dasar-http-json-status-kode/).
+- **Validasi di klien hanya kenyamanan.** Validasi yang sebenarnya ada di server, seperti di [REST API Dasar]({{ site.baseurl }}/blog/2026/10/26/rest-api-dasar-http-json-status-kode/).
 - **Jangan menyimpulkan data pribadi dari pola tanpa izin.** Memindai teks untuk menarik nomor atau email orang lain menyangkut privasi.
 
 ## Performa dan ReDoS
@@ -178,4 +178,4 @@ Situs seperti regex101.com memperlihatkan pola, penjelasan tiap bagian, dan hasi
 
 Regex adalah alat ampuh untuk pola teks yang sederhana: karakter, kuantifier, grup, dan jangkar sudah menyelesaikan sebagian besar kebutuhan. Tulis bertahap, uji dengan data nyata, waspadai pola serakah dan ReDoS, dan jangan memaksakan regex untuk pekerjaan yang butuh pengurai sungguhan. Latihan kecil setiap hari lebih ampuh daripada menghafal tabel simbol.
 
-Untuk dasar bahasa yang dipakai pada contoh di atas, lihat [JavaScript Modern untuk Pemula]({{ site.baseurl }}/2026/10/26/javascript-modern-dasar-es6-async-await/) dan [Python untuk Pemula]({{ site.baseurl }}/2026/10/26/python-otomatisasi-csv-untuk-pemula/).
+Untuk dasar bahasa yang dipakai pada contoh di atas, lihat [JavaScript Modern untuk Pemula]({{ site.baseurl }}/blog/2026/10/26/javascript-modern-dasar-es6-async-await/) dan [Python untuk Pemula]({{ site.baseurl }}/blog/2026/10/26/python-otomatisasi-csv-untuk-pemula/).

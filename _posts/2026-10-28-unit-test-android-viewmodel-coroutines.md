@@ -76,7 +76,7 @@ Tes yang baik mengikuti pola **Atur, Lakukan, Periksa** (*Arrange, Act, Assert*)
 
 ## Merancang kode yang mudah diuji
 
-Kode yang bergantung langsung pada jaringan atau basis data sulit diuji. Bergantunglah pada **antarmuka**, supaya Anda bisa menggantinya dengan versi palsu (*fake*) di tes. Ini selaras dengan injeksi dependensi di [Hilt di Android]({{ site.baseurl }}/2026/10/09/hilt-injeksi-dependensi-android/).
+Kode yang bergantung langsung pada jaringan atau basis data sulit diuji. Bergantunglah pada **antarmuka**, supaya Anda bisa menggantinya dengan versi palsu (*fake*) di tes. Ini selaras dengan injeksi dependensi di [Hilt di Android]({{ site.baseurl }}/blog/2026/10/09/hilt-injeksi-dependensi-android/).
 
 ```kotlin
 sealed interface Hasil<out T> {
@@ -109,7 +109,7 @@ class DaftarViewModel(private val sumber: SumberCatatan) : ViewModel() {
 }
 ```
 
-`SumberCatatan` adalah antarmuka, sehingga di aplikasi nyata diisi repository yang memanggil API (lihat [Retrofit dan Penanganan Galat Jaringan]({{ site.baseurl }}/2026/10/28/retrofit-penanganan-galat-jaringan-android/)), sedangkan di tes diisi versi palsu.
+`SumberCatatan` adalah antarmuka, sehingga di aplikasi nyata diisi repository yang memanggil API (lihat [Retrofit dan Penanganan Galat Jaringan]({{ site.baseurl }}/blog/2026/10/28/retrofit-penanganan-galat-jaringan-android/)), sedangkan di tes diisi versi palsu.
 
 ## Masalah: Dispatchers.Main di unit test
 
@@ -235,7 +235,7 @@ fun tombolMenambahJumlah() {
 }
 ```
 
-Contoh `Penghitung` ada di [Jetpack Compose Dasar]({{ site.baseurl }}/2026/10/28/jetpack-compose-dasar-state-recomposition/). Tes UI lebih lambat, jadi simpan untuk alur penting saja.
+Contoh `Penghitung` ada di [Jetpack Compose Dasar]({{ site.baseurl }}/blog/2026/10/28/jetpack-compose-dasar-state-recomposition/). Tes UI lebih lambat, jadi simpan untuk alur penting saja.
 
 ## Apa yang layak diuji
 

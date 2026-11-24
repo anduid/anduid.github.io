@@ -43,7 +43,7 @@ interface CatatanApi {
 }
 ```
 
-Buat instans Retrofit sekali (misalnya lewat Hilt, seperti di [Hilt di Android]({{ site.baseurl }}/2026/10/09/hilt-injeksi-dependensi-android/)):
+Buat instans Retrofit sekali (misalnya lewat Hilt, seperti di [Hilt di Android]({{ site.baseurl }}/blog/2026/10/09/hilt-injeksi-dependensi-android/)):
 
 ```kotlin
 val klien = OkHttpClient.Builder()
@@ -72,7 +72,7 @@ Galat jaringan tidak seragam, dan masing-masing butuh tanggapan berbeda:
 | **Galat HTTP** | Server menjawab dengan status 4xx atau 5xx | `HttpException` | Tanggapi sesuai kode: login ulang (401), tidak berhak (403), tidak ada (404), coba nanti (5xx) |
 | **Galat tak terduga** | Data tidak sesuai format, bug | `Exception` lain | Pesan umum dan catat untuk diperbaiki |
 
-Pemahaman status kode ada di [REST API Dasar]({{ site.baseurl }}/2026/10/26/rest-api-dasar-http-json-status-kode/).
+Pemahaman status kode ada di [REST API Dasar]({{ site.baseurl }}/blog/2026/10/26/rest-api-dasar-http-json-status-kode/).
 
 ## Pembungkus hasil yang aman
 
@@ -97,7 +97,7 @@ suspend fun <T> panggilAman(blok: suspend () -> T): Hasil<T> = try {
 }
 ```
 
-Catatan penting: `CancellationException` **harus diteruskan** dan tidak boleh ditelan, sebagaimana dibahas di [Kotlin Coroutines dan Flow untuk Pemula Android]({{ site.baseurl }}/2026/10/10/kotlin-coroutines-flow-pemula-android/). Pesan galat ke pengguna dibuat ramah dan tidak membocorkan detail internal.
+Catatan penting: `CancellationException` **harus diteruskan** dan tidak boleh ditelan, sebagaimana dibahas di [Kotlin Coroutines dan Flow untuk Pemula Android]({{ site.baseurl }}/blog/2026/10/10/kotlin-coroutines-flow-pemula-android/). Pesan galat ke pengguna dibuat ramah dan tidak membocorkan detail internal.
 
 Pakai di repository:
 
@@ -109,7 +109,7 @@ class CatatanRepository(private val api: CatatanApi) {
 
 ## Menampilkan keadaan di layar
 
-ViewModel mengubah `Hasil` menjadi keadaan layar, memakai sealed class seperti di [Kotlin untuk Pemula Android]({{ site.baseurl }}/2026/10/26/kotlin-dasar-null-safety-data-class/):
+ViewModel mengubah `Hasil` menjadi keadaan layar, memakai sealed class seperti di [Kotlin untuk Pemula Android]({{ site.baseurl }}/blog/2026/10/26/kotlin-dasar-null-safety-data-class/):
 
 ```kotlin
 sealed interface KeadaanLayar {
@@ -134,7 +134,7 @@ class CatatanViewModel(private val repo: CatatanRepository) : ViewModel() {
 }
 ```
 
-Di layar, tampilkan indikator pemuatan, daftar, atau pesan galat dengan tombol **Coba lagi** yang memanggil `muat()` kembali. Dasar UI-nya ada di [Jetpack Compose Dasar]({{ site.baseurl }}/2026/10/28/jetpack-compose-dasar-state-recomposition/).
+Di layar, tampilkan indikator pemuatan, daftar, atau pesan galat dengan tombol **Coba lagi** yang memanggil `muat()` kembali. Dasar UI-nya ada di [Jetpack Compose Dasar]({{ site.baseurl }}/blog/2026/10/28/jetpack-compose-dasar-state-recomposition/).
 
 <!-- TAMBAHKAN: tampilan galat dan tombol coba lagi yang Anda pakai, beserta alasan desainnya. -->
 
@@ -170,7 +170,7 @@ Pendekatan paling ramah: simpan hasil dari server di Room dan tampilkan dari san
 2. Saat ada jaringan, ambil data dari API lalu perbarui basis data.
 3. Jika gagal, pengguna tetap melihat data terakhir ditambah pesan singkat bahwa data mungkin tidak terbaru.
 
-Dengan pola ini, aplikasi tetap berguna di sinyal buruk. Dasar basis datanya dibahas di [Room Database di Android]({{ site.baseurl }}/2026/10/09/room-database-android-pemula-kotlin/).
+Dengan pola ini, aplikasi tetap berguna di sinyal buruk. Dasar basis datanya dibahas di [Room Database di Android]({{ site.baseurl }}/blog/2026/10/09/room-database-android-pemula-kotlin/).
 
 ## Memeriksa status jaringan
 
@@ -179,8 +179,8 @@ Dengan pola ini, aplikasi tetap berguna di sinyal buruk. Dasar basis datanya dib
 ## Keamanan jaringan
 
 - **Gunakan HTTPS** untuk semua panggilan. Android modern memblokir lalu lintas teks polos secara bawaan.
-- **Jangan menaruh kunci API rahasia di aplikasi.** Panggil lewat server perantara, seperti di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).
-- **Simpan token autentikasi dengan benar** dan perbarui bila kedaluwarsa. Lihat [Login yang Aman di Aplikasi Web Statis]({{ site.baseurl }}/2026/10/17/login-aman-aplikasi-web-statis/) untuk prinsipnya.
+- **Jangan menaruh kunci API rahasia di aplikasi.** Panggil lewat server perantara, seperti di [Mengamankan API Key AI di Aplikasi Web dan Android]({{ site.baseurl }}/blog/2026/10/09/mengamankan-api-key-ai-di-aplikasi/).
+- **Simpan token autentikasi dengan benar** dan perbarui bila kedaluwarsa. Lihat [Login yang Aman di Aplikasi Web Statis]({{ site.baseurl }}/blog/2026/10/17/login-aman-aplikasi-web-statis/) untuk prinsipnya.
 - **Jangan mencatat data sensitif** di log.
 
 ## Kesalahan yang sering terjadi

@@ -161,7 +161,7 @@ fun LayarCatatanUtama(vm: CatatanViewModel = hiltViewModel()) {
 }
 ```
 
-`collectAsStateWithLifecycle` menghentikan pengamatan saat aplikasi tidak terlihat. ViewModel, `StateFlow`, dan injeksi dengan Hilt dibahas di [Kotlin Coroutines dan Flow untuk Pemula Android]({{ site.baseurl }}/2026/10/10/kotlin-coroutines-flow-pemula-android/) dan [Hilt di Android]({{ site.baseurl }}/2026/10/09/hilt-injeksi-dependensi-android/). Penyimpanan datanya ada di [Room Database di Android]({{ site.baseurl }}/2026/10/09/room-database-android-pemula-kotlin/).
+`collectAsStateWithLifecycle` menghentikan pengamatan saat aplikasi tidak terlihat. ViewModel, `StateFlow`, dan injeksi dengan Hilt dibahas di [Kotlin Coroutines dan Flow untuk Pemula Android]({{ site.baseurl }}/blog/2026/10/10/kotlin-coroutines-flow-pemula-android/) dan [Hilt di Android]({{ site.baseurl }}/blog/2026/10/09/hilt-injeksi-dependensi-android/). Penyimpanan datanya ada di [Room Database di Android]({{ site.baseurl }}/blog/2026/10/09/room-database-android-pemula-kotlin/).
 
 ## Preview untuk iterasi cepat
 
@@ -177,7 +177,7 @@ fun PratinjauKartu() {
 }
 ```
 
-Untuk menguji tema terang dan gelap sekaligus, lihat [Dark Mode di Jetpack Compose]({{ site.baseurl }}/2026/10/09/dark-mode-jetpack-compose-android/).
+Untuk menguji tema terang dan gelap sekaligus, lihat [Dark Mode di Jetpack Compose]({{ site.baseurl }}/blog/2026/10/09/dark-mode-jetpack-compose-android/).
 
 ## Kesalahan yang sering terjadi
 

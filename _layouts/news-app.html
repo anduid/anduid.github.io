@@ -16,7 +16,7 @@ layout: news-default
 <nav class="pager" id="pager" aria-label="Paginasi"></nav>
 <noscript><ul>{% for p in site.news %}<li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>{% endfor %}</ul></noscript>
 </section>
-{% include sidebar.html %}
+{% include news-sidebar.html %}
 </div>
 {% elsif page.view == 'cal' %}
 <section class="panel"><h1 data-i18n="cal_title"></h1><div class="two"><div id="bigcal"></div><div><h3 data-i18n="day_news"></h3><div id="dayfeed" class="list"></div><h3 data-i18n="reminders"></h3><form id="rem-form" class="row"><input id="rem-t" required maxlength="80" data-i18n-ph="rem_ph"><input id="rem-d" type="datetime-local" required><button class="btn" type="submit" data-i18n="add"></button></form><ul id="rem-list" class="list"></ul></div></div></section>

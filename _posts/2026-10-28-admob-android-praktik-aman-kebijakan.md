@@ -90,7 +90,7 @@ Di luar persetujuan:
 - Isi formulir **Keamanan Data** di Google Play dengan jujur, termasuk data yang dikumpulkan oleh SDK iklan.
 - Jika aplikasi ditujukan untuk **anak-anak**, berlaku aturan tambahan yang jauh lebih ketat. Baca kebijakan khusus untuk aplikasi anak dan tandai permintaan iklan dengan benar.
 
-Persiapan toko aplikasi lain dibahas di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
+Persiapan toko aplikasi lain dibahas di [Daftar Periksa Rilis Aplikasi Android ke Google Play]({{ site.baseurl }}/blog/2026/10/09/daftar-periksa-rilis-aplikasi-android-google-play/).
 
 ## Menampilkan banner
 
@@ -171,7 +171,7 @@ Selain aman bagi akun, penempatan yang tertib juga membuat pengguna lebih betah.
 - Perbarui SDK secara berkala, karena versi lama bisa kehilangan dukungan.
 - Bersiap menjelaskan dengan jelas jika akun menerima peringatan, dan perbaiki sumber masalahnya.
 
-Untuk pembahasan standardisasi proyek yang membantu menjaga konfigurasi iklan konsisten di banyak aplikasi, lihat [Membuat Banyak Aplikasi Android Lebih Cepat dengan Template Proyek]({{ site.baseurl }}/2026/10/10/template-proyek-android-banyak-aplikasi/).
+Untuk pembahasan standardisasi proyek yang membantu menjaga konfigurasi iklan konsisten di banyak aplikasi, lihat [Membuat Banyak Aplikasi Android Lebih Cepat dengan Template Proyek]({{ site.baseurl }}/blog/2026/10/10/template-proyek-android-banyak-aplikasi/).
 
 ## Kesimpulan
 
