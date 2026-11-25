@@ -1,0 +1,3683 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>PERLINSOS QUEST — Jatisampurna Digital Arena | Kota Bekasi</title>
+  <meta name="description" content="Portal Pendataan Capaian Agen Perlinsos, Laporan Kegiatan, Kalender Kegiatan, dan Arena Gamifikasi Petugas Kecamatan Jatisampurna, Kota Bekasi menuju target 50% cakupan KK." />
+  <meta name="keywords" content="Perlinsos, Jatisampurna, Kota Bekasi, Perlindungan Sosial, Pamor, PKK, Karang Taruna, Pendataan KK, Gamifikasi ASN, Digitalisasi Bekasi" />
+  <meta name="author" content="El-Salam Technology, Inc. & Kecamatan Jatisampurna Kota Bekasi" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#6C5CE7" />
+
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:title" content="PERLINSOS QUEST — Jatisampurna Digital Arena" />
+  <meta property="og:description" content="Akselerasi Capaian Perlinsos Kecamatan Jatisampurna Kota Bekasi (Target 50% KK) dengan Gamifikasi Agen Satgas RW." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:site_name" content="Perlinsos Quest Jatisampurna" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PERLINSOS QUEST — Jatisampurna Digital Arena" />
+  <meta name="twitter:description" content="Portal Pendataan Capaian Agen Perlinsos & Laporan Kegiatan Kecamatan Jatisampurna, Kota Bekasi." />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "GovernmentService",
+        "name": "Percepatan Digitalisasi Perlindungan Sosial Kecamatan Jatisampurna",
+        "serviceType": "Pendataan Perlindungan Sosial (Perlinsos)",
+        "provider": {
+          "@type": "GovernmentOrganization",
+          "name": "Kecamatan Jatisampurna, Pemerintah Kota Bekasi",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Kota Bekasi",
+            "addressRegion": "Jawa Barat",
+            "addressCountry": "ID"
+          }
+        },
+        "areaServed": [
+          "Kelurahan Jatisampurna",
+          "Kelurahan Jatirangga",
+          "Kelurahan Jatikarya",
+          "Kelurahan Jatiraden",
+          "Kelurahan Jatiranggon"
+        ]
+      },
+      {
+        "@type": "WebApplication",
+        "name": "PERLINSOS QUEST — Jatisampurna Digital Arena",
+        "applicationCategory": "GovernmentApplication",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires HTML5 & IndexedDB",
+        "description": "Aplikasi web statis offline-first untuk pendataan capaian agen Perlinsos, peringkat real-time, laporan kegiatan, reminder, dan kalender kegiatan Kecamatan Jatisampurna."
+      }
+    ]
+  }
+  </script>
+
+  <!-- Google Fonts: Fredoka & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN SYSTEM & 3D CLAYMORPHISM VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-body: #F0F4FF;
+      --bg-gradient: radial-gradient(circle at 10% 10%, #FFE6F2 0%, #E8F1FF 45%, #E6FFF7 100%);
+      --surface: #FFFFFF;
+      --surface-alt: #F7F9FF;
+      --surface-glass: rgba(255, 255, 255, 0.85);
+      --text-primary: #1E1B4B;
+      --text-secondary: #52527A;
+      --text-muted: #7C7CA6;
+      --border-soft: rgba(108, 92, 231, 0.14);
+
+      /* Vibrant Playful & Neon Accents */
+      --primary: #6C5CE7;
+      --primary-light: #A29BFE;
+      --primary-dark: #4834D4;
+      --secondary: #00CEC9;
+      --accent-pink: #FF6B9D;
+      --accent-orange: #FF9F43;
+      --accent-yellow: #FECA57;
+      --accent-green: #1DD1A1;
+      --accent-red: #FF5252;
+
+      /* 3D Clay Shadows */
+      --clay-card: 
+        0 14px 28px -6px rgba(72, 52, 212, 0.14),
+        0 4px 10px -2px rgba(72, 52, 212, 0.08),
+        inset 0 3px 6px rgba(255, 255, 255, 0.9),
+        inset 0 -4px 8px rgba(108, 92, 231, 0.08);
+      --clay-btn:
+        0 8px 16px -4px rgba(108, 92, 231, 0.35),
+        inset 0 2px 4px rgba(255, 255, 255, 0.55),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.18);
+      --clay-pill:
+        0 6px 14px rgba(30, 27, 75, 0.08),
+        inset 0 2px 4px rgba(255, 255, 255, 0.85);
+
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-body: #0F1021;
+      --bg-gradient: radial-gradient(circle at 15% 15%, #23163E 0%, #111328 50%, #0B192C 100%);
+      --surface: #1A1C36;
+      --surface-alt: #232647;
+      --surface-glass: rgba(26, 28, 54, 0.86);
+      --text-primary: #F5F6FF;
+      --text-secondary: #C5C8E8;
+      --text-muted: #8E93BD;
+      --border-soft: rgba(162, 155, 254, 0.18);
+
+      --primary: #8B7DFF;
+      --primary-light: #B8B0FF;
+      --primary-dark: #5B4BC4;
+      --secondary: #00E5DF;
+      --accent-pink: #FF7EB3;
+      --accent-orange: #FFB15E;
+      --accent-yellow: #FFD66B;
+      --accent-green: #2EE5B5;
+      --accent-red: #FF6B6B;
+
+      --clay-card:
+        0 16px 32px -6px rgba(0, 0, 0, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.35),
+        inset 0 2px 5px rgba(255, 255, 255, 0.08),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.35);
+      --clay-btn:
+        0 8px 18px -4px rgba(139, 125, 255, 0.4),
+        inset 0 2px 4px rgba(255, 255, 255, 0.25),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.35);
+      --clay-pill:
+        0 6px 14px rgba(0, 0, 0, 0.3),
+        inset 0 1px 3px rgba(255, 255, 255, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-gradient);
+      background-color: var(--bg-body);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.55;
+      padding-bottom: 92px;
+      transition: background 0.35s ease, color 0.35s ease;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Fredoka', sans-serif;
+      letter-spacing: 0.01em;
+    }
+
+    /* ==========================================================================
+       2. LAYOUT, TOPBAR & NAVIGATION
+       ========================================================================== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: var(--surface-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-soft);
+      padding: 12px 0;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 24px;
+      box-shadow: var(--clay-btn);
+      animation: floatSlow 3.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.15;
+      background: linear-gradient(90deg, var(--primary), var(--accent-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-sub {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip-btn {
+      border: 1px solid var(--border-soft);
+      background: var(--surface);
+      color: var(--text-primary);
+      padding: 8px 13px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--clay-pill);
+      transition: transform 0.25s var(--spring), background 0.2s ease;
+    }
+
+    .chip-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .chip-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Desktop Tabs & Mobile Bottom Bar */
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin: 18px 0 22px;
+      overflow-x: auto;
+      padding: 4px 2px 8px;
+      scrollbar-width: none;
+    }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+
+    .nav-tab {
+      flex: 1;
+      min-width: 145px;
+      border: none;
+      background: var(--surface);
+      color: var(--text-secondary);
+      padding: 13px 16px;
+      border-radius: var(--radius-lg);
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: var(--clay-card);
+      transition: all 0.3s var(--spring);
+      position: relative;
+    }
+
+    .nav-tab.active {
+      background: linear-gradient(135deg, var(--primary), #8E78FF);
+      color: #FFFFFF;
+      transform: translateY(-3px);
+      box-shadow: var(--clay-btn);
+    }
+
+    .nav-badge {
+      background: var(--accent-pink);
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-tabs {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        z-index: 95;
+        background: var(--surface-glass);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-top: 1px solid var(--border-soft);
+        padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+        border-radius: 24px 24px 0 0;
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.1);
+      }
+      .nav-tab {
+        min-width: 0;
+        flex-direction: column;
+        padding: 8px 4px;
+        font-size: 0.72rem;
+        gap: 3px;
+        border-radius: 16px;
+        box-shadow: none;
+        background: transparent;
+      }
+      .nav-tab.active {
+        transform: translateY(-2px);
+      }
+      .nav-tab .tab-icon {
+        font-size: 1.25rem;
+      }
+    }
+
+    /* ==========================================================================
+       3. CLAY CARDS, BUTTONS & FORM ELEMENTS
+       ========================================================================== */
+    .clay-card {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      box-shadow: var(--clay-card);
+      border: 1px solid var(--border-soft);
+      transition: transform 0.3s var(--spring), box-shadow 0.3s ease;
+    }
+
+    .clay-card-sm {
+      background: var(--surface-alt);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--clay-pill);
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 12px 20px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.25s var(--spring), filter 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover { transform: translateY(-2px) scale(1.02); filter: brightness(1.04); }
+    .btn:active { transform: scale(0.96); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #8A79FF);
+      color: #fff;
+      box-shadow: var(--clay-btn);
+    }
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--secondary), #00B894);
+      color: #fff;
+      box-shadow: 0 8px 16px -4px rgba(0, 206, 201, 0.35), inset 0 2px 4px rgba(255,255,255,0.45);
+    }
+    .btn-pink {
+      background: linear-gradient(135deg, var(--accent-pink), #FF477E);
+      color: #fff;
+      box-shadow: 0 8px 16px -4px rgba(255, 107, 157, 0.38), inset 0 2px 4px rgba(255,255,255,0.45);
+    }
+    .btn-orange {
+      background: linear-gradient(135deg, var(--accent-orange), #FF793F);
+      color: #fff;
+      box-shadow: 0 8px 16px -4px rgba(255, 159, 67, 0.38), inset 0 2px 4px rgba(255,255,255,0.45);
+    }
+    .btn-wa {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #fff;
+      box-shadow: 0 8px 16px -4px rgba(37, 211, 102, 0.35), inset 0 2px 4px rgba(255,255,255,0.45);
+    }
+    .btn-ghost {
+      background: var(--surface-alt);
+      color: var(--text-primary);
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--clay-pill);
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, var(--accent-red), #D63031);
+      color: #fff;
+    }
+    .btn-sm {
+      padding: 7px 13px;
+      font-size: 0.82rem;
+      border-radius: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-soft);
+      background: var(--surface-alt);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.16);
+    }
+
+    /* ==========================================================================
+       4. HERO ARENA, MONSTER COMPANION & 3D SVG ANIMATIONS
+       ========================================================================== */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #5F4DEE 0%, #8E54E9 55%, #FF6B9D 100%);
+      color: #FFFFFF;
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 18px 36px -8px rgba(95, 77, 238, 0.42), inset 0 3px 8px rgba(255,255,255,0.4);
+    }
+
+    .hero-banner::before {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.22), transparent 70%);
+      top: -60px;
+      right: -40px;
+      pointer-events: none;
+    }
+
+    .instruksi-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .progress-3d-wrap {
+      background: rgba(15, 16, 33, 0.28);
+      border-radius: 999px;
+      height: 28px;
+      padding: 4px;
+      margin: 14px 0 8px;
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-3d-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #00CEC9, #1DD1A1, #FECA57);
+      box-shadow: 0 2px 10px rgba(29, 209, 161, 0.7), inset 0 2px 4px rgba(255,255,255,0.7);
+      transition: width 0.8s var(--spring);
+      position: relative;
+    }
+
+    .progress-3d-bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+      animation: shimmer 2.2s infinite;
+    }
+
+    .target-marker {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      background: #FFF;
+      box-shadow: 0 0 8px #FFF;
+      z-index: 2;
+    }
+
+    /* Monster Companion Stage */
+    .monster-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .monster-arena-bg {
+      width: 168px;
+      height: 168px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      margin: 6px auto;
+      transition: all 0.4s ease;
+    }
+
+    .aura-cyan { background: radial-gradient(circle, rgba(0,206,201,0.35) 0%, rgba(108,92,231,0.08) 68%, transparent 75%); box-shadow: 0 0 30px rgba(0,206,201,0.35); }
+    .aura-pink { background: radial-gradient(circle, rgba(255,107,157,0.38) 0%, rgba(162,155,254,0.08) 68%, transparent 75%); box-shadow: 0 0 30px rgba(255,107,157,0.38); }
+    .aura-gold { background: radial-gradient(circle, rgba(254,202,87,0.42) 0%, rgba(255,159,67,0.1) 68%, transparent 75%); box-shadow: 0 0 32px rgba(254,202,87,0.42); }
+    .aura-flame { background: radial-gradient(circle, rgba(255,82,82,0.42) 0%, rgba(255,159,67,0.12) 68%, transparent 75%); box-shadow: 0 0 34px rgba(255,82,82,0.45); }
+
+    .monster-svg-wrap {
+      width: 148px;
+      height: 148px;
+      animation: monsterIdle 2.6s ease-in-out infinite;
+      transform-origin: bottom center;
+      cursor: pointer;
+    }
+
+    .monster-svg-wrap.celebrate {
+      animation: monsterJump 0.65s var(--spring) 3;
+    }
+
+    .monster-arm-left {
+      transform-origin: 42px 88px;
+      animation: waveLeft 2.4s ease-in-out infinite;
+    }
+    .monster-arm-right {
+      transform-origin: 118px 88px;
+      animation: waveRight 2.4s ease-in-out infinite;
+    }
+    .monster-eyes {
+      transform-origin: center 68px;
+      animation: blinkEyes 4.2s infinite;
+    }
+    .monster-flame-tail {
+      transform-origin: 115px 115px;
+      animation: flickerFlame 0.9s ease-in-out infinite alternate;
+    }
+
+    @keyframes plqSpin { to { transform: rotate(360deg); } }
+    .plq-spin { width:22px; height:22px; border:3px solid rgba(108,92,231,.25); border-top-color:var(--primary); border-radius:50%; animation:plqSpin .8s linear infinite; flex-shrink:0; }
+    .plq-spin-sm { width:16px; height:16px; border-width:2.5px; border-color:rgba(255,255,255,.4); border-top-color:#fff; display:inline-block; vertical-align:-3px; margin-right:6px; }
+    #akunLoading { display:flex; align-items:center; gap:12px; margin-top:12px; padding:12px 14px; border-radius:16px; background:rgba(108,92,231,.10); font-size:.86rem; font-weight:700; }
+    #akunLoading.hidden { display:none; }
+    .akun-busy { opacity:.55; pointer-events:none; }
+    @keyframes monsterIdle {
+      0%, 100% { transform: translateY(0) scaleY(1) scaleX(1); }
+      50% { transform: translateY(-7px) scaleY(1.03) scaleX(0.98); }
+    }
+    @keyframes monsterJump {
+      0%, 100% { transform: translateY(0) scale(1); }
+      45% { transform: translateY(-22px) scale(1.12) rotate(-4deg); }
+      75% { transform: translateY(-10px) scale(1.05) rotate(4deg); }
+    }
+    @keyframes waveLeft {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-14deg); }
+    }
+    @keyframes waveRight {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(14deg); }
+    }
+    @keyframes blinkEyes {
+      0%, 92%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+    @keyframes flickerFlame {
+      0% { transform: scale(0.95) rotate(-3deg); }
+      100% { transform: scale(1.08) rotate(5deg); }
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* ==========================================================================
+       5. KELURAHAN GRID, PODIUM & LEADERBOARD
+       ========================================================================== */
+    .kelurahan-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 1024px) {
+      .kelurahan-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .kelurahan-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .kel-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 15px;
+      box-shadow: var(--clay-card);
+      border: 1px solid var(--border-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kel-card.top-kel {
+      border: 2px solid var(--accent-green);
+    }
+
+    .kel-mini-bar {
+      height: 9px;
+      background: var(--surface-alt);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0 6px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .kel-mini-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.6s var(--spring);
+    }
+
+    .two-col-main {
+      display: grid;
+      grid-template-columns: 1fr 1.45fr;
+      gap: 22px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .two-col-main { grid-template-columns: 1fr; }
+    }
+
+    /* Podium Top 3 */
+    .podium-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.12fr 1fr;
+      gap: 10px;
+      align-items: end;
+      margin: 18px 0 22px;
+      padding-top: 10px;
+    }
+
+    .podium-item {
+      text-align: center;
+      border-radius: var(--radius-lg);
+      padding: 14px 8px 16px;
+      position: relative;
+      box-shadow: var(--clay-card);
+    }
+
+    .podium-1 {
+      background: linear-gradient(180deg, rgba(254, 202, 87, 0.35), var(--surface));
+      border: 2px solid #FECA57;
+      min-height: 215px;
+    }
+    .podium-2 {
+      background: linear-gradient(180deg, rgba(162, 155, 254, 0.28), var(--surface));
+      border: 2px solid #A29BFE;
+      min-height: 185px;
+    }
+    .podium-3 {
+      background: linear-gradient(180deg, rgba(255, 159, 67, 0.28), var(--surface));
+      border: 2px solid #FF9F43;
+      min-height: 170px;
+    }
+
+    .rank-crown {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #1E1B4B;
+      margin-bottom: 4px;
+    }
+
+    .agent-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .agent-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface-alt);
+      padding: 13px 15px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      flex-wrap: wrap;
+      transition: transform 0.2s var(--spring);
+    }
+
+    .agent-row:hover {
+      transform: translateX(4px);
+    }
+
+    .badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      background: rgba(108, 92, 231, 0.13);
+      color: var(--primary);
+    }
+
+    /* ==========================================================================
+       6. NEWS MODULE & CALENDAR MODULE
+       ========================================================================== */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 780px) {
+      .news-grid { grid-template-columns: 1fr; }
+    }
+
+    .news-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .status-read {
+      background: rgba(29, 209, 161, 0.16);
+      color: #0E9F77;
+    }
+    [data-theme="dark"] .status-read { color: #2EE5B5; }
+
+    .status-unread {
+      background: rgba(255, 107, 157, 0.16);
+      color: #D6336C;
+    }
+    [data-theme="dark"] .status-unread { color: #FF7EB3; }
+
+    /* Calendar Grid */
+    .calendar-layout {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .calendar-layout { grid-template-columns: 1fr; }
+    }
+
+    .cal-weekdays, .cal-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      text-align: center;
+    }
+
+    .cal-weekdays div {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      padding: 6px 0;
+    }
+
+    .cal-day {
+      aspect-ratio: 1 / 1;
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: var(--surface-alt);
+      color: var(--text-primary);
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      transition: all 0.2s var(--spring);
+      position: relative;
+    }
+
+    .cal-day:hover { transform: scale(1.06); }
+    .cal-day.empty { background: transparent; border: none; cursor: default; }
+    .cal-day.today { border: 2px solid var(--primary); }
+    .cal-day.selected {
+      background: linear-gradient(135deg, var(--primary), #8E78FF);
+      color: #fff;
+      box-shadow: var(--clay-btn);
+    }
+
+    .cal-dots {
+      display: flex;
+      gap: 3px;
+      height: 6px;
+    }
+    .dot-read { width: 6px; height: 6px; border-radius: 50%; background: #1DD1A1; }
+    .dot-rem { width: 6px; height: 6px; border-radius: 50%; background: #FF9F43; }
+    .dot-note { width: 6px; height: 6px; border-radius: 50%; background: #FF6B9D; }
+
+    /* ==========================================================================
+       7. MODALS, TOASTS & PRINT STYLESHEET
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 16, 33, 0.65);
+      backdrop-filter: blur(8px);
+      z-index: 150;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-box {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--border-soft);
+      animation: modalPop 0.32s var(--spring);
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.9) translateY(16px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 76px;
+      right: 16px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 340px;
+    }
+
+    .toast {
+      background: var(--surface);
+      color: var(--text-primary);
+      border-left: 5px solid var(--primary);
+      padding: 13px 16px;
+      border-radius: 16px;
+      box-shadow: var(--clay-card);
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: modalPop 0.3s var(--spring);
+    }
+
+    .hidden { display: none !important; }
+
+    /* Print / PDF Clean Output */
+    #printArea { display: none; }
+    @media print {
+      body * { visibility: hidden; }
+      #printArea, #printArea * { visibility: visible; }
+      #printArea {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #FFFFFF !important;
+        color: #111827 !important;
+        padding: 24px;
+        font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+      }
+      .print-header {
+        border-bottom: 3px double #111827;
+        padding-bottom: 12px;
+        margin-bottom: 18px;
+        text-align: center;
+      }
+      .print-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 14px;
+      }
+      .print-table th, .print-table td {
+        border: 1px solid #9CA3AF;
+        padding: 8px 10px;
+        text-align: left;
+        font-size: 12px;
+      }
+      .print-table th { background: #F3F4F6; }
+    }
+  #tab-monster.locked .two-col-main{opacity:.45;pointer-events:none}
+  </style>
+</head>
+<body>
+
+  <!-- Toast Notification Stack -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Printable PDF Sheet -->
+  <div id="printArea"></div>
+
+  <!-- Top Header -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">🛡️</div>
+        <div>
+          <h1 class="brand-title">PERLINSOS QUEST</h1>
+          <p class="brand-sub" data-i18n="subtitle">Jatisampurna Digital Arena • Kota Bekasi</p>
+        </div>
+      </div>
+
+      <div class="topbar-controls">
+        <button type="button" class="chip-btn" id="btnTutorial" title="Panduan Pemula">
+          <span>💡</span> <span data-i18n="btn_guide">Panduan</span>
+        </button>
+        <button type="button" class="chip-btn" id="btnSoundToggle" title="Efek Suara">
+          <span id="soundIcon">🔊</span>
+        </button>
+        <button type="button" class="chip-btn" id="btnLangToggle" title="Ganti Bahasa / Switch Language">
+          <span>🌐</span> <span id="langLabel">ID</span>
+        </button>
+        <button type="button" class="chip-btn" id="btnThemeToggle" title="Mode Terang / Gelap">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Primary Navigation Tabs -->
+    <nav class="nav-tabs" aria-label="Menu Utama Aplikasi">
+      <button type="button" class="nav-tab active" data-tab="arena">
+        <span class="tab-icon">🏆</span>
+        <span data-i18n="tab_arena">Arena & Capaian</span>
+      </button>
+      <button type="button" class="nav-tab" data-tab="laporan">
+        <span class="tab-icon">📝</span>
+        <span>Laporan Kegiatan</span>
+      </button>
+      <button type="button" class="nav-tab" data-tab="calendar">
+        <span class="tab-icon">📅</span>
+        <span data-i18n="tab_calendar">Kalender & Reminder</span>
+      </button>
+      <button type="button" class="nav-tab" data-tab="monster">
+        <span class="tab-icon">👾</span>
+        <span data-i18n="tab_monster">Partner Monster</span>
+      </button>
+      <button type="button" class="nav-tab" data-tab="akun">
+        <span class="tab-icon">🔐</span>
+        <span>Riwayat &amp; Akun</span>
+      </button>
+    </nav>
+
+    <!-- ======================================================================
+         TAB 1: ARENA CAPAIAN AGEN & PERINGKAT KELURAHAN
+         ====================================================================== -->
+    <section id="tab-arena" class="tab-panel">
+      <!-- Hero Progress + Active Monster Companion -->
+      <div class="hero-grid">
+        <article class="hero-banner">
+          <div class="instruksi-pill">
+            <span>📜</span>
+            <span data-i18n="instruksi_no">Instruksi Wali Kota Bekasi No. 100/135/SETDA.Tapem</span>
+          </div>
+          <h2 style="font-size: 1.55rem; margin-bottom: 6px;" data-i18n="hero_title">
+            Misi 50% Digitalisasi Perlinsos Jatisampurna!
+          </h2>
+          <p style="font-size: 0.88rem; opacity: 0.92;" data-i18n="hero_desc">
+            Peringkat 2 se-Kota Bekasi! Mari kejar target minimal 50% cakupan KK (19.674 KK dari 39.348 KK) pada akhir November 2026.
+          </p>
+
+          <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:16px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <span style="font-size:0.78rem; opacity:0.85;" data-i18n="total_registered">Data Resmi Baseline (Total KK)</span>
+              <div class="font-display" style="font-size:1.85rem; font-weight:700; line-height:1.1;">
+                <span id="heroTotalKK">12.646</span> <span style="font-size:0.95rem; font-weight:500;">/ 39.348 KK</span>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-size:1.65rem; font-weight:800; color:#FECA57;" id="heroPercent">32,14%</span>
+              <div style="font-size:0.75rem; opacity:0.9;" id="heroRemainingText">Kurang 7.028 KK menuju 50%</div>
+            </div>
+          </div>
+
+          <div class="progress-3d-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="32">
+            <div class="target-marker" title="Target 50%"></div>
+            <div class="progress-3d-bar" id="heroProgressBar" style="width: 32.14%;"></div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; font-size:0.74rem; opacity:0.9; font-weight:700;">
+            <span>0%</span>
+            <span>🎯 Target 50% (19.674 KK)</span>
+            <span>100%</span>
+          </div>
+        </article>
+
+        <!-- Active Monster Card -->
+        <aside class="clay-card monster-stage">
+          <div style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+            <span class="badge-tag" id="companionLevelBadge">LV. 1 • 0 XP</span>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="switchTab('monster')" data-i18n="btn_customize">
+              🎨 Ganti Monster
+            </button>
+          </div>
+
+          <div id="companionAura" class="monster-arena-bg aura-pink">
+            <div id="companionSvgBox" class="monster-svg-wrap" title="Klik untuk menyapa partner!"></div>
+          </div>
+
+          <div>
+            <h3 id="companionNameDisplay" style="font-size:1.15rem; margin-bottom:2px;">Puffi</h3>
+            <p id="companionRoleDisplay" style="font-size:0.8rem; color:var(--text-secondary); font-weight:600;">
+              Agen Satgas Perlinsos • Jatisampurna
+            </p>
+          </div>
+        </aside>
+      </div>
+
+      <!-- 5 Kelurahan Breakdown Cards -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+        <h2 style="font-size:1.2rem;" data-i18n="kelurahan_progress_title">📊 Data Resmi (Baseline) 5 Kelurahan</h2>
+        <span style="font-size:0.78rem; color:var(--text-muted); font-weight:700;" data-i18n="target_badge">Target Masing-Masing: ≥ 50% KK</span>
+      </div>
+      <div class="kelurahan-grid" id="kelurahanGrid"></div>
+      <div id="baselineBadge" style="font-size:0.74rem;color:var(--text-muted);font-weight:700;margin:6px 0 20px;">Data resmi per 21 November 2026 · diperbarui oleh admin</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+        <h2 style="font-size:1.2rem;">✍️ Capaian Inputan Agen</h2>
+        <span style="font-size:0.78rem; color:var(--text-muted); font-weight:700;">Belum terverifikasi · dihitung dari data terakhir tiap agen</span>
+      </div>
+      <div class="kelurahan-grid" id="inputGrid" style="margin-bottom:20px;"></div>
+
+      <!-- Input Form & Leaderboard -->
+      <div class="two-col-main">
+        <!-- Form Pendataan Agen -->
+        <div class="clay-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h3 style="font-size:1.2rem;" id="formAgentHeading" data-i18n="form_agent_title">⚡ Input Capaian Agen</h3>
+            <button type="button" class="btn btn-ghost btn-sm hidden" id="btnCancelEditAgent">✕ Batal Edit</button>
+          </div>
+
+          <form id="agentForm">
+            <input type="hidden" id="editAgentId" value="" />
+
+            <div class="form-group">
+              <label class="form-label" for="agentKelurahan" data-i18n="lbl_kelurahan">Kelurahan Wilayah Tugas</label>
+              <select id="agentKelurahan" class="form-control" required>
+                <option value="Jatisampurna">Kelurahan Jatisampurna</option>
+                <option value="Jatirangga">Kelurahan Jatirangga</option>
+                <option value="Jatikarya">Kelurahan Jatikarya</option>
+                <option value="Jatiraden">Kelurahan Jatiraden</option>
+                <option value="Jatiranggon">Kelurahan Jatiranggon</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="agentName" data-i18n="lbl_agent_name">Nama Petugas / Agen</label>
+              <input type="text" id="agentName" class="form-control" placeholder="Contoh: Siti Aminah / Budi Santoso" required />
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label class="form-label" for="agentUnsur" data-i18n="lbl_unsur">Unsur Satgas</label>
+                <select id="agentUnsur" class="form-control" required>
+                  <option value="Pamor">Pamor Kelurahan</option>
+                  <option value="Pengurus RW/RT">Pengurus RW/RT</option>
+                  <option value="Kader PKK">Kader PKK</option>
+                  <option value="Kader Dasawisma">Kader Dasawisma</option>
+                  <option value="Karang Taruna">Karang Taruna</option>
+                
+                  <option value="__lain__">➕ Lainnya (ketik manual)</option>
+                </select>
+                <input type="text" id="agentUnsurManual" class="form-control hidden" maxlength="40" placeholder="Ketik nama unsur satgas" style="margin-top:6px;" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="agentKK" data-i18n="lbl_kk_count">Total KK Terdaftar (angka terakhir di aplikasi)</label>
+                <input type="number" id="agentKK" class="form-control" min="1" max="5000" placeholder="Contoh: 25" required />
+              </div>
+            </div>
+
+            <div class="form-group" id="monsterGroup">
+              <label class="form-label" for="agentMonster" data-i18n="lbl_pick_monster">Pilih Karakter Monster Agen</label>
+              <select id="agentMonster" class="form-control">
+                <option value="puffi">☁️ Puffi (Cute Cloud Spirit)</option>
+                <option value="sproutling">🦕 Sproutling (Playful Leaf Dino)</option>
+                <option value="voltfox">🦊 Voltfox (Energetic Spark Kitsune)</option>
+                <option value="golemox">🐢 Golemox (Crystal Defender Turtle)</option>
+                <option value="ignisaur">🐉 Ignisaur (Rock-Metal Fire Dragon)</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="evidenGroup">
+              <label class="form-label" for="agentEviden" data-i18n="lbl_eviden">Upload Eviden Screenshot Aplikasi (Otomatis Kompres)</label>
+              <input type="file" id="agentEviden" class="form-control" accept="image/*" />
+              <div id="evidenPreviewBox" class="hidden" style="margin-top:10px; text-align:center;">
+                <img id="evidenPreviewImg" alt="Preview Eviden" style="max-height:140px; border-radius:14px; border:2px solid var(--primary);" />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; font-size:1rem;">
+              <span>🚀</span> <span id="btnSubmitAgentText" data-i18n="btn_submit_agent">Simpan Capaian & Klaim +50 XP</span>
+            </button>
+            <p id="guestNote" style="font-size:0.76rem;color:var(--text-muted);margin-top:10px;">👤 Tanpa akun: semua kolom diisi ulang setiap input, tiap input tersimpan sebagai catatan baru, dan tidak bisa diedit/dihapus. Masuk dengan akun Pesaner untuk edit, riwayat, laporan kegiatan, kalender & pengingat, dan monster partner.</p>
+          </form>
+        </div>
+
+        <!-- Podium & Leaderboard -->
+        <div class="clay-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+            <h3 style="font-size:1.2rem;" data-i18n="leaderboard_title">🏅 Peringkat Agen Perlinsos</h3>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-wa btn-sm" id="btnShareRecapWA">📲 WA Rekap</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnExportCSV">📥 CSV</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnPrintRecapPDF">🖨️ PDF</button>
+            </div>
+          </div>
+
+          <!-- Filter Kelurahan -->
+          <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+            <select id="filterLeaderboardKel" class="form-control" style="max-width:220px; padding:8px 12px; font-size:0.84rem;">
+              <option value="ALL">Semua Kelurahan (5 Wilayah)</option>
+              <option value="Jatisampurna">Kelurahan Jatisampurna</option>
+              <option value="Jatirangga">Kelurahan Jatirangga</option>
+              <option value="Jatikarya">Kelurahan Jatikarya</option>
+              <option value="Jatiraden">Kelurahan Jatiraden</option>
+              <option value="Jatiranggon">Kelurahan Jatiranggon</option>
+            </select>
+            <input type="search" id="searchAgentInput" class="form-control" style="flex:1; min-width:160px; padding:8px 12px; font-size:0.84rem;" placeholder="Cari nama agen / unsur..." />
+          </div>
+
+          <!-- Top 3 Podium -->
+          <div id="podiumContainer" class="podium-wrap"></div>
+
+          <!-- Full Ranked Agent List -->
+          <div id="agentLeaderboardList" class="agent-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 2: BERITA WILAYAH, KOMENTAR, RSS & SHARE
+         ====================================================================== -->
+    <section id="tab-akun" class="tab-panel hidden">
+      <div class="clay-card" style="margin-bottom:16px;">
+        <div id="akunOut">
+          <h3 style="font-size:1.2rem;margin-bottom:6px;">🔐 Akun Pesaner</h3>
+          <p style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:12px;">Tanpa akun, capaian hanya bisa disimpan (tidak bisa diedit/dihapus). Dengan akun Pesaner Anda mendapat riwayat, laporan kegiatan, kalender & pengingat, dan monster partner. Aplikasi Pesaner tidak berubah.</p>
+          <div style="display:flex;gap:6px;margin-bottom:12px;">
+            <button type="button" class="btn btn-primary btn-sm" id="akunModeLogin">Masuk</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="akunModeReg">Daftar Akun Baru</button>
+          </div>
+          <div class="form-group hidden" id="akunNBox"><label class="form-label" for="akunN">Nama lengkap</label><input type="text" id="akunN" class="form-control" maxlength="60" autocomplete="name" placeholder="Nama sesuai identitas petugas/kader" /></div>
+          <div class="form-group"><label class="form-label" for="akunU">Username</label><input type="text" id="akunU" class="form-control" autocapitalize="none" autocomplete="username" /></div>
+          <div class="form-group"><label class="form-label" for="akunP">Password</label><input type="password" id="akunP" class="form-control" autocomplete="current-password" /><div id="akunPHint" class="hidden" style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">Minimal 6 karakter</div></div>
+          <button type="button" class="btn btn-primary" id="akunSubmit">Masuk</button>
+        </div>
+        <div id="akunIn" class="hidden">
+          <h3 style="font-size:1.2rem;margin-bottom:4px;">👋 Halo, <span id="akunNm"></span></h3>
+          <p style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:12px;">Masuk sebagai <b id="akunUn"></b>. Capaian baru otomatis tersimpan ke akun ini.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary" id="akunSync">🔄 Sinkronkan</button>
+            <button type="button" class="btn btn-ghost" id="akunOutBtn">Keluar</button>
+          </div>
+        </div>
+        <div id="akunLoading" class="hidden" role="status" aria-live="polite"><div class="plq-spin"></div><span id="akunLoadingText">Memproses…</span></div>
+        <div id="akunMsg" style="margin-top:10px;font-size:0.84rem;font-weight:700;"></div>
+      </div>
+      <div id="akunMember" class="hidden">
+      <div class="clay-card" style="margin-bottom:16px;">
+        <h3 style="font-size:1.2rem;margin-bottom:4px;">📈 Riwayat Capaian Saya</h3>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">Angka = total KK terakhir. Selisih = peningkatan dari input sebelumnya.</p>
+        <div id="riwayatList"></div>
+      </div>
+
+      </div>
+    </section>
+
+    <section id="tab-laporan" class="tab-panel hidden">
+      <div class="clay-card" style="margin-bottom:16px;">
+        <h2 style="font-size:1.3rem;margin-bottom:4px;">📝 Laporan Kegiatan Perlinsos</h2>
+        <p style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:12px;">Laporan kegiatan petugas dan kader di lapangan, lengkap dengan foto. Laporan hanya dapat dibuat oleh pengguna yang sudah masuk dengan akun Pesaner.</p>
+        <div id="laporanLock" style="font-weight:700;">🔒 Masuk dulu untuk membuat laporan. <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('akun')">Masuk / Daftar</button></div>
+        <form id="kegForm" class="hidden">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="form-group"><label class="form-label" for="kegTgl">Tanggal kegiatan</label><input type="date" id="kegTgl" class="form-control" required /></div>
+            <div class="form-group"><label class="form-label" for="kegKel">Kelurahan</label>
+              <select id="kegKel" class="form-control"><option>Jatisampurna</option><option>Jatirangga</option><option>Jatikarya</option><option>Jatiraden</option><option>Jatiranggon</option></select></div>
+          </div>
+          <div class="form-group"><label class="form-label" for="kegJudul">Judul kegiatan</label><input type="text" id="kegJudul" class="form-control" maxlength="80" required placeholder="mis. Sosialisasi Perlinsos Digital di RW 03" /></div>
+          <div class="form-group"><label class="form-label" for="kegDesk">Uraian kegiatan</label><textarea id="kegDesk" class="form-control" rows="3" maxlength="500" placeholder="Apa yang dilakukan, jumlah warga, hasil, kendala..."></textarea></div>
+          <div class="form-group"><label class="form-label" for="kegFoto">Foto kegiatan (otomatis dikompres)</label><input type="file" id="kegFoto" class="form-control" accept="image/*" /></div>
+          <button type="submit" class="btn btn-primary" id="kegBtn">Kirim Laporan</button>
+        </form>
+      </div>
+      <div class="clay-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <h3 style="font-size:1.15rem;">Laporan Terbaru</h3>
+          <select id="kegFilter" class="form-control" style="max-width:220px;"><option value="">Semua kelurahan</option><option>Jatisampurna</option><option>Jatirangga</option><option>Jatikarya</option><option>Jatiraden</option><option>Jatiranggon</option></select>
+        </div>
+        <div id="kegList"></div>
+      </div>
+    </section>
+
+    <section id="tab-news" class="tab-panel hidden" style="display:none !important" aria-hidden="true">
+      <div class="clay-card" style="margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+          <div>
+            <h2 style="font-size:1.3rem;" data-i18n="news_portal_title">📰 Kabar & Instruksi Perlinsos Jatisampurna</h2>
+            <p style="font-size:0.84rem; color:var(--text-secondary);" data-i18n="news_portal_sub">
+              Baca berita untuk otomatis mencatat ke Kalender (+25 XP), pasang reminder, atau bagikan ke grup WA RW!
+            </p>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn btn-orange btn-sm" id="btnOpenRssModal">📡 RSS XML Feed</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btnOpenAddNewsModal">➕ Tambah Info</button>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <input type="search" id="newsSearchInput" class="form-control" style="flex:1; min-width:220px;" placeholder="🔍 Cari judul, instruksi, atau isi berita..." />
+          <select id="newsCategoryFilter" class="form-control" style="max-width:230px;">
+            <option value="ALL">Semua Kategori</option>
+            <option value="Instruksi Wali Kota">Instruksi Wali Kota</option>
+            <option value="Capaian Wilayah">Capaian Wilayah</option>
+            <option value="Panduan Teknis">Panduan Teknis</option>
+            <option value="UNREAD">Belum Dibaca</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="newsListGrid" class="news-grid"></div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 3: KALENDER KEGIATAN & REMINDER OTOMATIS (FULL CRUD)
+         ====================================================================== -->
+    <section id="tab-calendar" class="tab-panel hidden">
+      <div class="calendar-layout">
+        <!-- Monthly Grid -->
+        <div class="clay-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <button type="button" class="btn btn-ghost btn-sm" id="btnPrevMonth">◀</button>
+            <h2 id="calMonthTitle" style="font-size:1.25rem;">November 2026</h2>
+            <button type="button" class="btn btn-ghost btn-sm" id="btnNextMonth">▶</button>
+          </div>
+
+          <div class="cal-weekdays">
+            <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+          </div>
+          <div id="calDaysGrid" class="cal-days"></div>
+
+          <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:16px; font-size:0.78rem; font-weight:700; color:var(--text-secondary);">
+            
+            <span><i class="dot-rem" style="display:inline-block;"></i> Reminder Jadwal</span>
+            <span><i class="dot-note" style="display:inline-block;"></i> Catatan Lapangan</span>
+          </div>
+        </div>
+
+        <!-- Selected Day Agenda & CRUD -->
+        <div class="clay-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div>
+              <span class="badge-tag" id="selectedDateBadge">2026-11-25</span>
+              <h3 style="font-size:1.15rem; margin-top:4px;" data-i18n="agenda_day_title">Agenda & Log Aktivitas</h3>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="btnAddCalNote">➕ Catatan</button>
+          </div>
+
+          <div id="calEventList" class="agent-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 4: STUDIO KUSTOMISASI KARAKTER MONSTER 3D
+         ====================================================================== -->
+    <section id="tab-monster" class="tab-panel hidden">
+      <div id="monsterLock" class="clay-card" style="margin-bottom:14px;text-align:center;font-weight:700;">🔒 Memilih & mengganti Monster Partner khusus pengguna yang masuk dengan akun Pesaner. <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('akun')">Masuk / Daftar</button></div>
+      <div class="two-col-main">
+        <div class="clay-card monster-stage">
+          <span class="badge-tag" id="studioLevelTag">LEVEL 1 • 0 XP</span>
+          <div id="studioAuraBg" class="monster-arena-bg aura-pink" style="width:210px; height:210px;">
+            <div id="studioMonsterSvg" class="monster-svg-wrap" style="width:185px; height:185px;"></div>
+          </div>
+          <h2 id="studioMonsterTitle" style="font-size:1.45rem;">Puffi</h2>
+          <p id="studioMonsterDesc" style="font-size:0.86rem; color:var(--text-secondary); max-width:340px;">
+            Roh awan ceria yang menyemangati petugas RW saat mendata warga.
+          </p>
+        </div>
+
+        <div class="clay-card">
+          <h3 style="font-size:1.25rem; margin-bottom:14px;" data-i18n="studio_title">🎮 Pilih & Kustomisasi Partner Petugas</h3>
+
+          <div id="monsterPickerGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-bottom:16px;"></div>
+
+          <form id="profileForm">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label class="form-label" for="profOfficerName">Nama Petugas / ASN / Kader</label>
+                <input type="text" id="profOfficerName" class="form-control" placeholder="Nama Anda" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="profMonsterNick">Nama Panggilan Monster</label>
+                <input type="text" id="profMonsterNick" class="form-control" placeholder="Contoh: Si Gesit" />
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+              <div class="form-group">
+                <label class="form-label" for="profKelurahan">Kelurahan Default</label>
+                <select id="profKelurahan" class="form-control">
+                  <option value="Jatisampurna">Jatisampurna</option>
+                  <option value="Jatirangga">Jatirangga</option>
+                  <option value="Jatikarya">Jatikarya</option>
+                  <option value="Jatiraden">Jatiraden</option>
+                  <option value="Jatiranggon">Jatiranggon</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="profAura">Warna Aura</label>
+                <select id="profAura" class="form-control">
+                  <option value="aura-pink">🌸 Pastel Pink</option>
+                  <option value="aura-cyan">⚡ Neon Cyan</option>
+                  <option value="aura-gold">🌟 Champion Gold</option>
+                  <option value="aura-flame">🔥 Rock Magma</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="profAccessory">Aksesori</label>
+                <select id="profAccessory" class="form-control">
+                  <option value="none">Tanpa Aksesori</option>
+                  <option value="cap">🧢 Topi Agen</option>
+                  <option value="star">🕶️ Kacamata Bintang</option>
+                  <option value="crown">👑 Mahkota Juara</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;">
+              💾 Simpan Profil & Partner Monster
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       MODALS (NEWS READER, REMINDER, EVIDEN LIGHTBOX, RSS, TUTORIAL, CAL CRUD)
+       ======================================================================== -->
+  <!-- 1. News Reader & Comments Modal -->
+  <div id="newsReaderModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px;">
+        <div>
+          <span class="badge-tag" id="readerCategory">Kategori</span>
+          <span style="font-size:0.78rem; color:var(--text-muted); margin-left:8px;" id="readerDate">2026-11-25</span>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('newsReaderModal')">✕</button>
+      </div>
+
+      <h2 id="readerTitle" style="font-size:1.4rem; margin-bottom:12px;">Judul Berita</h2>
+      <div id="readerBody" style="font-size:0.94rem; color:var(--text-secondary); white-space:pre-line; margin-bottom:18px;"></div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; padding:12px 0; border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); margin-bottom:16px;">
+        <button type="button" class="btn btn-wa btn-sm" id="btnReaderShareWA">📲 Share ke WhatsApp</button>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnReaderPrintPDF">🖨️ Export PDF</button>
+        <button type="button" class="btn btn-orange btn-sm" id="btnReaderOpenReminder">⏰ Pasang Reminder</button>
+      </div>
+
+      <!-- Comments Section -->
+      <h4 style="font-size:1rem; margin-bottom:10px;">💬 Diskusi & Laporan Lapangan Agen (<span id="commentCount">0</span>)</h4>
+      <form id="commentForm" style="display:flex; gap:8px; margin-bottom:14px;">
+        <input type="hidden" id="editCommentIdx" value="-1" />
+        <input type="text" id="commentInput" class="form-control" placeholder="Tulis komentar atau laporan progres RW..." required />
+        <button type="submit" class="btn btn-primary btn-sm" id="btnCommentSubmit">Kirim</button>
+      </form>
+      <div id="commentsList" class="agent-list"></div>
+    </div>
+  </div>
+
+  <!-- 2. Set Reminder Modal -->
+  <div id="reminderModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box" style="max-width:440px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3>⏰ Atur Pengingat (Reminder)</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('reminderModal')">✕</button>
+      </div>
+      <form id="reminderForm">
+        <input type="hidden" id="remNewsId" />
+        <div class="form-group">
+          <label class="form-label" for="remDateTime">Tanggal & Jam Pengingat</label>
+          <input type="datetime-local" id="remDateTime" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="remNote">Catatan Pengingat</label>
+          <input type="text" id="remNote" class="form-control" placeholder="Contoh: Sosialisasikan ke Ketua RW 05" required />
+        </div>
+        <button type="submit" class="btn btn-orange" style="width:100%;">🔔 Aktifkan Reminder & Simpan ke Kalender</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Calendar Note Add/Edit Modal -->
+  <div id="calNoteModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box" style="max-width:460px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 id="calModalTitle">📝 Tambah Catatan Kalender</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('calNoteModal')">✕</button>
+      </div>
+      <form id="calNoteForm">
+        <input type="hidden" id="editCalEventId" value="" />
+        <div class="form-group">
+          <label class="form-label" for="calEventDate">Tanggal</label>
+          <input type="date" id="calEventDate" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="calEventKel">Kelurahan</label>
+          <select id="calEventKel" class="form-control">
+            <option value="Kecamatan Jatisampurna">Kecamatan Jatisampurna (Umum)</option>
+            <option value="Jatisampurna">Kelurahan Jatisampurna</option>
+            <option value="Jatirangga">Kelurahan Jatirangga</option>
+            <option value="Jatikarya">Kelurahan Jatikarya</option>
+            <option value="Jatiraden">Kelurahan Jatiraden</option>
+            <option value="Jatiranggon">Kelurahan Jatiranggon</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="calEventTitle">Judul Kegiatan / Progres</label>
+          <input type="text" id="calEventTitle" class="form-control" placeholder="Contoh: Pendataan Door-to-Door RW 03" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="calEventNote">Detail Catatan / Capaian KK</label>
+          <textarea id="calEventNote" class="form-control" rows="3" placeholder="Tulis detail hasil kegiatan lapangan..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="calEventRem">⏰ Pengingat (opsional)</label>
+          <input type="datetime-local" id="calEventRem" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">💾 Simpan ke Kalender</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Add News Modal -->
+  <div id="addNewsModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box" style="max-width:520px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3>➕ Publikasi Pengumuman / Berita Wilayah</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('addNewsModal')">✕</button>
+      </div>
+      <form id="addNewsForm">
+        <div class="form-group">
+          <label class="form-label" for="newNewsCat">Kategori</label>
+          <select id="newNewsCat" class="form-control">
+            <option value="Instruksi Wali Kota">Instruksi Wali Kota</option>
+            <option value="Capaian Wilayah">Capaian Wilayah</option>
+            <option value="Panduan Teknis">Panduan Teknis</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="newNewsTitle">Judul Berita (Indonesia)</label>
+          <input type="text" id="newNewsTitle" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="newNewsBody">Isi Pengumuman / Berita</label>
+          <textarea id="newNewsBody" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">📢 Terbitkan ke Portal & RSS</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. RSS XML Feed Modal -->
+  <div id="rssModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3>📡 RSS 2.0 XML Feed — Perlinsos Jatisampurna</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('rssModal')">✕</button>
+      </div>
+      <textarea id="rssXmlOutput" class="form-control" rows="11" readonly style="font-family:monospace; font-size:0.78rem;"></textarea>
+      <div style="display:flex; gap:10px; margin-top:12px;">
+        <button type="button" class="btn btn-primary btn-sm" id="btnCopyRss">📋 Salin XML</button>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnDownloadRss">⬇️ Download feed.xml</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Eviden Lightbox Modal -->
+  <div id="evidenModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box" style="max-width:540px; text-align:center;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 id="evidenModalTitle">📸 Bukti Eviden Agen</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('evidenModal')">✕</button>
+      </div>
+      <img id="evidenModalImg" alt="Eviden Screenshot" style="max-width:100%; max-height:65vh; border-radius:16px; border:2px solid var(--border-soft);" />
+      <p id="evidenModalMeta" style="font-size:0.84rem; color:var(--text-secondary); margin-top:10px;"></p>
+    </div>
+  </div>
+
+  <!-- 7. Newbie Quick Tour Modal -->
+  <div id="tutorialModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box" style="max-width:520px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3>💡 Tur Singkat Pemula — Perlinsos Quest</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('tutorialModal')">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px; font-size:0.9rem;">
+        <div class="clay-card-sm">
+          <strong>1. ⚡ Input Capaian & Naik Peringkat Otomatis:</strong> Masukkan nama agen, kelurahan, unsur (Pamor, RW/RT, PKK, Dasawisma, Karang Taruna), jumlah KK, dan foto screenshot. Peringkat langsung terurut otomatis!
+        </div>
+        <div class="clay-card-sm">
+          <strong>2. 📝 Laporan Kegiatan + Foto:</strong> Setelah masuk dengan akun Pesaner, tulis laporan kegiatan lengkap dengan foto. Laporan bisa dibaca semua orang, tetapi hanya pemilik akun yang dapat mengisinya. Kalender &amp; reminder juga khusus akun yang sudah login.
+        </div>
+        <div class="clay-card-sm">
+          <strong>3. 📲 Share WA, PDF &amp; CSV:</strong> Bagikan rekap peringkat langsung ke grup WhatsApp RW dengan format rapi atau cetak sebagai PDF/CSV.
+        </div>
+        <div class="clay-card-sm">
+          <strong>4. 🔒 100% Offline-First (IndexedDB):</strong> Semua data tersimpan aman langsung di perangkat Anda tanpa kuota server tambahan.
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" style="width:100%; margin-top:14px;" onclick="closeModal('tutorialModal')">
+        Siap Beraksi! 🚀
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. BILINGUAL DICTIONARY (ID / EN) & BASELINE DATA (21 NOV 2026)
+       ========================================================================== */
+    const I18N = {
+      id: {
+        subtitle: "Jatisampurna Digital Arena • Kota Bekasi",
+        btn_guide: "Panduan",
+        tab_arena: "Arena & Capaian",
+        tab_news: "Berita Wilayah",
+        tab_calendar: "Kalender & Reminder",
+        tab_monster: "Partner Monster",
+        instruksi_no: "Instruksi Wali Kota Bekasi No. 100/135/SETDA.Tapem",
+        hero_title: "Misi 50% Digitalisasi Perlinsos Jatisampurna!",
+        hero_desc: "Peringkat 2 se-Kota Bekasi! Mari kejar target minimal 50% cakupan KK (19.674 KK dari 39.348 KK) pada akhir November 2026.",
+        total_registered: "Data Resmi Baseline (Total KK)",
+        btn_customize: "🎨 Ganti Monster",
+        kelurahan_progress_title: "📊 Data Resmi (Baseline) 5 Kelurahan",
+        target_badge: "Target Masing-Masing: ≥ 50% KK",
+        form_agent_title: "⚡ Input Capaian Agen",
+        lbl_kelurahan: "Kelurahan Wilayah Tugas",
+        lbl_agent_name: "Nama Petugas / Agen",
+        lbl_unsur: "Unsur Satgas",
+        lbl_kk_count: "Total KK Terdaftar (angka terakhir di aplikasi)",
+        lbl_pick_monster: "Pilih Karakter Monster Agen",
+        lbl_eviden: "Upload Eviden Screenshot Aplikasi (Otomatis Kompres)",
+        btn_submit_agent: "Simpan Capaian & Klaim +50 XP",
+        leaderboard_title: "🏅 Peringkat Agen Perlinsos",
+        news_portal_title: "📰 Kabar & Instruksi Perlinsos Jatisampurna",
+        news_portal_sub: "Baca berita untuk otomatis mencatat ke Kalender (+25 XP), pasang reminder, atau bagikan ke grup WA RW!",
+        agenda_day_title: "Agenda & Log Aktivitas",
+        studio_title: "🎮 Pilih & Kustomisasi Partner Petugas"
+      },
+      en: {
+        subtitle: "Jatisampurna Digital Arena • Bekasi City",
+        btn_guide: "Guide",
+        tab_arena: "Arena & Progress",
+        tab_news: "District News",
+        tab_calendar: "Calendar & Reminder",
+        tab_monster: "Monster Partner",
+        instruksi_no: "Bekasi Mayor Instruction No. 100/135/SETDA.Tapem",
+        hero_title: "50% Perlinsos Digitalization Mission!",
+        hero_desc: "Ranked #2 across Bekasi City! Let's achieve at least 50% household coverage (19,674 of 39,348 HH) by end of November 2026.",
+        total_registered: "Total Registered Households",
+        btn_customize: "🎨 Switch Monster",
+        kelurahan_progress_title: "📊 Official Baseline Data – 5 Sub-Districts",
+        target_badge: "Sub-District Goal: ≥ 50% HH",
+        form_agent_title: "⚡ Submit Agent Achievement",
+        lbl_kelurahan: "Assigned Sub-District (Kelurahan)",
+        lbl_agent_name: "Officer / Agent Name",
+        lbl_unsur: "Task Force Unit",
+        lbl_kk_count: "Registered Households (KK)",
+        lbl_pick_monster: "Select Agent Monster Companion",
+        lbl_eviden: "Upload App Screenshot Evidence (Auto-Compressed)",
+        btn_submit_agent: "Save Progress & Claim +50 XP",
+        leaderboard_title: "🏅 Perlinsos Agent Leaderboard",
+        news_portal_title: "📰 Jatisampurna Perlinsos News & Directives",
+        news_portal_sub: "Read articles to auto-log into Calendar (+25 XP), set reminders, or share to RW WhatsApp groups!",
+        agenda_day_title: "Daily Agenda & Activity Log",
+        studio_title: "🎮 Choose & Customize Officer Partner"
+      }
+    };
+
+    // Baseline Real Data (21 November 2026)
+    const BASELINE_KELURAHAN = [
+      { name: "Jatirangga", baseKK: 2669, totalKK: 6536, activeAgents: 79, totalAgents: 207 },
+      { name: "Jatiraden", baseKK: 2565, totalKK: 7272, activeAgents: 93, totalAgents: 200 },
+      { name: "Jatiranggon", baseKK: 2798, totalKK: 9505, activeAgents: 128, totalAgents: 287 },
+      { name: "Jatisampurna", baseKK: 3086, totalKK: 10495, activeAgents: 176, totalAgents: 465 },
+      { name: "Jatikarya", baseKK: 1528, totalKK: 5540, activeAgents: 43, totalAgents: 96 }
+    ];
+
+    /* ==========================================================================
+       2. 5 FULL-BODY SVG MONSTERS (CUTE TO ROCK-METAL STYLE)
+       ========================================================================== */
+    const MONSTERS = {
+      puffi: {
+        id: "puffi",
+        name: "Puffi",
+        type: "Cute Cloud Spirit",
+        desc_id: "Roh awan lembut berwarna pastel yang menyemangati agen saat mendata warga dari rumah ke rumah.",
+        desc_en: "A fluffy pastel cloud spirit cheering agents during door-to-door household registration.",
+        svg: (acc = "none") => `
+          <svg viewBox="0 0 160 160" width="100%" height="100%" aria-label="Puffi Monster">
+            <defs>
+              <radialGradient id="puffiGrad" cx="35%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#FFFFFF"/>
+                <stop offset="55%" stop-color="#FFD6E8"/>
+                <stop offset="100%" stop-color="#FF8EC7"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="80" cy="144" rx="36" ry="8" fill="rgba(72,52,212,0.18)"/>
+            <!-- Feet -->
+            <ellipse cx="62" cy="132" rx="14" ry="9" fill="#FF6B9D"/>
+            <ellipse cx="98" cy="132" rx="14" ry="9" fill="#FF6B9D"/>
+            <!-- Arms -->
+            <g class="monster-arm-left"><ellipse cx="34" cy="90" rx="14" ry="10" fill="#FFB8D9"/></g>
+            <g class="monster-arm-right"><ellipse cx="126" cy="90" rx="14" ry="10" fill="#FFB8D9"/></g>
+            <!-- Fluffy Cloud Body -->
+            <path d="M46 118 C28 116 24 92 38 80 C30 62 48 44 66 50 C74 36 96 36 102 52 C120 46 134 66 124 84 C136 96 130 118 112 120 Z" fill="url(#puffiGrad)" stroke="#FF6B9D" stroke-width="3"/>
+            <!-- Cheeks -->
+            <ellipse cx="56" cy="88" rx="8" ry="5" fill="#FF5E99" opacity="0.55"/>
+            <ellipse cx="104" cy="88" rx="8" ry="5" fill="#FF5E99" opacity="0.55"/>
+            <!-- Eyes & Smile -->
+            <g class="monster-eyes">
+              <circle cx="64" cy="76" r="7" fill="#2D1E5F"/>
+              <circle cx="66" cy="73" r="2.6" fill="#FFF"/>
+              <circle cx="96" cy="76" r="7" fill="#2D1E5F"/>
+              <circle cx="98" cy="73" r="2.6" fill="#FFF"/>
+            </g>
+            <path d="M73 88 Q80 96 87 88" fill="none" stroke="#2D1E5F" stroke-width="3.5" stroke-linecap="round"/>
+            ${renderAccessorySVG(acc, 44)}
+          </svg>`
+      },
+      sproutling: {
+        id: "sproutling",
+        name: "Sproutling",
+        type: "Playful Leaf Dino",
+        desc_id: "Dino hijau mint ceria dengan tunas daun emas yang tumbuh makin subur setiap KK terverifikasi.",
+        desc_en: "A cheerful mint dino whose golden leaf sprout thrives with every verified household.",
+        svg: (acc = "none") => `
+          <svg viewBox="0 0 160 160" width="100%" height="100%" aria-label="Sproutling Monster">
+            <defs>
+              <linearGradient id="dinoGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#55EFC4"/>
+                <stop offset="100%" stop-color="#00B894"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="80" cy="145" rx="38" ry="8" fill="rgba(0,184,148,0.2)"/>
+            <!-- Tail -->
+            <path d="M112 114 Q142 104 136 86 Q122 96 110 98 Z" fill="#00B894"/>
+            <!-- Feet -->
+            <rect x="54" y="122" width="18" height="16" rx="8" fill="#009473"/>
+            <rect x="88" y="122" width="18" height="16" rx="8" fill="#009473"/>
+            <!-- Arms -->
+            <g class="monster-arm-left"><ellipse cx="42" cy="96" rx="12" ry="8" fill="#55EFC4"/></g>
+            <g class="monster-arm-right"><ellipse cx="118" cy="96" rx="12" ry="8" fill="#55EFC4"/></g>
+            <!-- Body & Head -->
+            <rect x="46" y="44" width="68" height="84" rx="34" fill="url(#dinoGrad)" stroke="#009473" stroke-width="3"/>
+            <ellipse cx="80" cy="102" rx="22" ry="20" fill="#FFEAA7"/>
+            <!-- Leaf Sprout -->
+            <path d="M80 44 Q80 24 66 22 Q68 38 80 42 Z" fill="#FECA57" stroke="#E1B12C" stroke-width="2"/>
+            <path d="M80 44 Q84 22 98 24 Q94 38 80 42 Z" fill="#1DD1A1" stroke="#10AC84" stroke-width="2"/>
+            <!-- Eyes & Mouth -->
+            <g class="monster-eyes">
+              <circle cx="64" cy="68" r="6.5" fill="#1E272E"/>
+              <circle cx="66" cy="66" r="2.4" fill="#FFF"/>
+              <circle cx="96" cy="68" r="6.5" fill="#1E272E"/>
+              <circle cx="98" cy="66" r="2.4" fill="#FFF"/>
+            </g>
+            <path d="M72 78 Q80 86 88 78" fill="none" stroke="#1E272E" stroke-width="3" stroke-linecap="round"/>
+            ${renderAccessorySVG(acc, 44)}
+          </svg>`
+      },
+      voltfox: {
+        id: "voltfox",
+        name: "Voltfox",
+        type: "Energetic Spark Kitsune",
+        desc_id: "Rubah petir super gesit yang mempercepat sinkronisasi data Perlinsos di seluruh RW.",
+        desc_en: "A hyper-agile lightning fox accelerating Perlinsos data sync across every neighborhood.",
+        svg: (acc = "none") => `
+          <svg viewBox="0 0 160 160" width="100%" height="100%" aria-label="Voltfox Monster">
+            <defs>
+              <linearGradient id="foxGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#FECA57"/>
+                <stop offset="100%" stop-color="#FF9F43"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="80" cy="145" rx="36" ry="8" fill="rgba(255,159,67,0.22)"/>
+            <!-- Lightning Tail -->
+            <path class="monster-flame-tail" d="M108 118 L138 98 L124 94 L144 74 L112 88 L122 94 Z" fill="#00CEC9" stroke="#0984E3" stroke-width="2"/>
+            <!-- Ears -->
+            <polygon points="48,58 38,24 68,46" fill="#FF9F43" stroke="#EE5A24" stroke-width="2.5"/>
+            <polygon points="112,58 122,24 92,46" fill="#FF9F43" stroke="#EE5A24" stroke-width="2.5"/>
+            <!-- Legs -->
+            <rect x="56" y="120" width="15" height="18" rx="7" fill="#EE5A24"/>
+            <rect x="89" y="120" width="15" height="18" rx="7" fill="#EE5A24"/>
+            <!-- Arms -->
+            <g class="monster-arm-left"><ellipse cx="42" cy="96" rx="11" ry="8" fill="#FECA57"/></g>
+            <g class="monster-arm-right"><ellipse cx="118" cy="96" rx="11" ry="8" fill="#FECA57"/></g>
+            <!-- Torso & Head -->
+            <ellipse cx="80" cy="104" rx="28" ry="24" fill="url(#foxGrad)"/>
+            <ellipse cx="80" cy="64" rx="34" ry="27" fill="url(#foxGrad)" stroke="#EE5A24" stroke-width="2.5"/>
+            <path d="M52 68 Q80 86 108 68 Q104 88 80 90 Q56 88 52 68 Z" fill="#FFF"/>
+            <!-- Eyes -->
+            <g class="monster-eyes">
+              <circle cx="65" cy="62" r="6.5" fill="#1E1B4B"/>
+              <circle cx="67" cy="60" r="2.4" fill="#00CEC9"/>
+              <circle cx="95" cy="62" r="6.5" fill="#1E1B4B"/>
+              <circle cx="97" cy="60" r="2.4" fill="#00CEC9"/>
+            </g>
+            <polygon points="77,70 83,70 80,74" fill="#1E1B4B"/>
+            ${renderAccessorySVG(acc, 38)}
+          </svg>`
+      },
+      golemox: {
+        id: "golemox",
+        name: "Golemox",
+        type: "Crystal Defender Turtle",
+        desc_id: "Kura-kura kristal tangguh penjaga validitas data keluarga penerima manfaat.",
+        desc_en: "A sturdy crystal-shelled guardian safeguarding beneficiary household data accuracy.",
+        svg: (acc = "none") => `
+          <svg viewBox="0 0 160 160" width="100%" height="100%" aria-label="Golemox Monster">
+            <ellipse cx="80" cy="145" rx="42" ry="8" fill="rgba(108,92,231,0.22)"/>
+            <!-- Crystal Shell -->
+            <path d="M36 108 C36 62 124 62 124 108 Z" fill="#6C5CE7" stroke="#4834D4" stroke-width="3"/>
+            <polygon points="80,50 70,68 90,68" fill="#00CEC9"/>
+            <polygon points="56,62 48,78 66,78" fill="#A29BFE"/>
+            <polygon points="104,62 94,78 112,78" fill="#A29BFE"/>
+            <!-- Feet -->
+            <rect x="46" y="122" width="22" height="16" rx="8" fill="#00B894"/>
+            <rect x="92" y="122" width="22" height="16" rx="8" fill="#00B894"/>
+            <!-- Body & Head -->
+            <rect x="44" y="96" width="72" height="30" rx="14" fill="#55EFC4" stroke="#00B894" stroke-width="2.5"/>
+            <circle cx="80" cy="84" r="24" fill="#55EFC4" stroke="#00B894" stroke-width="2.5"/>
+            <g class="monster-eyes">
+              <circle cx="70" cy="80" r="5.5" fill="#1E1B4B"/>
+              <circle cx="71" cy="78" r="2" fill="#FFF"/>
+              <circle cx="90" cy="80" r="5.5" fill="#1E1B4B"/>
+              <circle cx="91" cy="78" r="2" fill="#FFF"/>
+            </g>
+            <path d="M74 91 L86 91" stroke="#1E1B4B" stroke-width="3" stroke-linecap="round"/>
+            ${renderAccessorySVG(acc, 56)}
+          </svg>`
+      },
+      ignisaur: {
+        id: "ignisaur",
+        name: "Ignisaur",
+        type: "Rock-Metal Fire Dragon",
+        desc_id: "Naga rock-metal legendaris bersemangat membara untuk menembus target 50% Kecamatan Jatisampurna!",
+        desc_en: "A legendary rock-metal dragon blazing with energy to smash Jatisampurna's 50% target!",
+        svg: (acc = "none") => `
+          <svg viewBox="0 0 160 160" width="100%" height="100%" aria-label="Ignisaur Rock Dragon">
+            <defs>
+              <linearGradient id="rockGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#FF5252"/>
+                <stop offset="100%" stop-color="#B33939"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="80" cy="146" rx="40" ry="8" fill="rgba(255,82,82,0.28)"/>
+            <!-- Flame Tail -->
+            <path class="monster-flame-tail" d="M110 116 Q146 110 138 78 Q128 92 122 82 Q114 98 106 106 Z" fill="#FF9F43" stroke="#FF5252" stroke-width="2"/>
+            <!-- Rock Wings -->
+            <polygon points="46,84 16,56 32,96" fill="#2C2C54" stroke="#FF5252" stroke-width="2"/>
+            <polygon points="114,84 144,56 128,96" fill="#2C2C54" stroke="#FF5252" stroke-width="2"/>
+            <!-- Horns -->
+            <polygon points="56,46 42,20 68,40" fill="#FECA57" stroke="#E1B12C" stroke-width="2"/>
+            <polygon points="104,46 118,20 92,40" fill="#FECA57" stroke="#E1B12C" stroke-width="2"/>
+            <!-- Legs -->
+            <rect x="52" y="120" width="20" height="18" rx="7" fill="#842029"/>
+            <rect x="88" y="120" width="20" height="18" rx="7" fill="#842029"/>
+            <!-- Arms -->
+            <g class="monster-arm-left"><polygon points="46,88 26,98 42,108" fill="#FF5252"/></g>
+            <g class="monster-arm-right"><polygon points="114,88 134,98 118,108" fill="#FF5252"/></g>
+            <!-- Armored Body & Head -->
+            <rect x="46" y="42" width="68" height="84" rx="28" fill="url(#rockGrad)" stroke="#2C2C54" stroke-width="3"/>
+            <ellipse cx="80" cy="102" rx="21" ry="20" fill="#FECA57"/>
+            <!-- Rock Star Visor Eyes -->
+            <g class="monster-eyes">
+              <polygon points="54,62 76,68 56,74" fill="#00CEC9"/>
+              <polygon points="106,62 84,68 104,74" fill="#00CEC9"/>
+            </g>
+            <path d="M68 82 L75 78 L80 83 L85 78 L92 82" fill="none" stroke="#FFF" stroke-width="2.5" stroke-linecap="round"/>
+            ${renderAccessorySVG(acc, 38)}
+          </svg>`
+      }
+    };
+
+    function renderAccessorySVG(acc, topY) {
+      if (acc === "cap") {
+        return `<g transform="translate(0, ${topY - 40})">
+          <path d="M54 44 Q80 26 106 44 Z" fill="#0984E3" stroke="#FFF" stroke-width="2"/>
+          <rect x="52" y="42" width="66" height="6" rx="3" fill="#00CEC9"/>
+        </g>`;
+      }
+      if (acc === "star") {
+        return `<g transform="translate(0, ${topY - 40})">
+          <polygon points="62,64 66,72 74,72 68,78 70,86 62,81 54,86 56,78 50,72 58,72" fill="#FECA57" opacity="0.88"/>
+          <polygon points="98,64 102,72 110,72 104,78 106,86 98,81 90,86 92,78 86,72 94,72" fill="#FECA57" opacity="0.88"/>
+        </g>`;
+      }
+      if (acc === "crown") {
+        return `<g transform="translate(0, ${topY - 44})">
+          <polygon points="60,44 64,28 74,38 80,24 86,38 96,28 100,44" fill="#FECA57" stroke="#E1B12C" stroke-width="2"/>
+        </g>`;
+      }
+      return "";
+    }
+
+    /* ==========================================================================
+       3. INDEXEDDB NATIVE WRAPPER (PerlinsosJatisampurnaDB)
+       ========================================================================== */
+    const DB_NAME = "PerlinsosJatisampurnaDB";
+    const DB_VERSION = 1;
+    let dbInstance = null;
+
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        if (dbInstance) return resolve(dbInstance);
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains("capaian_agen")) {
+            db.createObjectStore("capaian_agen", { keyPath: "id" });
+          }
+          if (!db.objectStoreNames.contains("berita_wilayah")) {
+            db.createObjectStore("berita_wilayah", { keyPath: "id" });
+          }
+          if (!db.objectStoreNames.contains("kalender_kegiatan")) {
+            db.createObjectStore("kalender_kegiatan", { keyPath: "id" });
+          }
+          if (!db.objectStoreNames.contains("user_profile")) {
+            db.createObjectStore("user_profile", { keyPath: "id" });
+          }
+        };
+
+        req.onsuccess = (e) => {
+          dbInstance = e.target.result;
+          resolve(dbInstance);
+        };
+        req.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    async function dbGetAll(storeName) {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readonly");
+        const req = tx.objectStore(storeName).getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbGet(storeName, key) {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readonly");
+        const req = tx.objectStore(storeName).get(key);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbPut(storeName, item) {
+      if (storeName === "user_profile" && window.onProfileSaved) setTimeout(() => window.onProfileSaved(item), 0);
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readwrite");
+        const req = tx.objectStore(storeName).put(item);
+        req.onsuccess = () => resolve(item);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbDelete(storeName, key) {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readwrite");
+        const req = tx.objectStore(storeName).delete(key);
+        req.onsuccess = () => resolve(true);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    /* ==========================================================================
+       4. SEED DATA INITIALIZATION
+       ========================================================================== */
+    async function seedInitialData() {
+      // 1. User Profile
+      let profile = await dbGet("user_profile", "current");
+      if (!profile) {
+        profile = {
+          id: "current",
+          nama_petugas: "Petugas Jatisampurna",
+          kelurahan_default: "Jatisampurna",
+          selected_monster: "puffi",
+          monster_nickname: "Puffi",
+          aura: "aura-pink",
+          accessory: "none",
+          total_xp: 120,
+          level: 2,
+          theme: "light",
+          lang: "id",
+          sound: true
+        };
+        await dbPut("user_profile", profile);
+      }
+
+      // 2. Seed News (4 Bilingual Articles)
+      const existingNews = await dbGetAll("berita_wilayah");
+      if (existingNews.length === 0) {
+        const initialNews = [
+          {
+            id: "news-1",
+            judul_id: "Instruksi Wali Kota Bekasi No. 100/135/SETDA.Tapem: Target 50% Digitalisasi Perlinsos Akhir November 2026",
+            judul_en: "Bekasi Mayor Instruction No. 100/135/SETDA.Tapem: 50% Perlinsos Digitalization Target by End of Nov 2026",
+            ringkasan_id: "Pemerintah Kota Bekasi menginstruksikan seluruh Camat dan Lurah menggerakkan Pamor, RW/RT, PKK, Dasawisma, dan Karang Taruna mencapai minimal 50% cakupan KK.",
+            ringkasan_en: "Bekasi City Government instructs all Sub-District and Village Heads to mobilize Pamor, RW/RT, PKK, Dasawisma, and Karang Taruna to reach at least 50% HH coverage.",
+            konten_id: "Menindaklanjuti Instruksi Wali Kota Bekasi Nomor: 100/135/SETDA.Tapem tentang Percepatan Digitalisasi Perlindungan Sosial (Perlinsos), seluruh jajaran Kecamatan Jatisampurna bersama 5 Kelurahan (Jatisampurna, Jatirangga, Jatikarya, Jatiraden, dan Jatiranggon) melaksanakan pendataan aktif berbasis aplikasi.\n\nTarget strategis yang ditetapkan adalah minimal 50% dari total 39.348 Kepala Keluarga (atau 19.674 KK) telah terdaftar dan terverifikasi pada akhir November 2026.",
+            konten_en: "Following Bekasi Mayor Instruction No. 100/135/SETDA.Tapem on Accelerating Social Protection (Perlinsos) Digitalization, Kecamatan Jatisampurna across all 5 sub-districts is executing active app-based household registration.\n\nThe strategic milestone requires at least 50% of the total 39,348 households (19,674 HH) to be verified by the end of November 2026.",
+            kategori: "Instruksi Wali Kota",
+            tanggal: "2026-11-21",
+            is_read: false,
+            has_reminder: false,
+            reminder_time: "",
+            komentar: [
+              { author: "Admin Kecamatan", text: "Mari seluruh agen Pamor & RW laporkan capaian harian melalui menu Arena!", time: "2026-11-21 08:30" }
+            ]
+          },
+          {
+            id: "news-2",
+            judul_id: "Jatisampurna Raih Peringkat 2 Capaian Perlinsos se-Kota Bekasi (32,14% / 12.646 KK)",
+            judul_en: "Jatisampurna Ranks #2 Across Bekasi City in Perlinsos Coverage (32.14% / 12,646 HH)",
+            ringkasan_id: "Berdasarkan rekapitulasi 21 November 2026, Kecamatan Jatisampurna menempati posisi runner-up se-Kota Bekasi tepat di bawah Kecamatan Bantargebang.",
+            ringkasan_en: "Based on the November 21, 2026 recapitulation, Jatisampurna stands as runner-up across Bekasi City right behind Bantargebang.",
+            konten_id: "Kerja keras 519 agen aktif dari total 1.255 agen terdaftar di Kecamatan Jatisampurna membuahkan hasil membanggakan. Hingga 21 November 2026, tercatat 12.646 KK dari 39.348 KK (32,14%) telah berhasil didaftarkan.\n\nCapaian ini menempatkan Kecamatan Jatisampurna di Peringkat 2 se-Kota Bekasi setelah Bantargebang. Diperlukan tambahan 7.028 KK lagi untuk menembus ambang batas 50%.",
+            konten_en: "The dedication of 519 active agents out of 1,255 registered agents in Jatisampurna has yielded strong results. As of November 21, 2026, 12,646 of 39,348 households (32.14%) have been registered.\n\nThis places Jatisampurna #2 citywide after Bantargebang, needing 7,028 more households to pass the 50% threshold.",
+            kategori: "Capaian Wilayah",
+            tanggal: "2026-11-22",
+            is_read: false,
+            has_reminder: false,
+            reminder_time: "",
+            komentar: []
+          },
+          {
+            id: "news-3",
+            judul_id: "Panduan Verifikasi BPNT & PKH via Portal Perlinsos oleh Satgas RW (Pamor, PKK, Karang Taruna)",
+            judul_en: "BPNT & PKH Verification Guide via Perlinsos Portal for RW Task Force",
+            ringkasan_id: "Langkah teknis penginputan NIK/KK, validasi foto rumah, dan unggah eviden dashboard aplikasi oleh agen lapangan.",
+            ringkasan_en: "Technical steps for NIK/KK input, household photo validation, and uploading app dashboard evidence by field agents.",
+            konten_id: "Agar setiap input KK valid dan tidak tertolak sistem, agen Satgas RW (Pamor, Pengurus RW/RT, Kader PKK, Kader Dasawisma, dan Karang Taruna) wajib memastikan:\n1. Kesesuaian nomor KK dan NIK dengan KTP elektronik warga.\n2. Pengambilan foto eviden yang jelas.\n3. Mengunggah screenshot ringkasan capaian dashboard pada formulir Arena Perlinsos Quest.",
+            konten_en: "To ensure valid household entries, RW Task Force agents (Pamor, RW/RT, PKK, Dasawisma, and Karang Taruna) should verify:\n1. Exact match of KK and NIK numbers with electronic ID cards.\n2. Clear evidence photos.\n3. Uploading dashboard progress screenshots in the Perlinsos Quest Arena form.",
+            kategori: "Panduan Teknis",
+            tanggal: "2026-11-23",
+            is_read: false,
+            has_reminder: false,
+            reminder_time: "",
+            komentar: []
+          },
+          {
+            id: "news-4",
+            judul_id: "Kelurahan Jatirangga Pimpin Capaian Tertinggi di Jatisampurna dengan 40,84%",
+            judul_en: "Jatirangga Sub-District Leads Jatisampurna Coverage at 40.84%",
+            ringkasan_id: "Jatirangga mencatat 2.669 KK terdaftar dari 6.536 KK, disusul ketat oleh Kelurahan Jatiraden di posisi kedua dengan 35,27%.",
+            ringkasan_en: "Jatirangga records 2,669 registered HH out of 6,536 HH, closely followed by Jatiraden in second place at 35.27%.",
+            konten_id: "Rincian capaian 5 Kelurahan di Kecamatan Jatisampurna:\n• Jatirangga: 2.669 / 6.536 KK (40,84%) — 79 agen aktif.\n• Jatiraden: 2.565 / 7.272 KK (35,27%) — 93 agen aktif.\n• Jatiranggon: 2.798 / 9.505 KK (29,44%) — 128 agen aktif.\n• Jatisampurna: 3.086 / 10.495 KK (29,40%) — 176 agen aktif.\n• Jatikarya: 1.528 / 5.540 KK (27,58%) — 43 agen aktif.",
+            konten_en: "Breakdown across all 5 sub-districts in Jatisampurna:\n• Jatirangga: 2,669 / 6,536 HH (40.84%) — 79 active agents.\n• Jatiraden: 2,565 / 7,272 HH (35.27%) — 93 active agents.\n• Jatiranggon: 2,798 / 9,505 HH (29.44%) — 128 active agents.\n• Jatisampurna: 3,086 / 10,495 HH (29.40%) — 176 active agents.\n• Jatikarya: 1,528 / 5,540 HH (27.58%) — 43 active agents.",
+            kategori: "Capaian Wilayah",
+            tanggal: "2026-11-24",
+            is_read: false,
+            has_reminder: false,
+            reminder_time: "",
+            komentar: []
+          }
+        ];
+        for (const item of initialNews) {
+          await dbPut("berita_wilayah", item);
+        }
+      }
+
+      // 3. Seed Sample Agents (if empty)
+      const existingAgents = await dbGetAll("capaian_agen");
+      if (false) { // data contoh dinonaktifkan: ranking hanya berisi inputan nyata
+        const sampleAgents = [
+          {
+            id: "ag-1",
+            kelurahan: "Jatirangga",
+            nama: "Hendra Wijaya (RW 04)",
+            unsur: "Pamor",
+            jumlah_kk: 64,
+            eviden_base64: "",
+            waktu: "2026-11-25 09:15",
+            monster_id: "ignisaur",
+            xp_earned: 150
+          },
+          {
+            id: "ag-2",
+            kelurahan: "Jatisampurna",
+            nama: "Siti Nurhaliza (PKK RW 02)",
+            unsur: "Kader PKK",
+            jumlah_kk: 52,
+            eviden_base64: "",
+            waktu: "2026-11-25 10:20",
+            monster_id: "puffi",
+            xp_earned: 120
+          },
+          {
+            id: "ag-3",
+            kelurahan: "Jatiraden",
+            nama: "Rizky Pratama",
+            unsur: "Karang Taruna",
+            jumlah_kk: 45,
+            eviden_base64: "",
+            waktu: "2026-11-25 11:05",
+            monster_id: "voltfox",
+            xp_earned: 100
+          }
+        ];
+        for (const ag of sampleAgents) {
+          await dbPut("capaian_agen", ag);
+        }
+      }
+
+      // 4. Seed Sample Calendar Note (if empty)
+      const existingCal = await dbGetAll("kalender_kegiatan");
+      if (existingCal.length === 0) {
+        await dbPut("kalender_kegiatan", {
+          id: "cal-init-1",
+          tanggal: "2026-11-25",
+          judul: "Rapat Evaluasi Percepatan Perlinsos Kecamatan",
+          catatan: "Koordinasi target 50% KK bersama 5 Kelurahan dan unsur Pamor/RW.",
+          kelurahan: "Kecamatan Jatisampurna",
+          tipe: "field_note",
+          berita_id: ""
+        });
+      }
+    }
+
+    /* ==========================================================================
+       5. GLOBAL STATE & AUDIO SYNTHESIZER (WEB AUDIO API)
+       ========================================================================== */
+    let state = {
+      profile: null,
+      agents: [],
+      news: [],
+      calendarEvents: [],
+      activeTab: "arena",
+      currentNewsId: null,
+      calYear: 2026,
+      calMonth: 10, // 0-indexed -> 10 = November
+      selectedDate: "2026-11-25",
+      pendingEvidenBase64: ""
+    };
+
+    function playTone(type = "pop") {
+      if (!state.profile || !state.profile.sound) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        const now = ctx.currentTime;
+        if (type === "success") {
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.1);
+          osc.frequency.setValueAtTime(783.99, now + 0.2);
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+          osc.start(now);
+          osc.stop(now + 0.45);
+        } else if (type === "alarm") {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.setValueAtTime(1046.5, now + 0.15);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+          osc.start(now);
+          osc.stop(now + 0.5);
+        } else {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(600, now);
+          gain.gain.setValueAtTime(0.09, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        }
+      } catch (e) {}
+    }
+
+    function showToast(msg, icon = "✨") {
+      const box = document.getElementById("toastContainer");
+      const el = document.createElement("div");
+      el.className = "toast";
+      el.innerHTML = `<span style="font-size:1.25rem;">${icon}</span><span>${msg}</span>`;
+      box.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = "0";
+        el.style.transform = "translateX(20px)";
+        setTimeout(() => el.remove(), 300);
+      }, 3600);
+    }
+
+    async function addXP(points) {
+      state.profile.total_xp = (state.profile.total_xp || 0) + points;
+      state.profile.level = Math.floor(state.profile.total_xp / 100) + 1;
+      await dbPut("user_profile", state.profile);
+      renderCompanionUI();
+    }
+
+    /* ==========================================================================
+       6. IMAGE COMPRESSION VIA HTML5 CANVAS
+       ========================================================================== */
+    function compressImageToBase64(file, maxWidth = 720, quality = 0.72) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth) {
+              h = Math.round((h * maxWidth) / w);
+              w = maxWidth;
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.onerror = reject;
+          img.src = ev.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    /* ==========================================================================
+       7. RENDERING FUNCTIONS (ARENA, KELURAHAN, LEADERBOARD, NEWS, CALENDAR)
+       ========================================================================== */
+    function formatNum(n) {
+      return Number(n).toLocaleString("id-ID");
+    }
+
+    function applyThemeAndLang() {
+      const { theme, lang, sound } = state.profile;
+      document.documentElement.setAttribute("data-theme", theme || "light");
+      document.documentElement.setAttribute("lang", lang || "id");
+      document.getElementById("themeIcon").textContent = theme === "dark" ? "☀️" : "🌙";
+      document.getElementById("langLabel").textContent = (lang || "id").toUpperCase();
+      document.getElementById("soundIcon").textContent = sound ? "🔊" : "🔇";
+
+      const dict = I18N[lang || "id"];
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+      });
+    }
+
+    function renderCompanionUI() {
+      const p = state.profile;
+      const m = MONSTERS[p.selected_monster] || MONSTERS.puffi;
+      const svgHTML = m.svg(p.accessory || "none");
+
+      document.getElementById("companionLevelBadge").textContent = `LV. ${p.level} • ${p.total_xp} XP`;
+      document.getElementById("companionAura").className = `monster-arena-bg ${p.aura || "aura-pink"}`;
+      document.getElementById("companionSvgBox").innerHTML = svgHTML;
+      document.getElementById("companionNameDisplay").textContent = `${p.monster_nickname || m.name} (${m.name})`;
+      document.getElementById("companionRoleDisplay").textContent = `${p.nama_petugas} • Kel. ${p.kelurahan_default}`;
+
+      // Studio tab sync
+      document.getElementById("studioLevelTag").textContent = `LEVEL ${p.level} • ${p.total_xp} XP`;
+      document.getElementById("studioAuraBg").className = `monster-arena-bg ${p.aura || "aura-pink"}`;
+      document.getElementById("studioMonsterSvg").innerHTML = svgHTML;
+      document.getElementById("studioMonsterTitle").textContent = `${p.monster_nickname || m.name} — ${m.type}`;
+      document.getElementById("studioMonsterDesc").textContent = p.lang === "en" ? m.desc_en : m.desc_id;
+    }
+
+    function renderArenaStatsAndLeaderboard() {
+      // Calculate additional KK per kelurahan from IndexedDB agents
+      const extraByKel = {
+        Jatirangga: 0,
+        Jatiraden: 0,
+        Jatiranggon: 0,
+        Jatisampurna: 0,
+        Jatikarya: 0
+      };
+      // Data TERAKHIR tiap agen; tambahan kelurahan = peningkatan sejak input pertama agen (bukan penjumlahan semua unggahan)
+      const latestAgents = agentLatest();
+      latestAgents.forEach((a) => {
+        if (extraByKel[a.kelurahan] !== undefined) {
+          extraByKel[a.kelurahan] += a.inc;
+        }
+      });
+
+      let grandRegistered = 0;
+      let grandBase = 0;
+      let grandTotalKK = 0;
+
+      const kelGrid = document.getElementById("kelurahanGrid");
+      kelGrid.innerHTML = "";
+
+      const computedKels = BASELINE_KELURAHAN.map((k) => {
+        const extra = extraByKel[k.name] || 0;
+        const reg = k.baseKK + extra;
+        const pct = (k.baseKK / k.totalKK) * 100;      // data resmi 21 Nov
+        const estPct = (reg / k.totalKK) * 100;        // estimasi + inputan agen
+        grandRegistered += reg;
+        grandBase += k.baseKK;
+        grandTotalKK += k.totalKK;
+        return { ...k, reg, extra, pct, estPct };
+      }).sort((a, b) => b.pct - a.pct);
+
+      computedKels.forEach((k, idx) => {
+        const reached50 = k.pct >= 50;
+        const card = document.createElement("div");
+        card.className = `kel-card ${idx === 0 ? "top-kel" : ""}`;
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-family:'Fredoka',sans-serif; font-size:0.98rem;">#${idx + 1} ${k.name}</strong>
+            <span style="font-size:0.74rem; font-weight:800; color:${reached50 ? "var(--accent-green)" : "var(--primary)"};">
+              ${k.pct.toFixed(2).replace(".", ",")}%
+            </span>
+          </div>
+          <div class="kel-mini-bar">
+            <div class="kel-mini-fill" style="width:${Math.min(100, k.pct)}%;"></div>
+          </div>
+          <div style="font-size:0.75rem; color:var(--text-secondary); font-weight:700;">
+            ${formatNum(k.baseKK)} / ${formatNum(k.totalKK)} KK
+          </div>
+          <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">
+            👥 ${k.activeAgents}/${k.totalAgents} agen aktif
+          </div>
+        `;
+        kelGrid.appendChild(card);
+      });
+
+      document.getElementById("inputGrid").innerHTML = [...computedKels].sort((a, b) => b.extra - a.extra).map((k, i) => {
+        const n = latestAgents.filter((a) => a.kelurahan === k.name).length;
+        return `<div class="kel-card ${i === 0 && k.extra > 0 ? "top-kel" : ""}">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-family:'Fredoka',sans-serif; font-size:0.98rem;">${k.name}</strong>
+            <span style="font-size:0.8rem; font-weight:800; color:var(--secondary);">+${formatNum(k.extra)} KK</span>
+          </div>
+          <div style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; margin-top:6px;">Estimasi total: ${formatNum(k.reg)} / ${formatNum(k.totalKK)} KK (${k.estPct.toFixed(2).replace(".", ",")}%)</div>
+          <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">👥 ${n} agen menginput</div></div>`;
+      }).join("");
+
+      // Update Hero Progress
+      const totalPct = (grandBase / grandTotalKK) * 100;
+      const target50KK = Math.ceil(grandTotalKK * 0.5); // 19.674 KK
+      const diff50 = Math.max(0, target50KK - grandBase);
+
+      document.getElementById("heroTotalKK").textContent = formatNum(grandBase);
+      document.getElementById("heroPercent").textContent = `${totalPct.toFixed(2).replace(".", ",")}%`;
+      document.getElementById("heroProgressBar").style.width = `${Math.min(100, totalPct)}%`;
+      document.getElementById("heroRemainingText").textContent =
+        diff50 > 0
+          ? (state.profile.lang === "en"
+              ? `${formatNum(diff50)} HH left to reach 50%`
+              : `Kurang ${formatNum(diff50)} KK menuju 50%`)
+          : "🎉 TARGET 50% TERCAPAI!";
+      document.getElementById("heroRemainingText").textContent += ` · ✍️ +${formatNum(grandRegistered - grandBase)} KK dari inputan agen`;
+
+      // Filter & Sort Agents Automatically
+      const filterKel = document.getElementById("filterLeaderboardKel").value;
+      const query = document.getElementById("searchAgentInput").value.trim().toLowerCase();
+
+      const sortedAgents = [...latestAgents]
+        .filter((a) => (filterKel === "ALL" ? true : a.kelurahan === filterKel))
+        .filter((a) => !query || a.nama.toLowerCase().includes(query) || a.unsur.toLowerCase().includes(query))
+        .sort((a, b) => Number(b.jumlah_kk) - Number(a.jumlah_kk));
+
+      // Render Top 3 Podium
+      const podium = document.getElementById("podiumContainer");
+      podium.innerHTML = "";
+      if (sortedAgents.length > 0) {
+        const order = [1, 0, 2]; // 2nd, 1st, 3rd visual layout
+        order.forEach((rankIdx) => {
+          const ag = sortedAgents[rankIdx];
+          if (!ag) {
+            podium.innerHTML += `<div></div>`;
+            return;
+          }
+          const m = MONSTERS[ag.monster_id] || MONSTERS.puffi;
+          const medal = rankIdx === 0 ? "🥇 #1" : rankIdx === 1 ? "🥈 #2" : "🥉 #3";
+          const crownBg = rankIdx === 0 ? "#FECA57" : rankIdx === 1 ? "#D6D2FF" : "#FFBE76";
+          podium.innerHTML += `
+            <div class="podium-item podium-${rankIdx + 1}">
+              <span class="rank-crown" style="background:${crownBg};">${medal}</span>
+              <div style="width:66px; height:66px; margin:2px auto;">${m.svg("none")}</div>
+              <div style="font-weight:800; font-size:0.82rem; line-height:1.2; margin-top:4px;">${escapeHTML(ag.nama)}</div>
+              <div style="font-size:0.7rem; color:var(--text-muted);">${ag.kelurahan}</div>
+              <div class="font-display" style="font-size:1.05rem; font-weight:700; color:var(--primary); margin-top:4px;">
+                ${formatNum(ag.jumlah_kk)} KK
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      // Render Full List
+      const listEl = document.getElementById("agentLeaderboardList");
+      listEl.innerHTML = "";
+      if (sortedAgents.length === 0) {
+        listEl.innerHTML = `<div class="clay-card-sm" style="text-align:center; color:var(--text-muted);">Belum ada data capaian agen pada filter ini.</div>`;
+        return;
+      }
+
+      sortedAgents.forEach((ag, index) => {
+        const m = MONSTERS[ag.monster_id] || MONSTERS.puffi;
+        const row = document.createElement("div");
+        row.className = "agent-row";
+        row.innerHTML = `
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="font-display" style="width:32px; height:32px; border-radius:10px; background:var(--primary); color:#fff; display:grid; place-items:center; font-weight:700; flex-shrink:0;">
+              #${index + 1}
+            </div>
+            <div style="width:46px; height:46px; flex-shrink:0;">${m.svg("none")}</div>
+            <div>
+              <div style="font-weight:800; font-size:0.94rem;">${escapeHTML(ag.nama)}</div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:3px;">
+                <span class="badge-tag">📍 ${ag.kelurahan}</span>
+                <span class="badge-tag" style="background:rgba(0,206,201,0.14); color:var(--secondary);">${escapeHTML(ag.unsur)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px; margin-left:auto;">
+            <div style="text-align:right; margin-right:6px;">
+              <div class="font-display" style="font-size:1.15rem; font-weight:700; color:var(--primary);">${formatNum(ag.jumlah_kk)} KK</div>
+              <div style="font-size:0.68rem; color:var(--text-muted);">${ag.waktu}</div>
+              ${deltaBadge(ag.delta)}
+            </div>
+            ${(ag.eviden_base64 || ag.eviden_id) ? `<button type="button" class="btn btn-secondary btn-sm" onclick="viewEviden('${ag.id}')" title="Lihat Eviden">📸</button>` : ""}
+            
+          </div>
+        `;
+        listEl.appendChild(row);
+      });
+    }
+
+    function renderNewsList() {
+      return; // portal berita dinonaktifkan, diganti Laporan Kegiatan
+      const lang = state.profile.lang || "id";
+      const search = document.getElementById("newsSearchInput").value.trim().toLowerCase();
+      const cat = document.getElementById("newsCategoryFilter").value;
+
+      const unreadCount = state.news.filter((n) => !n.is_read).length;
+      document.getElementById("unreadNewsBadge").textContent = unreadCount;
+
+      const filtered = state.news.filter((n) => {
+        const title = lang === "en" ? n.judul_en : n.judul_id;
+        const body = lang === "en" ? n.konten_en : n.konten_id;
+        const matchSearch = !search || title.toLowerCase().includes(search) || body.toLowerCase().includes(search);
+        const matchCat =
+          cat === "ALL" ? true : cat === "UNREAD" ? !n.is_read : n.kategori === cat;
+        return matchSearch && matchCat;
+      });
+
+      const grid = document.getElementById("newsListGrid");
+      grid.innerHTML = "";
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="clay-card" style="grid-column:1/-1; text-align:center; color:var(--text-muted);">Tidak ditemukan berita yang sesuai filter.</div>`;
+        return;
+      }
+
+      filtered.forEach((n) => {
+        const title = lang === "en" ? n.judul_en : n.judul_id;
+        const summary = lang === "en" ? n.ringkasan_en : n.ringkasan_id;
+        const card = document.createElement("article");
+        card.className = "clay-card news-card";
+        card.innerHTML = `
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+              <span class="badge-tag">${escapeHTML(n.kategori)}</span>
+              <div style="display:flex; gap:6px; align-items:center;">
+                ${n.has_reminder ? `<span class="badge-tag" style="background:rgba(255,159,67,0.2); color:var(--accent-orange);">⏰ Reminder</span>` : ""}
+                <span class="badge-tag ${n.is_read ? "status-read" : "status-unread"}">
+                  ${n.is_read ? (lang === "en" ? "✓ Read" : "✓ Sudah Dibaca") : (lang === "en" ? "● Unread" : "● Belum Dibaca")}
+                </span>
+              </div>
+            </div>
+            <h3 style="font-size:1.12rem; margin-bottom:8px; line-height:1.35;">${escapeHTML(title)}</h3>
+            <p style="font-size:0.86rem; color:var(--text-secondary);">${escapeHTML(summary)}</p>
+          </div>
+
+          <div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">
+              📅 ${n.tanggal} • 💬 ${(n.komentar || []).length} komentar
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="openNewsReader('${n.id}')">
+                📖 ${lang === "en" ? "Read Full" : "Baca Lengkap"}
+              </button>
+              <button type="button" class="btn btn-wa btn-sm" onclick="shareNewsWA('${n.id}')">
+                📲 WA
+              </button>
+              <button type="button" class="btn btn-orange btn-sm" onclick="openReminderModal('${n.id}')">
+                ⏰ Reminder
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderCalendar() {
+      const monthNames = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+      ];
+      document.getElementById("calMonthTitle").textContent = `${monthNames[state.calMonth]} ${state.calYear}`;
+
+      const firstDay = new Date(state.calYear, state.calMonth, 1).getDay();
+      const daysInMonth = new Date(state.calYear, state.calMonth + 1, 0).getDate();
+
+      const grid = document.getElementById("calDaysGrid");
+      grid.innerHTML = "";
+
+      for (let i = 0; i < firstDay; i++) {
+        grid.innerHTML += `<div class="cal-day empty"></div>`;
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${state.calYear}-${String(state.calMonth + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+        const dayEvents = state.calendarEvents.filter((ev) => ev.tanggal === dateStr);
+        const hasRead = dayEvents.some((e) => e.tipe === "news_read");
+        const hasRem = dayEvents.some((e) => e.tipe === "reminder");
+        const hasNote = dayEvents.some((e) => e.tipe === "field_note");
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `cal-day ${dateStr === "2026-11-25" ? "today" : ""} ${dateStr === state.selectedDate ? "selected" : ""}`;
+        btn.innerHTML = `
+          <span>${d}</span>
+          <div class="cal-dots">
+            ${hasRead ? `<span class="dot-read"></span>` : ""}
+            ${hasRem ? `<span class="dot-rem"></span>` : ""}
+            ${hasNote ? `<span class="dot-note"></span>` : ""}
+          </div>
+        `;
+        btn.onclick = () => {
+          state.selectedDate = dateStr;
+          renderCalendar();
+        };
+        grid.appendChild(btn);
+      }
+
+      // Render Selected Date Agenda List
+      document.getElementById("selectedDateBadge").textContent = state.selectedDate;
+      const list = document.getElementById("calEventList");
+      list.innerHTML = "";
+
+      const selectedEvents = state.calendarEvents.filter((ev) => ev.tanggal === state.selectedDate);
+      if (selectedEvents.length === 0) {
+        list.innerHTML = `<div class="clay-card-sm" style="text-align:center; color:var(--text-muted);">
+          Belum ada catatan atau riwayat baca pada tanggal ${state.selectedDate}. Klik <strong>+ Catatan</strong> untuk menambahkan.
+        </div>`;
+        return;
+      }
+
+      selectedEvents.forEach((ev) => {
+        const typeLabel =
+          ev.tipe === "news_read" ? "🟢 Berita Dibaca" :
+          ev.tipe === "reminder" ? "⏰ Reminder" : "📝 Catatan Lapangan";
+
+        const item = document.createElement("div");
+        item.className = "clay-card-sm";
+        item.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+            <div>
+              <span class="badge-tag" style="margin-bottom:4px;">${typeLabel} • ${escapeHTML(ev.kelurahan || "Jatisampurna")}</span>
+              <h4 style="font-size:0.96rem;">${escapeHTML(ev.judul)}</h4>
+              ${ev.pemilik ? `<div style="font-size:0.7rem;color:var(--text-muted);">👤 ${escapeHTML(ev.pemilik)}</div>` : ""}
+              <p style="font-size:0.82rem; color:var(--text-secondary); margin-top:4px;">${escapeHTML(ev.catatan || "-")}</p>
+            </div>
+            <div style="display:flex; gap:6px; flex-shrink:0;">
+              <button type="button" class="btn btn-ghost btn-sm" onclick="openEditCalEvent('${ev.id}')">✏️</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="deleteCalEvent('${ev.id}')">🗑️</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function renderMonsterStudioPicker() {
+      const grid = document.getElementById("monsterPickerGrid");
+      grid.innerHTML = "";
+      Object.values(MONSTERS).forEach((m) => {
+        const isSelected = state.profile.selected_monster === m.id;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "clay-card-sm";
+        btn.style.cursor = "pointer";
+        btn.style.textAlign = "center";
+        btn.style.border = isSelected ? "2.5px solid var(--primary)" : "1px solid var(--border-soft)";
+        btn.innerHTML = `
+          <div style="width:74px; height:74px; margin:0 auto;">${m.svg("none")}</div>
+          <div style="font-weight:800; font-size:0.86rem; margin-top:4px;">${m.name}</div>
+          <div style="font-size:0.68rem; color:var(--text-muted);">${m.type}</div>
+        `;
+        btn.onclick = async () => {
+          state.profile.selected_monster = m.id;
+          state.profile.monster_nickname = m.name;
+          document.getElementById("profMonsterNick").value = m.name;
+          await dbPut("user_profile", state.profile);
+          renderCompanionUI();
+          renderMonsterStudioPicker();
+          playTone("pop");
+        };
+        grid.appendChild(btn);
+      });
+
+      // Sync profile inputs
+      document.getElementById("profOfficerName").value = state.profile.nama_petugas || "";
+      document.getElementById("profMonsterNick").value = state.profile.monster_nickname || "";
+      document.getElementById("profKelurahan").value = state.profile.kelurahan_default || "Jatisampurna";
+      document.getElementById("profAura").value = state.profile.aura || "aura-pink";
+      document.getElementById("profAccessory").value = state.profile.accessory || "none";
+    }
+
+    /* ==========================================================================
+       8. INTERACTIVE ACTIONS: AGENTS CRUD, CSV, WA SHARE, PDF PRINT
+       ========================================================================== */
+    document.getElementById("agentEviden").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const compressed = await compressImageToBase64(file);
+        state.pendingEvidenBase64 = compressed;
+        document.getElementById("evidenPreviewImg").src = compressed;
+        document.getElementById("evidenPreviewBox").classList.remove("hidden");
+        showToast("Screenshot berhasil dikompres!", "📸");
+      } catch (err) {
+        showToast("Gagal memproses gambar", "⚠️");
+      }
+    });
+
+    document.getElementById("agentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const editId = document.getElementById("editAgentId").value;
+      const kelurahan = document.getElementById("agentKelurahan").value;
+      const nama = document.getElementById("agentName").value.trim();
+      let unsur = document.getElementById("agentUnsur").value;
+      if (unsur === "__lain__") unsur = document.getElementById("agentUnsurManual").value.replace(/\s+/g, " ").trim().slice(0, 40);
+      const jumlah_kk = parseInt(document.getElementById("agentKK").value, 10);
+      const monster_id = document.getElementById("agentMonster").value;
+
+      if (!nama || isNaN(jumlah_kk) || jumlah_kk <= 0 || unsur.length < 2) { showToast("Lengkapi nama, unsur (min. 2 huruf), dan jumlah KK", "⚠️"); return; }
+      addUnsurOption(unsur);
+      if (!session) { // TAMU: simpan ke server saja, sebagai catatan baru
+        if (editId) return;
+        try {
+          const rg = await api("guest", { entry: { cid: "g" + Date.now() + Math.random().toString(36).slice(2, 6), kelurahan, nama, unsur, jumlah_kk, waktu: localNow(), monster_id: "puffi" }, foto: state.pendingEvidenBase64 ? state.pendingEvidenBase64.split(",")[1] : "" });
+          if (!rg.success) throw new Error(rg.message);
+          showToast(`Capaian ${nama} (${jumlah_kk} KK) tersimpan ke server`, "✅");
+          resetAgentForm(); await loadRemote();
+        } catch (err) { showToast("Gagal menyimpan: " + err.message, "⚠️"); }
+        return;
+      }
+
+      const nowStr = new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 16).replace("T", " ");
+      let existingEviden = "";
+      if (editId) {
+        const old = state.agents.find((x) => x.id === editId);
+        if (old) existingEviden = old.eviden_base64 || "";
+      }
+
+      const record = {
+        id: editId || `ag-${Date.now()}`,
+        kelurahan,
+        nama,
+        unsur,
+        jumlah_kk,
+        eviden_base64: state.pendingEvidenBase64 || existingEviden,
+        waktu: nowStr,
+        monster_id,
+        xp_earned: 50
+      };
+
+      const oldRec = editId ? state.agents.find((x) => x.id === editId) : null;
+      if (oldRec) {
+        record.eviden_id = oldRec.eviden_id || "";
+        if (state.pendingEvidenBase64) record.eviden_id = "";
+        if (oldRec.sid) { record.sid = oldRec.sid; record.synced = false; }
+      }
+      const prevAg = agentLatest().find((x) => norm(x.kelurahan) === norm(kelurahan) && norm(x.nama) === norm(nama));
+
+      await dbPut("capaian_agen", record);
+      state.agents = await dbGetAll("capaian_agen");
+      syncPending().then(loadRemote).catch(() => {});
+
+      if (!editId) {
+        await addXP(50);
+        playTone("success");
+        const box = document.getElementById("companionSvgBox");
+        box.classList.remove("celebrate");
+        void box.offsetWidth;
+        box.classList.add("celebrate");
+        showToast(prevAg ? `${nama}: ${jumlah_kk} KK (${jumlah_kk - prevAg.jumlah_kk >= 0 ? "+" : ""}${jumlah_kk - prevAg.jumlah_kk} dari input sebelumnya) +50 XP` : `Capaian pertama ${nama}: ${jumlah_kk} KK! +50 XP`, "🎉");
+      } else {
+        showToast("Data capaian agen diperbarui!", "✅");
+      }
+
+      resetAgentForm();
+      document.getElementById("agentKelurahan").value = kelurahan;
+      document.getElementById("agentName").value = nama;
+      document.getElementById("agentUnsur").value = unsur;
+      document.getElementById("agentMonster").value = monster_id;
+      renderArenaStatsAndLeaderboard();
+    });
+
+    function resetAgentForm() {
+      document.getElementById("agentForm").reset();
+      document.getElementById("editAgentId").value = "";
+      document.getElementById("btnCancelEditAgent").classList.add("hidden");
+      document.getElementById("btnSubmitAgentText").textContent = I18N[state.profile.lang].btn_submit_agent;
+      state.pendingEvidenBase64 = "";
+      document.getElementById("evidenPreviewBox").classList.add("hidden");
+      if (typeof prefillAgent === "function") setTimeout(prefillAgent, 0);
+    }
+
+    document.getElementById("btnCancelEditAgent").addEventListener("click", resetAgentForm);
+
+    window.editAgent = function (id) {
+      if (!session) return;
+      const ag = state.agents.find((a) => a.id === id);
+      if (!ag) return;
+      document.getElementById("editAgentId").value = ag.id;
+      document.getElementById("agentKelurahan").value = ag.kelurahan;
+      document.getElementById("agentName").value = ag.nama;
+      addUnsurOption(ag.unsur);
+      document.getElementById("agentUnsur").value = ag.unsur;
+      document.getElementById("agentKK").value = ag.jumlah_kk;
+      document.getElementById("agentMonster").value = ag.monster_id || "puffi";
+      document.getElementById("btnCancelEditAgent").classList.remove("hidden");
+      document.getElementById("btnSubmitAgentText").textContent = "💾 Update Data Capaian";
+      if (ag.eviden_base64) {
+        document.getElementById("evidenPreviewImg").src = ag.eviden_base64;
+        document.getElementById("evidenPreviewBox").classList.remove("hidden");
+      }
+      document.getElementById("agentForm").scrollIntoView({ behavior: "smooth" });
+    };
+
+    window.deleteAgent = async function (id) {
+      if (!session) return;
+      const ag0 = state.agents.find((a) => a.id === id);
+      if (ag0 && ag0.sid && session) {
+        try { const r = await api("delete", { id: ag0.sid }); if (!r.success) { showToast(r.message, "⚠️"); return; } }
+        catch (e) { showToast("Gagal menghapus di server", "⚠️"); return; }
+      }
+      await dbDelete("capaian_agen", id);
+      state.agents = await dbGetAll("capaian_agen");
+      renderArenaStatsAndLeaderboard();
+      showToast("Data agen dihapus", "🗑️");
+    };
+
+    window.viewEviden = function (id) {
+      const ag = allEntries().find((a) => a.id === id);
+      if (!ag || !(ag.eviden_base64 || ag.eviden_id)) return;
+      document.getElementById("evidenModalTitle").textContent = `📸 Eviden: ${ag.nama}`;
+      document.getElementById("evidenModalImg").src = ag.eviden_base64 || ("https://drive.google.com/thumbnail?id=" + ag.eviden_id + "&sz=w1000");
+      document.getElementById("evidenModalMeta").textContent = `Kelurahan ${ag.kelurahan} • Unsur ${ag.unsur} • ${ag.jumlah_kk} KK (${ag.waktu})`;
+      openModal("evidenModal");
+    };
+
+    // Export CSV
+    document.getElementById("btnExportCSV").addEventListener("click", () => {
+      const sorted = agentLatest().sort((a, b) => b.jumlah_kk - a.jumlah_kk);
+      let csv = "Peringkat,Kelurahan,Nama Petugas,Unsur Satgas,Jumlah KK,Waktu Input\n";
+      sorted.forEach((a, i) => {
+        csv += `${i + 1},"${a.kelurahan}","${a.nama.replace(/"/g, '""')}","${a.unsur}",${a.jumlah_kk},"${a.waktu}"\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `Rekap_Agen_Perlinsos_Jatisampurna_${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+      showToast("File CSV berhasil diunduh!", "📥");
+    });
+
+    // Share Leaderboard Recap to WhatsApp
+    document.getElementById("btnShareRecapWA").addEventListener("click", () => {
+      const sorted = agentLatest().sort((a, b) => b.jumlah_kk - a.jumlah_kk).slice(0, 10);
+      let text = `*🏆 REKAP CAPAIAN AGEN PERLINSOS*\n*Kecamatan Jatisampurna — Kota Bekasi*\n_(Instruksi Wali Kota No. 100/135/SETDA.Tapem)_\n\n`;
+      sorted.forEach((a, idx) => {
+        text += `${idx + 1}. *${a.nama}* (${a.kelurahan} - ${a.unsur}): *${a.jumlah_kk} KK*\n`;
+      });
+      text += `\n🎯 Mari bersama capai target minimal 50% cakupan KK akhir November 2026!`;
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
+    });
+
+    // Print PDF Recap
+    document.getElementById("btnPrintRecapPDF").addEventListener("click", () => {
+      const sorted = agentLatest().sort((a, b) => b.jumlah_kk - a.jumlah_kk);
+      const printEl = document.getElementById("printArea");
+      printEl.innerHTML = `
+        <div class="print-header">
+          <h2 style="margin:0;">PEMERINTAH KOTA BEKASI — KECAMATAN JATISAMPURNA</h2>
+          <p style="margin:4px 0 0; font-size:13px;">Laporan Rekapitulasi Capaian Agen Percepatan Digitalisasi Perlinsos (Instruksi Wali Kota No. 100/135/SETDA.Tapem)</p>
+        </div>
+        <p style="font-size:12px;">Tanggal Cetak: ${new Date().toLocaleString("id-ID")}</p>
+        <table class="print-table">
+          <thead>
+            <tr>
+              <th>Peringkat</th>
+              <th>Kelurahan</th>
+              <th>Nama Petugas / Agen</th>
+              <th>Unsur Satgas</th>
+              <th>Jumlah KK</th>
+              <th>Waktu Input</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sorted.map((a, idx) => `
+              <tr>
+                <td>#${idx + 1}</td>
+                <td>${escapeHTML(a.kelurahan)}</td>
+                <td>${escapeHTML(a.nama)}</td>
+                <td>${escapeHTML(a.unsur)}</td>
+                <td><strong>${formatNum(a.jumlah_kk)} KK</strong></td>
+                <td>${a.waktu}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+      window.print();
+    });
+
+    /* ==========================================================================
+       9. NEWS READER, AUTO-CALENDAR LOGGING, COMMENTS, WA/PDF & RSS XML
+       ========================================================================== */
+    window.openNewsReader = async function (newsId) {
+      const item = state.news.find((n) => n.id === newsId);
+      if (!item) return;
+      state.currentNewsId = newsId;
+      const lang = state.profile.lang || "id";
+
+      document.getElementById("readerCategory").textContent = item.kategori;
+      document.getElementById("readerDate").textContent = item.tanggal;
+      document.getElementById("readerTitle").textContent = lang === "en" ? item.judul_en : item.judul_id;
+      document.getElementById("readerBody").textContent = lang === "en" ? item.konten_en : item.konten_id;
+
+      // Mark as read & auto-record into Calendar
+      if (!item.is_read) {
+        item.is_read = true;
+        await dbPut("berita_wilayah", item);
+        await addXP(25);
+
+        const todayStr = new Date().toISOString().slice(0, 10);
+        await dbPut("kalender_kegiatan", {
+          id: `cal-read-${item.id}`,
+          tanggal: todayStr,
+          judul: `Dibaca: ${item.judul_id}`,
+          catatan: item.ringkasan_id,
+          kelurahan: "Kecamatan Jatisampurna",
+          tipe: "news_read",
+          berita_id: item.id
+        });
+        state.calendarEvents = await dbGetAll("kalender_kegiatan");
+        renderCalendar();
+        renderNewsList();
+        playTone("success");
+        showToast("Berita dibaca (+25 XP) & otomatis masuk Kalender!", "📅");
+      }
+
+      renderComments(item);
+      openModal("newsReaderModal");
+    };
+
+    function renderComments(newsItem) {
+      const list = document.getElementById("commentsList");
+      const comments = newsItem.komentar || [];
+      document.getElementById("commentCount").textContent = comments.length;
+      list.innerHTML = "";
+
+      if (comments.length === 0) {
+        list.innerHTML = `<div class="clay-card-sm" style="font-size:0.82rem; color:var(--text-muted);">Belum ada komentar. Jadilah agen pertama yang memberi catatan!</div>`;
+        return;
+      }
+
+      comments.forEach((c, idx) => {
+        const div = document.createElement("div");
+        div.className = "clay-card-sm";
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+            <strong style="font-size:0.84rem; color:var(--primary);">${escapeHTML(c.author)}</strong>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <span style="font-size:0.7rem; color:var(--text-muted);">${c.time}</span>
+              <button type="button" class="btn btn-ghost btn-sm" style="padding:3px 7px;" onclick="editComment(${idx})">✏️</button>
+              <button type="button" class="btn btn-danger btn-sm" style="padding:3px 7px;" onclick="deleteComment(${idx})">🗑️</button>
+            </div>
+          </div>
+          <p style="font-size:0.85rem; margin-top:4px;">${escapeHTML(c.text)}</p>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    document.getElementById("commentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const item = state.news.find((n) => n.id === state.currentNewsId);
+      if (!item) return;
+      const text = document.getElementById("commentInput").value.trim();
+      const editIdx = parseInt(document.getElementById("editCommentIdx").value, 10);
+      if (!text) return;
+
+      item.komentar = item.komentar || [];
+      const nowStr = new Date().toISOString().slice(0, 16).replace("T", " ");
+      if (editIdx >= 0 && item.komentar[editIdx]) {
+        item.komentar[editIdx].text = text;
+        item.komentar[editIdx].time = `${nowStr} (diedit)`;
+      } else {
+        item.komentar.push({
+          author: `${state.profile.nama_petugas} (${state.profile.kelurahan_default})`,
+          text,
+          time: nowStr
+        });
+      }
+
+      await dbPut("berita_wilayah", item);
+      document.getElementById("commentInput").value = "";
+      document.getElementById("editCommentIdx").value = "-1";
+      document.getElementById("btnCommentSubmit").textContent = "Kirim";
+      renderComments(item);
+      renderNewsList();
+      showToast("Komentar tersimpan!", "💬");
+    });
+
+    window.editComment = function (idx) {
+      const item = state.news.find((n) => n.id === state.currentNewsId);
+      if (!item || !item.komentar[idx]) return;
+      document.getElementById("commentInput").value = item.komentar[idx].text;
+      document.getElementById("editCommentIdx").value = idx;
+      document.getElementById("btnCommentSubmit").textContent = "Update";
+    };
+
+    window.deleteComment = async function (idx) {
+      const item = state.news.find((n) => n.id === state.currentNewsId);
+      if (!item) return;
+      item.komentar.splice(idx, 1);
+      await dbPut("berita_wilayah", item);
+      renderComments(item);
+      renderNewsList();
+      showToast("Komentar dihapus", "🗑️");
+    };
+
+    window.shareNewsWA = function (newsId) {
+      const item = state.news.find((n) => n.id === newsId);
+      if (!item) return;
+      const lang = state.profile.lang || "id";
+      const title = lang === "en" ? item.judul_en : item.judul_id;
+      const summary = lang === "en" ? item.ringkasan_en : item.ringkasan_id;
+      const waText = `*📢 INFO PERLINSOS JATISAMPURNA*\n\n*${title}*\n📅 _${item.tanggal} | ${item.kategori}_\n\n${summary}\n\n_Sumber: Portal Perlinsos Quest — Kecamatan Jatisampurna, Kota Bekasi_`;
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(waText)}`, "_blank");
+    };
+
+    document.getElementById("btnReaderShareWA").addEventListener("click", () => {
+      if (state.currentNewsId) shareNewsWA(state.currentNewsId);
+    });
+
+    document.getElementById("btnReaderPrintPDF").addEventListener("click", () => {
+      const item = state.news.find((n) => n.id === state.currentNewsId);
+      if (!item) return;
+      const printEl = document.getElementById("printArea");
+      printEl.innerHTML = `
+        <div class="print-header">
+          <h2 style="margin:0;">PEMERINTAH KOTA BEKASI — KECAMATAN JATISAMPURNA</h2>
+          <p style="margin:4px 0 0; font-size:13px;">Ringkasan Informasi & Instruksi Percepatan Digitalisasi Perlinsos</p>
+        </div>
+        <p style="font-size:12px;"><strong>Kategori:</strong> ${escapeHTML(item.kategori)} | <strong>Tanggal:</strong> ${item.tanggal} | <strong>Status:</strong> ${item.is_read ? "Sudah Dibaca" : "Belum Dibaca"}</p>
+        <h3 style="margin:12px 0;">${escapeHTML(item.judul_id)}</h3>
+        <div style="font-size:13px; line-height:1.6; white-space:pre-line;">${escapeHTML(item.konten_id)}</div>
+        <hr style="margin:18px 0;" />
+        <p style="font-size:11px; color:#4B5563;">Dicetak melalui Perlinsos Quest — Jatisampurna Digital Arena pada ${new Date().toLocaleString("id-ID")}</p>
+      `;
+      window.print();
+    });
+
+    // Add News Modal
+    document.getElementById("btnOpenAddNewsModal").addEventListener("click", () => openModal("addNewsModal"));
+    document.getElementById("addNewsForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const cat = document.getElementById("newNewsCat").value;
+      const title = document.getElementById("newNewsTitle").value.trim();
+      const body = document.getElementById("newNewsBody").value.trim();
+      if (!title || !body) return;
+
+      const today = new Date().toISOString().slice(0, 10);
+      const newArticle = {
+        id: `news-${Date.now()}`,
+        judul_id: title,
+        judul_en: title,
+        ringkasan_id: body.slice(0, 130) + (body.length > 130 ? "..." : ""),
+        ringkasan_en: body.slice(0, 130) + (body.length > 130 ? "..." : ""),
+        konten_id: body,
+        konten_en: body,
+        kategori: cat,
+        tanggal: today,
+        is_read: false,
+        has_reminder: false,
+        reminder_time: "",
+        komentar: []
+      };
+
+      await dbPut("berita_wilayah", newArticle);
+      state.news = await dbGetAll("berita_wilayah");
+      document.getElementById("addNewsForm").reset();
+      closeModal("addNewsModal");
+      renderNewsList();
+      showToast("Informasi baru berhasil diterbitkan!", "📢");
+    });
+
+    // RSS 2.0 XML Generator
+    document.getElementById("btnOpenRssModal").addEventListener("click", () => {
+      const itemsXml = state.news.map((n) => `
+    <item>
+      <title><![CDATA[${n.judul_id}]]></title>
+      <link>https://perlinsos.jatisampurna.bekasikota.go.id/#${n.id}</link>
+      <guid isPermaLink="false">${n.id}</guid>
+      <category><![CDATA[${n.kategori}]]></category>
+      <pubDate>${new Date(n.tanggal).toUTCString()}</pubDate>
+      <description><![CDATA[${n.ringkasan_id}]]></description>
+    </item>`).join("");
+
+      const rssXml = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>PERLINSOS QUEST — Kecamatan Jatisampurna Kota Bekasi</title>
+    <link>https://perlinsos.jatisampurna.bekasikota.go.id</link>
+    <description>Feed Berita dan Instruksi Percepatan Digitalisasi Perlinsos Kecamatan Jatisampurna</description>
+    <language>id-ID</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>${itemsXml}
+  </channel>
+</rss>`;
+
+      document.getElementById("rssXmlOutput").value = rssXml;
+      openModal("rssModal");
+    });
+
+    document.getElementById("btnCopyRss").addEventListener("click", async () => {
+      await navigator.clipboard.writeText(document.getElementById("rssXmlOutput").value);
+      showToast("RSS XML disalin ke clipboard!", "📋");
+    });
+
+    document.getElementById("btnDownloadRss").addEventListener("click", () => {
+      const blob = new Blob([document.getElementById("rssXmlOutput").value], { type: "application/rss+xml" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "feed.xml";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    /* ==========================================================================
+       10. REMINDER ENGINE & CALENDAR CRUD
+       ========================================================================== */
+    window.openReminderModal = function (newsId) {
+      document.getElementById("remNewsId").value = newsId;
+      const future = new Date(Date.now() + 5 * 60000);
+      const localIso = new Date(future.getTime() - future.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      document.getElementById("remDateTime").value = localIso;
+      openModal("reminderModal");
+    };
+
+    document.getElementById("btnReaderOpenReminder").addEventListener("click", () => {
+      if (state.currentNewsId) openReminderModal(state.currentNewsId);
+    });
+
+    document.getElementById("reminderForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const newsId = document.getElementById("remNewsId").value;
+      const dt = document.getElementById("remDateTime").value;
+      const note = document.getElementById("remNote").value.trim();
+
+      const item = state.news.find((n) => n.id === newsId);
+      if (item) {
+        item.has_reminder = true;
+        item.reminder_time = dt;
+        item.reminder_note = note;
+        await dbPut("berita_wilayah", item);
+      }
+
+      const dateOnly = dt.slice(0, 10);
+      await dbPut("kalender_kegiatan", {
+        id: `cal-rem-${Date.now()}`,
+        tanggal: dateOnly,
+        judul: `⏰ Reminder: ${item ? item.judul_id : "Pengingat Perlinsos"}`,
+        catatan: `${note} (Pukul ${dt.slice(11, 16)})`,
+        kelurahan: "Kecamatan Jatisampurna",
+        tipe: "reminder",
+        berita_id: newsId
+      });
+
+      state.news = await dbGetAll("berita_wilayah");
+      state.calendarEvents = await dbGetAll("kalender_kegiatan");
+      closeModal("reminderModal");
+      renderNewsList();
+      renderCalendar();
+      showToast("Reminder aktif & tercatat di Kalender!", "⏰");
+    });
+
+    // Background Reminder Checker (Every 10 Seconds)
+    setInterval(async () => {
+      if (!session) return; // pengingat hanya untuk akun yang sudah login
+      const now = new Date();
+      for (const n of state.news) {
+        if (n.has_reminder && n.reminder_time) {
+          const target = new Date(n.reminder_time);
+          if (now >= target) {
+            n.has_reminder = false;
+            await dbPut("berita_wilayah", n);
+            playTone("alarm");
+            showToast(`⏰ PENGINGAT: ${n.reminder_note || n.judul_id}`, "🔔");
+            renderNewsList();
+          }
+        }
+      }
+    }, 10000);
+
+    // Calendar Navigation & CRUD
+    document.getElementById("btnPrevMonth").addEventListener("click", () => {
+      state.calMonth--;
+      if (state.calMonth < 0) { state.calMonth = 11; state.calYear--; }
+      renderCalendar();
+    });
+    document.getElementById("btnNextMonth").addEventListener("click", () => {
+      state.calMonth++;
+      if (state.calMonth > 11) { state.calMonth = 0; state.calYear++; }
+      renderCalendar();
+    });
+
+    document.getElementById("btnAddCalNote").addEventListener("click", () => {
+      if (!session) { showToast("Masuk akun Pesaner untuk membuat catatan kalender", "🔐"); switchTab("akun"); return; }
+      document.getElementById("editCalEventId").value = "";
+      document.getElementById("calModalTitle").textContent = "📝 Tambah Catatan Kalender";
+      document.getElementById("calEventDate").value = state.selectedDate;
+      document.getElementById("calEventTitle").value = "";
+      document.getElementById("calEventNote").value = "";
+      document.getElementById("calEventRem").value = "";
+      openModal("calNoteModal");
+    });
+
+    window.openEditCalEvent = function (id) {
+      if (!session) { showToast("Masuk akun Pesaner untuk mengubah catatan kalender", "🔐"); switchTab("akun"); return; }
+      const ev = state.calendarEvents.find((x) => x.id === id);
+      if (!ev) return;
+      document.getElementById("editCalEventId").value = ev.id;
+      document.getElementById("calModalTitle").textContent = "✏️ Edit Agenda Kalender";
+      document.getElementById("calEventDate").value = ev.tanggal;
+      document.getElementById("calEventKel").value = ev.kelurahan || "Kecamatan Jatisampurna";
+      document.getElementById("calEventTitle").value = ev.judul;
+      document.getElementById("calEventNote").value = ev.catatan || "";
+      document.getElementById("calEventRem").value = ev.reminder_time || "";
+      openModal("calNoteModal");
+    };
+
+    document.getElementById("calNoteForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!session) { showToast("Masuk akun untuk menyimpan catatan & pengingat", "🔐"); return; }
+      const editId = document.getElementById("editCalEventId").value;
+      const tanggal = document.getElementById("calEventDate").value;
+      const kelurahan = document.getElementById("calEventKel").value;
+      const judul = document.getElementById("calEventTitle").value.trim();
+      const catatan = document.getElementById("calEventNote").value.trim();
+      const rem = document.getElementById("calEventRem").value;
+
+      const existing = editId ? state.calendarEvents.find((x) => x.id === editId) : null;
+      await dbPut("kalender_kegiatan", {
+        id: editId || `cal-note-${Date.now()}`,
+        tanggal,
+        judul,
+        catatan,
+        kelurahan,
+        tipe: existing ? existing.tipe : "field_note",
+        sid: existing ? existing.sid : undefined, synced: false, reminder_time: rem, reminded: false,
+        berita_id: existing ? existing.berita_id : ""
+      });
+
+      state.selectedDate = tanggal;
+      state.calendarEvents = await dbGetAll("kalender_kegiatan");
+      closeModal("calNoteModal");
+      renderCalendar();
+      showToast("Agenda kalender berhasil disimpan!", "📅");
+      syncCal().catch(() => {});
+    });
+
+    window.deleteCalEvent = async function (id) {
+      const ev0 = state.calendarEvents.find((e) => e.id === id);
+      if (ev0 && ev0.tipe === "field_note") {
+        if (!session) { showToast("Masuk akun untuk mengubah catatan", "🔐"); return; }
+        if (ev0.sid) {
+          try { const r = await api("calDel", { id: ev0.sid }); if (!r.success) { showToast(r.message, "⚠️"); return; } }
+          catch (e) { showToast("Gagal menghapus di server", "⚠️"); return; }
+        }
+      }
+      await dbDelete("kalender_kegiatan", id);
+      state.calendarEvents = await dbGetAll("kalender_kegiatan");
+      renderCalendar();
+      showToast("Item kalender dihapus", "🗑️");
+    };
+
+    /* ==========================================================================
+       11. PROFILE FORM, NAVIGATION, TABS & HELPERS
+       ========================================================================== */
+    document.getElementById("profileForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      state.profile.nama_petugas = document.getElementById("profOfficerName").value.trim() || "Petugas Jatisampurna";
+      state.profile.monster_nickname = document.getElementById("profMonsterNick").value.trim() || "Puffi";
+      state.profile.kelurahan_default = document.getElementById("profKelurahan").value;
+      state.profile.aura = document.getElementById("profAura").value;
+      state.profile.accessory = document.getElementById("profAccessory").value;
+
+      await dbPut("user_profile", state.profile);
+      document.getElementById("agentKelurahan").value = state.profile.kelurahan_default;
+      renderCompanionUI();
+      playTone("success");
+      showToast("Profil & Partner Monster berhasil diperbarui!", "👾");
+    });
+
+    window.switchTab = function (tabName) {
+      state.activeTab = tabName;
+      document.querySelectorAll(".nav-tab").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-tab") === tabName);
+      });
+      document.querySelectorAll(".tab-panel").forEach((panel) => {
+        panel.classList.toggle("hidden", panel.id !== `tab-${tabName}`);
+      });
+      playTone("pop");
+      if (tabName === "akun") renderAkun();
+      if (tabName === "laporan") loadKeg();
+    };
+
+    document.querySelectorAll(".nav-tab").forEach((btn) => {
+      btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
+    });
+
+    document.getElementById("btnThemeToggle").addEventListener("click", async () => {
+      state.profile.theme = state.profile.theme === "dark" ? "light" : "dark";
+      await dbPut("user_profile", state.profile);
+      applyThemeAndLang();
+    });
+
+    document.getElementById("btnLangToggle").addEventListener("click", async () => {
+      state.profile.lang = state.profile.lang === "id" ? "en" : "id";
+      await dbPut("user_profile", state.profile);
+      applyThemeAndLang();
+      renderCompanionUI();
+      renderArenaStatsAndLeaderboard();
+      renderNewsList();
+    });
+
+    document.getElementById("btnSoundToggle").addEventListener("click", async () => {
+      state.profile.sound = !state.profile.sound;
+      await dbPut("user_profile", state.profile);
+      applyThemeAndLang();
+      if (state.profile.sound) playTone("pop");
+    });
+
+    document.getElementById("btnTutorial").addEventListener("click", () => openModal("tutorialModal"));
+    document.getElementById("companionSvgBox").addEventListener("click", () => {
+      const box = document.getElementById("companionSvgBox");
+      box.classList.remove("celebrate");
+      void box.offsetWidth;
+      box.classList.add("celebrate");
+      playTone("success");
+      showToast(`${state.profile.monster_nickname}: "Semangat kejar 50% KK Jatisampurna!"`, "⚡");
+    });
+
+    document.getElementById("filterLeaderboardKel").addEventListener("change", renderArenaStatsAndLeaderboard);
+    document.getElementById("searchAgentInput").addEventListener("input", renderArenaStatsAndLeaderboard);
+    document.getElementById("newsSearchInput").addEventListener("input", renderNewsList);
+    document.getElementById("newsCategoryFilter").addEventListener("change", renderNewsList);
+
+    window.openModal = function (id) {
+      document.getElementById(id).classList.add("open");
+    };
+    window.closeModal = function (id) {
+      document.getElementById(id).classList.remove("open");
+    };
+
+    function escapeHTML(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    /* ==========================================================================
+       12. APPLICATION BOOTSTRAP
+       ========================================================================== */
+    /* ==========================================================================
+       AKUN PESANER + SINKRONISASI SERVER (Google Apps Script)
+       ========================================================================== */
+    // Tempel URL Web App dari code.gs (berakhiran /exec)
+    const API_URL = "https://script.google.com/macros/s/AKfycbxL8I02fjAo7Sfd-Ten1DWg1UzDTC6q6TStn0Cpt6O2Z6JjpJ-glwp5HsR-6kL-KnUL/exec";
+
+    let session = null;
+    try { session = JSON.parse(localStorage.getItem("plq_session") || "null"); } catch (e) {}
+    state.remote = [];
+    const norm = (s) => String(s || "").trim().toLowerCase();
+    const setSession = (s) => { session = s; try { localStorage.setItem("plq_session", JSON.stringify(s)); } catch (e) {} };
+
+    async function api(action, data = {}) {
+      if (!/^https:\/\/script\.google\.com\//.test(API_URL)) throw new Error("API_URL belum diisi di file HTML");
+      const r = await fetch(API_URL, {
+        method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow",
+        body: JSON.stringify({ action, token: session && session.token, ...data })
+      });
+      const t = await r.text();
+      try { return JSON.parse(t); } catch (e) { throw new Error("Respons server tidak valid"); }
+    }
+
+    // Semua catatan: lokal + milik akun lain dari server (tanpa duplikat)
+    function allEntries() {
+      const sids = new Set(state.agents.map((a) => a.sid).filter(Boolean));
+      return state.agents.concat(state.remote.filter((r) => !sids.has(r.sid)).map((r) => ({ ...r, id: "sv-" + r.sid, remote: true })));
+    }
+
+    // Ambil DATA TERAKHIR tiap agen (kelurahan + nama); hitung selisih dengan input sebelumnya
+    let BASELINE_DATE = "2026-11-21";
+    function agentLatest() {
+      const g = {};
+      allEntries().forEach((e) => { const k = norm(e.kelurahan) + "|" + norm(e.nama); (g[k] = g[k] || []).push(e); });
+      return Object.values(g).map((a) => {
+        a.sort((x, y) => String(x.waktu).localeCompare(String(y.waktu)));
+        const last = a[a.length - 1], prev = a[a.length - 2];
+        // inputan dihitung hanya SETELAH tanggal baseline; acuan = data terakhir s/d tanggal baseline (atau input pertama bila belum ada)
+        const before = a.filter((e) => String(e.waktu).slice(0, 10) <= BASELINE_DATE);
+        const after = a.filter((e) => String(e.waktu).slice(0, 10) > BASELINE_DATE);
+        const ref = before.length ? before[before.length - 1] : after[0];
+        const inc = after.length ? Math.max(0, last.jumlah_kk - ref.jumlah_kk) : 0;
+        return { ...last, first_kk: a[0].jumlah_kk, inc, delta: prev ? last.jumlah_kk - prev.jumlah_kk : null, n: a.length, history: a };
+      });
+    }
+
+    function deltaBadge(d) {
+      if (d === null || d === undefined) return `<div style="font-size:0.68rem;font-weight:700;color:var(--text-muted);">input pertama</div>`;
+      if (d > 0) return `<div style="font-size:0.74rem;font-weight:800;color:var(--accent-green);">▲ +${formatNum(d)} KK</div>`;
+      if (d < 0) return `<div style="font-size:0.74rem;font-weight:800;color:var(--accent-red);">▼ ${formatNum(d)} KK</div>`;
+      return `<div style="font-size:0.68rem;font-weight:700;color:var(--text-muted);">tetap</div>`;
+    }
+
+    const pickE = (a) => ({ cid: a.id, kelurahan: a.kelurahan, nama: a.nama, unsur: a.unsur, jumlah_kk: a.jumlah_kk, waktu: a.waktu, monster_id: a.monster_id });
+
+    const evFoto = (a) => (!a.eviden_id && a.eviden_base64 ? a.eviden_base64.split(",")[1] : "");
+    async function syncPending() {
+      if (!session) return;
+      for (const a of state.agents.filter((x) => x.sid && x.synced === false)) {
+        const r = await api("update", { id: a.sid, entry: pickE(a), foto: evFoto(a) });
+        if (r.success) { a.synced = true; if (r.eviden_id) a.eviden_id = r.eviden_id; await dbPut("capaian_agen", a); }
+      }
+      for (const a of state.agents.filter((x) => !x.sid)) { // satu per satu (ada foto eviden)
+        const r = await api("save", { entries: [pickE(a)], foto: evFoto(a) });
+        if (!r.success) throw new Error(r.message);
+        const s = r.saved[0];
+        if (s) { a.sid = s.id; a.synced = true; if (r.eviden_id) a.eviden_id = r.eviden_id; await dbPut("capaian_agen", a); }
+      }
+    }
+
+    async function pullMine() {
+      const r = await api("mine");
+      if (!r.success) throw new Error(r.message);
+      const sids = new Set(state.agents.map((a) => a.sid).filter(Boolean));
+      for (const s of r.entries) {
+        if (!sids.has(s.sid)) await dbPut("capaian_agen", { ...s, id: "sv-" + s.sid, synced: true, eviden_base64: "", xp_earned: 0 });
+      }
+      state.agents = await dbGetAll("capaian_agen");
+      renderArenaStatsAndLeaderboard();
+    }
+
+    function addUnsurOption(u) {
+      const sel = document.getElementById("agentUnsur");
+      if (!u || [...sel.options].some((o) => o.value.toLowerCase() === String(u).toLowerCase())) return;
+      const o = document.createElement("option"); o.value = o.textContent = u;
+      sel.insertBefore(o, sel.querySelector('option[value="__lain__"]'));
+    }
+    document.getElementById("agentUnsur").addEventListener("change", (e) => document.getElementById("agentUnsurManual").classList.toggle("hidden", e.target.value !== "__lain__"));
+    document.getElementById("agentForm").addEventListener("reset", () => setTimeout(() => document.getElementById("agentUnsurManual").classList.add("hidden")));
+
+    async function loadRemote() {
+      try {
+        const r = await api("ranking");
+        if (!r.success) return;
+        state.remote = r.entries;
+        (r.unsur || []).forEach(addUnsurOption);
+        if (r.baseline && r.baseline.rows && r.baseline.rows.length) {   // baseline dari sheet "Baseline" (diupdate admin)
+          BASELINE_KELURAHAN.splice(0, BASELINE_KELURAHAN.length, ...r.baseline.rows);
+          BASELINE_DATE = r.baseline.tanggal;
+          const d = new Date(BASELINE_DATE + "T00:00:00");
+          document.getElementById("baselineBadge").textContent = "Data resmi per " + d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) + " · diperbarui oleh admin";
+        }
+        renderArenaStatsAndLeaderboard();
+      } catch (e) { /* offline / belum dikonfigurasi */ }
+    }
+
+    function setAkunLoading(on, text) {
+      document.getElementById("akunLoading").classList.toggle("hidden", !on);
+      if (text) document.getElementById("akunLoadingText").textContent = text;
+      ["akunOut", "akunIn"].forEach((id) => document.getElementById(id).classList.toggle("akun-busy", on));
+      const b = document.getElementById("akunSubmit"), sy = document.getElementById("akunSync");
+      b.disabled = on; sy.disabled = on;
+      if (on) { b.dataset.t = b.dataset.t || b.textContent; b.innerHTML = '<span class="plq-spin plq-spin-sm"></span>Mohon tunggu…'; }
+      else if (b.dataset.t) { b.textContent = akunMode === "login" ? "Masuk" : "Daftar & Masuk"; delete b.dataset.t; }
+    }
+
+    // Isi otomatis form capaian: nama dari akun Pesaner, unsur dari input terakhir (jika ada)
+    let autoName = "";
+    function prefillAgent() {
+      const nm = document.getElementById("agentName");
+      if (!session) { if (autoName && nm.value === autoName) nm.value = ""; autoName = ""; return; }
+      if (document.getElementById("editAgentId").value) return; // sedang mengedit
+      if (!nm.value.trim() || nm.value === autoName) { nm.value = session.name; autoName = session.name; }
+      const own = state.agents.filter((a) => a.unsur && (!a.pemilik || a.pemilik === session.username))
+        .sort((x, y) => String(x.waktu).localeCompare(String(y.waktu)));
+      const last = own[own.length - 1];
+      if (last) {
+        addUnsurOption(last.unsur);
+        const sel = document.getElementById("agentUnsur");
+        if ([...sel.options].some((o) => o.value === last.unsur)) sel.value = last.unsur;
+      }
+    }
+
+    function akunMsg(t, ok) {
+      const el = document.getElementById("akunMsg");
+      el.textContent = t || ""; el.style.color = ok ? "var(--accent-green)" : "var(--accent-red)";
+    }
+
+    const localNow = () => new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 16).replace("T", " ");
+
+    function paintAkun() {
+      const on = !!session;
+      document.getElementById("akunOut").classList.toggle("hidden", on);
+      document.getElementById("akunIn").classList.toggle("hidden", !on);
+      document.getElementById("akunMember").classList.toggle("hidden", !on);
+      ["monsterGroup"].forEach((id) => document.getElementById(id).classList.toggle("hidden", !on));
+      document.getElementById("guestNote").classList.toggle("hidden", on);
+      document.getElementById("kegForm").classList.toggle("hidden", !on);
+      document.getElementById("laporanLock").classList.toggle("hidden", on);
+      document.getElementById("monsterLock").classList.toggle("hidden", on);
+      document.getElementById("tab-monster").classList.toggle("locked", !on);
+      prefillAgent();
+      if (on) { document.getElementById("akunNm").textContent = session.name + (session.role === "admin" ? " 🛡️ Admin" : ""); document.getElementById("akunUn").textContent = session.username; }
+    }
+
+    function renderAkun() {
+      paintAkun();
+      if (!session) return;
+      const box = document.getElementById("riwayatList");
+      const g = {};
+      state.agents.forEach((e) => { const k = norm(e.kelurahan) + "|" + norm(e.nama); (g[k] = g[k] || []).push(e); });
+      const groups = Object.values(g);
+      if (!groups.length) { box.innerHTML = `<div style="color:var(--text-muted);font-size:0.85rem;">Belum ada riwayat. Isi capaian di tab Arena.</div>`; }
+      else box.innerHTML = groups.map((a) => {
+        a.sort((x, y) => String(y.waktu).localeCompare(String(x.waktu)));
+        return `<div class="clay-card-sm" style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;">
+            <div><b>${escapeHTML(a[0].nama)}</b><div class="badge-tag" style="margin-top:3px;">📍 ${a[0].kelurahan}</div>${a[0].pemilik ? `<div style="font-size:0.7rem;color:var(--text-muted);margin-top:2px;">👤 ${escapeHTML(a[0].pemilik)}</div>` : ""}</div>
+            <div style="text-align:right;"><div class="font-display" style="font-size:1.2rem;font-weight:700;color:var(--primary);">${formatNum(a[0].jumlah_kk)} KK</div>${deltaBadge(a[1] ? a[0].jumlah_kk - a[1].jumlah_kk : null)}</div>
+          </div>
+          ${a.map((e, i) => `<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 0;border-top:1px dashed var(--border-soft);font-size:0.8rem;">
+            <span>${e.waktu} · <b>${formatNum(e.jumlah_kk)}</b> ${e.synced ? "☁️" : "📱"}</span>
+            <span style="display:flex;align-items:center;gap:6px;">${a[i + 1] ? deltaBadge(e.jumlah_kk - a[i + 1].jumlah_kk) : ""}
+              <button type="button" class="btn btn-ghost btn-sm" onclick="editFromRiwayat('${e.id}')">✏️</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="delRiwayat('${e.id}')">🗑️</button></span></div>`).join("")}
+        </div>`;
+      }).join("");
+    }
+    window.editFromRiwayat = (id) => { switchTab("arena"); editAgent(id); };
+    window.delRiwayat = async (id) => { if (confirm("Hapus catatan ini?")) { await deleteAgent(id); renderAkun(); } };
+
+    // ---- profil / monster ----
+    let skipPush = false, pushT = null;
+    window.onProfileSaved = (it) => {
+      if (!session || skipPush) return;
+      clearTimeout(pushT);
+      pushT = setTimeout(() => {
+        const { selected_monster, monster_nickname, aura, accessory, nama_petugas, kelurahan_default, total_xp, level } = it;
+        api("profile", { profile: { selected_monster, monster_nickname, aura, accessory, nama_petugas, kelurahan_default, total_xp, level } }).catch(() => {});
+      }, 1500);
+    };
+    async function pullProfile() {
+      const r = await api("profile");
+      if (!r.success || !r.profile) { window.onProfileSaved(state.profile); return; }
+      const sp = r.profile;
+      sp.total_xp = Math.max(sp.total_xp || 0, state.profile.total_xp || 0);
+      sp.level = Math.max(sp.level || 1, state.profile.level || 1);
+      Object.assign(state.profile, sp);
+      skipPush = true; await dbPut("user_profile", state.profile); skipPush = false;
+      document.getElementById("agentMonster").value = state.profile.selected_monster || "puffi";
+      document.getElementById("agentKelurahan").value = state.profile.kelurahan_default || "Jatisampurna";
+      renderCompanionUI(); renderMonsterStudioPicker();
+    }
+
+    // ---- kalender (catatan lapangan) ----
+    async function syncCal() {
+      if (!session) return;
+      const pend = state.calendarEvents.filter((e) => e.tipe === "field_note" && !String(e.id).startsWith("cal-init") && (!e.sid || e.synced === false));
+      if (!pend.length) return;
+      const r = await api("calSave", { entries: pend.map((e) => ({ cid: e.id, sid: e.sid, tanggal: e.tanggal, judul: e.judul, catatan: e.catatan, kelurahan: e.kelurahan, reminder: e.reminder_time || "" })) });
+      if (!r.success) throw new Error(r.message);
+      for (const s of r.saved) {
+        const e = state.calendarEvents.find((x) => x.id === s.cid);
+        if (e) { e.sid = s.id; e.synced = true; await dbPut("kalender_kegiatan", e); }
+      }
+    }
+    async function pullCal() {
+      const r = await api("calMine");
+      if (!r.success) throw new Error(r.message);
+      const sids = new Set(state.calendarEvents.map((e) => e.sid).filter(Boolean));
+      for (const s of r.entries) if (!sids.has(s.sid)) await dbPut("kalender_kegiatan", { id: "cs-" + s.sid, sid: s.sid, synced: true, tanggal: s.tanggal, judul: s.judul, catatan: s.catatan, kelurahan: s.kelurahan, reminder_time: (s.pemilik && session && s.pemilik !== session.username) ? "" : (s.reminder || ""), pemilik: s.pemilik || "", reminded: false, tipe: "field_note", berita_id: "" });
+      state.calendarEvents = await dbGetAll("kalender_kegiatan");
+      renderCalendar();
+    }
+
+    // ---- pengingat kalender (hanya akun login) ----
+    setInterval(async () => {
+      if (!session) return;
+      const now = Date.now();
+      for (const e of state.calendarEvents) {
+        if (e.tipe !== "field_note" || !e.reminder_time || e.reminded) continue;
+        const t = new Date(e.reminder_time).getTime();
+        if (now < t) continue;
+        e.reminded = true; await dbPut("kalender_kegiatan", e);
+        if (now - t < 864e5) { playTone("alarm"); showToast("⏰ PENGINGAT: " + e.judul, "🔔"); }
+      }
+    }, 10000);
+
+    // ---- kegiatan + foto ----
+    function compressImg(file, max = 1000) {
+      return new Promise((res, rej) => {
+        const img = new Image(), url = URL.createObjectURL(file);
+        img.onload = () => {
+          const k = Math.min(1, max / Math.max(img.width, img.height));
+          const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+          res(c.toDataURL("image/jpeg", 0.72).split(",")[1]);
+        };
+        img.onerror = () => rej(new Error("Foto tidak bisa dibaca"));
+        img.src = url;
+      });
+    }
+    async function loadKeg() {
+      const box = document.getElementById("kegList");
+      try {
+        const r = await api("kegAll"); if (!r.success) throw new Error(r.message);
+        const f = document.getElementById("kegFilter").value;
+        const rows = r.entries.filter((k) => !f || k.kelurahan === f);
+        box.innerHTML = rows.length ? rows.map((k) => `
+          <div class="clay-card-sm" style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;">
+              <div><b>${escapeHTML(k.judul)}</b><div style="font-size:0.74rem;color:var(--text-muted);">${k.tanggal} · 📍 ${k.kelurahan} · ✍️ ${escapeHTML(k.penulis || "-")}</div></div>
+              ${k.mine ? `<button type="button" class="btn btn-danger btn-sm" onclick="delKeg('${k.sid}')">🗑️</button>` : ""}
+            </div>
+            ${k.deskripsi ? `<div style="font-size:0.84rem;margin-top:6px;">${escapeHTML(k.deskripsi)}</div>` : ""}
+            ${k.foto_id ? `<a href="https://drive.google.com/file/d/${k.foto_id}/view" target="_blank" rel="noopener"><img loading="lazy" alt="Foto kegiatan" src="https://drive.google.com/thumbnail?id=${k.foto_id}&sz=w800" style="width:100%;max-height:320px;object-fit:cover;border-radius:14px;margin-top:8px;" /></a>` : ""}
+          </div>`).join("") : `<div style="color:var(--text-muted);font-size:0.85rem;">Belum ada laporan kegiatan.</div>`;
+      } catch (e) { box.textContent = "Gagal memuat laporan: " + e.message; }
+    }
+    document.getElementById("kegFilter").addEventListener("change", loadKeg);
+    window.delKeg = async (id) => { if (!confirm("Hapus kegiatan ini?")) return; const r = await api("kegDel", { id }); if (!r.success) showToast(r.message, "⚠️"); loadKeg(); };
+    document.getElementById("kegTgl").value = localNow().slice(0, 10);
+    document.getElementById("kegForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!session) { showToast("Masuk akun untuk membuat laporan", "🔐"); return; }
+      const btn = document.getElementById("kegBtn"); btn.disabled = true;
+      try {
+        const f = document.getElementById("kegFoto").files[0];
+        const r = await api("kegSave", {
+          entry: { cid: "k" + Date.now(), tanggal: document.getElementById("kegTgl").value, kelurahan: document.getElementById("kegKel").value, judul: document.getElementById("kegJudul").value.trim(), deskripsi: document.getElementById("kegDesk").value.trim() },
+          foto: f ? await compressImg(f) : ""
+        });
+        if (!r.success) throw new Error(r.message);
+        document.getElementById("kegForm").reset(); document.getElementById("kegTgl").value = localNow().slice(0, 10);
+        showToast("Kegiatan tersimpan", "📸"); loadKeg();
+      } catch (err) { showToast("Gagal: " + err.message, "⚠️"); }
+      btn.disabled = false;
+    });
+
+    let akunMode = "login";
+    function setAkunMode(m) {
+      akunMode = m;
+      document.getElementById("akunNBox").classList.toggle("hidden", m === "login");
+      document.getElementById("akunPHint").classList.toggle("hidden", m === "login");
+      document.getElementById("akunModeLogin").className = "btn btn-sm " + (m === "login" ? "btn-primary" : "btn-ghost");
+      document.getElementById("akunModeReg").className = "btn btn-sm " + (m === "register" ? "btn-primary" : "btn-ghost");
+      document.getElementById("akunSubmit").textContent = m === "login" ? "Masuk" : "Daftar & Masuk";
+      document.getElementById("akunP").autocomplete = m === "login" ? "current-password" : "new-password";
+      akunMsg("");
+    }
+    async function akunDo() {
+      const kind = akunMode;
+      const name = document.getElementById("akunN").value.replace(/\s+/g, " ").trim();
+      const username = document.getElementById("akunU").value.trim().toLowerCase().replace(/\s+/g, "");
+      const password = document.getElementById("akunP").value;
+      if (!username || !password) { akunMsg("Isi username dan password", false); return; }
+      if (kind === "register") {
+        if (name.length < 2) { akunMsg("Nama lengkap wajib diisi untuk pendaftaran", false); return; }
+        if (password.length < 6) { akunMsg("Password minimal 6 karakter", false); return; }
+      }
+      akunMsg("");
+      setAkunLoading(true, kind === "register" ? "Mendaftarkan akun Pesaner…" : "Memeriksa akun…");
+      try {
+        if (kind === "register") {
+          const r0 = await api("register", { name, username, password });
+          if (!r0.success) { akunMsg(r0.message, false); return; }
+          setAkunLoading(true, "Akun dibuat, sedang masuk…");
+        }
+        const r = await api("login", { username, password });
+        if (!r.success) { akunMsg(r.message, false); return; }
+        setSession({ token: r.token, username: r.user.username, name: r.user.name, role: r.user.role || "user" });
+        setAkunLoading(true, "Berhasil masuk. Mengambil data Anda…");
+        try { await syncPending(); await pullMine(); await pullProfile(); await syncCal(); await pullCal(); } catch (e) { showToast("Sinkron gagal: " + e.message, "⚠️"); }
+        document.getElementById("akunP").value = "";
+        loadRemote(); renderAkun(); loadKeg();
+        akunMsg(kind === "register" ? "Akun Pesaner dibuat & Anda sudah masuk." : "Berhasil masuk. Riwayat disinkronkan.", true);
+      } catch (e) { akunMsg(e.message, false); }
+      finally { setAkunLoading(false); }
+    }
+    document.getElementById("akunSubmit").addEventListener("click", akunDo);
+    document.getElementById("akunModeLogin").addEventListener("click", () => setAkunMode("login"));
+    document.getElementById("akunModeReg").addEventListener("click", () => setAkunMode("register"));
+    document.getElementById("akunSync").addEventListener("click", async () => {
+      akunMsg(""); setAkunLoading(true, "Menyinkronkan data…");
+      try { await syncPending(); await pullMine(); await pullProfile(); await syncCal(); await pullCal(); loadRemote(); renderAkun(); akunMsg("Sinkronisasi selesai.", true); }
+      catch (e) {
+        if (/login|Sesi/i.test(e.message)) { setSession(null); paintAkun(); }
+        akunMsg(e.message, false);
+      } finally { setAkunLoading(false); }
+    });
+    document.getElementById("akunOutBtn").addEventListener("click", async () => {
+      try { await api("logout"); } catch (e) {}
+      setSession(null);
+      for (const a of state.agents.filter((x) => x.synced)) await dbDelete("capaian_agen", a.id);
+      for (const c of state.calendarEvents.filter((x) => x.sid)) await dbDelete("kalender_kegiatan", c.id);
+      state.calendarEvents = await dbGetAll("kalender_kegiatan"); renderCalendar(); // jangan tertinggal di perangkat bersama
+      state.agents = await dbGetAll("capaian_agen");
+      renderArenaStatsAndLeaderboard(); renderAkun(); akunMsg("Anda sudah keluar.", true);
+    });
+
+    (async function initApp() {
+      try {
+        await openDatabase();
+        await seedInitialData();
+
+        state.profile = await dbGet("user_profile", "current");
+        for (const s0 of (await dbGetAll("capaian_agen")).filter((a) => ["ag-1", "ag-2", "ag-3"].includes(a.id) && !a.sid)) await dbDelete("capaian_agen", s0.id);
+        state.agents = await dbGetAll("capaian_agen");
+        state.news = await dbGetAll("berita_wilayah");
+        state.calendarEvents = await dbGetAll("kalender_kegiatan");
+
+        document.getElementById("agentKelurahan").value = state.profile.kelurahan_default || "Jatisampurna";
+        document.getElementById("agentMonster").value = state.profile.selected_monster || "puffi";
+
+        applyThemeAndLang();
+        renderCompanionUI();
+        renderArenaStatsAndLeaderboard();
+        renderNewsList();
+        renderCalendar();
+        renderMonsterStudioPicker();
+        paintAkun();
+        if (session) { pullMine().catch(() => {}); pullProfile().catch(() => {}); syncCal().then(pullCal).catch(() => {}); }
+        loadRemote();
+        loadKeg();
+      } catch (err) {
+        console.error("Init error:", err);
+        showToast("Terjadi kendala memuat database lokal", "⚠️");
+      }
+    })();
+  </script>
+</body>
+</html>
