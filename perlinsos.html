@@ -2696,6 +2696,7 @@
       };
 
       const oldRec = editId ? state.agents.find((x) => x.id === editId) : null;
+      record.owner = session.username;
       if (oldRec) {
         record.eviden_id = oldRec.eviden_id || "";
         if (state.pendingEvidenBase64) record.eviden_id = "";
@@ -3343,7 +3344,16 @@
     };
     function allEntries() {
       const sids = new Set(state.agents.map((a) => a.sid).filter(Boolean));
-      const mine = state.agents.map((a) => ({ ...a, waktu: nw(a.waktu), akun: a.akun || (a.pemilik ? (a.pemilik === "(tamu)" ? "" : a.pemilik) : (session ? session.username : "")) }));
+      // Pemilik (akun) diambil dari SERVER; salinan lokal tidak boleh otomatis dianggap milik akun yang sedang login
+      const srv = {};
+      state.remote.forEach((x) => { srv[x.sid] = x.akun || ""; });
+      const ownerOf = (a) => {
+        if (a.sid && Object.prototype.hasOwnProperty.call(srv, a.sid)) return srv[a.sid];
+        if (a.owner) return a.owner;
+        if (a.pemilik) return a.pemilik === "(tamu)" ? "" : a.pemilik;
+        return a.sid ? "" : (session ? session.username : ""); // belum tersinkron = baru dibuat akun ini
+      };
+      const mine = state.agents.map((a) => ({ ...a, waktu: nw(a.waktu), akun: ownerOf(a) }));
       const rem = state.remote.filter((r) => !sids.has(r.sid)).map((r) => ({ ...r, waktu: nw(r.waktu), akun: r.akun || "", id: "sv-" + r.sid, remote: true }));
       return mine.concat(rem);
     }
@@ -3380,7 +3390,7 @@
         const r = await api("update", { id: a.sid, entry: pickE(a), foto: evFoto(a) });
         if (r.success) { a.synced = true; if (r.eviden_id) a.eviden_id = r.eviden_id; await dbPut("capaian_agen", a); }
       }
-      for (const a of state.agents.filter((x) => !x.sid)) { // satu per satu (ada foto eviden)
+      for (const a of state.agents.filter((x) => !x.sid && (!x.owner || x.owner === session.username))) { // satu per satu (ada foto eviden)
         const r = await api("save", { entries: [pickE(a)], foto: evFoto(a) });
         if (!r.success) throw new Error(r.message);
         const s = r.saved[0];
@@ -3501,11 +3511,14 @@
     window.delRiwayat = async (id) => { if (confirm("Hapus catatan ini?")) { await deleteAgent(id); renderAkun(); } };
 
     // ---- klaim nama lama setelah mendaftar ----
+    // 1 akun = 1 nama: bila akun sudah punya catatan sendiri di daftar, klaim tidak ditawarkan lagi
+    const ownsName = () => !!session && allEntries().some((e) => e.akun === session.username);
     window.claimAgent = async (i) => {
       const ag = (window.__rankRows || [])[i];
       if (!ag || !session) return needLogin();
       if (ag.akun) return;
-      if (!confirm(`Klaim nama "${ag.nama}" (${ag.kelurahan}) sebagai milik akun @${session.username}?\n\nSeluruh catatan tamu atas nama ini akan dipindahkan ke akun Anda sehingga bisa diedit, muncul di Riwayat, dan memakai tombol chat. Klaim dicatat admin; jangan mengklaim nama orang lain.`)) return;
+      if (ownsName()) { showToast("Nama Anda sudah ada di daftar, klaim tidak diperlukan lagi", "ℹ️"); return; }
+      if (!confirm(`Klaim nama "${ag.nama}" (${ag.kelurahan}) sebagai milik akun @${session.username}?\n\nKlaim HANYA BOLEH 1 KALI dan tidak bisa diubah sendiri. Seluruh catatan tamu atas nama ini akan dipindahkan ke akun Anda. Pastikan ini benar-benar nama Anda; klaim dicatat admin.`)) return;
       try {
         const r = await api("claim", { kelurahan: ag.kelurahan, nama: ag.nama });
         if (!r.success) { showToast(r.message, "⚠️"); return; }
@@ -3516,7 +3529,7 @@
     };
     let claimHinted = false;
     function suggestClaim() {
-      if (!session || claimHinted) return;
+      if (!session || claimHinted || ownsName()) return;
       const me = norm(session.name);
       if (agentLatest().some((a) => !a.akun && norm(a.nama) === me)) {
         claimHinted = true;
@@ -3530,7 +3543,7 @@
       let b = "";
       if (!session) b += `<button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap;" onclick="needLogin()" title="Masuk untuk mengedit capaian">🔐 Masuk</button>`;
       else if (ag.akun && ag.akun === session.username) b += `<button type="button" class="btn btn-primary btn-sm" style="white-space:nowrap;" onclick="updateAgent(${i})" title="Update capaian terbaru">✏️ Update</button>`;
-      if (session && !ag.akun) b += `<button type="button" class="btn btn-orange btn-sm" style="white-space:nowrap;" onclick="claimAgent(${i})" title="Ini nama saya: pindahkan catatan tamu ini ke akun saya">🙋 Klaim</button>`;
+      if (session && !ag.akun && !ownsName()) b += `<button type="button" class="btn btn-orange btn-sm" style="white-space:nowrap;" onclick="claimAgent(${i})" title="Ini nama saya: pindahkan catatan tamu ini ke akun saya">🙋 Klaim</button>`;
       if (ag.akun && (!session || ag.akun !== session.username)) b += `<button type="button" class="btn btn-secondary btn-sm" style="white-space:nowrap;" onclick="chatPesaner(${i})" title="Chat @${escapeHTML(ag.akun)} di Pesaner">💬 Chat</button>`;
       return b ? `<div style="display:flex; flex-direction:column; gap:6px;">${b}</div>` : "";
     }
@@ -3685,6 +3698,12 @@
       document.getElementById("akunP").autocomplete = m === "login" ? "current-password" : "new-password";
       akunMsg("");
     }
+    async function purgeSynced() {
+      for (const a of state.agents.filter((x) => x.sid)) await dbDelete("capaian_agen", a.id);
+      for (const c of state.calendarEvents.filter((x) => x.sid)) await dbDelete("kalender_kegiatan", c.id);
+      state.agents = await dbGetAll("capaian_agen");
+      state.calendarEvents = await dbGetAll("kalender_kegiatan");
+    }
     async function akunDo() {
       const kind = akunMode;
       const name = document.getElementById("akunN").value.replace(/\s+/g, " ").trim();
@@ -3706,6 +3725,11 @@
         const r = await api("login", { username, password });
         if (!r.success) { akunMsg(r.message, false); return; }
         setSession({ token: r.token, username: r.user.username, name: r.user.name, role: r.user.role || "user" });
+        { // perangkat dipakai bergantian: salinan data akun sebelumnya dibuang, lalu diambil ulang dari server
+          let lu = null; try { lu = localStorage.getItem("plq_last_user"); } catch (e) {}
+          if (lu !== r.user.username) await purgeSynced();
+          try { localStorage.setItem("plq_last_user", r.user.username); } catch (e) {}
+        }
         setAkunLoading(true, "Berhasil masuk. Mengambil data Anda…");
         try { await syncPending(); await pullMine(); await pullProfile(); await syncCal(); await pullCal(); } catch (e) { showToast("Sinkron gagal: " + e.message, "⚠️"); }
         document.getElementById("akunP").value = "";
