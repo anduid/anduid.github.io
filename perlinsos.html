@@ -662,6 +662,67 @@
       .kelurahan-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
+    /* ===== Newsticker 3D agen naik ===== */
+    .tk-wrap {
+      position: relative; overflow: hidden; padding: 14px 0 18px;
+      border-radius: var(--radius-lg);
+      background: var(--surface-glass);
+      box-shadow: var(--clay-card);
+      perspective: 700px; touch-action: pan-y;
+      -webkit-user-select: none; user-select: none; cursor: grab;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 36px, #000 calc(100% - 36px), transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 36px, #000 calc(100% - 36px), transparent 100%);
+    }
+    .tk-wrap.hold { cursor: grabbing; }
+    .tk-track {
+      display: flex; width: max-content; will-change: transform;
+      animation: tkScroll var(--tk-dur, 30s) linear infinite;
+      transform-style: preserve-3d;
+    }
+    .tk-set { display: flex; gap: 14px; padding-right: 14px; flex-shrink: 0; transform-style: preserve-3d; }
+    @media (hover: hover) { .tk-wrap:hover .tk-track { animation-play-state: paused; } }
+    .tk-wrap.hold .tk-track { animation-play-state: paused; }
+    @keyframes tkScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .tk-pill {
+      --c: #6C5CE7;
+      display: flex; align-items: center; gap: 9px; flex-shrink: 0;
+      padding: 8px 16px 8px 9px; border-radius: 999px;
+      background: linear-gradient(160deg, color-mix(in srgb, var(--c) 18%, var(--surface)) 0%, var(--surface) 70%);
+      border: 2px solid color-mix(in srgb, var(--c) 55%, transparent);
+      box-shadow:
+        0 10px 16px -6px color-mix(in srgb, var(--c) 55%, transparent),
+        inset 0 3px 5px rgba(255,255,255,0.85),
+        inset 0 -4px 7px color-mix(in srgb, var(--c) 25%, transparent);
+      animation: tkBob 2.6s ease-in-out infinite;
+      animation-delay: var(--d, 0s);
+      transform-origin: 50% 100%;
+    }
+    @keyframes tkBob {
+      0%, 100% { transform: translateY(0) rotateX(6deg) rotateY(-5deg); }
+      50%      { transform: translateY(-5px) rotateX(-4deg) rotateY(5deg); }
+    }
+    .tk-rank {
+      min-width: 30px; height: 30px; padding: 0 6px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.8rem; color: #fff;
+      background: var(--c);
+      box-shadow: 0 4px 8px -2px color-mix(in srgb, var(--c) 70%, transparent), inset 0 2px 3px rgba(255,255,255,0.5), inset 0 -3px 4px rgba(0,0,0,0.18);
+    }
+    .tk-rank.medal { background: transparent; box-shadow: none; font-size: 1.35rem; }
+    .tk-name { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.92rem; color: var(--text-primary); line-height: 1.1; white-space: nowrap; }
+    .tk-sub { font-size: 0.66rem; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+    .tk-inc {
+      font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.82rem; color: #fff; white-space: nowrap;
+      padding: 4px 10px; border-radius: 999px; background: var(--accent-green);
+      box-shadow: 0 4px 8px -2px rgba(29,209,161,0.6), inset 0 2px 3px rgba(255,255,255,0.5), inset 0 -3px 4px rgba(0,0,0,0.16);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tk-track { animation: none; }
+      .tk-pill { animation: none; }
+      .tk-wrap { overflow-x: auto; -webkit-mask-image: none; mask-image: none; cursor: auto; }
+      .tk-set + .tk-set { display: none; }
+    }
+
     .kel-card {
       background: var(--surface);
       border-radius: var(--radius-lg);
@@ -1114,7 +1175,18 @@
         <h2 style="font-size:1.2rem;">✍️ Capaian Inputan Agen</h2>
         <span style="font-size:0.78rem; color:var(--text-muted); font-weight:700;">Belum terverifikasi · dihitung dari data terakhir tiap agen</span>
       </div>
-      <div class="kelurahan-grid" id="inputGrid" style="margin-bottom:20px;"></div>
+      <div class="kelurahan-grid" id="inputGrid" style="margin-bottom:14px;"></div>
+
+      <!-- Newsticker agen dengan kenaikan capaian -->
+      <div id="agentTickerSection" class="hidden" style="margin-bottom:22px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+          <h3 style="font-size:1rem;">🚀 Agen Teraktif · Capaian Naik</h3>
+          <span id="agentTickerHint" style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">Tahan untuk berhenti sejenak</span>
+        </div>
+        <div class="tk-wrap" id="agentTicker" role="marquee" aria-label="Daftar agen dengan kenaikan capaian">
+          <div class="tk-track" id="agentTickerTrack"></div>
+        </div>
+      </div>
 
       <!-- Input Form & Leaderboard -->
       <div class="two-col-main">
@@ -2348,6 +2420,8 @@
           <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">👥 ${n} agen menginput</div></div>`;
       }).join("");
 
+      renderAgentTicker(latestAgents);
+
       // Update Hero Progress
       const totalPct = (grandBase / grandTotalKK) * 100;
       const target50KK = Math.ceil(grandTotalKK * 0.5); // 19.674 KK
@@ -3359,6 +3433,53 @@
     }
 
     let BASELINE_DATE = "2026-11-21";
+    // Newsticker 3D: hanya agen yang capaiannya naik (inc > 0), urut dari kenaikan terbanyak
+    var _tkSig = "", _tkItems = [], _tkW = 0;
+    function renderAgentTicker(agents) {
+      const list = agents.filter((a) => a.inc > 0)
+        .sort((a, b) => b.inc - a.inc || String(a.nama).localeCompare(String(b.nama)));
+      _tkItems = list;
+      const sec = document.getElementById("agentTickerSection");
+      const wrap = document.getElementById("agentTicker");
+      const track = document.getElementById("agentTickerTrack");
+      if (!sec || !wrap || !track) return;
+      if (!list.length) { sec.classList.add("hidden"); track.innerHTML = ""; _tkSig = ""; return; }
+      sec.classList.remove("hidden");
+      const w = wrap.clientWidth;
+      if (!w) { _tkSig = ""; return; }       // tab sedang tersembunyi: dibangun saat terlihat (ResizeObserver)
+      const sig = list.map((a) => a.kelurahan + "|" + a.nama + "|" + a.inc).join(";") + "#" + w;
+      if (sig === _tkSig) return;           // tidak berubah: jangan mulai ulang animasi
+      _tkSig = sig; _tkW = w;
+      const colors = ["#6C5CE7", "#FF6B9D", "#00B8B3", "#FF9F43", "#4C8DFF", "#A66CFF"];
+      const medals = ["🥇", "🥈", "🥉"];
+      const pills = list.map((a, i) => {
+        const c = i === 0 ? "#F5B400" : i === 1 ? "#8C94B8" : i === 2 ? "#E0762B" : colors[i % colors.length];
+        const rank = i < 3 ? `<span class="tk-rank medal">${medals[i]}</span>` : `<span class="tk-rank">#${i + 1}</span>`;
+        return `<div class="tk-pill" style="--c:${c};--d:${((i % 6) * -0.45).toFixed(2)}s">${rank}
+          <div><div class="tk-name">${escapeHTML(a.nama)}</div><div class="tk-sub">${escapeHTML(a.kelurahan)}</div></div>
+          <span class="tk-inc">▲ +${formatNum(a.inc)} KK</span></div>`;
+      }).join("");
+      // ulang isi sampai satu set lebih lebar dari layar, lalu gandakan untuk loop mulus
+      track.style.setProperty("--tk-dur", "30s");
+      track.innerHTML = `<div class="tk-set">${pills}</div>`;
+      const setW = track.firstElementChild.scrollWidth || 1;
+      const reps = Math.max(1, Math.ceil((w + 40) / setW));
+      const one = `<div class="tk-set">${pills.repeat(reps)}</div>`;
+      track.innerHTML = one + one;
+      const half = track.firstElementChild.scrollWidth;
+      track.style.setProperty("--tk-dur", Math.max(8, half / 110).toFixed(1) + "s"); // ±110 px/detik
+    }
+    (function initTicker() {
+      const wrap = document.getElementById("agentTicker");
+      if (!wrap) return;
+      const on = () => wrap.classList.add("hold"), off = () => wrap.classList.remove("hold");
+      wrap.addEventListener("pointerdown", on);
+      ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => wrap.addEventListener(ev, off));
+      wrap.addEventListener("contextmenu", (e) => e.preventDefault());
+      let t; const re = () => { clearTimeout(t); t = setTimeout(() => renderAgentTicker(_tkItems), 200); };
+      if (window.ResizeObserver) new ResizeObserver(re).observe(wrap); else window.addEventListener("resize", re);
+    })();
+
     function agentLatest() {
       const g = {};
       allEntries().forEach((e) => { const k = norm(e.kelurahan) + "|" + norm(e.nama); (g[k] = g[k] || []).push(e); });
