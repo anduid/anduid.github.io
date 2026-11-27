@@ -12,11 +12,12 @@ layout: news-default
 <nav class="crumb" aria-label="Breadcrumb"><a href="{{ '/news/' | relative_url }}" data-i18n="n_home">Beranda</a><span>›</span><a href="{{ '/news/' | relative_url }}?cat={{ page.categories.first }}"><span data-lang="id">{{ cat.id }}</span><span data-lang="en">{{ cat.en }}</span></a><span>›</span><b><span data-lang="id">{{ page.title }}</span><span data-lang="en">{{ page.title_en }}</span></b></nav>
 <span class="chip">{{ cat.icon }} <span data-lang="id">{{ cat.id }}</span><span data-lang="en">{{ cat.en }}</span></span>
 <h1><span data-lang="id">{{ page.title }}</span><span data-lang="en">{{ page.title_en }}</span></h1>
-<p class="meta">{{ page.author }} • <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d/%m/%Y" }}</time> • <span data-lang="id">{{ page.reading_time_id }} mnt baca</span><span data-lang="en">{{ page.reading_time_en }} min read</span> • <b class="xp">+25 XP</b></p>
+<p class="meta"><a class="au" href="#" data-author="{{ page.author | escape }}">{{ page.author }}</a> • <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d/%m/%Y" }}</time> • <span data-lang="id">{{ page.reading_time_id }} mnt baca</span><span data-lang="en">{{ page.reading_time_en }} min read</span> • <b class="xp">+25 XP</b></p>
 <div class="tools" role="toolbar" aria-label="Kenyamanan baca">
 <span class="seg"><button type="button" data-fs="-1" aria-label="A-">A-</button><button type="button" data-fs="0" aria-label="A">A</button><button type="button" data-fs="1" aria-label="A+">A+</button></span>
 <span class="seg"><button type="button" id="tts-play" aria-label="Dengarkan">▶ <span data-i18n="listen"></span></button><button type="button" id="tts-pause" aria-label="Jeda">⏸</button><button type="button" id="tts-stop" aria-label="Berhenti">⏹</button></span>
 <button type="button" class="btn sm ghost" id="bm-btn" aria-pressed="false">🔖 <span data-i18n="bookmark"></span></button>
+<button type="button" class="btn sm ghost" id="sh-btn">🔗 Bagikan</button>
 </div>
 <div class="postbody" id="postbody">{{ content }}</div>
 <div class="claim" id="claim"><span id="claim-t" data-i18n="claim_hint"></span></div>

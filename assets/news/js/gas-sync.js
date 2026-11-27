@@ -41,7 +41,7 @@
     /* Artikel Sheets → bentuk portal */
     toPortal(a) {
       return { id: 'g-' + a.article_id, source: 'gas', gid: a.article_id, slug: a.slug, cat: GAS.slugOf(a.category), gasCat: a.category, title: a.title, title_en: a.title, lang_id: { title: a.title, excerpt: a.excerpt }, lang_en: { title: a.title, excerpt: a.excerpt },
-        tags: a.tags || [], author: a.author_name, featured: !!a.is_featured, reading_time: Math.max(1, Math.ceil(((a.excerpt || '').split(/\s+/).length * 8) / C.WPM)), reading_time_en: 1, reads: a.views_count || 0, likes: a.likes_count || 0, image: a.cover_image || '', date: a.published_at || a.updated_at, status: a.status, url: '' };
+        tags: a.tags || [], author: a.author_name, author_id: a.author_id || '', author_role: a.author_role || '', featured: !!a.is_featured, reading_time: Math.max(1, Math.ceil(((a.excerpt || '').split(/\s+/).length * 8) / C.WPM)), reading_time_en: 1, reads: a.views_count || 0, likes: a.likes_count || 0, image: a.cover_image || '', date: a.published_at || a.updated_at, status: a.status, url: '' };
     },
     async fetchArticles() { const out = []; for (let p = 1; p <= 3; p++) { const j = await GAS.call('get_articles', { page: p, page_size: 50 }); j.articles.forEach(a => out.push(GAS.toPortal(a))); if (p >= j.total_pages) break; } return out; },
     async fetchDetail(gid) { const j = await GAS.call('get_article_detail', { article_id: gid, no_count: 'true' }); return j; },
