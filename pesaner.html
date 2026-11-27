@@ -4413,6 +4413,19 @@ async function apiCall(action, data = {}) {
   catch(e) { throw new Error('Server error: ' + text.substring(0,200)); }
 }
 
+// Pencarian user yang JUJUR terhadap error server: kalau backend membalas
+// success:false (mis. TypeError di Apps Script, atau action belum dideploy),
+// lempar error supaya UI menampilkan "Gagal mencari user" -- BUKAN diam-diam
+// menampilkan "Tidak ada user ditemukan" seolah-olah hasilnya memang kosong.
+async function apiSearchUsers(query) {
+  const res = await apiCall('searchUsers', { query, excludeUsername: currentUser.username });
+  if (!res || res.success === false) {
+    throw new Error((res && res.message) || 'Gagal mencari user');
+  }
+  if (!Array.isArray(res.users)) res.users = [];
+  return res;
+}
+
 // Dipakai khusus untuk payload besar (upload file base64) yang tidak muat di
 // URL query string. Content-Type sengaja "text/plain" (bukan application/json)
 // supaya browser TIDAK mengirim preflight OPTIONS — Apps Script Web App tidak
@@ -6643,7 +6656,7 @@ function searchNewGroupUsers() {
     const results = document.getElementById('new-group-results');
     loading.classList.remove('hidden');
     try {
-      const res = await apiCall('searchUsers', { query, excludeUsername: currentUser.username });
+      const res = await apiSearchUsers(query);
       const users = (res.users || []).filter(u => !newGroupSelectedMembers.some(s => s.username === u.username));
       results.innerHTML = users.map(u => `
         <div class="chat-list-item" style="cursor:pointer;" onclick="addGroupMemberToSelection('${escHtml(u.username).replace(/'/g,"\\'")}', '${escHtml(u.name).replace(/'/g,"\\'")}')">
@@ -6654,7 +6667,7 @@ function searchNewGroupUsers() {
           </div>
           <span class="material-symbols-outlined" style="color:#0077CC;">add_circle</span>
         </div>`).join('');
-    } catch (e) { /* diamkan */ }
+    } catch (e) { showToast(t('toast_search_user_fail'), 'error'); }
     loading.classList.add('hidden');
   }, 300);
 }
@@ -6754,7 +6767,7 @@ function searchGroupAddMember() {
   if (query.length < 3) { results.innerHTML = ''; return; }
   groupAddMemberSearchTimeout = setTimeout(async () => {
     try {
-      const res = await apiCall('searchUsers', { query, excludeUsername: currentUser.username });
+      const res = await apiSearchUsers(query);
       results.innerHTML = (res.users || []).map(u => `
         <div class="chat-list-item" style="cursor:pointer;" onclick="addMemberToGroupNow('${escHtml(u.username).replace(/'/g,"\\'")}')">
           <img src="${resolveAvatarUrl({ name: u.name, avatarUrl: u.avatarUrl })}" class="avatar w-8 h-8 flex-shrink-0"/>
@@ -6764,7 +6777,7 @@ function searchGroupAddMember() {
           </div>
           <span class="material-symbols-outlined" style="color:#0077CC;font-size:20px;">add_circle</span>
         </div>`).join('');
-    } catch (e) { /* diamkan */ }
+    } catch (e) { showToast(t('toast_search_user_fail'), 'error'); }
   }, 300);
 }
 
@@ -7877,7 +7890,7 @@ function onP2pRecipientChanged() {
 async function searchP2pRecipients(query) {
   const box = document.getElementById('p2p-recipient-suggestions');
   try {
-    const res = await apiCall('searchUsers', { query, excludeUsername: currentUser.username });
+    const res = await apiSearchUsers(query);
     const users = res.users || [];
     // Query mungkin sudah berubah (atau input sudah dikunci) selagi menunggu respons.
     if (p2pLockedRecipient || document.getElementById('p2p-recipient-username').value.trim() !== query) return;
@@ -7896,7 +7909,7 @@ async function searchP2pRecipients(query) {
         </div>
       </div>`).join('');
     box.classList.remove('hidden');
-  } catch (e) { /* biarkan dropdown tertutup kalau pencarian gagal */ }
+  } catch (e) { showToast(t('toast_search_user_fail'), 'error'); }
 }
 
 // Dipanggil saat user memilih salah satu hasil pencarian.
@@ -8329,7 +8342,7 @@ function searchNewChatUsers() {
     loading.classList.remove('hidden');
     empty.classList.add('hidden');
     try {
-      const res = await apiCall('searchUsers', { query, excludeUsername: currentUser.username });
+      const res = await apiSearchUsers(query);
       const users = res.users || [];
       empty.classList.toggle('hidden', users.length > 0);
       results.innerHTML = users.map(u => `
@@ -12110,7 +12123,7 @@ function pnHS(){
   dd.innerHTML='<p class="pn-hs-h">⏳</p>';
   pnHT=setTimeout(async function(){
     try{
-      var r=await apiCall('searchUsers',{query:q,excludeUsername:currentUser.username});
+      var r=await apiSearchUsers(q);
       if(inp.value.trim()!==q)return;
       pnHSu=r.users||[];
       dd.innerHTML=pnHSu.length?pnHSu.map(function(u,i){return '<div class="chat-list-item" onmousedown="pnHSgo('+i+')"><img src="'+resolveAvatarUrl({name:u.name,avatarUrl:u.avatarUrl})+'" class="avatar w-10 h-10 flex-shrink-0"/><div class="flex-1 min-w-0"><p class="font-bold text-sm truncate">'+escHtml(u.name)+'</p><p class="text-xs truncate" style="opacity:.75">@'+escHtml(u.username)+'</p></div></div>'}).join(''):'<p class="pn-hs-h">'+t('chat_no_user_found')+'</p>';
