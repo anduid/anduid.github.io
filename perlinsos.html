@@ -2812,14 +2812,29 @@
     window.deleteAgent = async function (id) {
       if (!session) return;
       const ag0 = state.agents.find((a) => a.id === id);
-      if (ag0 && ag0.sid && session) {
-        try { const r = await api("delete", { id: ag0.sid }); if (!r.success) { showToast(r.message, "⚠️"); return; } }
-        catch (e) { showToast("Gagal menghapus di server", "⚠️"); return; }
+      let stale = false; // server menjawab "tidak ditemukan" -> salinan lokal ini yatim, jangan dibiarkan menyangkut
+      if (ag0 && ag0.sid) {
+        try {
+          const r = await api("delete", { id: ag0.sid });
+          if (!r.success) {
+            if (/tidak ditemukan|not found/i.test(String(r.message || ""))) stale = true;
+            else { showToast(r.message, "⚠️"); return; }
+          }
+        } catch (e) { showToast("Gagal menghapus di server", "⚠️"); return; }
       }
       await dbDelete("capaian_agen", id);
       state.agents = await dbGetAll("capaian_agen");
+      if (stale) {
+        await loadRemote(); // muat ulang data server untuk memastikan kondisi sebenarnya
+        if (state.remote.some((x) => x.sid === ag0.sid)) {
+          showToast("Salinan di perangkat dihapus. Data ini tercatat sebagai data tamu di server dan hanya bisa dihapus admin.", "ℹ️");
+        } else {
+          showToast("Data sudah tidak ada di server, salinan lama dibersihkan", "🧹");
+        }
+      } else {
+        showToast("Data agen dihapus", "🗑️");
+      }
       renderArenaStatsAndLeaderboard();
-      showToast("Data agen dihapus", "🗑️");
     };
 
     window.viewEviden = function (id) {
