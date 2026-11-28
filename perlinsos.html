@@ -2331,6 +2331,7 @@
       document.getElementById("themeIcon").textContent = theme === "dark" ? "☀️" : "🌙";
       document.getElementById("langLabel").textContent = (lang || "id").toUpperCase();
       document.getElementById("soundIcon").textContent = sound ? "🔊" : "🔇";
+      syncBgm(!!sound);
 
       const dict = I18N[lang || "id"];
       document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -4004,6 +4005,44 @@
       state.agents = await dbGetAll("capaian_agen");
       renderArenaStatsAndLeaderboard(); renderAkun(); akunMsg("Anda sudah keluar.", true);
     });
+
+    /* ==========================================================================
+       BACKSOUND MP3 (loop, autoplay, mengikuti tombol 🔊/🔇)
+       File: backsound.mp3 (satu folder dengan perlinsos.html)
+       ========================================================================== */
+    const BGM_SRC = "backsound.mp3";
+    const BGM_VOLUME = 0.5; // 0.0 - 1.0
+    const bgm = new Audio(BGM_SRC);
+    bgm.loop = true;
+    bgm.preload = "auto";
+    bgm.volume = BGM_VOLUME;
+    bgm.addEventListener("error", () => console.warn("BGM: backsound.mp3 tidak ditemukan / gagal dimuat"));
+    let bgmWant = false, bgmGestureBound = false;
+
+    function bindBgmGesture() {
+      if (bgmGestureBound) return;
+      bgmGestureBound = true;
+      // Browser memblokir autoplay bersuara sebelum ada interaksi; mulai otomatis di interaksi pertama.
+      const evs = ["pointerdown", "touchstart", "keydown", "click"];
+      const unlock = () => {
+        if (!bgmWant) return;
+        bgm.play().then(() => {
+          evs.forEach((ev) => window.removeEventListener(ev, unlock, true));
+          bgmGestureBound = false;
+        }).catch(() => {});
+      };
+      evs.forEach((ev) => window.addEventListener(ev, unlock, true));
+    }
+
+    function syncBgm(on) {
+      bgmWant = on;
+      if (on) {
+        const pr = bgm.play();
+        if (pr && pr.catch) pr.catch(() => bindBgmGesture());
+      } else {
+        bgm.pause();
+      }
+    }
 
     (async function initApp() {
       try {
