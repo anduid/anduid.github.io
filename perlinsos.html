@@ -1307,7 +1307,7 @@
               </span>
             </div>
             <canvas id="raceCv" style="width:100%;height:260px;border-radius:16px;display:block;"></canvas>
-            <p style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">Pilih posisi peringkat yang sedang diperebutkan. Balapan otomatis berulang hanya bila urutan berubah, lalu berhenti sesuai peringkat sementara, karena perebutan capaian masih berlangsung.</p>
+            <p style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">Pilih posisi peringkat yang sedang diperebutkan. Balapan otomatis berulang hanya bila urutan berubah, lalu berhenti sesuai peringkat sementara, karena perebutan capaian masih berlangsung. Bila KK sama, yang lebih dulu mencapai angka itu berada di atas.</p>
           </div>
 
           <!-- Full Ranked Agent List -->
@@ -2432,7 +2432,7 @@
       const sortedAgents = [...latestAgents]
         .filter((a) => (filterKel === "ALL" ? true : a.kelurahan === filterKel))
         .filter((a) => !query || a.nama.toLowerCase().includes(query) || a.unsur.toLowerCase().includes(query))
-        .sort((a, b) => Number(b.jumlah_kk) - Number(a.jumlah_kk));
+        .sort(rankCmp);
       window.__rankRows = sortedAgents;
       if (window.raceUpdate) window.raceUpdate();
 
@@ -2861,7 +2861,7 @@
 
     // Export CSV
     document.getElementById("btnExportCSV").addEventListener("click", () => {
-      const sorted = agentLatest().sort((a, b) => b.jumlah_kk - a.jumlah_kk);
+      const sorted = agentLatest().sort(rankCmp);
       let csv = "Peringkat,Kelurahan,Nama Petugas,Unsur Satgas,Jumlah KK,Waktu Input\n";
       sorted.forEach((a, i) => {
         csv += `${i + 1},"${a.kelurahan}","${a.nama.replace(/"/g, '""')}","${a.unsur}",${a.jumlah_kk},"${a.waktu}"\n`;
@@ -2878,7 +2878,7 @@
 
     // Share Leaderboard Recap to WhatsApp
     document.getElementById("btnShareRecapWA").addEventListener("click", () => {
-      const sorted = agentLatest().sort((a, b) => b.jumlah_kk - a.jumlah_kk).slice(0, 10);
+      const sorted = agentLatest().sort(rankCmp).slice(0, 10);
       let text = `*🏆 REKAP CAPAIAN AGEN PERLINSOS*\n*Kecamatan Jatisampurna — Kota Bekasi*\n_(Instruksi Wali Kota No. 100/135/SETDA.Tapem)_\n\n`;
       sorted.forEach((a, idx) => {
         text += `${idx + 1}. *${a.nama}* (${a.kelurahan} - ${a.unsur}): *${a.jumlah_kk} KK*\n`;
@@ -2889,7 +2889,7 @@
 
     // Print PDF Recap
     document.getElementById("btnPrintRecapPDF").addEventListener("click", () => {
-      const sorted = agentLatest().sort((a, b) => b.jumlah_kk - a.jumlah_kk);
+      const sorted = agentLatest().sort(rankCmp);
       const printEl = document.getElementById("printArea");
       printEl.innerHTML = `
         <div class="print-header">
@@ -3471,7 +3471,7 @@
       if (_celebrated || !agents.length || !state.remote.length) return;   // tunggu data server termuat
       _celebrated = true;
       const pct = (n) => n.toFixed(2).replace(".", ",") + "%";
-      const top = [...agents].sort((a, b) => Number(b.jumlah_kk) - Number(a.jumlah_kk))[0];
+      const top = [...agents].sort(rankCmp)[0];
       const board = window.__dailyBoard || { list: [], isToday: true };
       const best = board.list[0];
       const kelBase = kels && kels[0];                                    // sudah urut persentase data resmi
@@ -3544,7 +3544,7 @@
 
     function renderAgentTicker(agents) {
       // 10 agen capaian terbanyak (total KK terakhir)
-      const top = [...agents].sort((a, b) => Number(b.jumlah_kk) - Number(a.jumlah_kk)).slice(0, 10);
+      const top = [...agents].sort(rankCmp).slice(0, 10);
       setSection("tkTopSection", top.length > 0);
       tickerFill("tkTop", top.map((a, i) => tkPill(i, { name: a.nama, sub: a.kelurahan, badge: formatNum(a.jumlah_kk) + " KK", alt: true })).join(""));
       // agen teraktif per hari
@@ -3634,6 +3634,11 @@
       })(last);
     })();
 
+    function rankCmp(a, b) {
+      return Number(b.jumlah_kk) - Number(a.jumlah_kk)
+        || String(a.reach || a.waktu || "").localeCompare(String(b.reach || b.waktu || ""))
+        || String(a.nama).localeCompare(String(b.nama));
+    }
     function agentLatest() {
       const g = {};
       allEntries().forEach((e) => { const k = norm(e.kelurahan) + "|" + norm(e.nama); (g[k] = g[k] || []).push(e); });
@@ -3645,7 +3650,9 @@
         const after = a.filter((e) => String(e.waktu).slice(0, 10) > BASELINE_DATE);
         const ref = before.length ? before[before.length - 1] : after[0];
         const inc = after.length ? Math.max(0, last.jumlah_kk - ref.jumlah_kk) : 0;
-        return { ...last, first_kk: a[0].jumlah_kk, inc, delta: prev ? last.jumlah_kk - prev.jumlah_kk : null, n: a.length, history: a };
+        // seri KK: waktu PERTAMA kali agen mencapai angka terakhirnya (lebih dulu = peringkat lebih tinggi)
+        const reachE = a.find((e) => Number(e.jumlah_kk) === Number(last.jumlah_kk)) || last;
+        return { ...last, reach: reachE.waktu, first_kk: a[0].jumlah_kk, inc, delta: prev ? last.jumlah_kk - prev.jumlah_kk : null, n: a.length, history: a };
       });
     }
 
@@ -4078,8 +4085,8 @@
     (function () {
       const cv = document.getElementById("raceCv"), card = document.getElementById("raceCard"), sel = document.getElementById("raceSel");
       if (!cv) return;
-      const FORMT = 2.4, JUR = ["Jurus Awan Kilat", "Jurus Pusaran Nitro", "Jurus Roket Pamor"], BCOL = ["#ff3b5c", "#2d7dff", "#ffc400"], ctx = cv.getContext("2d"), A = 1.2, RR = 0.75, HW = 0.27, LT = 4 * A + 2 * Math.PI * RR, D = 2.5, DUR = 16, SP = 0.045;
-      const R = { sel: 0, user: false, sig: "", rac: [], t: 0, fin: false, ban: "", banT: 0, live: "", jc: 0, crashN: 0, fx: [], cd: {}, shake: 0, vis: true, imgs: {}, opts: "" };
+      const TAGS = { tabrak: ["💥", "#ff4d6d"], gesek: ["⚡", "#ff9f43"], terjatuh: ["😵", "#6c757d"], bangkit: ["🙌", "#1dd1a1"], motor: ["🔧", "#8d6e63"], brrm: ["🔥", "#ff7f50"] }, FORMT = 2.4, JUR = ["Jurus Awan Kilat", "Jurus Pusaran Nitro", "Jurus Roket Pamor"], BCOL = ["#ff3b5c", "#2d7dff", "#ffc400"], ctx = cv.getContext("2d"), A = 1.2, RR = 0.75, HW = 0.27, LT = 4 * A + 2 * Math.PI * RR, D = 2.5, DUR = 16, SP = 0.045;
+      const R = { sel: 0, user: false, sig: "", rac: [], t: 0, fin: false, ban: "", banT: 0, live: "", jc: 0, crashN: 0, bkN: 0, ft: 0, fx: [], cd: {}, shake: 0, vis: true, imgs: {}, opts: "" };
       const key = (a) => a.kelurahan + "|" + a.nama, sm = (x) => x * x * (3 - 2 * x), lerp = (a, b, t) => a + (b - a) * t;
 
       function pathAt(u) {
@@ -4106,13 +4113,16 @@
         return (R.imgs[id] = im);
       }
 
+      // jarak akhir antar motor sebanding selisih KK: seri = hampir menempel, selisih jauh = terpaut jauh (maks 0,3 putaran per pasang)
+      const finalGaps = (g) => { const o = [0]; for (let i = 1; i < g.length; i++) o.push(o[i - 1] - (0.03 + 0.27 * (1 - Math.exp(-Math.max(0, Number(g[i - 1].jumlah_kk) - Number(g[i].jumlah_kk)) / 15)))); return o; };
       function start(group, prevKeys) {
+        const fg = finalGaps(group), mgs = group.map((_, i) => Math.min(i > 0 ? fg[i - 1] - fg[i] : 9, i < group.length - 1 ? fg[i] - fg[i + 1] : 9));
         const keys = group.map(key), prev = prevKeys && prevKeys.length === keys.length && keys.every((k) => prevKeys.includes(k)) ? prevKeys : keys.slice().reverse();
         R.rac = group.map((a, i) => ({
-          k: key(a), col: BCOL[i % 3], nos: 0, form: 0, jt: 0, jur: "", cu: -1, sc: 0, scs: 0, tag: "", tagT: 0, sx: 0, sy: 0, nama: a.nama, kk: a.jumlah_kk, mon: a.monster_id || "puffi",
-          g0: -prev.indexOf(key(a)) * SP, g1: -i * SP, amp: 0.05 + 0.02 * ((i * 7) % 3), f: 1.5 + ((i * 5) % 3) * 0.5, ph: i * 2.1, lane: 0, p: 0
+          k: key(a), col: BCOL[i % 3], nos: 0, form: 0, jt: 0, jur: "", cu: -1, bu: -1, sc: 0, scs: 0, tag: "", tagT: 0, sx: 0, sy: 0, nama: a.nama, kk: a.jumlah_kk, mon: a.monster_id || "puffi",
+          g0: -prev.indexOf(key(a)) * SP, g1: fg[i], amp: (0.05 + 0.02 * ((i * 7) % 3)) * Math.max(0.2, 1 - mgs[i] / 0.25), f: 1.5 + ((i * 5) % 3) * 0.5, ph: i * 2.1, lane: 0, p: 0
         }));
-        R.t = 0; R.fin = false; R.ban = ""; R.crashN = 0; R.fx = []; R.cd = {}; R.shake = 0; R.live = keys.join();
+        R.t = 0; R.fin = false; R.ban = ""; R.crashN = 0; R.bkN = 0; R.ft = 0; R.fx = []; R.cd = {}; R.shake = 0; R.live = keys.join();
         R.sig = keys.join();
       }
 
@@ -4131,7 +4141,7 @@
         if (force || sig !== R.sig) {
           const prev = R.rac.length ? R.rac.slice().sort((a, b) => b.p - a.p).map((r) => r.k) : null;
           start(group, force === "fresh" ? null : prev);
-        } else group.forEach((a) => { const r = R.rac.find((x) => x.k === key(a)); if (r) { r.kk = a.jumlah_kk; r.mon = a.monster_id || "puffi"; } });
+        } else { const fg = finalGaps(group); group.forEach((a, i) => { const r = R.rac.find((x) => x.k === key(a)); if (r) { r.kk = a.jumlah_kk; r.mon = a.monster_id || "puffi"; r.g1 = fg[i]; } }); }
       };
       sel.addEventListener("change", () => { R.sel = +sel.value; R.user = true; R.rac = []; R.sig = ""; window.raceUpdate(true); });
       document.getElementById("raceReplay").addEventListener("click", () => window.raceUpdate("fresh"));
@@ -4148,9 +4158,17 @@
             if (pc < 3.4 && r.cu >= 3.4) { r.tag = "berjuang lagi!"; r.tagT = 2.6; r.nos = 2.4; R.ban = `💪 ${r.nama.split(" ")[0]} berjuang mengejar!`; R.banT = 2.4; }
             if (r.cu > 6.4) r.cu = -1;
           }
-          const gap = lerp(r.g0, r.g1, sm(ts)) + (ts >= 1 ? 0 : r.amp * Math.sin(6.283 * r.f * ts + r.ph) * Math.sin(Math.PI * ts));
+          if (r.bu >= 0) {                       // alur cerita: sputter -> mogok -> starter -> menyala -> mengejar
+            const pb = r.bu; r.bu += dt;
+            if (pb < 2.8 && r.bu >= 2.8) { r.tag = "brrm! nyala lagi"; r.tagT = 1.2; R.ban = `🔧 Motor ${r.nama.split(" ")[0]} menyala lagi!`; R.banT = 2; }
+            if (pb < 3.6 && r.bu >= 3.6) { r.tag = "berjuang lagi!"; r.tagT = 2.6; r.nos = 2.4; R.ban = `💪 ${r.nama.split(" ")[0]} tancap gas mengejar!`; R.banT = 2.4; }
+            if (r.bu > 6.4) r.bu = -1;
+          }
+          let gap = lerp(r.g0, r.g1, sm(ts)) + (ts >= 1 ? 0 : r.amp * Math.sin(6.283 * r.f * ts + r.ph) * Math.sin(Math.PI * ts));
+          if (ts >= 1) { if (r.gc === undefined) r.gc = r.g1; r.gc += (r.g1 - r.gc) * Math.min(1, dt * 1.5); gap = r.gc; } // jarak menyesuaikan pelan bila selisih KK berubah
           const u = r.cu, pen = u < 0 ? 0 : u < 1 ? 0.06 * sm(u) : u < 2.4 ? 0.06 + 0.14 * ((u - 1) / 1.4) : u < 3.4 ? 0.2 : 0.2 * (1 - sm(Math.min(1, (u - 3.4) / 3)));
-          r.p = D * tau + gap - pen;
+          const ub = r.bu, penB = ub < 0 ? 0 : ub < 0.8 ? 0.04 * sm(ub / 0.8) : ub < 2.8 ? 0.04 + 0.12 * ((ub - 0.8) / 2) : ub < 3.6 ? 0.16 : 0.16 * (1 - sm(Math.min(1, (ub - 3.6) / 2.8)));
+          r.p = D * tau + gap - Math.max(pen, penB);
         });
         if (tau >= 1 && !R.fin) { R.fin = true; const w = R.rac.slice().sort((a, b) => b.p - a.p)[0]; if (w) { w.nos = 1.6; w.form = FORMT; w.jt = 0; w.jur = "Jurus Pemimpin!"; } }
         R.rac.forEach((r, i) => { // jalur samping saat bersalipan
@@ -4163,15 +4181,19 @@
         });
         for (let i = 0; i < R.rac.length; i++) for (let j = i + 1; j < R.rac.length; j++) { // gesekan di jalur yang sama
           const a = R.rac[i], b = R.rac[j], kk = i + "-" + j; R.cd[kk] = (R.cd[kk] || 0) - dt;
-          if (R.cd[kk] <= 0 && Math.abs(a.p - b.p) < 0.03 && a.cu < 0 && b.cu < 0 && R.t > 1 && R.t < DUR - 1.5 && Math.random() < dt * 2) {
+          if (R.cd[kk] <= 0 && Math.abs(a.p - b.p) < 0.03 && a.cu < 0 && b.cu < 0 && a.bu < 0 && b.bu < 0 && R.t > 1 && R.t < DUR - 1.5 && Math.random() < dt * 2) {
             R.cd[kk] = 3.5; a.sc = b.sc = 0.7; a.scs = 0.15; b.scs = -0.15; R.fx.push({ a, b, t: 0.7, k: "s" }); R.shake = Math.max(R.shake, 0.35);
             const bh = a.p < b.p ? a : b; bh.tag = "gesekan!"; bh.tagT = 1.1;
           }
         }
+        if (R.bkN < 1 && R.t > 2 && R.t < DUR - 7.2 && R.rac.length > 1 && !R.rac.some((x) => x.cu >= 0 || x.bu >= 0) && Math.random() < dt * 0.1) { // motor mogok
+          const v = R.rac[(Math.random() * R.rac.length) | 0]; R.bkN++; v.bu = 0; v.nos = 0; v.form = 0; v.tag = "motor mogok!"; v.tagT = 2.4;
+          R.ban = `🔧 Yah, motor ${v.nama.split(" ")[0]} mogok!`; R.banT = 2.6;
+        }
         const ord = R.rac.slice().sort((a, b) => b.p - a.p), live = ord.map((r) => r.k).join();
         if (live !== R.live && !R.fin && tau > 0.04) {
           const prev = R.live.split(","); const up = ord.find((r, i) => prev.indexOf(r.k) > i);
-          if (up) { const was = prev[prev.indexOf(up.k) - 1]; const lo = R.rac.find((r) => r.k === was); const busy = (x) => x && x.cu >= 0;
+          if (up) { const was = prev[prev.indexOf(up.k) - 1]; const lo = R.rac.find((r) => r.k === was); const busy = (x) => x && (x.cu >= 0 || x.bu >= 0);
           if (busy(up) || busy(lo)) { /* pembalap yang jatuh disalip: tanpa efek jurus */ }
           else if (lo && R.crashN < 1 && R.t > 1.2 && R.t < DUR - 7.2 && Math.random() < 0.65) { // tabrakan -> terjatuh
             R.crashN++; lo.cu = 0; lo.nos = 0; lo.form = 0; lo.tag = "terjatuh..."; lo.tagT = 2.2; up.tag = "tabrakan!"; up.tagT = 1.4;
@@ -4180,13 +4202,22 @@
           } else { R.jc = (R.jc + 1) % 3; up.nos = 1.8; up.form = FORMT; up.jt = R.jc; up.jur = JUR[R.jc]; R.ban = `🔥 ${up.nama.split(" ")[0]} menyalip ${lo ? lo.nama.split(" ")[0] : ""} · ${up.jur}!`; R.banT = 2.3; }
         }
         }
-        R.live = live; if (R.banT > 0) R.banT -= dt; R.fx.forEach((x) => { x.t -= dt; }); R.fx = R.fx.filter((x) => x.t > 0);
+        R.live = live; if (R.fin) R.ft += dt; if (R.banT > 0) R.banT -= dt; R.fx.forEach((x) => { x.t -= dt; }); R.fx = R.fx.filter((x) => x.t > 0);
       }
 
       function pill(txt, x, y, bg, fg) {
         ctx.font = "bold 11px sans-serif"; const w = ctx.measureText(txt).width + 12;
         ctx.fillStyle = bg; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x - w / 2, y - 9, w, 18, 9) : ctx.rect(x - w / 2, y - 9, w, 18); ctx.fill();
         ctx.fillStyle = fg; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(txt, x, y + 1);
+      }
+
+      function bubble(txt, x, y, sc) {
+        ctx.font = "bold 11px sans-serif"; const w = ctx.measureText(txt).width + 16;
+        ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); ctx.fillStyle = "#fff"; ctx.strokeStyle = "#6C5CE7"; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.roundRect ? ctx.roundRect(-w / 2, -26, w, 22, 10) : ctx.rect(-w / 2, -26, w, 22); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(-5, -5); ctx.lineTo(0, 3); ctx.lineTo(5, -5); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = "#fff"; ctx.fillRect(-4, -7, 8, 3);
+        ctx.fillStyle = "#2d2a55"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(txt, 0, -15); ctx.restore();
       }
 
       function draw() {
@@ -4207,11 +4238,11 @@
         const ord = R.rac.slice().sort((a, b) => b.p - a.p), tm = performance.now() / 1000;
         const items = R.rac.map((r) => { const q = ptL(0.05 + r.p, r.lane * HW * 0.7); return { r, q, pos: q }; }).sort((a, b) => a.q.z - b.q.z);
         items.forEach(({ r, q }) => {
-          const c = pj(q.x, q.z, W, H), sz = c.s * 0.5, dir = q.hx >= 0 ? 1 : -1, bob = Math.abs(Math.sin(tm * 9 + r.ph)) * sz * 0.03 * (R.fin ? 0.5 : 1);
+          const c = pj(q.x, q.z, W, H), sz = c.s * 0.5, dir = q.hx >= 0 ? 1 : -1, bob = Math.abs(Math.sin(tm * 9 + r.ph)) * sz * 0.03 * (R.fin ? 0.5 : 1) + (R.fin && ord[0] === r ? Math.abs(Math.sin(tm * 4)) * sz * 0.16 : 0);
           ctx.fillStyle = "rgba(0,0,0,.28)"; ctx.beginPath(); ctx.ellipse(c.x, c.y + 2, sz * 0.55, sz * 0.09, 0, 0, 7); ctx.fill();
-          const wr = sz * 0.17, spin = tm * (R.fin ? 6 : 16) + r.ph;
+          const wr = sz * 0.17, spin = (r.bu >= 0.8 && r.bu < 2.8) ? r.ph : tm * (R.fin ? 6 : 16) + r.ph;
           const f = r.form > 0 ? 1 - r.form / FORMT : 0, e = r.form > 0 ? Math.sin(Math.PI * f) : 0, nb = Math.min(1, r.nos / 0.4);
-          if ((!R.fin || nb) && r.cu < 0) { // garis kecepatan (lebih panjang & biru saat NOS)
+          if ((!R.fin || nb) && r.cu < 0 && r.bu < 0) { // garis kecepatan (lebih panjang & biru saat NOS)
             ctx.strokeStyle = nb ? "rgba(120,225,255,.9)" : "rgba(255,255,255,.6)"; ctx.lineWidth = nb ? 3 : 2;
             for (let k = 0; k < (nb ? 6 : 3); k++) { const yy = c.y - sz * (0.15 + 0.12 * k); ctx.beginPath(); ctx.moveTo(c.x - dir * sz * 0.6, yy); ctx.lineTo(c.x - dir * sz * (0.95 + 0.1 * k + nb * 0.8), yy); ctx.stroke(); }
           }
@@ -4220,6 +4251,7 @@
           if (cu >= 0 && cu < 1) { bikeRot = 1.45 * sm(fp); mOffX = 0.7 * sz * fp; mOffY = 0.34 * sz * fp - sz * 1.1 * Math.sin(Math.PI * fp); mRot = 7.85 * fp; }
           else if (cu >= 1 && cu < 2.4) { bikeRot = 1.45; mOffX = 0.7 * sz; mOffY = 0.34 * sz; mRot = 1.57; dizzy = true; }
           else if (cu >= 2.4 && cu < 3.4) { bikeRot = 1.45 * (1 - rp); mOffX = 0.7 * sz * (1 - rp); mOffY = 0.34 * sz * (1 - rp); mRot = 1.57 * (1 - rp) + Math.sin(cu * 18) * 0.15 * (1 - rp); }
+          if (cu < 0 && r.bu >= 0.8 && r.bu < 2.8) mRot = Math.sin(tm * 6) * 0.14; // monster garuk kepala saat mogok
           const crashT = () => { if (bikeRot) { ctx.translate(sz * 0.4 * (cu < 1 ? sm(fp) : 1 - rp), 0); ctx.rotate(bikeRot); } };
           r.sx = c.x; r.sy = c.y;
           if (e) { // aura transformasi
@@ -4228,6 +4260,7 @@
             ctx.fillStyle = ag; ctx.beginPath(); ctx.arc(c.x, c.y - sz * 0.55, sz * 1.05, 0, 7); ctx.fill();
           }
           ctx.save(); ctx.translate(c.x, c.y - bob); ctx.rotate(-0.34 * q.c * dir); ctx.scale(dir, 1);
+          if (r.bu >= 0 && r.bu < 0.8) ctx.translate((Math.random() - 0.5) * 3, 0); // motor tersendat
           if (e && r.jt === 0) { ctx.translate(-0.4 * sz, -wr); ctx.rotate(-0.55 * e); ctx.translate(0.4 * sz, wr); } // jurus wheelie
           if (e && r.jt === 2) ctx.scale(1 + 0.2 * e, 1 - 0.06 * e);                                                    // jurus dash (melar)
           if (cu >= 0 && cu < 1.6) { ctx.strokeStyle = "#ffb703"; ctx.lineWidth = 2; for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.moveTo(-0.2 * sz + k * 6, -2); ctx.lineTo(-0.45 * sz - k * 7, -8 - k * 4); ctx.stroke(); } } // percikan seret
@@ -4267,10 +4300,18 @@
           ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(0.34 * sz, -0.3 * sz, sz * 0.06, 0, 7); ctx.fill();
           ctx.restore();
           ctx.restore();
+          if (r.bu >= 0 && r.bu < 3.6) { for (let k = 0; k < 5; k++) { const t = (tm * 0.7 + k / 5) % 1; ctx.fillStyle = "rgba(95,95,105," + (0.55 * (1 - t)).toFixed(2) + ")"; ctx.beginPath(); ctx.arc(c.x + dir * (0.02 * sz + Math.sin(t * 6 + k) * 4), c.y - bob - sz * (0.3 + 0.8 * t), 4 + t * 12, 0, 7); ctx.fill(); } } // asap mesin
+          if (r.bu >= 2.8 && r.bu < 3.6) { ctx.strokeStyle = "#ffd166"; ctx.lineWidth = 2; for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.moveTo(c.x - dir * sz * 0.55, c.y - sz * 0.3); ctx.lineTo(c.x - dir * (sz * 0.55 + 8 + k * 5), c.y - sz * 0.3 + (k - 1.5) * 5); ctx.stroke(); } } // letupan starter
           const idx = ord.indexOf(r), rk = R.sel + idx + 1;
           pill(`#${rk} ${r.nama.split(" ")[0].slice(0, 11)}`, c.x, c.y - bob - sz * 1.12 - 8, rk === R.sel + 1 ? "#FECA57" : "rgba(255,255,255,.92)", "#2d2a55");
-          const tg = r.tag; if (r.tagT > 0) pill(tg.startsWith("tabrak") ? "💥 " + tg : tg.startsWith("gesek") ? "⚡ " + tg : tg.startsWith("terjatuh") ? "😵 " + tg : tg.startsWith("bangkit") ? "🙌 " + tg : "💪 " + tg, c.x, c.y - bob - sz * 1.12 - 30, tg.startsWith("tabrak") ? "#ff4d6d" : tg.startsWith("gesek") ? "#ff9f43" : tg.startsWith("terjatuh") ? "#6c757d" : tg.startsWith("bangkit") ? "#1dd1a1" : "#6C5CE7", "#fff");
+          if (r.tagT > 0) { const tk = Object.keys(TAGS).find((k) => r.tag.startsWith(k)), tv = TAGS[tk] || ["💪", "#6C5CE7"]; pill(tv[0] + " " + r.tag, c.x, c.y - bob - sz * 1.12 - 30, tv[1], "#fff"); }
           if (r.form > 0) pill(`⚡ ${r.jur}`, c.x, c.y - bob - sz * 1.12 - (r.tagT > 0 ? 52 : 30), "#6C5CE7", "#fff");
+          if (R.fin) { // loop obrolan di akhir: pemimpin bersorak, yang di belakang memanggil
+            const ph = R.ft % 5; let loc = -1, txt = "";
+            if (idx === 0) { if (ph < 2.4) { loc = ph; txt = "Yeay, aku menang! 🎉"; } }
+            else { const l = ph - 2.5 - (idx - 1) * 0.35; if (l >= 0 && l < 2.2) { loc = l; txt = "Hey, tunggu" + "u".repeat(2 + (((l * 5) | 0) % 4)) + "!"; } }
+            if (loc >= 0) bubble(txt, c.x, Math.max(34, c.y - bob - sz * 1.12 - 58), Math.min(1, loc * 7) * (1 + 0.04 * Math.sin(tm * 10)));
+          }
         });
 
         R.fx.forEach((x) => { // efek gesekan / tabrakan di titik temu dua pembalap
