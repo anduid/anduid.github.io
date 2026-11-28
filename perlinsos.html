@@ -1298,6 +1298,18 @@
           <!-- Top 3 Podium -->
           <div id="podiumContainer" class="podium-wrap"></div>
 
+          <div id="raceCard" class="clay-card-sm hidden" style="margin:14px 0;padding:12px;">
+            <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <b class="font-display">🏁 Arena Balap Live</b>
+              <span style="display:flex;gap:6px;align-items:center;">
+                <select id="raceSel" class="form-control" style="padding:6px 10px;font-size:0.78rem;max-width:230px;"></select>
+                <button type="button" id="raceReplay" class="btn btn-ghost btn-sm">🔁 Ulang</button>
+              </span>
+            </div>
+            <canvas id="raceCv" style="width:100%;height:260px;border-radius:16px;display:block;"></canvas>
+            <p style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">Pilih posisi peringkat yang sedang diperebutkan. Balapan otomatis berulang hanya bila urutan berubah, lalu berhenti sesuai peringkat sementara, karena perebutan capaian masih berlangsung.</p>
+          </div>
+
           <!-- Full Ranked Agent List -->
           <div id="agentLeaderboardList" class="agent-list"></div>
         </div>
@@ -2422,6 +2434,7 @@
         .filter((a) => !query || a.nama.toLowerCase().includes(query) || a.unsur.toLowerCase().includes(query))
         .sort((a, b) => Number(b.jumlah_kk) - Number(a.jumlah_kk));
       window.__rankRows = sortedAgents;
+      if (window.raceUpdate) window.raceUpdate();
 
       // Render Top 3 Podium
       const podium = document.getElementById("podiumContainer");
@@ -4058,6 +4071,230 @@
         bgm.pause();
       }
     }
+
+    /* ==========================================================================
+       ARENA BALAP LIVE (pseudo-3D, monster partner, salip di tikungan & lurusan)
+       ========================================================================== */
+    (function () {
+      const cv = document.getElementById("raceCv"), card = document.getElementById("raceCard"), sel = document.getElementById("raceSel");
+      if (!cv) return;
+      const FORMT = 2.4, JUR = ["Jurus Awan Kilat", "Jurus Pusaran Nitro", "Jurus Roket Pamor"], BCOL = ["#ff3b5c", "#2d7dff", "#ffc400"], ctx = cv.getContext("2d"), A = 1.2, RR = 0.75, HW = 0.27, LT = 4 * A + 2 * Math.PI * RR, D = 2.5, DUR = 16, SP = 0.045;
+      const R = { sel: 0, user: false, sig: "", rac: [], t: 0, fin: false, ban: "", banT: 0, live: "", jc: 0, crashN: 0, fx: [], cd: {}, shake: 0, vis: true, imgs: {}, opts: "" };
+      const key = (a) => a.kelurahan + "|" + a.nama, sm = (x) => x * x * (3 - 2 * x), lerp = (a, b, t) => a + (b - a) * t;
+
+      function pathAt(u) {
+        u = ((u % 1) + 1) % 1; let s = u * LT; const arc = Math.PI * RR;
+        if (s < 2 * A) return { x: -A + s, z: RR, hx: 1, hz: 0, c: 0 };
+        s -= 2 * A;
+        if (s < arc) { const th = Math.PI / 2 - s / RR; return { x: A + RR * Math.cos(th), z: RR * Math.sin(th), hx: Math.sin(th), hz: -Math.cos(th), c: 1 }; }
+        s -= arc;
+        if (s < 2 * A) return { x: A - s, z: -RR, hx: -1, hz: 0, c: 0 };
+        s -= 2 * A;
+        const th = -Math.PI / 2 - s / RR; return { x: -A + RR * Math.cos(th), z: RR * Math.sin(th), hx: Math.sin(th), hz: -Math.cos(th), c: 1 };
+      }
+      const ptL = (u, off) => { const p = pathAt(u); return { x: p.x + p.hz * off, z: p.z - p.hx * off, hx: p.hx, hz: p.hz, c: p.c }; };
+      const pj = (x, z, W, H) => { const S = W / 4.5, ps = 1 + z * 0.16; return { x: W / 2 + x * S * ps, y: H * 0.6 + z * S * 0.62, s: S * ps }; };
+
+      function monImg(id) {
+        if (R.imgs[id]) return R.imgs[id];
+        const im = new Image();
+        try {
+          const m = MONSTERS[id] || MONSTERS.puffi;
+          const svg = m.svg().replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg"').replace('width="100%" height="100%"', 'width="160" height="160"');
+          im.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+        } catch (e) {}
+        return (R.imgs[id] = im);
+      }
+
+      function start(group, prevKeys) {
+        const keys = group.map(key), prev = prevKeys && prevKeys.length === keys.length && keys.every((k) => prevKeys.includes(k)) ? prevKeys : keys.slice().reverse();
+        R.rac = group.map((a, i) => ({
+          k: key(a), col: BCOL[i % 3], nos: 0, form: 0, jt: 0, jur: "", cu: -1, sc: 0, scs: 0, tag: "", tagT: 0, sx: 0, sy: 0, nama: a.nama, kk: a.jumlah_kk, mon: a.monster_id || "puffi",
+          g0: -prev.indexOf(key(a)) * SP, g1: -i * SP, amp: 0.05 + 0.02 * ((i * 7) % 3), f: 1.5 + ((i * 5) % 3) * 0.5, ph: i * 2.1, lane: 0, p: 0
+        }));
+        R.t = 0; R.fin = false; R.ban = ""; R.crashN = 0; R.fx = []; R.cd = {}; R.shake = 0; R.live = keys.join();
+        R.sig = keys.join();
+      }
+
+      window.raceUpdate = function (force) {
+        const rows = window.__rankRows || [];
+        if (rows.length < 2) { card.classList.add("hidden"); R.rac = []; R.sig = ""; return; }
+        card.classList.remove("hidden");
+        const n = rows.length - 1, gaps = [];
+        for (let i = 0; i < n; i++) gaps.push(Number(rows[i].jumlah_kk) - Number(rows[i + 1].jumlah_kk));
+        if (!R.user) R.sel = gaps.indexOf(Math.min(...gaps.slice(0, 10)));
+        if (R.sel >= n) R.sel = 0;
+        const html = gaps.map((g, i) => `<option value="${i}">#${i + 1} vs #${i + 2} · selisih ${g} KK${g <= 15 ? " 🔥" : ""}</option>`).join("");
+        if (html !== R.opts) { sel.innerHTML = html; R.opts = html; }
+        sel.value = String(R.sel);
+        const group = rows.slice(R.sel, R.sel + 3), sig = group.map(key).join();
+        if (force || sig !== R.sig) {
+          const prev = R.rac.length ? R.rac.slice().sort((a, b) => b.p - a.p).map((r) => r.k) : null;
+          start(group, force === "fresh" ? null : prev);
+        } else group.forEach((a) => { const r = R.rac.find((x) => x.k === key(a)); if (r) { r.kk = a.jumlah_kk; r.mon = a.monster_id || "puffi"; } });
+      };
+      sel.addEventListener("change", () => { R.sel = +sel.value; R.user = true; R.rac = []; R.sig = ""; window.raceUpdate(true); });
+      document.getElementById("raceReplay").addEventListener("click", () => window.raceUpdate("fresh"));
+      if ("IntersectionObserver" in window) new IntersectionObserver((e) => { R.vis = e[0].isIntersecting; }).observe(cv);
+
+      function step(dt) {
+        R.t += dt;
+        const tau = R.t / DUR, ts = Math.min(1, tau);
+        R.rac.forEach((r) => {
+          r.nos = Math.max(0, r.nos - dt); r.form = Math.max(0, r.form - dt); r.sc = Math.max(0, r.sc - dt); r.tagT = Math.max(0, r.tagT - dt);
+          if (r.cu >= 0) {                       // alur cerita: jatuh -> terkapar -> bangkit -> berjuang lagi
+            const pc = r.cu; r.cu += dt;
+            if (pc < 2.4 && r.cu >= 2.4) { r.tag = "bangkit!"; r.tagT = 1.3; R.ban = `🙌 ${r.nama.split(" ")[0]} bangkit lagi!`; R.banT = 2; }
+            if (pc < 3.4 && r.cu >= 3.4) { r.tag = "berjuang lagi!"; r.tagT = 2.6; r.nos = 2.4; R.ban = `💪 ${r.nama.split(" ")[0]} berjuang mengejar!`; R.banT = 2.4; }
+            if (r.cu > 6.4) r.cu = -1;
+          }
+          const gap = lerp(r.g0, r.g1, sm(ts)) + (ts >= 1 ? 0 : r.amp * Math.sin(6.283 * r.f * ts + r.ph) * Math.sin(Math.PI * ts));
+          const u = r.cu, pen = u < 0 ? 0 : u < 1 ? 0.06 * sm(u) : u < 2.4 ? 0.06 + 0.14 * ((u - 1) / 1.4) : u < 3.4 ? 0.2 : 0.2 * (1 - sm(Math.min(1, (u - 3.4) / 3)));
+          r.p = D * tau + gap - pen;
+        });
+        if (tau >= 1 && !R.fin) { R.fin = true; const w = R.rac.slice().sort((a, b) => b.p - a.p)[0]; if (w) { w.nos = 1.6; w.form = FORMT; w.jt = 0; w.jur = "Jurus Pemimpin!"; } }
+        R.rac.forEach((r, i) => { // jalur samping saat bersalipan
+          let tg = 0;
+          R.rac.forEach((o, j) => {
+            if (i === j) return; const d = o.p - r.p;
+            if (Math.abs(d) < 0.07) { const sd = (Math.min(i, j) + Math.max(i, j)) % 2 ? 1 : -1; tg += d > 0 ? sd * 0.85 : -sd * 0.3; }
+          });
+          if (r.sc > 0) tg = r.scs; r.lane += (Math.max(-1, Math.min(1, tg)) - r.lane) * Math.min(1, dt * 5);
+        });
+        for (let i = 0; i < R.rac.length; i++) for (let j = i + 1; j < R.rac.length; j++) { // gesekan di jalur yang sama
+          const a = R.rac[i], b = R.rac[j], kk = i + "-" + j; R.cd[kk] = (R.cd[kk] || 0) - dt;
+          if (R.cd[kk] <= 0 && Math.abs(a.p - b.p) < 0.03 && a.cu < 0 && b.cu < 0 && R.t > 1 && R.t < DUR - 1.5 && Math.random() < dt * 2) {
+            R.cd[kk] = 3.5; a.sc = b.sc = 0.7; a.scs = 0.15; b.scs = -0.15; R.fx.push({ a, b, t: 0.7, k: "s" }); R.shake = Math.max(R.shake, 0.35);
+            const bh = a.p < b.p ? a : b; bh.tag = "gesekan!"; bh.tagT = 1.1;
+          }
+        }
+        const ord = R.rac.slice().sort((a, b) => b.p - a.p), live = ord.map((r) => r.k).join();
+        if (live !== R.live && !R.fin && tau > 0.04) {
+          const prev = R.live.split(","); const up = ord.find((r, i) => prev.indexOf(r.k) > i);
+          if (up) { const was = prev[prev.indexOf(up.k) - 1]; const lo = R.rac.find((r) => r.k === was); const busy = (x) => x && x.cu >= 0;
+          if (busy(up) || busy(lo)) { /* pembalap yang jatuh disalip: tanpa efek jurus */ }
+          else if (lo && R.crashN < 1 && R.t > 1.2 && R.t < DUR - 7.2 && Math.random() < 0.65) { // tabrakan -> terjatuh
+            R.crashN++; lo.cu = 0; lo.nos = 0; lo.form = 0; lo.tag = "terjatuh..."; lo.tagT = 2.2; up.tag = "tabrakan!"; up.tagT = 1.4;
+            up.sc = lo.sc = 0.5; up.scs = 0.1; lo.scs = -0.1; R.fx.push({ a: up, b: lo, t: 0.9, k: "h" }); R.shake = 1;
+            R.ban = `💥 Tabrakan! ${up.nama.split(" ")[0]} menyenggol ${lo.nama.split(" ")[0]}, terjatuh!`; R.banT = 2.8;
+          } else { R.jc = (R.jc + 1) % 3; up.nos = 1.8; up.form = FORMT; up.jt = R.jc; up.jur = JUR[R.jc]; R.ban = `🔥 ${up.nama.split(" ")[0]} menyalip ${lo ? lo.nama.split(" ")[0] : ""} · ${up.jur}!`; R.banT = 2.3; }
+        }
+        }
+        R.live = live; if (R.banT > 0) R.banT -= dt; R.fx.forEach((x) => { x.t -= dt; }); R.fx = R.fx.filter((x) => x.t > 0);
+      }
+
+      function pill(txt, x, y, bg, fg) {
+        ctx.font = "bold 11px sans-serif"; const w = ctx.measureText(txt).width + 12;
+        ctx.fillStyle = bg; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x - w / 2, y - 9, w, 18, 9) : ctx.rect(x - w / 2, y - 9, w, 18); ctx.fill();
+        ctx.fillStyle = fg; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(txt, x, y + 1);
+      }
+
+      function draw() {
+        const dpr = Math.min(2, window.devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight;
+        if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.setLineDash([]);
+        if (R.shake > 0) { ctx.translate((Math.random() - 0.5) * 7 * R.shake, (Math.random() - 0.5) * 7 * R.shake); R.shake = Math.max(0, R.shake - 0.03); }
+        const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#bfe9ff"); g.addColorStop(0.32, "#d9f7e4"); g.addColorStop(1, "#8fd9a8");
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+        const N = 120, ring = (off) => { for (let i = 0; i <= N; i++) { const q = ptL(i / N, off), c = pj(q.x, q.z, W, H); i ? ctx.lineTo(c.x, c.y) : ctx.moveTo(c.x, c.y); } ctx.closePath(); };
+        ctx.fillStyle = "#3b4059"; ctx.beginPath(); ring(HW); ring(-HW); ctx.fill("evenodd");
+        [HW, -HW].forEach((off) => { ctx.beginPath(); ring(off); ctx.lineWidth = 4; ctx.strokeStyle = "#fff"; ctx.stroke(); ctx.setLineDash([9, 9]); ctx.strokeStyle = "#ff4d6d"; ctx.stroke(); ctx.setLineDash([]); });
+        ctx.beginPath(); ring(0); ctx.setLineDash([10, 14]); ctx.lineWidth = 1.5; ctx.strokeStyle = "rgba(255,255,255,.35)"; ctx.stroke(); ctx.setLineDash([]);
+        const f0 = pj(ptL(0.05, HW).x, ptL(0.05, HW).z, W, H), f1 = pj(ptL(0.05, -HW).x, ptL(0.05, -HW).z, W, H);
+        ctx.strokeStyle = "#fff"; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(f0.x, f0.y); ctx.lineTo(f1.x, f1.y); ctx.stroke();
+        ctx.setLineDash([6, 6]); ctx.strokeStyle = "#111"; ctx.stroke(); ctx.setLineDash([]);
+
+        const ord = R.rac.slice().sort((a, b) => b.p - a.p), tm = performance.now() / 1000;
+        const items = R.rac.map((r) => { const q = ptL(0.05 + r.p, r.lane * HW * 0.7); return { r, q, pos: q }; }).sort((a, b) => a.q.z - b.q.z);
+        items.forEach(({ r, q }) => {
+          const c = pj(q.x, q.z, W, H), sz = c.s * 0.5, dir = q.hx >= 0 ? 1 : -1, bob = Math.abs(Math.sin(tm * 9 + r.ph)) * sz * 0.03 * (R.fin ? 0.5 : 1);
+          ctx.fillStyle = "rgba(0,0,0,.28)"; ctx.beginPath(); ctx.ellipse(c.x, c.y + 2, sz * 0.55, sz * 0.09, 0, 0, 7); ctx.fill();
+          const wr = sz * 0.17, spin = tm * (R.fin ? 6 : 16) + r.ph;
+          const f = r.form > 0 ? 1 - r.form / FORMT : 0, e = r.form > 0 ? Math.sin(Math.PI * f) : 0, nb = Math.min(1, r.nos / 0.4);
+          if ((!R.fin || nb) && r.cu < 0) { // garis kecepatan (lebih panjang & biru saat NOS)
+            ctx.strokeStyle = nb ? "rgba(120,225,255,.9)" : "rgba(255,255,255,.6)"; ctx.lineWidth = nb ? 3 : 2;
+            for (let k = 0; k < (nb ? 6 : 3); k++) { const yy = c.y - sz * (0.15 + 0.12 * k); ctx.beginPath(); ctx.moveTo(c.x - dir * sz * 0.6, yy); ctx.lineTo(c.x - dir * sz * (0.95 + 0.1 * k + nb * 0.8), yy); ctx.stroke(); }
+          }
+          const cu = r.cu, fp = Math.min(1, Math.max(0, cu)), rp = cu >= 2.4 ? sm(Math.min(1, cu - 2.4)) : 0;
+          let bikeRot = 0, mOffX = 0, mOffY = 0, mRot = 0, dizzy = false;
+          if (cu >= 0 && cu < 1) { bikeRot = 1.45 * sm(fp); mOffX = 0.7 * sz * fp; mOffY = 0.34 * sz * fp - sz * 1.1 * Math.sin(Math.PI * fp); mRot = 7.85 * fp; }
+          else if (cu >= 1 && cu < 2.4) { bikeRot = 1.45; mOffX = 0.7 * sz; mOffY = 0.34 * sz; mRot = 1.57; dizzy = true; }
+          else if (cu >= 2.4 && cu < 3.4) { bikeRot = 1.45 * (1 - rp); mOffX = 0.7 * sz * (1 - rp); mOffY = 0.34 * sz * (1 - rp); mRot = 1.57 * (1 - rp) + Math.sin(cu * 18) * 0.15 * (1 - rp); }
+          const crashT = () => { if (bikeRot) { ctx.translate(sz * 0.4 * (cu < 1 ? sm(fp) : 1 - rp), 0); ctx.rotate(bikeRot); } };
+          r.sx = c.x; r.sy = c.y;
+          if (e) { // aura transformasi
+            const ag = ctx.createRadialGradient(c.x, c.y - sz * 0.55, 0, c.x, c.y - sz * 0.55, sz * (0.9 + 0.15 * Math.sin(tm * 12)));
+            ag.addColorStop(0, "rgba(255,240,120," + (0.75 * e) + ")"); ag.addColorStop(0.6, "rgba(255,120,200," + (0.35 * e) + ")"); ag.addColorStop(1, "rgba(255,120,200,0)");
+            ctx.fillStyle = ag; ctx.beginPath(); ctx.arc(c.x, c.y - sz * 0.55, sz * 1.05, 0, 7); ctx.fill();
+          }
+          ctx.save(); ctx.translate(c.x, c.y - bob); ctx.rotate(-0.34 * q.c * dir); ctx.scale(dir, 1);
+          if (e && r.jt === 0) { ctx.translate(-0.4 * sz, -wr); ctx.rotate(-0.55 * e); ctx.translate(0.4 * sz, wr); } // jurus wheelie
+          if (e && r.jt === 2) ctx.scale(1 + 0.2 * e, 1 - 0.06 * e);                                                    // jurus dash (melar)
+          if (cu >= 0 && cu < 1.6) { ctx.strokeStyle = "#ffb703"; ctx.lineWidth = 2; for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.moveTo(-0.2 * sz + k * 6, -2); ctx.lineTo(-0.45 * sz - k * 7, -8 - k * 4); ctx.stroke(); } } // percikan seret
+          ctx.save(); crashT();
+          if (q.c && !R.fin) { ctx.strokeStyle = "#ffb703"; ctx.lineWidth = 2; for (let k = 0; k < 3; k++) { ctx.beginPath(); ctx.moveTo(-0.4 * sz - k * 4, -2 - k * 2); ctx.lineTo(-0.55 * sz - k * 8, 1 + k * 2); ctx.stroke(); } } // percikan tikungan
+          [-0.4, 0.4].forEach((wx) => {
+            ctx.fillStyle = "#15151f"; ctx.beginPath(); ctx.arc(wx * sz, -wr, wr, 0, 7); ctx.fill();
+            ctx.strokeStyle = "#c9ccd8"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(wx * sz, -wr, wr * 0.62, 0, 7); ctx.stroke();
+            ctx.lineWidth = 1.5; for (let k = 0; k < 3; k++) { const a = spin + k * 1.047; ctx.beginPath(); ctx.moveTo(wx * sz - Math.cos(a) * wr * 0.6, -wr - Math.sin(a) * wr * 0.6); ctx.lineTo(wx * sz + Math.cos(a) * wr * 0.6, -wr + Math.sin(a) * wr * 0.6); ctx.stroke(); }
+          });
+          ctx.strokeStyle = "#8a8fa6"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0.4 * sz, -wr); ctx.lineTo(0.33 * sz, -0.42 * sz); ctx.moveTo(-0.4 * sz, -wr); ctx.lineTo(-0.05 * sz, -0.26 * sz); ctx.stroke();
+          ctx.fillStyle = "#2a2a3a"; ctx.beginPath(); ctx.ellipse(0.02 * sz, -0.2 * sz, 0.16 * sz, 0.07 * sz, 0, 0, 7); ctx.fill();
+          ctx.fillStyle = r.col; ctx.beginPath();
+          ctx.moveTo(-0.55 * sz, -0.4 * sz); ctx.quadraticCurveTo(-0.3 * sz, -0.5 * sz, 0.05 * sz, -0.42 * sz); ctx.lineTo(0.1 * sz, -0.3 * sz); ctx.lineTo(-0.32 * sz, -0.26 * sz); ctx.closePath(); ctx.fill();
+          if (nb) { // NOS: api knalpot biru-oranye
+            const L = sz * (0.55 + 0.25 * Math.sin(tm * 45 + r.ph)) * nb, fx = -0.56 * sz, fy = -0.3 * sz;
+            [[1, "rgba(255,140,40,0)"], [0.6, "rgba(255,255,255,0)"]].forEach(([k, endc], n) => {
+              const gr = ctx.createLinearGradient(fx, 0, fx - L * k, 0);
+              gr.addColorStop(0, n ? "rgba(255,255,255,.95)" : "rgba(255,170,60,.9)"); gr.addColorStop(n ? 0.5 : 0.35, n ? "rgba(90,200,255,.9)" : "rgba(255,110,30,.7)"); gr.addColorStop(1, endc);
+              ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(fx, fy - sz * (n ? 0.04 : 0.08)); ctx.lineTo(fx - L * k, fy + Math.sin(tm * 60 + n) * sz * 0.03); ctx.lineTo(fx, fy + sz * (n ? 0.04 : 0.08)); ctx.closePath(); ctx.fill();
+            });
+            ctx.fillStyle = "rgba(255,220,120,.9)"; for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.arc(fx - L * (0.6 + 0.25 * k) - Math.sin(tm * 30 + k) * 3, fy + Math.sin(tm * 25 + k * 2) * sz * 0.08, 2, 0, 7); ctx.fill(); }
+          }
+          ctx.restore();
+          const im = monImg(r.mon), ms = sz * 0.8; // monster pembalap (berubah bentuk saat jurus)
+          ctx.save(); ctx.translate(-0.06 * sz + mOffX, -0.3 * sz - ms * 0.45 + mOffY); if (mRot) ctx.rotate(mRot);
+          if (e) { if (r.jt === 1) ctx.rotate(6.283 * sm(f)); const sc = 1 + 0.3 * e; ctx.scale(sc * (1 + 0.12 * Math.sin(f * 30) * e), sc * (1 - 0.12 * Math.sin(f * 30) * e)); if ("filter" in ctx) ctx.filter = "hue-rotate(" + ((e * 220) | 0) + "deg) saturate(" + (1 + e).toFixed(2) + ")"; }
+          if (im.complete && im.naturalWidth) ctx.drawImage(im, -ms / 2, -ms * 0.45, ms, ms);
+          else { ctx.fillStyle = "#ff8ec7"; ctx.beginPath(); ctx.arc(0, 0, sz * 0.3, 0, 7); ctx.fill(); }
+          ctx.restore();
+          if (dizzy) { ctx.fillStyle = "#ffd166"; for (let k = 0; k < 3; k++) { const a = tm * 7 + k * 2.09; ctx.beginPath(); ctx.arc(-0.06 * sz + mOffX + Math.cos(a) * sz * 0.3, -0.3 * sz + mOffY - sz * 0.55 + Math.sin(a) * sz * 0.1, 3, 0, 7); ctx.fill(); } } // bintang pusing
+          if (e) { ctx.fillStyle = "#fff6a8"; for (let k = 0; k < 6; k++) { const a = tm * 6 + k * 1.047, rr = sz * (0.5 + 0.1 * Math.sin(tm * 9 + k)); ctx.beginPath(); ctx.arc(-0.06 * sz + Math.cos(a) * rr, -0.6 * sz + Math.sin(a) * rr * 0.8, 2.5 * e + 0.5, 0, 7); ctx.fill(); } }
+          ctx.save(); crashT();
+          ctx.fillStyle = r.col; ctx.beginPath();
+          ctx.moveTo(0.08 * sz, -0.3 * sz); ctx.lineTo(0.2 * sz, -0.5 * sz); ctx.lineTo(0.52 * sz, -0.36 * sz); ctx.lineTo(0.5 * sz, -0.24 * sz); ctx.lineTo(0.3 * sz, -0.2 * sz); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = "rgba(190,235,255,.9)"; ctx.beginPath(); ctx.moveTo(0.2 * sz, -0.5 * sz); ctx.lineTo(0.3 * sz, -0.62 * sz); ctx.lineTo(0.38 * sz, -0.43 * sz); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(0.34 * sz, -0.3 * sz, sz * 0.06, 0, 7); ctx.fill();
+          ctx.restore();
+          ctx.restore();
+          const idx = ord.indexOf(r), rk = R.sel + idx + 1;
+          pill(`#${rk} ${r.nama.split(" ")[0].slice(0, 11)}`, c.x, c.y - bob - sz * 1.12 - 8, rk === R.sel + 1 ? "#FECA57" : "rgba(255,255,255,.92)", "#2d2a55");
+          const tg = r.tag; if (r.tagT > 0) pill(tg.startsWith("tabrak") ? "💥 " + tg : tg.startsWith("gesek") ? "⚡ " + tg : tg.startsWith("terjatuh") ? "😵 " + tg : tg.startsWith("bangkit") ? "🙌 " + tg : "💪 " + tg, c.x, c.y - bob - sz * 1.12 - 30, tg.startsWith("tabrak") ? "#ff4d6d" : tg.startsWith("gesek") ? "#ff9f43" : tg.startsWith("terjatuh") ? "#6c757d" : tg.startsWith("bangkit") ? "#1dd1a1" : "#6C5CE7", "#fff");
+          if (r.form > 0) pill(`⚡ ${r.jur}`, c.x, c.y - bob - sz * 1.12 - (r.tagT > 0 ? 52 : 30), "#6C5CE7", "#fff");
+        });
+
+        R.fx.forEach((x) => { // efek gesekan / tabrakan di titik temu dua pembalap
+          const mx = (x.a.sx + x.b.sx) / 2, my = (x.a.sy + x.b.sy) / 2 - 14, k = x.k === "h" ? 1 : 0.6, pr = 1 - x.t / (x.k === "h" ? 0.9 : 0.7);
+          ctx.strokeStyle = x.k === "h" ? "#fff2a8" : "#ffb703"; ctx.lineWidth = 2;
+          for (let i = 0; i < 12; i++) { const a = i * 0.52 + x.t * 3, r0 = 6 + pr * 10 * k, r1 = r0 + (8 + (i % 3) * 5) * k; ctx.beginPath(); ctx.moveTo(mx + Math.cos(a) * r0, my + Math.sin(a) * r0 * 0.7); ctx.lineTo(mx + Math.cos(a) * r1, my + Math.sin(a) * r1 * 0.7); ctx.stroke(); }
+          if (x.k === "h") { ctx.strokeStyle = "rgba(255,255,255," + (1 - pr) + ")"; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(mx, my, 10 + pr * 46, 6 + pr * 24, 0, 0, 7); ctx.stroke(); ctx.font = "26px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("💥", mx, my - 4); }
+        });
+        // HUD
+        ctx.textAlign = "left"; ctx.font = "bold 11px sans-serif"; ctx.fillStyle = "rgba(255,255,255,.85)";
+        ctx.beginPath(); ctx.rect(8, 8, 150, 14 + ord.length * 15); ctx.fill();
+        ctx.fillStyle = "#2d2a55"; ctx.textBaseline = "top";
+        ord.forEach((r, i) => ctx.fillText(`P${i + 1}  ${r.nama.split(" ")[0].slice(0, 10)} · ${r.kk} KK`, 14, 13 + i * 15));
+        pill(R.fin ? "🏁 Urutan SEMENTARA" : "🏎️ Perebutan posisi LIVE", W - 85, 20, R.fin ? "#1DD1A1" : "#FF6B9D", "#fff");
+        if (R.banT > 0 && R.ban) pill(R.ban, W / 2, H - 20, "#6C5CE7", "#fff");
+      }
+
+      let last = performance.now();
+      (function frame(now) {
+        const dt = Math.min(0.05, (now - last) / 1000); last = now;
+        if (R.vis && !document.hidden && R.rac.length) { step(dt); draw(); }
+        requestAnimationFrame(frame);
+      })(last);
+    })();
 
     (async function initApp() {
       try {
